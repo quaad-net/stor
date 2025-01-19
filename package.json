@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "postinstall": "npm run build",
     "preview": "vite preview",
-    "serve-heroku": "vite --host 0.0.0.0 preview",
+    "serve-heroku": "vite preview",
     "start": "serve -s dist",
     "vite": "vite"
   },
