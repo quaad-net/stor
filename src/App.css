@@ -1,0 +1,24 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  /* --background-color-main: #242424; */
+  --btn-text-color: #646cff;
+  --form-btn-text-color: whitesmoke;
+  --transparent-gold: rgba(255, 217, 0, 0.5);
+  --header-color: whitesmoke;
+}
+
+.min-max-content{
+  height: 700px;
+  margin: 0;
+  padding: 0;
+}
+
+@media(max-width: 750px){
+  .min-max-content{
+    width: 85vw;
+    margin: auto;
+  }
+}

@@ -1,0 +1,35 @@
+.nav-bar{
+    width: 700px;
+}
+
+.nav-btn{
+    font-family: "DM Sans", sans-serif;
+    font-size: small;
+    color: var(--btn-text-color);
+    margin: 2px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    transition: border-color 1s, color 1s;
+    background-color: transparent;
+}
+
+.nav-btn:focus, .nav-btn:hover{
+    border-color: gold;
+    color: white;
+}
+
+.nav-icon-container{
+    border-top: 3px solid gray;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    margin-bottom: 0;
+}
+
+@media (max-width: 750px){
+    .nav-bar{
+        width: 85vw;
+        margin: auto;
+    }
+}

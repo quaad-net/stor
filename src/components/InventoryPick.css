@@ -1,0 +1,220 @@
+
+.nav-icon-main-fieldset{
+    border: 0;
+    border-top: 1px solid gray;
+}
+
+#nav-icon-main{
+    margin-top: 10px;
+}
+
+.nav-selection-title{
+    font-size: xx-large;
+    font-weight: bold;
+    color: var(--header-color);
+}
+
+h1{
+    display: none;
+    margin-top: 0;
+    color: var(--header-color);
+    border: 1px solid gray;
+    border-left: 0;
+    border-right: 0;
+    font-size: x-large;
+}
+
+.ip-fieldset{
+    border: 1px solid gray;
+    border-radius: 2px;
+    text-align: left;
+}
+
+input{
+    all: unset;
+    box-sizing: border-box;
+    height: 50px;
+    color: grey;
+    font-size: large;
+    text-align: left;
+    padding-left: 10px;
+    margin: 1px;
+    border-bottom: 1px solid gold;
+    background-color: none;
+    border-radius: 2px;
+    transition: border-color 0.5s;
+}
+
+input:focus{
+    border-color: white;
+    color: white;
+  }
+
+.header__name{
+    display: flex;
+}
+
+.header__name input{
+    width: 100%;
+}
+
+#trade{
+    box-sizing: border-box;
+    height: 50px;
+    width: 100%;
+    font-size: large;
+    text-align: left;
+    padding-left: 10px;
+    margin: 1px;
+}
+
+#date{
+    box-sizing: border-box;
+    height: 50px;
+    color: gray;
+    font-size: large;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin: 1px;
+    border-radius: 2px;
+    border-bottom: 2px solid trans;
+    background-color: none;
+}
+
+#scan-reorder-comment button{
+    all: unset;
+}
+
+#scan-reorder-comment{
+    margin-top: 15px;
+
+}
+
+#scan, #reorder, #comment, #view-added-parts{
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid gray;
+    border-left-color: transparent;
+    transition: background-color 0.5s, border 0.5s, border-radius 0.5s;
+}
+
+#view-added-parts{
+    border-right-color: transparent;
+}
+
+#scan:hover, #reorder:hover, #comment:hover, #view-added-parts:hover{
+    background-color: rgb(56, 56, 56);
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+#scan-btn:focus, #reorder-btn:focus, #comment-btn:focus, #view-added-parts-btn:focus{
+    all: unset;
+    background-color: rgb(56, 56, 56);
+    border-color: white;
+    border-radius: 3px;
+    padding: 0;
+    margin: 0;
+    height: 30px
+}
+
+.section1 input, .section2 input{
+    border-right: 1px solid gray;
+    width: 100%;
+}
+
+
+#part-and-description{
+    display: flex;
+}
+
+#part-code{
+    width: 25%;
+}
+
+#description{
+    width: 75%;
+}
+
+
+#part-qtys{
+    display: flex;
+    flex-direction: row;
+}
+
+#quanity, #quantity-remaning{
+    width: 50%;
+}
+
+#quantity-remaining{
+    border-right: 0;
+}
+
+.section2{
+    display: flex;
+    flex-direction: row;
+}
+
+#parts-added{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.added-part{
+    margin: 2px;
+    margin-right: 1px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: border-color 1s, background-color 1s;
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: rgb(34, 34, 34);
+    border-color: gray;
+}
+
+.added-part:hover{
+    cursor: pointer;
+    border-color: white;
+    background-color: white;
+    color: black;
+}
+
+.submit-btn, .clear-btn, .add-btn{
+    all: unset;
+    min-width: 100px;
+    margin-top: 40px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-family: "DM Sans", sans-serif;
+    font-size: small;
+    background-color: transparent;
+    border-radius: 7px;
+    border-bottom-left-radius: 0;
+    padding: 5px;
+    color: var(--form-btn-text-color);
+    transition: border-color 1s;
+    transition: color 1s;
+}
+
+.submit-btn:focus, .submit-btn:hover, .clear-btn:focus, .clear-btn:hover,
+.add-btn:focus, .add-btn:hover{   
+    cursor: pointer;
+    border-color: gold;
+    color: white;
+}
+
+@media(max-width: 750px) {
+
+    .section1, .section2{
+        display: block;
+    }
+
+    .section1 input, .section2 input{
+        width: 100%;
+        border-right: none;
+    }
+}
