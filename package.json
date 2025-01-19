@@ -6,11 +6,11 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --open --port 3000",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build",
     "lint": "eslint .",
     "postinstall": "npm run build",
     "preview": "vite preview",
-    "serve-heroku": "vite --host 0.0.0.0 --port $PORT preview",
+    "serve-heroku": "vite --host 0.0.0.0 --port $PORT",
     "start": "serve -s dist",
     "vite": "vite"
   },
