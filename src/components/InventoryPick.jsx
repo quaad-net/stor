@@ -1,15 +1,14 @@
 import './InventoryPick.css';
 import { useState, useEffect, useRef } from 'react';
-import PartInfoModal from './PartInfoModal'
+import PartInfoModal from './PartInfoModal';
 
 function InventoryPick(){
     const [partInfo, setPartInfo] = useState([]); // Array of part objects.
-    const apiUrl = import.meta.env.VITE_API_URL;
     const dt = new Date();
     const dtStr = dt.toDateString()
 
     async function handleSubmit(){
-        const req = await fetch(`${apiUrl}/pick`, {method: 'POST'});
+        const req = await fetch("https://stor-quaad-api-7ae794625fcd.herokuapp.com/api/pick", {method: 'POST'});
         const res = await req.text();
         alert(res);
     }
