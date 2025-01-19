@@ -1,44 +1,38 @@
 {
-  "name": "client",
+  "name": "stor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
     "dev": "vite --open --port 3000",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm run build",
+    "heroku-postbuild": "npm run build",
     "lint": "eslint .",
     "postinstall": "npm run build",
     "preview": "vite preview",
-    "serve-heroku": "vite --host 0.0.0.0 --port $PORT",
+    "serve-heroku": "vite --host 0.0.0.0 --port $PORT preview",
     "start": "serve -s dist",
     "vite": "vite"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^6.4.0",
-    "@mui/x-data-grid": "^7.23.6",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@mui/material": "^6.2.1",
+    "@mui/x-data-grid": "^7.23.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "serve": "^14.2.4",
-    "vite": "^6.0.5"
+    "vite": "^6.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@types/react": "^18.3.18",
+    "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "react-router-dom": "^7.1.1",
-    "vite": "^6.0.5"
-  },
-  "engines": {
-    "node": "20.x"
+    "globals": "^15.13.0"
   }
 }
