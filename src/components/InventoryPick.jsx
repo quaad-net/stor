@@ -5,10 +5,12 @@ import PartInfoModal from './PartInfoModal';
 function InventoryPick(){
     const [partInfo, setPartInfo] = useState([]); // Array of part objects.
     const dt = new Date();
-    const dtStr = dt.toDateString()
+    const dtStr = dt.toDateString();
+    const apiUlr = import.meta.env.VITE_API_URL;
 
     async function handleSubmit(){
-        const req = await fetch("https://stor-quaad-api-7ae794625fcd.herokuapp.com/api/pick", {method: 'POST'});
+        // https://stor-quaad-api-7ae794625fcd.herokuapp.com/api/pick
+        const req = await fetch(`${apiUlr}/pick`, {method: 'POST'});
         const res = await req.text();
         alert(res);
     }
