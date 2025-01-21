@@ -3,20 +3,15 @@ import { useState, useEffect, useRef } from 'react';
 import PartInfoModal from './PartInfoModal';
 
 function InventoryPick(){
-    const [partInfo, setPartInfo] = useState([]); // Array of part objects.
+
+    const [partInfo, setPartInfo] = useState([]); 
+    const [reorder, setReorder] = useState(false);
     const dt = new Date();
     const dtStr = dt.toDateString();
-    const apiUlr = import.meta.env.VITE_API_URL;
-
-    async function handleSubmit(){
-        // https://stor-quaad-api-7ae794625fcd.herokuapp.com/api/pick
-        const req = await fetch(`${apiUlr}/pick`, {method: 'POST'});
-        const res = await req.text();
-        alert(res);
-    }
 
     function removePart(id){
 
+        console.log(id);
         const modal = document.querySelector('#part-info-modal');
         const updatedPartInfo = [];
         partInfo.map((p)=>{
@@ -24,6 +19,7 @@ function InventoryPick(){
                 updatedPartInfo.push(p)
             }
         })
+        console.dir(updatedPartInfo);
         setPartInfo(updatedPartInfo);
         alert('Part Removed');
         modal.style.display = 'none';
@@ -44,6 +40,14 @@ function InventoryPick(){
                 modal.style.display = 'none';
             }
         })
+       
+        function removeModal(e){
+            if(e.key === 'Escape'){
+                modal.style.display="none";
+            }
+        }
+        document.addEventListener('keydown', removeModal);
+  
     }
 
     function addPartHist(partCode){
@@ -77,6 +81,18 @@ function InventoryPick(){
         }
     }
 
+    function ReOrder(){
+
+        if(reorder){
+            return(
+                <>
+                    <input type="checkbox" id="reorder-chkbx" name="reorder" checked />
+                    <label for="reorder" id="reorder-lbl">Re-order</label>
+                </>
+            )
+        }
+    }
+
     return(
             <>
             <div className="inventory-pick">
@@ -95,24 +111,34 @@ function InventoryPick(){
                         </div>
                     </fieldset>
                     <div id="scan-reorder-comment">
-                        <button type="button" id="scan-btn">
+                        <button type="button" id="scan-btn" onClick={()=>{
+                            alert('Item Scan --- currently unavailable.')
+                        }}>
                             <img id="scan" title="Scan" src="/icons8-qr-code.svg" width="30px"/>
                         </button>
-                        <button type="button" id="reorder-btn">
+                        <button type="button" id="reorder-btn" onClick={()=>{
+                            setReorder(!reorder);
+                        }}>
                             <img id="reorder" title="Reorder" src="/icons8-fast-cart.svg" width="30px"/>
                         </button>
-                        <button type="button" id="comment-btn">
+                        <button type="button" id="comment-btn" onClick={()=>{
+                            alert('Add Comment --- currently unavailable.')
+                        }}>
                             <img id="comment" title="Comment" src="/icons8-comment.svg" width="30px"/>
                         </button>
                         <button type="button" id="view-added-parts-btn" onClick={showPartInfoModal}>
                             <img id="view-added-parts" title="View Added Parts" src="/icons8-list.svg" width="30px"/>
                         </button>
                     </div>
+                    <div id="reorder-div">
+                        <ReOrder/>
+                    </div>
                     <fieldset className="ip-fieldset" id="ip-fieldset-2">
                         <legend>Part Info</legend>
                         <div className="item-details">
                             <div className='section1'>
-                                <div id="reorder-selected"></div>
+                                <div id="reorder-selected">
+                                </div>
                                 <div id="part-and-description">
                                     <input id='part-code' type='text' title="Part Code" placeholder="Part Code" required />
                                     <input id='description' type='text' title="Description" placeholder="Description" required />
@@ -130,12 +156,9 @@ function InventoryPick(){
                         </div>
                     </fieldset>
                     <div id="part-info"></div>
-                    <button type="button" className="submit-btn" onClick={handleSubmit}>Submit
-                    </button>
-                    <button type="button" className="clear-btn">Clear
-                    </button>
-                    <button type="submit" className="add-btn" onClick={(e)=> {
+                    <button type="submit" id="inventory-pick-add-btn" className="add-btn" onClick={(e)=> {
                         e.preventDefault();
+                        document.querySelector('#inventory-pick-add-btn').blur();
                         const part = document.querySelector('#part-code').value;
                         const form = document.querySelector('form')
                         if(form.checkValidity()){
@@ -147,6 +170,16 @@ function InventoryPick(){
                         }
                     }}>
                         Add
+                    </button>
+                    <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
+                        document.querySelector('#inventory-pick-clear-btn').blur();
+                    }}>Clear
+                    </button>
+                    <button type="button" id="inventory-pick-submit-btn" className="submit-btn" onClick={()=>{
+                        document.querySelector('#inventory-pick-submit-btn').blur();
+                        showPartInfoModal()
+                        }}>
+                        Submit
                     </button>
                 </form>
                 <PartInfoModal parts={partInfo} removePart={removePart}/>

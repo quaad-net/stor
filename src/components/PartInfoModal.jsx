@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import './PartInfoModal.css'
 import { duration } from '@mui/material';
+const apiUlr = import.meta.env.VITE_API_URL; // Sets either production or dev environment API URL.
 
 export default function PartInfoModal(props){
 
     const [idx, setIdx] = useState(0);
+    const [nextPartBtns, setNextPartBtns] = useState("");
     const modal = document.querySelector("#part-info-modal");
     const modalContent = document.querySelector(".part-info-modal-data")
 
-    try {
-        const modalParts = [...props.parts];
+    try{
+        const testModalParts = [...props.parts]; // Throws error if no parts.
+        const modalParts = props.parts;
         let currentPart = modalParts[idx];
-        let nextPartBtns;
     
         function viewNextPart(){
             if(modalParts[idx+1] !== undefined){
@@ -54,15 +56,16 @@ export default function PartInfoModal(props){
             duration: 500
         }
 
-        if(modalParts.length > 1){
-            const prevPart= document.querySelector("#prev-part-btn");
-            const nextpart = document.querySelector("#next-part-btn");
-            nextPartBtns = 
+        function NextPartBtns(){
+
+            if(props.parts.length > 1){
+            return ( 
                 <>
                     <button type="button" id="prev-part-btn" onClick={()=>{
-                                prevPart.blur();
-                                modalContent.animate(fadeOutandIn, fadeTiming);;
-                                modalContent.animate(slideLeft, slideTiming);
+                                console.log(idx);
+                                document.querySelector("#prev-part-btn").blur();
+                                // modalContent.animate(fadeOutandIn, fadeTiming);;
+                                // modalContent.animate(slideLeft, slideTiming);
                                 viewPrevPart();
                             }
                         }>
@@ -70,34 +73,35 @@ export default function PartInfoModal(props){
                     </button>
                     <span>|</span>
                     <button type="button" id="next-part-btn" onClick={()=>{
-                                nextpart.blur();
-                                modalContent.animate(fadeOutandIn, fadeTiming);
-                                modalContent.animate(slideRight, slideTiming);
+                                console.log(idx);
+                                document.querySelector("#next-part-btn").blur();
+                                // modalContent.animate(fadeOutandIn, fadeTiming);
+                                // modalContent.animate(slideRight, slideTiming);
                                 viewNextPart();
                             }
                         }>
                         Next
                     </button>
                 </>
+            )
+            }
+            else{return(<></>)}
+                
         }
 
-        useEffect(()=>{
+        async function handleSubmit(){
+            const req = await fetch(`${apiUlr}/pick`, {method: 'POST'});
+            const res = await req.text();
+            alert(res);
+            modal.style.display = "none";
+        }
 
-            function removeModal(e){
-                if(e.key === 'Escape'){
-                    modal.style.display = 'none' 
-                }
-            }
-            document.addEventListener('keydown', removeModal);
-    
-        },[])
-    
         return(
             <div className="modal" id="part-info-modal">
                 <div className="part-info-modal">
                     <div className="part-info-modal-data">
                         <span className="part-info-modal-close">&times;</span>
-                        <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {modalParts.length})</div>
+                        <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {props.parts.length})</div>
                         <span className="part-info-modal-rows">
                             <div className="part-info-modal-row"></div>
                             <div className="part-info-modal-row" id="part-modal-description">Description: {currentPart.description}</div>
@@ -106,24 +110,34 @@ export default function PartInfoModal(props){
                             <div className="part-info-modal-row" id="part-modal-warehouse">Warehouse: {currentPart.warehouse}</div>
                             <div className="part-info-modal-row" id="part-modal-workorder">Workorder: {currentPart.workorder}</div>
                         </span>
-                        <fieldset className="part-info-remove-fieldset">
-                                <legend id="part-info-modal-remove">
-                                    <button 
-                                        id="part-info-remove-btn" 
-                                        type="button"
-                                        onClick={()=>{props.removePart(currentPart.id)}}
-                                        >Remove Part
+                        <fieldset>
+                                <legend>
+                                    <button id="submit-parts-btn" onClick={()=>{
+                                        const submitParts = document.querySelector('#submit-parts-btn');
+                                        submitParts.blur();
+                                        handleSubmit();
+                                    }
+                                    }>Submit Part(s)
                                     </button>
                                 </legend>
                         </fieldset>    
                         <div className="previous-next-part">
-                            {nextPartBtns}
+                            < NextPartBtns />
                         </div>
-                    
+                        <button 
+                                id="part-info-remove-btn" 
+                                type="button"
+                                onClick={()=>{
+                                    props.removePart(currentPart.id);
+                                    setIdx(0);
+                                }}
+                                >Remove Part
+                        </button>
                     </div>
                 </div>
             </div>
         )
+
     }
     catch(e){
         if(e instanceof TypeError){ //  Indicates [...props.parts] was not iterable. Therefore no parts were passed.
@@ -142,7 +156,7 @@ export default function PartInfoModal(props){
                                 <div className="part-info-modal-row" id="part-modal-workorder">Workorder: </div>
                             </span>
                             <fieldset className="part-info-remove-fieldset">
-                                    <legend id="no-parts-added">No Parts Have Been Added</legend>
+                                    <legend id="no-parts-added">No Parts Added</legend>
                             </fieldset>
                         </div>
                     </div>
