@@ -6,12 +6,22 @@ function InventoryPick(){
 
     const [partInfo, setPartInfo] = useState([]); 
     const [reorder, setReorder] = useState(false);
-    const dt = new Date();
-    const dtStr = dt.toDateString();
+    const [formDate, setFormDate] = useState(new Date());
+    const [noteAdded, setNoteAdded ] = useState(false);
+    
+     
+    useEffect(()=>{
+        document.querySelector('#first-name').addEventListener('change', ()=>{
+            const updatedDateTime = new Date();
+            setFormDate(updatedDateTime);
+        })
+
+
+
+    }, [])
 
     function removePart(id){
 
-        console.log(id);
         const modal = document.querySelector('#part-info-modal');
         const updatedPartInfo = [];
         partInfo.map((p)=>{
@@ -19,7 +29,6 @@ function InventoryPick(){
                 updatedPartInfo.push(p)
             }
         })
-        console.dir(updatedPartInfo);
         setPartInfo(updatedPartInfo);
         alert('Part Removed');
         modal.style.display = 'none';
@@ -46,8 +55,18 @@ function InventoryPick(){
                 modal.style.display="none";
             }
         }
+
+        
+
         document.addEventListener('keydown', removeModal);
   
+    }
+
+    function modalSubmit(result){
+        if(result == 'Submitted successfully.'){
+            document.querySelector('form').reset();
+        }
+        setReorder(false);
     }
 
     function addPartHist(partCode){
@@ -74,10 +93,24 @@ function InventoryPick(){
                     qty: qty,
                     unit: unit,
                     warehouse: warehouse,
-                    workorder: woNo
+                    workorder: woNo,
+                    technicianInfo :
+                        {
+                            firstName: fName,
+                            lastName: lName,
+                            trade: trade,
+                            date: formDate.toDateString(),
+                        }
                 }
             ];
             setPartInfo(partInfoArr);
+            document.querySelector('#part-code').value = '';
+            document.querySelector('#description').value = '';
+            document.querySelector('#quantity').value = '';
+            document.querySelector('#unit').value = '';
+            document.querySelector('#warehouse').value = '';
+            document.querySelector('#wo-no').value = '';
+            setReorder(false);
         }
     }
 
@@ -86,8 +119,30 @@ function InventoryPick(){
         if(reorder){
             return(
                 <>
-                    <input type="checkbox" id="reorder-chkbx" name="reorder" checked />
-                    <label for="reorder" id="reorder-lbl">Re-order</label>
+                    <input type="checkbox" id="reorder-chkbx" name="reorder" checked readOnly/>
+                    <label htmlFor="reorder" id="reorder-lbl">Re-order</label>
+                </>
+            )
+        }
+    }
+
+    function ReOrderAmt(){
+        return(
+            <>
+                <input id='reorder-amt' 
+                    type='text' 
+                    title="Reorder Amt" 
+                    {...(reorder ? {placeholder: 'Reorder Amt' } : {defaultValue:"Reorder: False", readOnly: true})}    />
+            </>
+        )
+    }
+
+    function NoteAdded(){
+        if(noteAdded){
+            return(
+                <>
+                    <input type="checkbox" id="note-added-chkbx" name="note-added" checked readOnly/>
+                    <label htmlFor="note-added" id="note-added-lbl">Note Added</label>
                 </>
             )
         }
@@ -107,7 +162,7 @@ function InventoryPick(){
                             <div>
                                 <input id='trade' type='text' title="Trade" placeholder="Trade" required/>
                             </div>
-                            <div id="date">{dtStr}</div>
+                            <div id="date">{formDate.toDateString()}</div>
                         </div>
                     </fieldset>
                     <div id="scan-reorder-comment">
@@ -145,11 +200,11 @@ function InventoryPick(){
                                 </div>
                                 <div id="part-qtys">
                                     <input id='quantity' type='text' title="Quantity" placeholder="Qty Used" required />
-                                    <input id='quantity-remaining' type='text' title="Quantity Remaining" placeholder="Qty Remaining" required />
+                                    <input id='unit' type='text' title="Unit" placeholder="Unit"required/>
+                                    <ReOrderAmt/>
                                 </div>
                             </div>
                             <div className="section2">
-                                <input id='unit' type='text' title="Unit" placeholder="Unit"required/>
                                 <input id='warehouse' type='text' title="Warehouse" placeholder="Warehouse" required/>
                                 <input id='wo-no' type='text' title="Workorder No." placeholder="Workorder No." required/>
                             </div>
@@ -173,6 +228,9 @@ function InventoryPick(){
                     </button>
                     <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
                         document.querySelector('#inventory-pick-clear-btn').blur();
+                        const clear = confirm('Clear form?');
+                        if(clear){document.querySelector('form').reset()}
+                        setReorder(false);
                     }}>Clear
                     </button>
                     <button type="button" id="inventory-pick-submit-btn" className="submit-btn" onClick={()=>{
@@ -182,7 +240,7 @@ function InventoryPick(){
                         Submit
                     </button>
                 </form>
-                <PartInfoModal parts={partInfo} removePart={removePart}/>
+                <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
             </div>
         </>
     )

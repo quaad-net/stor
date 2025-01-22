@@ -58,6 +58,10 @@ input:focus{
     width: 100%;
 }
 
+#last-name{
+    border-left: 1px solid grey;
+}
+
 #trade{
     box-sizing: border-box;
     height: 50px;
@@ -143,11 +147,11 @@ input:focus{
     flex-direction: row;
 }
 
-#quanity, #quantity-remaning{
-    width: 50%;
+#quantity, #unit, #reorder-amt{
+    width: 1fr;
 }
 
-#quantity-remaining{
+#reorder-amt{
     border-right: 0;
 }
 
@@ -156,42 +160,14 @@ input:focus{
     flex-direction: row;
 }
 
-#parts-added{
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-}
-
-.added-part{
-    margin: 2px;
-    margin-right: 1px;
-    border: 1px solid transparent;
-    border-radius: 2px;
-    transition: border-color 1s, background-color 1s;
-    padding: 3px;
-    padding-left: 5px;
-    padding-right: 5px;
-    background-color: rgb(34, 34, 34);
-    border-color: gray;
-}
-
-.added-part:hover{
-    cursor: pointer;
-    border-color: white;
-    background-color: white;
-    color: black;
-}
-
 #reorder-chkbx{
-    background-color: white;
-    border-color: white;
     height: 10px;
 }
 
 .submit-btn, .clear-btn, .add-btn{
     all: unset;
-    min-width: 100px;
-    margin-top: 40px;
+    min-width: 75px;
+    margin-top: 10px;
     margin-left: 10px;
     border-radius: 5px;
     border: 1px solid transparent;
@@ -215,12 +191,7 @@ input:focus{
 
 @media(max-width: 750px) {
 
-    .section1, .section2{
-        display: block;
-    }
-
     .section1 input, .section2 input{
         width: 100%;
-        border-right: none;
     }
 }

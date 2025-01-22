@@ -94,6 +94,7 @@ export default function PartInfoModal(props){
             const res = await req.text();
             alert(res);
             modal.style.display = "none";
+            props.modalSubmit(res);
         }
 
         return(
