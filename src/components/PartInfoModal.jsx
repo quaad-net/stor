@@ -62,25 +62,23 @@ export default function PartInfoModal(props){
             return ( 
                 <>
                     <button type="button" id="prev-part-btn" onClick={()=>{
-                                console.log(idx);
                                 document.querySelector("#prev-part-btn").blur();
                                 // modalContent.animate(fadeOutandIn, fadeTiming);;
                                 // modalContent.animate(slideLeft, slideTiming);
                                 viewPrevPart();
                             }
                         }>
-                        Prev
+                        <img alt='Next Part' src='/icons8-arrow-left.svg' width="25px"/>
                     </button>
-                    <span>|</span>
+                    
                     <button type="button" id="next-part-btn" onClick={()=>{
-                                console.log(idx);
                                 document.querySelector("#next-part-btn").blur();
                                 // modalContent.animate(fadeOutandIn, fadeTiming);
                                 // modalContent.animate(slideRight, slideTiming);
                                 viewNextPart();
                             }
                         }>
-                        Next
+                        <img alt='Next Part' src='/icons8-arrow-right.svg' width="25px"/>
                     </button>
                 </>
             )
@@ -104,7 +102,6 @@ export default function PartInfoModal(props){
                         <span className="part-info-modal-close">&times;</span>
                         <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {props.parts.length})</div>
                         <span className="part-info-modal-rows">
-                            <div className="part-info-modal-row"></div>
                             <div className="part-info-modal-row" id="part-modal-description">Description: {currentPart.description}</div>
                             <div className="part-info-modal-row" id="part-modal-qty">Qty: {currentPart.qty}</div>
                             <div className="part-info-modal-row" id="part-modal-unit">Unit: {currentPart.unit}</div>
@@ -114,8 +111,7 @@ export default function PartInfoModal(props){
                         <fieldset>
                                 <legend>
                                     <button id="submit-parts-btn" onClick={()=>{
-                                        const submitParts = document.querySelector('#submit-parts-btn');
-                                        submitParts.blur();
+                                        document.querySelector('#submit-parts-btn').blur();
                                         handleSubmit();
                                     }
                                     }>Submit Part(s)
@@ -129,6 +125,7 @@ export default function PartInfoModal(props){
                                 id="part-info-remove-btn" 
                                 type="button"
                                 onClick={()=>{
+                                    document.querySelector("#part-info-remove-btn").blur();
                                     props.removePart(currentPart.id);
                                     setIdx(0);
                                 }}

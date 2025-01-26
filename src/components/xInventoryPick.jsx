@@ -63,9 +63,8 @@ function InventoryPick(){
     function modalSubmit(result){
         if(result == 'Submitted successfully.'){
             document.querySelector('form').reset();
-            setReorder(false);
-            setPartInfo([]);
         }
+        setReorder(false);
     }
 
     function addPartHist(partCode){
@@ -82,11 +81,6 @@ function InventoryPick(){
             const woNo = document.querySelector('#wo-no').value;
             const key = partInfo.length;
             const id = `added-part-${key}`;
-            let reorderAmt;
-            if(reorder){
-                reorderAmt = document.querySelector("#reorder-amt").value;
-            }
-            else{reorderAmt=""}  
 
             const partInfoArr = [
                 ...partInfo, 
@@ -98,8 +92,6 @@ function InventoryPick(){
                     unit: unit,
                     warehouse: warehouse,
                     workorder: woNo,
-                    reorder: reorder,
-                    reorderAmt: reorderAmt,
                     technicianInfo :
                         {
                             firstName: fName,
@@ -118,8 +110,6 @@ function InventoryPick(){
             document.querySelector('#wo-no').value = '';
             setReorder(false);
         }
-        console.dir(partInfo);
-
     }
 
     function ReOrder(){
@@ -173,32 +163,31 @@ function InventoryPick(){
                             <div id="date">{formDate.toDateString()}</div>
                         </div>
                     </fieldset>
+                    <div id="scan-reorder-comment">
+                        <button type="button" id="scan-btn" onClick={()=>{
+                            alert('Item Scan --- currently unavailable.')
+                        }}>
+                            <img id="scan" title="Scan" src="/icons8-qr-code.svg" width="30px"/>
+                        </button>
+                        <button type="button" id="reorder-btn" onClick={()=>{
+                            setReorder(!reorder);
+                        }}>
+                            <img id="reorder" title="Reorder" src="/icons8-fast-cart.svg" width="30px"/>
+                        </button>
+                        <button type="button" id="comment-btn" onClick={()=>{
+                            alert('Add Comment --- currently unavailable.')
+                        }}>
+                            <img id="comment" title="Comment" src="/icons8-comment.svg" width="30px"/>
+                        </button>
+                        <button type="button" id="view-added-parts-btn" onClick={showPartInfoModal}>
+                            <img id="view-added-parts" title="View Added Parts" src="/icons8-list.svg" width="30px"/>
+                        </button>
+                    </div>
+                    <div className="circle"></div><div className="circle"></div><div className="circle"></div>
                     <fieldset className="ip-fieldset" id="ip-fieldset-2">
                         <legend>Part Info</legend>
-                        <div id="scan-reorder-comment">
-                            <button type="button" id="scan-btn" onClick={()=>{
-                                alert('Item Scan --- currently unavailable.')
-                            }}>
-                                <img id="scan" title="Scan" src="/icons8-qr-code-white.svg" width="25px"/>
-                            </button>
-                            <button type="button" id="reorder-btn" onClick={()=>{
-                                setReorder(!reorder);
-                            }}>
-                                <img id="reorder" title="Reorder" src="/icons8-delivery-handcart.svg" width="25px"/>
-                            </button>
-                            <button type="button" id="comment-btn" onClick={()=>{
-                                alert('Add Comment --- currently unavailable.')
-                            }}>
-                                <img id="comment" title="Comment" src="/icons8-chat-message.svg" width="25px"/>
-                            </button>
-                            <button type="button" id="view-added-parts-btn" onClick={showPartInfoModal}>
-                                <img id="view-added-parts" title="View Added Parts" src="/icons8-list-white.svg" width="25px"/>
-                            </button>
-                        </div>
                         <div id="reorder-div">
-                            <div id="reorder-content">
-                                <ReOrder/>
-                            </div>
+                            <ReOrder/>
                         </div>
                         <div className="item-details">
                             <div className='section1'>
