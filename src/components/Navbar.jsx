@@ -25,27 +25,32 @@ export default function AppropiateNav(){
     {
       title: 'Pick',
       code: 1,
-      to: "/pick"
+      to: "/pick",
+      icon: "/pipe.svg"
     },
     {
       title: 'Receive',
       code: 2,
-      to: "/receive"
+      to: "/receive",
+      icon: "trolly.svg"
     },
     {
       title: 'Browse',
       code: 3,
-      to: "/Browse"
+      to: "/Browse",
+      icon: "/shelves.svg"
     },
     {
       title: 'Update',
       code: 4,
-      to: "/update"
+      to: "/update",
+      icon: "/data-update.svg"
     },
     {
-      title: 'Problem?',
+      title: 'Problem',
       code: 5,
-      to: "/problem"
+      to: "/problem",
+      icon: "/question.svg"
     }
   ];
 
@@ -54,11 +59,12 @@ export default function AppropiateNav(){
       const key = `${id}-key`;
       const navLinkKey = `${id}-nav-link-key`
       return(
-          <NavLink to={itm.to} key={navLinkKey}>
+          <NavLink to={itm.to} key={navLinkKey}> 
               {/* mobileView currently has the same attribute names. Uncomment below and replace "<div className='nav-btn' for unique mobile styling.*/}
               {/* <div {...(mobileView ? {className: 'mb-nav-btn'} : {className: 'nav-btn'})}  */} 
               <div className= 'nav-btn'
                 type="button" title={itm.title} key={key} id={id}>
+                <img className='nav-modal-icon' src={itm.icon} width='30px'/>
                 {itm.title}
               </div>
           </NavLink>
@@ -101,11 +107,11 @@ export default function AppropiateNav(){
         {/* mobileView currently has the same attribute names. Uncomment below and replace "<div className="nav-menu">" for unique mobile styling. */}
         {/* <div {...(mobileView? {className: 'mb-nav-menu'}:{className:"nav-menu"})}> */}
         <div className="nav-menu">
-          <button type="button" id="menu-icon-btn" onClick={showNavModal}></button>
+          <button type="button" title="Menu" alt="Menu" id="menu-icon-btn" onClick={showNavModal}></button>
         </div>
         <div className="nav-icon-container">
           <fieldset className='nav-icon-main-fieldset'>
-            <legend><img id="nav-icon-main" src="/icons8-maze-yel.svg" width="50px" /></legend>
+            <legend><img id="nav-icon-main" src="/maze-logo.svg" width="50px" /></legend>
           </fieldset>
         </div>
       </div>

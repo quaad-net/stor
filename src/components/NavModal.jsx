@@ -5,7 +5,10 @@ function NavModal(props){
     const navSelection = props.navMenu.map((selection)=>{ 
         const selectionTitle = selection.props.to.replace('/', '');
         const key = `nav-modal-item-${selectionTitle}`;
-        return(<div key={key} className="nav-modal-item">{selection}</div>);
+        return(
+            <div key={key} className="nav-modal-item">{selection}
+            </div>
+            );
     })
 
     return(

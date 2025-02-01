@@ -63,6 +63,7 @@ function InventoryPick(){
             document.querySelector('form').reset();
             setReorder(false);
             setPartInfo([]);
+            clearInvalids();
         }
     }
 
@@ -139,7 +140,7 @@ function InventoryPick(){
                 <input id='reorder-amt' 
                     type='text' 
                     title="Reorder Qty" 
-                    {...(reorder ? {placeholder: 'ReorderQty' } : {defaultValue:"ReOrd:False", readOnly: true})}    />
+                    {...(reorder ? {placeholder: 'ReOrdQty' } : {defaultValue:"NoReOrd", readOnly: true})}    />
             </>
         )
     }
@@ -166,6 +167,14 @@ function InventoryPick(){
                 input.style.borderColor = 'gold';
                 input.style.backgroundColor = '#242424';
             }
+        })
+    }
+
+    function clearInvalids(){
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach((input)=>{
+            input.style.borderColor = 'gold';
+            input.style.backgroundColor = '#242424';
         })
     }
 
@@ -239,7 +248,7 @@ function InventoryPick(){
                                     id='wo-no' 
                                     type='text' 
                                     title="Workorder No." 
-                                    placeholder="Work-order" 
+                                    placeholder="WorkOrder" 
                                     required/>
                             </div>
                         </div>
@@ -266,7 +275,11 @@ function InventoryPick(){
                         <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
                             document.querySelector('#inventory-pick-clear-btn').blur();
                             const clear = confirm('Clear form?');
-                            if(clear){document.querySelector('form').reset()}
+                            if(clear){
+                                document.querySelector('form').reset();
+                                clearInvalids();
+
+                            }
                             setReorder(false);
                         }}>Clear
                         </button>

@@ -42,9 +42,7 @@ legend{
     transition: border-color 0.5s;
 }
 
-
 input:focus{
-    border-color: white;
     color: white;
 }
 
