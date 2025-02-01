@@ -46,7 +46,7 @@ legend{
 input:focus{
     border-color: white;
     color: white;
-  }
+}
 
 .header__name{
     display: flex;
@@ -80,35 +80,43 @@ input:focus{
     background-color: none;
 }
 
-#scan-reorder-comment button{
-    all: unset;
-}
-
-#scan-reorder-comment{
-    width: 150px;
+#scan-reorder-comment{ /* Entire section */
+    width: 140px;
     margin: auto;
 }
 
-#scan, #reorder, #comment, #view-added-parts{
-    margin: 0 5px;
-    transition: background-color 0.5s, border 0.5s, border-radius 0.5s;
+#scan-btn{
+    background: url("/icons8-qr-code-white.svg") no-repeat center;
 }
 
-#scan:hover, #reorder:hover, #comment:hover, #view-added-parts:hover{
-    background-color: rgb(56, 56, 56);
-    border-radius: 15px;
-    cursor: pointer;
+#reorder-btn{
+    background: url("/icons8-delivery-handcart.svg") no-repeat center;
 }
 
-#scan-btn:focus, #reorder-btn:focus, #comment-btn:focus, #view-added-parts-btn:focus{
-    all: unset;
+#comment-btn{
+    background: url("/icons8-chat-message.svg") no-repeat center;
+}
+
+#view-added-parts-btn{
+    background: url("/icons8-list-white.svg") no-repeat center;
+}
+
+#scan-btn, #reorder-btn, #comment-btn, #view-added-parts-btn{
+    background-size: 25px;
+    padding: 12.5px;
+    border-radius: 5px;
+    margin: 0 5px 0 5px;
+    border: none;
+}
+
+#scan-btn:hover, #reorder-btn:hover, #comment-btn:hover, #view-added-parts-btn:hover{
+    background-color: rgb(20, 20, 20);
 }
 
 .section1 input, .section2 input{
     border-right: 1px solid gray;
     width: 100%;
 }
-
 
 #part-and-description{
     display: flex;
@@ -121,7 +129,6 @@ input:focus{
 #description{
     width: 75%;
 }
-
 
 #part-qtys{
     display: flex;
@@ -152,7 +159,7 @@ input:focus{
 
 .submit-btn, .clear-btn, .add-btn{
     all: unset;
-    min-width: 75px;
+    width: 75px;
     margin-top: 10px;
     margin-left: 10px;
     border-radius: 5px;

@@ -17,7 +17,7 @@ import InventoryPick from "./components/InventoryPick";
 import LogIn from "./components/LogIn";
 import Problem from "./components/Problem";
 import Receive from "./components/Receive";
-import Search from "./components/Search";
+import Browse from "./components/Browse";
 import Update from "./components/Update";
 
 //CSS imports
@@ -56,12 +56,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/search",
+    path: "/browse",
     element: <App />,
     children: [
       {
-        path: "/search",
-        element: <Search />,
+        path: "/browse",
+        element: <Browse />,
       },
     ],
   },

@@ -1,0 +1,88 @@
+@keyframes slide-down{
+    from {top: -100vh}
+    to {top: 0vh}
+}
+
+.modal {
+    position: fixed; 
+    z-index: 1;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 100rem; 
+    max-height: 100%;
+    overflow: auto;
+
+}
+
+#nav-modal{
+    display: none;
+    font-family: "DM Sans", sans-serif;
+    background-color: rgba(25, 25, 25, 0.584);
+    animation-name: slide-down;
+    animation-duration: 0.5s;
+    overflow-x: hidden;
+}
+
+.nav-modal-items{
+    width: 350px;
+    min-height: 350px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 50px;
+    background-color: rgb(90, 77, 0);
+    background-color: rgba(90, 77, 0, 0.899);
+    border: 1px solid transparent;
+    position: relative;
+    transition: opacity 1s;
+}
+
+.nav-modal-close{
+    position: relative;
+    float: right;
+    bottom: 30px;
+    color: white;
+    font-size: 28px;
+    font-weight:bolder;
+}
+
+.nav-modal-close:hover,
+.nav-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-modal-item{ /* Nav title/selection area. */
+    text-align: center;
+    font-weight: bolder;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+    background-color: rgb(68, 58, 0);
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border: 1px solid gray; 
+    margin-top: 10px;
+}
+
+.nav-btn{ /* Nav text. */
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 10px;
+    height: 35px;
+    color: whitesmoke;
+}
+
+.nav-modal-item:nth-of-type(even){
+    background-color: rgb(68, 58, 0);
+}
+
+.nav-modal-item:nth-of-type(odd){
+    background-color: rgb(55, 48, 0);
+}
+
+.nav-modal-item:hover{
+    border: 1px solid white
+}

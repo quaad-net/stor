@@ -54,8 +54,6 @@ function InventoryPick(){
             }
         }
 
-        
-
         document.addEventListener('keydown', removeModal);
   
     }
@@ -69,7 +67,6 @@ function InventoryPick(){
     }
 
     function addPartHist(partCode){
-
         const part = partCode;
         if(part !== ''){
             const fName = document.querySelector('#first-name').value;
@@ -114,12 +111,14 @@ function InventoryPick(){
             document.querySelector('#description').value = '';
             document.querySelector('#quantity').value = '';
             document.querySelector('#unit').value = '';
-            document.querySelector('#warehouse').value = '';
-            document.querySelector('#wo-no').value = '';
             setReorder(false);
+            async => {
+                document.querySelector('#warehouse').value = partInfo[partInfo.length -1].warehouse;
+                document.querySelector('#wo-no').value = partInfo[partInfo.length -1].workorder;
+            }
         }
         console.dir(partInfo);
-
+        
     }
 
     function ReOrder(){
@@ -139,8 +138,8 @@ function InventoryPick(){
             <>
                 <input id='reorder-amt' 
                     type='text' 
-                    title="Reorder Amt" 
-                    {...(reorder ? {placeholder: 'Reorder Amt' } : {defaultValue:"Reorder: False", readOnly: true})}    />
+                    title="Reorder Qty" 
+                    {...(reorder ? {placeholder: 'ReorderQty' } : {defaultValue:"ReOrd:False", readOnly: true})}    />
             </>
         )
     }
@@ -154,6 +153,20 @@ function InventoryPick(){
                 </>
             )
         }
+    } 
+
+    function showInValids(){
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach((input)=>{
+            if(!input.checkValidity()){
+                input.style.borderColor = 'lightcoral'
+                input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)'; 
+            }
+            else{
+                input.style.borderColor = 'gold';
+                input.style.backgroundColor = '#242424';
+            }
+        })
     }
 
     return(
@@ -177,22 +190,24 @@ function InventoryPick(){
                         <legend>Part Info</legend>
                         <div id="scan-reorder-comment">
                             <button type="button" id="scan-btn" onClick={()=>{
-                                alert('Item Scan --- currently unavailable.')
+                                alert('Item Scan --- currently unavailable.');
+                                document.querySelector('#scan-btn').blur();
                             }}>
-                                <img id="scan" title="Scan" src="/icons8-qr-code-white.svg" width="25px"/>
                             </button>
                             <button type="button" id="reorder-btn" onClick={()=>{
                                 setReorder(!reorder);
+                                document.querySelector('#reorder-btn').blur();
                             }}>
-                                <img id="reorder" title="Reorder" src="/icons8-delivery-handcart.svg" width="25px"/>
                             </button>
                             <button type="button" id="comment-btn" onClick={()=>{
-                                alert('Add Comment --- currently unavailable.')
+                                alert('Add Comment --- currently unavailable.');
+                                document.querySelector('#comment-btn').blur();
                             }}>
-                                <img id="comment" title="Comment" src="/icons8-chat-message.svg" width="25px"/>
                             </button>
-                            <button type="button" id="view-added-parts-btn" onClick={showPartInfoModal}>
-                                <img id="view-added-parts" title="View Added Parts" src="/icons8-list-white.svg" width="25px"/>
+                            <button type="button" id="view-added-parts-btn" onClick={()=>{
+                                showPartInfoModal();
+                                document.querySelector('#view-added-parts-btn').blur();
+                                }}>
                             </button>
                         </div>
                         <div id="reorder-div">
@@ -205,50 +220,63 @@ function InventoryPick(){
                                 <div id="reorder-selected">
                                 </div>
                                 <div id="part-and-description">
-                                    <input id='part-code' type='text' title="Part Code" placeholder="Part Code" required />
+                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required />
                                     <input id='description' type='text' title="Description" placeholder="Description" required />
                                 </div>
                                 <div id="part-qtys">
-                                    <input id='quantity' type='text' title="Quantity" placeholder="Qty Used" required />
+                                    <input id='quantity' type='text' title="Quantity" placeholder="QtyUsed" required />
                                     <input id='unit' type='text' title="Unit" placeholder="Unit"required/>
                                     <ReOrderAmt/>
                                 </div>
                             </div>
                             <div className="section2">
-                                <input id='warehouse' type='text' title="Warehouse" placeholder="Warehouse" required/>
-                                <input id='wo-no' type='text' title="Workorder No." placeholder="Workorder No." required/>
+                                <input id='warehouse' 
+                                    type='text' 
+                                    title="Warehouse" 
+                                    placeholder="Warehouse"
+                                    required />
+                                <input 
+                                    id='wo-no' 
+                                    type='text' 
+                                    title="Workorder No." 
+                                    placeholder="Work-order" 
+                                    required/>
                             </div>
                         </div>
                     </fieldset>
                     <div id="part-info"></div>
-                    <button type="submit" id="inventory-pick-add-btn" className="add-btn" onClick={(e)=> {
-                        e.preventDefault();
-                        document.querySelector('#inventory-pick-add-btn').blur();
-                        const part = document.querySelector('#part-code').value;
-                        const form = document.querySelector('form')
-                        if(form.checkValidity()){
-                            addPartHist(part);
-                            alert(`Part ${part} added.`)
-                        }
-                        else{ 
-                            alert('Please fill out all fields.')
-                        }
-                    }}>
-                        Add
-                    </button>
-                    <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
-                        document.querySelector('#inventory-pick-clear-btn').blur();
-                        const clear = confirm('Clear form?');
-                        if(clear){document.querySelector('form').reset()}
-                        setReorder(false);
-                    }}>Clear
-                    </button>
-                    <button type="button" id="inventory-pick-submit-btn" className="submit-btn" onClick={()=>{
-                        document.querySelector('#inventory-pick-submit-btn').blur();
-                        showPartInfoModal()
+                    <div className='form-submit-btns'>
+                        <button type="submit" id="inventory-pick-add-btn" className="add-btn" onClick={(e)=> {
+                            e.preventDefault();
+                            document.querySelector('#inventory-pick-add-btn').blur();
+                            const part = document.querySelector('#part-code').value;
+                            const form = document.querySelector('form')
+                            if(form.checkValidity()){
+                                showInValids();
+                                addPartHist(part);
+                                alert(`Part ${part} added.`)
+                            }
+                            else{ 
+                                showInValids();
+                                alert('Please fill out all fields.')
+                            }
                         }}>
-                        Submit
-                    </button>
+                            Add
+                        </button>
+                        <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
+                            document.querySelector('#inventory-pick-clear-btn').blur();
+                            const clear = confirm('Clear form?');
+                            if(clear){document.querySelector('form').reset()}
+                            setReorder(false);
+                        }}>Clear
+                        </button>
+                        <button type="button" id="inventory-pick-submit-btn" className="submit-btn" onClick={()=>{
+                            document.querySelector('#inventory-pick-submit-btn').blur();
+                            showPartInfoModal()
+                            }}>
+                            Submit
+                        </button>
+                    </div>
                 </form>
                 <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
             </div>

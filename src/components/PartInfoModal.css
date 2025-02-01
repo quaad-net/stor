@@ -4,7 +4,6 @@
 }
 
 .modal {
-    display: block; 
     position: fixed; 
     z-index: 1;
     left: 0;
@@ -58,8 +57,8 @@
 
 .part-info-modal-row:first-of-type{
     margin-top: 5px;
-    border-top: 0;
 }
+
 .part-info-modal-row{
     padding-left: 5px;
     padding-right: 5px;
@@ -126,32 +125,6 @@ legend{
     padding: 0;
 }
 
-#part-info-remove-btn{
-    color: gray;
-    background-color: transparent;
-    margin-top: 10px;
-    padding: 3px;
-    border: 0;
-    border-radius: 2px;
-    border-bottom: 1px solid transparent;
-}
-
-#prev-part-btn, #next-part-btn{
-    display: inline;
-    margin: 0;
-    margin: 20px 5px 0 5px;
-    width: fit-content;
-    height: fit-content;
-    background: none;
-    color: gray;
-    padding: 0;
-    border: 0;
-}
-
-#prev-part-btn:focus, #next-part-btn:focus{
-    background-color: gray;
-}
-
 #submit-parts-btn{
     margin: 0;
     width: fit-content;
@@ -162,7 +135,49 @@ legend{
     border: 0;
     border-radius: 2px;
     border-bottom: 1px solid transparent;
+}
 
+#submit-parts-btn:hover{
+    border-color: transparent;
+    color: var(--main-background-color)
+}
+
+.bullet{
+    margin-right: 2px;
+}
+
+.previous-next-part{
+    display: inline;
+}
+
+#prev-part-btn, #next-part-btn{
+    display: inline;
+    background: none;
+    padding: 2px;
+    border-radius: 2px;
+    color: gray;
+    margin-top: 10px;
+}
+
+#prev-part-btn:hover, #prev-part-btn:focus, #next-part-btn:hover, #next-part-btn:focus{
+    border-color: transparent;
+    color: var(--main-background-color)
+}
+
+#part-info-remove-btn{
+    display: inline;
+    color: gray;
+    background-color: transparent;
+    padding: 3px;
+    border: 0;
+    border-radius: 2px;
+    border-bottom: 1px solid transparent;
+    margin-top: 10px;
+}
+
+#part-info-remove-btn:hover{
+    border-color: transparent;
+    color: var(--main-background-color)
 }
 
 @media(max-width:500px){

@@ -2,25 +2,25 @@
     width: 700px;
 }
 
-.nav-btn{
-    display: inline;
-    font-family: "DM Sans", sans-serif;
-    font-size: medium;
-    color: white;
-    margin-left: 10px;
-    margin-right: 10px;
+#menu-icon-btn{
+    display: flex;
+    background: url("/icons8-round-menu.svg") no-repeat center;
+    background-size: 30px; 
+    padding: 15px;
     margin-bottom: 10px;
-    border-radius: 2px;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-    transition: border-color 1s, color 1s;
+    border-radius: 25px;
     background-color: transparent;
-    padding: 5px;
-
 }
 
-.nav-btn:focus, .nav-btn:hover{
-    color: gray;
+#menu-icon-btn:hover, #menu-icon:focus{
+    background-color: rgba(27, 27, 27, 0.841);
+    border-color: gold;
+    cursor: pointer;
+}
+
+#menu-icon{
+    border: 1px solid transparent;
+    border-radius: 3px;
 }
 
 .nav-icon-container{
@@ -35,29 +35,6 @@
     .nav-bar{
         width: 85vw;
         margin: auto;
-    }
-
-    .mb-nav-btn{
-        all: unset;
-        font-family: "DM Sans", sans-serif;
-        font-size: small;
-        margin: 2px 5px;
-        color: white;
-        border-radius: 2px;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-        padding: 3px;
-        transition: border-color 1s, color 1s;
-    }
-
-    .mb-nav-btn:hover{
-        color: gray;
-    }
-
-    #mobile-nav-icon{
-        position: relative;
-        top: 2px;
-        right: 5px;
     }
 
 }

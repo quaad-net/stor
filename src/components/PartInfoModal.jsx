@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import './PartInfoModal.css'
-import { duration } from '@mui/material';
+import './PartInfoModal.css';
 const apiUlr = import.meta.env.VITE_API_URL; // Sets either production or dev environment API URL.
 
 export default function PartInfoModal(props){
@@ -8,10 +7,10 @@ export default function PartInfoModal(props){
     const [idx, setIdx] = useState(0);
     const [nextPartBtns, setNextPartBtns] = useState("");
     const modal = document.querySelector("#part-info-modal");
-    const modalContent = document.querySelector(".part-info-modal-data")
+    const modalContent = document.querySelector(".part-info-modal-data");
+    const numParts = props.parts.length;
 
-    try{
-        const testModalParts = [...props.parts]; // Throws error if no parts.
+    if(numParts > 0){
         const modalParts = props.parts;
         let currentPart = modalParts[idx];
     
@@ -33,52 +32,26 @@ export default function PartInfoModal(props){
             }
         }
 
-        const fadeOutandIn = [
-            {opacity: 0},
-            {opacity: 1}
-        ]
-
-        const fadeTiming = {
-            duration: 500
-        }
-
-        const slideRight = [
-            {left: "-100vw"},
-            {left: "0vw"}
-        ]
-
-        const slideLeft = [
-            {left: "100vw"},
-            {left: "0vw"}
-        ]
-
-        const slideTiming = {
-            duration: 500
-        }
-
         function NextPartBtns(){
 
-            if(props.parts.length > 1){
+            if(numParts > 1){
             return ( 
                 <>
                     <button type="button" id="prev-part-btn" onClick={()=>{
                                 document.querySelector("#prev-part-btn").blur();
-                                // modalContent.animate(fadeOutandIn, fadeTiming);;
-                                // modalContent.animate(slideLeft, slideTiming);
                                 viewPrevPart();
                             }
                         }>
-                        <img alt='Next Part' src='/icons8-arrow-left.svg' width="25px"/>
+                            <img className="bullet" src="/diamond-bullet.svg" width="10px" />
+                            Prev
                     </button>
-                    
                     <button type="button" id="next-part-btn" onClick={()=>{
                                 document.querySelector("#next-part-btn").blur();
-                                // modalContent.animate(fadeOutandIn, fadeTiming);
-                                // modalContent.animate(slideRight, slideTiming);
                                 viewNextPart();
                             }
                         }>
-                        <img alt='Next Part' src='/icons8-arrow-right.svg' width="25px"/>
+                            <img className="bullet" src="/diamond-bullet.svg" width="10px" />
+                            Next
                     </button>
                 </>
             )
@@ -100,7 +73,7 @@ export default function PartInfoModal(props){
                 <div className="part-info-modal">
                     <div className="part-info-modal-data">
                         <span className="part-info-modal-close">&times;</span>
-                        <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {props.parts.length})</div>
+                        <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {numParts})</div>
                         <span className="part-info-modal-rows">
                             <div className="part-info-modal-row" id="part-modal-description">Description: {currentPart.description}</div>
                             <div className="part-info-modal-row" id="part-modal-qty">Qty: {currentPart.qty}</div>
@@ -114,7 +87,8 @@ export default function PartInfoModal(props){
                                         document.querySelector('#submit-parts-btn').blur();
                                         handleSubmit();
                                     }
-                                    }>Submit Part(s)
+                                    }>
+                                        Submit Part{numParts > 1 ? 's' : ''}
                                     </button>
                                 </legend>
                         </fieldset>    
@@ -129,38 +103,37 @@ export default function PartInfoModal(props){
                                     props.removePart(currentPart.id);
                                     setIdx(0);
                                 }}
-                                >Remove Part
+                                >
+                                    <img className="bullet" src="/diamond-bullet.svg" width="10px" />
+                                    Remove
                         </button>
                     </div>
                 </div>
             </div>
         )
-
     }
-    catch(e){
-        if(e instanceof TypeError){ //  Indicates [...props.parts] was not iterable. Therefore no parts were passed.
-            return(
-                <div className="modal" id="part-info-modal">
-                    <div className="part-info-modal">
-                        <div className="part-info-modal-data">
-                            <span className="part-info-modal-close">&times;</span>
-                            <div className="part-info-modal-header">Part Code</div>
-                            <span className="part-info-modal-rows">
-                                <div className="part-info-modal-row"></div>
-                                <div className="part-info-modal-row" id="part-modal-description">Description: </div>
-                                <div className="part-info-modal-row" id="part-modal-qty">Qty: </div>
-                                <div className="part-info-modal-row" id="part-modal-unit">Unit: </div>
-                                <div className="part-info-modal-row" id="part-modal-warehouse">Warehouse: </div>
-                                <div className="part-info-modal-row" id="part-modal-workorder">Workorder: </div>
-                            </span>
-                            <fieldset className="part-info-remove-fieldset">
-                                    <legend id="no-parts-added">No Parts Added</legend>
-                            </fieldset>
-                        </div>
+    else{
+        return(
+            <div className="modal" id="part-info-modal">
+                <div className="part-info-modal">
+                    <div className="part-info-modal-data">
+                        <span className="part-info-modal-close">&times;</span>
+                        <div className="part-info-modal-header">Part Code</div>
+                        <span className="part-info-modal-rows">
+                            <div className="part-info-modal-row"></div>
+                            <div className="part-info-modal-row" id="part-modal-description">Description: </div>
+                            <div className="part-info-modal-row" id="part-modal-qty">Qty: </div>
+                            <div className="part-info-modal-row" id="part-modal-unit">Unit: </div>
+                            <div className="part-info-modal-row" id="part-modal-warehouse">Warehouse: </div>
+                            <div className="part-info-modal-row" id="part-modal-workorder">Workorder: </div>
+                        </span>
+                        <fieldset className="part-info-remove-fieldset">
+                                <legend id="no-parts-added">No Parts Added</legend>
+                        </fieldset>
                     </div>
                 </div>
-            )
-        }
+            </div>
+        )
 
     }
 }
