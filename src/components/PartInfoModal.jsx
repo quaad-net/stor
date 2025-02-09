@@ -61,11 +61,22 @@ export default function PartInfoModal(props){
         }
 
         async function handleSubmit(){
-            const req = await fetch(`${apiUlr}/pick`, {method: 'POST'});
-            const res = await req.text();
-            alert(res);
-            modal.style.display = "none";
-            props.modalSubmit(res);
+            try{
+                const req = await fetch(`${apiUlr}/pick`, {
+                    method: "POST",
+                    body: JSON.stringify(props.parts),
+                    headers: {"Content-Type": "application/json" }
+                })
+                console.log(req.body);
+                console.log(req);
+                if(req.status == 200){
+                    alert('Submit successful.');
+                }else{ throw new Error('Could not submit data.')}
+            }
+            catch (err){
+                console.error(err);
+                alert("Something went Wrong!")
+            }
         }
 
         return(
@@ -85,7 +96,9 @@ export default function PartInfoModal(props){
                                 <legend>
                                     <button id="submit-parts-btn" onClick={()=>{
                                         document.querySelector('#submit-parts-btn').blur();
-                                        handleSubmit();
+                                        handleSubmit()
+                                        .then((res)=>{props.modalSubmit()})
+                                        .catch((err)=>{console.error(err)})
                                     }
                                     }>
                                         Submit Part{numParts > 1 ? 's' : ''}

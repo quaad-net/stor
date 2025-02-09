@@ -50,7 +50,7 @@ function InventoryPick(){
        
         function removeModal(e){
             if(e.key === 'Escape'){
-                modal.style.display="none";
+                modal.style.display= "none";
             }
         }
 
@@ -58,13 +58,12 @@ function InventoryPick(){
   
     }
 
-    function modalSubmit(result){
-        if(result == 'Submitted successfully.'){
-            document.querySelector('form').reset();
-            setReorder(false);
-            setPartInfo([]);
-            clearInvalids();
-        }
+    function modalSubmit(){
+        document.querySelector('#part-info-modal').style.display = "none";
+        document.querySelector('form').reset();
+        setReorder(false);
+        setPartInfo([]);
+        clearInvalids();
     }
 
     function addPartHist(partCode){
@@ -80,12 +79,7 @@ function InventoryPick(){
             const woNo = document.querySelector('#wo-no').value;
             const key = partInfo.length;
             const id = `added-part-${key}`;
-            let reorderAmt;
-            if(reorder){
-                reorderAmt = document.querySelector("#reorder-amt").value;
-            }
-            else{reorderAmt=""}  
-
+            const reorderAmt = document.querySelector("#reorder-amt").value;
             const partInfoArr = [
                 ...partInfo, 
                 {
@@ -117,9 +111,7 @@ function InventoryPick(){
                 document.querySelector('#warehouse').value = partInfo[partInfo.length -1].warehouse;
                 document.querySelector('#wo-no').value = partInfo[partInfo.length -1].workorder;
             }
-        }
-        console.dir(partInfo);
-        
+        } 
     }
 
     function ReOrder(){
