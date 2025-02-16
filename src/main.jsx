@@ -15,7 +15,7 @@ import Problem from "./components/Problem";
 import Receive from "./components/Receive";
 import Browse from "./components/Browse";
 import Update from "./components/Update";
-import Login from "./components/Login";
+import Lgn from "./components/Lgn";
 import Register from "./components/Register";
 import User from "./components/User";
 
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Login />,
+        element: <Lgn />,
       },
     ],
   },
@@ -83,12 +83,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
+    path: "/lgn",
     element: <App />,
     children: [
       {
-        path: "/login",
-        element: <Login />,
+        path: "/lgn",
+        element: <Lgn />,
       },
     ],
   },

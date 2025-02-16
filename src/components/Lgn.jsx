@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import "./Login.css";
+import "./Lgn.css";
 import useToken from "../../app/useToken";
 import auth from "../../app/auth";
 import { useNavigate } from "react-router-dom";
 const apiUlr = import.meta.env.VITE_API_URL; 
 
-export default function Login(){
+export default function Lgn(){
 
     const [pendingAuth, setPendingAuth] = useState(true);
     const {token, setToken} = useToken();
