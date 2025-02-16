@@ -138,7 +138,7 @@ input:focus{
 }
 
 input[type="checkbox"]:checked {
-    background: url("./checkmark.svg") no-repeat left;
+    background: url("/checkmark.svg") no-repeat left;
     background-size: 10px;
     border: 0;
 }
