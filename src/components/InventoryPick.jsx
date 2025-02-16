@@ -152,11 +152,15 @@ function InventoryPick(){
         const inputs = document.querySelectorAll('input');
         inputs.forEach((input)=>{
             if(!input.checkValidity()){
-                input.style.borderColor = 'lightcoral'
-                input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)'; 
+                input.style.borderColor = 'lightcoral';
+                input.style.borderRightColor = 'grey';
+                input.style.borderLeftColor = 'grey';
+                input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)';
             }
             else{
                 input.style.borderColor = 'gold';
+                input.style.borderRightColor = 'grey';
+                input.style.borderLeftColor = 'grey';
                 input.style.backgroundColor = '#242424';
             }
         })
@@ -166,6 +170,8 @@ function InventoryPick(){
         const inputs = document.querySelectorAll('input');
         inputs.forEach((input)=>{
             input.style.borderColor = 'gold';
+            input.style.borderRightColor = 'grey';
+            input.style.borderLeftColor = 'grey';
             input.style.backgroundColor = '#242424';
         })
     }

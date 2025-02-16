@@ -7,22 +7,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-// Backend component imports.
-import Record from "./components/Record";
-import RecordList from "./components/RecordList";
 
-// Frontend component imports.
+// Component imports.
 import App from "./App";
 import InventoryPick from "./components/InventoryPick";
-import LogIn from "./components/LogIn";
 import Problem from "./components/Problem";
 import Receive from "./components/Receive";
 import Browse from "./components/Browse";
 import Update from "./components/Update";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import User from "./components/User";
 
-//CSS imports
 import "./index.css";
-
 
 const router = createBrowserRouter([
   {
@@ -31,7 +28,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LogIn />,
+        element: <Login />,
       },
     ],
   },
@@ -85,6 +82,36 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/login",
+    element: <App />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "/register",
+    element: <App />,
+    children: [
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
+  },
+  {
+  path: "/user",
+  element: <App />,
+  children: [
+    {
+      path: "/user",
+      element: <User />,
+    },
+  ],
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

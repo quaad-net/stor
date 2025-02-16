@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useToken from "../../app/useToken";
 import './PartInfoModal.css';
-const apiUlr = import.meta.env.VITE_API_URL; // Sets either production or dev environment API URL.
+const apiUrl = import.meta.env.VITE_API_URL; // Gets either production or dev environment API URL.
 
 export default function PartInfoModal(props){
 
@@ -9,6 +11,8 @@ export default function PartInfoModal(props){
     const modal = document.querySelector("#part-info-modal");
     const modalContent = document.querySelector(".part-info-modal-data");
     const numParts = props.parts.length;
+    const { token } = useToken();
+
 
     if(numParts > 0){
         const modalParts = props.parts;
@@ -61,22 +65,22 @@ export default function PartInfoModal(props){
         }
 
         async function handleSubmit(){
-            try{
-                const req = await fetch(`${apiUlr}/pick`, {
-                    method: "POST",
-                    body: JSON.stringify(props.parts),
-                    headers: {"Content-Type": "application/json" }
-                })
-                console.log(req.body);
-                console.log(req);
-                if(req.status == 200){
-                    alert('Submit successful.');
-                }else{ throw new Error('Could not submit data.')}
-            }
-            catch (err){
-                console.error(err);
-                alert("Something went Wrong!")
-            }
+            const req = await fetch(`${apiUrl}/pick`, {
+                method: "POST",
+                body: JSON.stringify(props.parts),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((res)=>{
+                if(res.status == 200){
+                    props.modalSubmit();
+                }
+                return res.json();
+                }
+            ) 
+            .then((res)=>{alert(res.message)}) 
         }
 
         return(
@@ -97,8 +101,7 @@ export default function PartInfoModal(props){
                                     <button id="submit-parts-btn" onClick={()=>{
                                         document.querySelector('#submit-parts-btn').blur();
                                         handleSubmit()
-                                        .then((res)=>{props.modalSubmit()})
-                                        .catch((err)=>{console.error(err)})
+                                        .catch((err)=>{console.error("Request Failed. Check authorization!")});
                                     }
                                     }>
                                         Submit Part{numParts > 1 ? 's' : ''}

@@ -23,7 +23,7 @@ function StorDataGrid(props) {
   // sx={{ '--DataGrid-overlayHeight': '300px' }}
   // rows={[]}
 
-  // When using test data, replace "props.rows" with prop.noRows" in noRows def below to view table
+  // When using test data, replace "props.rows" with props.noRows" in noRows def below to view table
   // retured with no records (const noRows = props.noRows.length < 1).
   const noRows = props.noRows.length < 1;
   return (

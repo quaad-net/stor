@@ -1,0 +1,75 @@
+.login-fieldset{
+    border: 1px solid gray;
+    border-radius: 2px;
+    text-align: left;
+}
+
+legend{
+    color: whitesmoke;
+}
+
+input{
+    all: unset;
+    box-sizing: border-box;
+    height: 50px;
+    color: grey;
+    font-size: large;
+    text-align: left;
+    padding-left: 10px;
+    margin: 1px;
+    border-bottom: 1px solid gold;
+    background-color: none;
+    border-radius: 2px;
+    transition: border-color 0.5s;
+}
+
+input:focus{
+    color: white;
+}
+
+.user-pass{
+    display: inline;
+}
+
+#user{
+    width: 50%;
+    border-right: 1px solid gray;
+}
+
+#password{
+    width: 49%;
+}
+
+.submit-btn, .clear-btn{
+    all: unset;
+    width: 75px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-family: "DM Sans", sans-serif;
+    font-size: small;
+    background-color: transparent;
+    border-radius: 7px;
+    border-bottom-left-radius: 0;
+    padding: 5px;
+    color: var(--form-btn-text-color);
+    transition: border-color 1s, color 1s;
+}
+
+.submit-btn:focus, .submit-btn:hover,
+.add-btn:focus, .add-btn:hover{   
+    cursor: pointer;
+    border-color: gold;
+}
+
+@media(max-width: 750px) {
+    #user{
+        width: 100%;
+    }
+    
+    #password{
+        width: 100%;
+        border-right: 1px solid gray;
+    }
+}

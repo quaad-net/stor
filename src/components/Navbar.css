@@ -30,6 +30,15 @@
     margin-bottom: 0;
 }
 
+.nav-icon-main-fieldset{
+    border: 0;
+    border-top: 1px solid gray;
+}
+
+#nav-icon-main{
+    margin-top: 10px;
+}
+
 
 @media (max-width: 750px){
     .nav-bar{
