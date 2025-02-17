@@ -37,19 +37,19 @@ export default function User(){
             <legend>Logged-in As</legend>
             <div>
                 <div id="auth-user">
-                    <span>User: </span>{userData.lastName}, {userData.firstName}
+                    <span>User: </span>{userData?.firstName} {userData?.lastName}
                 </div>
                 <div id="auth-institution">
-                    <span>Institution: </span>{userData.institution}
+                    <span>Institution: </span>{userData?.institution}
                 </div>
                 <div id="auth-employee-id">
-                    <span>employeeID: </span>{userData.employeeID}
+                    <span>employeeID: </span>{userData?.employeeID}
                 </div>
                 <div id="auth-email">
-                    <span>email: </span>{userData.email}
+                    <span>email: </span>{userData?.email}
                 </div>
                 <div id="auth-created">
-                    <span>createdAt: </span>{userData.createdAt}
+                    <span>createdAt: </span>{userData?.createdAt}
                 </div>
             </div>
         </fieldset>

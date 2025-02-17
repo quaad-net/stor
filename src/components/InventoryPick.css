@@ -59,9 +59,18 @@ input:focus{
     background-color: none;
 }
 
-#scan-reorder-comment{ /* Entire section */
-    width: 140px;
+#icon-boxes{
+    width: fit-content;
     margin: auto;
+    background-color: rgba(91, 77, 0, 0.207);
+    border-radius: 5px;
+    padding-bottom: 5px;
+}
+
+#scan-reorder-comment{ /* Entire section */
+    display: inline;
+    border: 1px solid transparent;
+    border-radius: 3px;
 }
 
 #scan-btn{

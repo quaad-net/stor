@@ -195,27 +195,29 @@ function InventoryPick(){
                     </fieldset>
                     <fieldset className="ip-fieldset" id="ip-fieldset-2">
                         <legend>Part Info</legend>
-                        <div id="scan-reorder-comment">
-                            <button type="button" id="scan-btn" onClick={()=>{
-                                alert('Item Scan --- currently unavailable.');
-                                document.querySelector('#scan-btn').blur();
-                            }}>
-                            </button>
-                            <button type="button" id="reorder-btn" onClick={()=>{
-                                setReorder(!reorder);
-                                document.querySelector('#reorder-btn').blur();
-                            }}>
-                            </button>
-                            <button type="button" id="comment-btn" onClick={()=>{
-                                alert('Add Comment --- currently unavailable.');
-                                document.querySelector('#comment-btn').blur();
-                            }}>
-                            </button>
-                            <button type="button" id="view-added-parts-btn" onClick={()=>{
-                                showPartInfoModal();
-                                document.querySelector('#view-added-parts-btn').blur();
+                        <div id="icon-boxes">
+                            <div id="scan-reorder-comment">
+                                <button type="button" id="scan-btn" onClick={()=>{
+                                    alert('Item Scan --- currently unavailable.');
+                                    document.querySelector('#scan-btn').blur();
                                 }}>
-                            </button>
+                                </button>
+                                <button type="button" id="reorder-btn" onClick={()=>{
+                                    setReorder(!reorder);
+                                    document.querySelector('#reorder-btn').blur();
+                                }}>
+                                </button>
+                                <button type="button" id="comment-btn" onClick={()=>{
+                                    alert('Add Comment --- currently unavailable.');
+                                    document.querySelector('#comment-btn').blur();
+                                }}>
+                                </button>
+                                <button type="button" id="view-added-parts-btn" onClick={()=>{
+                                    showPartInfoModal();
+                                    document.querySelector('#view-added-parts-btn').blur();
+                                    }}>
+                                </button>
+                            </div>
                         </div>
                         <div id="reorder-div">
                             <div id="reorder-content">
