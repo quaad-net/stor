@@ -16,16 +16,14 @@ export default function ShowInstitution(props){
 
     useEffect(()=>{
       auth().then((res)=>{
-          if(res.authorized){
-              setInstitution(institution); //session storage           
+          if(res.authorized){  
               setUserInstitution(institution); // component state
           }
           else{
-              setInstitution(""); // session storage
               setUserInstitution(""); //  component state
           }
       })
-    },[])
+    })
 
     function logout(){
       setToken({});
