@@ -20,7 +20,7 @@ export default function ShowInstitution(props){
       navigate("/lgn")
     }
 
-    if(props?.skipAuth !== true){
+    // if(props?.skipAuth !== true){
       auth().then((res)=>{
           if(res.authorized){
               // userInstitution (component state) should match institution (session storage)
@@ -30,7 +30,7 @@ export default function ShowInstitution(props){
               setUserInstitution("") //  component state
           }
       })
-    }
+    // }
 
     if(userInstitution == ''){
       return(<>@<span>VISTOR</span>stor</>)
