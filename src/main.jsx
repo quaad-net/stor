@@ -1,5 +1,4 @@
-
-// React imports.
+// React and related imports.
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
@@ -7,17 +6,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-
-// Component imports.
+// App component imports.
 import App from "./App";
 import InventoryPick from "./components/InventoryPick";
 import Problem from "./components/Problem";
 import Receive from "./components/Receive";
 import Browse from "./components/Browse";
-import Update from "./components/Update";
 import Lgn from "./components/Lgn";
-import Register from "./components/Register";
 import User from "./components/User";
+import Labels from "./components/Labels";
+import ErrorPage from "./components/ErrorPage";
 
 import "./index.css";
 
@@ -63,16 +61,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/update",
-    element: <App />,
-    children: [
-      {
-        path: "/update",
-        element: <Update />,
-      },
-    ],
-  },
-  {
     path: "/problem",
     element: <App />,
     children: [
@@ -93,16 +81,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/register",
-    element: <App />,
-    children: [
-      {
-        path: "/register",
-        element: <Register />,
-      },
-    ],
-  },
-  {
   path: "/user",
   element: <App />,
   children: [
@@ -111,11 +89,31 @@ const router = createBrowserRouter([
       element: <User />,
     },
   ],
-  }
+  },
+  {
+    path: "/label",
+    element: <App />,
+    children: [
+      {
+        path: "/label",
+        element: <Labels />,
+      },
+    ],
+    },
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        {
+          path: "*",
+          element: <ErrorPage />,
+        },
+      ],
+      }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+        <RouterProvider router={router}/>
   </React.StrictMode>
 );

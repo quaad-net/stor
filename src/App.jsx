@@ -5,8 +5,6 @@ import "./App.css"
 
 const App = () => {
 
-  const myTestData = "hello there, how's your day?"
-
   return (
     <>
       <AppropiateNav />

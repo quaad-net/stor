@@ -6,7 +6,7 @@ import NavModal from "./NavModal";
 export default function AppropiateNav(){
 
     const [mobileView, setMobileView]= useState(false);
-    
+
     useEffect(()=>{
       const atMedia = window.matchMedia("(max-width: 750px)");
       setMobileView(atMedia.matches);
@@ -23,34 +23,40 @@ export default function AppropiateNav(){
 
   const navBarItems = [
     {
-      title: 'Pick',
+      title: 'Login',
       code: 1,
+      to: "/lgn",
+      icon: "/login.svg"
+    },
+    {
+      title: 'Pick',
+      code: 2,
       to: "/pick",
-      icon: "/pipe.svg"
+      icon: "/pick.svg"
     },
     {
       title: 'Receive',
-      code: 2,
+      code: 3,
       to: "/receive",
-      icon: "trolly.svg"
+      icon: "receive.svg"
     },
     {
       title: 'Browse',
-      code: 3,
+      code: 4,
       to: "/Browse",
-      icon: "/shelves.svg"
+      icon: "/browse.svg"
     },
     {
-      title: 'Update',
-      code: 4,
-      to: "/update",
-      icon: "/data-update.svg"
+      title: 'Label',
+      code: 5,
+      to: "/label",
+      icon: "/stacked-labels.svg"
     },
     {
       title: 'Problem',
-      code: 5,
+      code: 6,
       to: "/problem",
-      icon: "/question.svg"
+      icon: "/problem.svg"
     }
   ];
 
@@ -107,7 +113,16 @@ export default function AppropiateNav(){
         {/* mobileView currently has the same attribute names. Uncomment below and replace "<div className="nav-menu">" for unique mobile styling. */}
         {/* <div {...(mobileView? {className: 'mb-nav-menu'}:{className:"nav-menu"})}> */}
         <div className="nav-menu">
-          <button type="button" title="Menu" alt="Menu" id="menu-icon-btn" onClick={showNavModal}></button>
+          <button 
+            type="button" 
+            title="Menu" 
+            alt="Menu" 
+            id="menu-icon-btn" 
+            onClick={()=>{
+              document.querySelector('#menu-icon-btn').blur()
+              showNavModal()
+              }}>
+          </button>
         </div>
         <div className="nav-icon-container">
           <fieldset className='nav-icon-main-fieldset'>

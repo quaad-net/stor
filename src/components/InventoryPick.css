@@ -74,19 +74,19 @@ input:focus{
 }
 
 #scan-btn{
-    background: url("/icons8-qr-code-white.svg") no-repeat center;
+    background: url("/qr-code-white.svg") no-repeat center;
 }
 
 #reorder-btn{
-    background: url("/icons8-delivery-handcart.svg") no-repeat center;
+    background: url("/delivery-handcart.svg") no-repeat center;
 }
 
 #comment-btn{
-    background: url("/icons8-chat-message.svg") no-repeat center;
+    background: url("/chat-message.svg") no-repeat center;
 }
 
 #view-added-parts-btn{
-    background: url("/icons8-list-white.svg") no-repeat center;
+    background: url("/list-white.svg") no-repeat center;
 }
 
 #scan-btn, #reorder-btn, #comment-btn, #view-added-parts-btn{
@@ -152,10 +152,9 @@ input[type="checkbox"]:checked {
     border: 0;
 }
 
-.submit-btn, .clear-btn, .add-btn{
-    all: unset;
+#inventory-pick-add-btn, #inventory-pick-clear-btn, #inventory-pick-submit-btn{
     width: 75px;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: 10px;
     border-radius: 5px;
     border: 1px solid transparent;
@@ -166,13 +165,20 @@ input[type="checkbox"]:checked {
     border-bottom-left-radius: 0;
     padding: 5px;
     color: var(--form-btn-text-color);
-    transition: border-color 1s, color 1s;
+    transition: color 0.5s;
 }
 
-.submit-btn:focus, .submit-btn:hover, .clear-btn:focus, .clear-btn:hover,
-.add-btn:focus, .add-btn:hover{   
+#inventory-pick-add-btn:hover, 
+#inventory-pick-clear-btn:hover,
+ #inventory-pick-submit-btn:hover{   
     cursor: pointer;
-    border-color: gold;
+    color: gold
+}
+
+#inventory-pick-add-btn:focus,
+#inventory-pick-clear-btn:focus,
+#inventory-pick-submit-btn:focus{   
+    color: gold;
 }
 
 @media(max-width: 750px) {

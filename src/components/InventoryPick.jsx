@@ -1,6 +1,7 @@
 import './InventoryPick.css';
 import { useState, useEffect, useRef } from 'react';
 import PartInfoModal from './PartInfoModal';
+import ShowInstitution from './Institution';
 
 function InventoryPick(){
 
@@ -201,22 +202,22 @@ function InventoryPick(){
                                     alert('Item Scan --- currently unavailable.');
                                     document.querySelector('#scan-btn').blur();
                                 }}>
-                                </button>
+                                </button> ..
                                 <button type="button" id="reorder-btn" onClick={()=>{
                                     setReorder(!reorder);
                                     document.querySelector('#reorder-btn').blur();
                                 }}>
-                                </button>
+                                </button> ..
                                 <button type="button" id="comment-btn" onClick={()=>{
                                     alert('Add Comment --- currently unavailable.');
                                     document.querySelector('#comment-btn').blur();
                                 }}>
-                                </button>
+                                </button> ..
                                 <button type="button" id="view-added-parts-btn" onClick={()=>{
                                     showPartInfoModal();
                                     document.querySelector('#view-added-parts-btn').blur();
                                     }}>
-                                </button>
+                                </button> 
                             </div>
                         </div>
                         <div id="reorder-div">
@@ -291,6 +292,7 @@ function InventoryPick(){
                         </button>
                     </div>
                 </form>
+                <div id="institution-domain"><ShowInstitution/></div>
                 <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
             </div>
         </>

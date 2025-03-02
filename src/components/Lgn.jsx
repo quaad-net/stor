@@ -3,18 +3,21 @@ import "./Lgn.css";
 import useToken from "../../app/useToken";
 import auth from "../../app/auth";
 import { useNavigate } from "react-router-dom";
-const apiUlr = import.meta.env.VITE_API_URL; 
+const apiUrl = import.meta.env.VITE_API_URL; 
+import useInstitution from "../../app/useInstitution";
 
 export default function Lgn(){
 
     const [pendingAuth, setPendingAuth] = useState(true);
     const {token, setToken} = useToken();
+    const {institution, setInstitution} = useInstitution();
+    
     const navigate = useNavigate();
 
     function UserLogin(){
         function loginRequest(){
             const email = document.querySelector('#user').value;
-            const req = fetch(`${apiUlr}/login`, 
+            const req = fetch(`${apiUrl}/login`, 
                 {
                     method: "POST",
                     headers: {
@@ -28,15 +31,23 @@ export default function Lgn(){
             ).then((res)=>{return res.json()}
             ).then((data)=>{
 
-                setToken(data.token)
-                navigate("/user",{ 
-                    state: {
-                        authorized: true,
-                        email: data.email
-                    }
-                })
+                if(data?.token !== undefined){
+
+                    setToken(data.token)
+                    setInstitution(data.institution)
+                    navigate("/user",{ 
+                        state: {
+                            authorized: true,
+                            email: data.email,
+                            skipAuth: true
+                        }
+                    })
+                }
+                else{
+                    throw new Error()
+                }
             }).catch((err)=>{
-                alert('Could not log-in!')
+                alert('Unsuccessful login attempt!')
             })
         }
     

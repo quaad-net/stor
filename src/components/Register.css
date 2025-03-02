@@ -32,15 +32,19 @@ input:focus{
 }
 
 #email{
-    width: 50%;
+    width: 49.5%;
     border-right: 1px solid gray;
 }
 
 #password{
-    width: 49%;
+    width: 49.5%;
 }
 
 #employeeId{
+    width: 99%;
+}
+
+#institution{
     width: 99%;
 }
 
@@ -68,12 +72,9 @@ input:focus{
 }
 
 @media(max-width: 750px) {
-    #user{
-        width: 100%;
-    }
-    
-    #password{
+    #email, #password, #employeeId, #institution{
         width: 100%;
         border-right: 1px solid gray;
     }
+    
 }

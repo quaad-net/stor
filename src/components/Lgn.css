@@ -32,15 +32,17 @@ input:focus{
 }
 
 #user{
-    width: 50%;
+    display: inline;
+    width: 49.5%;
     border-right: 1px solid gray;
 }
 
 #password{
-    width: 49%;
+    display: inline;
+    width: 49.5%;
 }
 
-.submit-btn, .clear-btn{
+#login-submit-btn, #login-clear-btn{
     all: unset;
     width: 75px;
     margin-top: 10px;
@@ -54,13 +56,18 @@ input:focus{
     border-bottom-left-radius: 0;
     padding: 5px;
     color: var(--form-btn-text-color);
-    transition: border-color 1s, color 1s;
+    transition: color 0.5s;
 }
 
-.submit-btn:focus, .submit-btn:hover,
-.add-btn:focus, .add-btn:hover{   
+#login-submit-btn:focus,
+#login-clear-btn:focus{   
+    color: gold;
+}
+
+#login-submit-btn:hover,
+#login-clear-btn:hover{   
     cursor: pointer;
-    border-color: gold;
+    color: gold;
 }
 
 @media(max-width: 750px) {

@@ -1,7 +1,14 @@
-import "./Register.css"
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import useToken from "../../app/useToken";
+import "./Register.css";
+const apiUrl = import.meta.env.VITE_API_URL; 
 
 export default function Register(){
 
+    const [regDeclined, setRegDeclined] = useState(false);
+    const {token, setToken} = useToken();
+    const navigate = useNavigate();
 
     function clearInvalids(){
         const inputs = document.querySelectorAll('input');
@@ -31,6 +38,66 @@ export default function Register(){
         })
     }
 
+    // Check if user already exists.
+    async function currentuser(){
+
+        const email =  document.querySelector('#email').value;
+        const employeeID = document.querySelector('#employeeId').value
+
+        const req = await fetch(`${apiUrl}/currentuser`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                email: email,
+                employeeID: employeeID
+            })
+        })
+        .then((res)=>{
+            if(res.status == 403){
+                alert('This user already exists!')
+            }
+            else{
+                registerRequest()
+            }
+        })
+        
+    }
+
+    function registerRequest(){
+
+        const email =  document.querySelector('#email').value;
+        const institution = document.querySelector('#institution').value
+        const password = document.querySelector('#password').value;
+        const employeeID = document.querySelector('#employeeId').value
+
+        const req = fetch(`${apiUrl}/register`, 
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    password: password,
+                    email: email,
+                    institution: institution,
+                    employeeID: employeeID
+                })
+            }
+        ).then((res)=>{return res.json()}
+        ).then((data)=>{
+            alert('New user created!');
+            setToken(data.token);
+            document.querySelector('form').reset();
+            navigate("/user",{ 
+                state: {
+                    authorized: true,
+                    email: data.email
+                }
+            })
+        }).catch(()=>{
+        })
+    }
+
     return(
         <div>
             <>--- Register ---</>
@@ -46,6 +113,9 @@ export default function Register(){
                         <div>
                             <input id="employeeId" type='text' title="Employee ID" placeholder="Employee ID" required/> 
                         </div>
+                        <div>
+                            <input id="institution" type='text' title="Institution" placeholder="Institution" required/> 
+                        </div>
                     </div>
                 </fieldset>
                 <br/>
@@ -59,7 +129,7 @@ export default function Register(){
                     }
                     else{
                         clearInvalids();
-                        document.querySelector('form').reset();
+                        currentuser();
                     }
                     }}>
                     Submit

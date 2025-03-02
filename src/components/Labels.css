@@ -1,0 +1,156 @@
+#label-search-box{
+    background: url("/search.svg") no-repeat left;
+    background-size: 25px;
+    padding-left: 30px;
+    padding-right: 25px;
+    text-align: center;
+    border: 0;
+    border-bottom: 2px solid gold;
+    width: 268pt; 
+    margin: auto;
+    margin-bottom: 5px;
+    transition: border-color 1s;
+}
+
+#label-search-box:hover, #label-search-box:focus{
+    border-color: white;
+    background-size: 27px;
+}
+
+#label-query-type{
+    color: gray;
+    width: fit-content;
+    font-size: medium;
+}
+
+#label-roll{
+    height: 350px; 
+    width: 350pt;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border: 1px solid gray;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.label-table{
+    table-layout: fixed;
+    width: 268pt;
+}
+
+.label-xl6322727{
+	padding-left:1px; 
+	color:black;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Aptos Narrow", sans-serif;
+}
+
+td{
+    height: 72pt;
+    width: 100%;
+    margin-bottom: 28.9pt;
+}
+
+.label-null{
+    height: 28.9pt;
+    border: none;
+}
+
+.label-labeldata{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid gray;
+    min-height: 72pt;
+    max-height: 72pt;
+    width: 100%;
+    padding: 3px;
+}
+
+.label-labeldata:hover{
+    border-color: white;
+}
+
+.label-qr-image{
+    margin-right: 5px;
+}
+
+
+.label-part-details{
+    text-align: left;
+}
+
+#label-part-code{
+    width: 100%;
+}
+
+#label-description{
+    width: 100%;
+}
+
+#label-bin-location, #label-min-max{
+    display: inline;
+}
+
+#label-min-max{
+    text-align: right;
+}
+
+#label-returned-results{
+    color: gray;
+}
+
+.first-label, .last-label{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+#label-mid{
+    text-align: center;
+    border-bottom: 1px solid gray;
+    padding-top: 35px;
+}
+
+#label-mid:hover{
+    border-bottom-color: white;
+}
+
+li{
+    text-align: left;
+}
+
+.example{
+    color: gold;
+}
+
+.label-summary{
+    color: gray;
+}
+
+.label-summary span{
+    color: white;
+}
+
+@media(max-width: 750px){
+    .label-table, #label-search-box{
+        width: 95%;
+    }
+
+    #label-roll{
+        width: 100%
+    }
+
+    .label-labeldata{
+        width: 97% 
+    }
+}
+

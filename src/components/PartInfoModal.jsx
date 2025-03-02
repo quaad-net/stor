@@ -134,7 +134,7 @@ export default function PartInfoModal(props){
                 <div className="part-info-modal">
                     <div className="part-info-modal-data">
                         <span className="part-info-modal-close">&times;</span>
-                        <div className="part-info-modal-header">Part Code</div>
+                        <div className="part-info-modal-header">00-00000</div>
                         <span className="part-info-modal-rows">
                             <div className="part-info-modal-row"></div>
                             <div className="part-info-modal-row" id="part-modal-description">Description: </div>
