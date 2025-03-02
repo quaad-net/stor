@@ -12,17 +12,15 @@ export default function ShowInstitution(props){
     
     // Shows user institution if user is not logged-in.
     const {institution, setInstitution} = useInstitution(); // session storage
-    const [userInstitution, setUserInstitution] = useState(institution); //  component state
+    const [userInstitution, setUserInstitution] = useState(""); //  component state
 
-    useEffect(()=>{
-      auth().then((res)=>{
-          if(res.authorized){  
-              setUserInstitution(institution); // component state
-          }
-          else{
-              setUserInstitution(""); //  component state
-          }
-      })
+    auth().then((res)=>{
+        if(res.authorized){  
+            setUserInstitution(institution); // component state
+        }
+        else{
+            setUserInstitution(""); //  component state
+        }
     })
 
     function logout(){
@@ -31,14 +29,13 @@ export default function ShowInstitution(props){
       navigate("/lgn")
     }
 
-    if(userInstitution == ''){
-      return(<>@<span>VISITOR</span>stor</>)
-    }
-    else{
-      return(
-        <>
-          @<span>{userInstitution?.toUpperCase()}</span>stor | <span id="logout" onClick={logout}>logout</span>
-        </>
-      )
-    }
+    function VistorHtml(){return(<>@<span>VISITOR</span>stor</>)}
+
+    function UserHtml(){return(<>@<span>{userInstitution?.toUpperCase()}</span>stor | <span id="logout" onClick={logout}>logout</span></>)}
+
+    return(
+      <>
+        {userInstitution == '' ? <VistorHtml/> : <UserHtml/>}
+      </>
+    )
   }

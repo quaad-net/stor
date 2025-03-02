@@ -137,13 +137,12 @@ export default function Lgn(){
         )
     }
 
-    if(pendingAuth==true){
-        return(<></>)
-    }
-    if(pendingAuth=='failed'){
-        return(<UserLogin/>)
-    }
-    else{
-        return(<UserLogin/>)
-    }
+
+    function ReturnNul(){return <></>}
+
+    return(
+        <>
+            {pendingAuth == true ?  <ReturnNul/> : <UserLogin/>}
+        </>
+    )
 }

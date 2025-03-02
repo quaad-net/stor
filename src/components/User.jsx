@@ -56,7 +56,7 @@ export default function User(){
                     </div>
                 </div>
             </fieldset>
-            <div id="institution-domain"><ShowInstitution skipAuth={skipAuth}/></div>
+            <div id="institution-domain"><ShowInstitution/></div>
         </>
     )
 }
