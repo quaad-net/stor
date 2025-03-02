@@ -14,6 +14,20 @@ export default function Lgn(){
     
     const navigate = useNavigate();
 
+    auth().then((res)=>{
+        if(res.authorized){
+            navigate("/user",{ 
+                state: {
+                    authorized: true,
+                    email: res.email
+                }
+            })
+        }
+        else{
+            setPendingAuth('failed')
+        }
+    })
+    
     function UserLogin(){
         function loginRequest(){
             const email = document.querySelector('#user').value;
@@ -122,20 +136,6 @@ export default function Lgn(){
             </div>
         )
     }
-
-    auth().then((res)=>{
-        if(res.authorized){
-            navigate("/user",{ 
-                state: {
-                    authorized: true,
-                    email: res.email
-                }
-            })
-        }
-        else{
-            setPendingAuth('failed')
-        }
-    })
 
     if(pendingAuth==true){
         return(<></>)
