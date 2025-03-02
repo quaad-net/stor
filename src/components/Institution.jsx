@@ -1,7 +1,7 @@
 import useInstitution from "../../app/useInstitution";
 import useToken from "../../app/useToken";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Institution.css"
 import auth from "../../app/auth";
 
@@ -14,22 +14,23 @@ export default function ShowInstitution(props){
     const {institution, setInstitution} = useInstitution(); // session storage
     const [userInstitution, setUserInstitution] = useState(institution); //  component state
 
+    useEffect(()=>{
+      auth().then((res)=>{
+          if(res.authorized){
+              setInstitution(institution); //session storage           
+              setUserInstitution(institution); // component state
+          }
+          else{
+              setInstitution(""); // session storage
+              setUserInstitution(""); //  component state
+          }
+      })
+    },[])
+
     function logout(){
       setToken({});
       setInstitution('');
       navigate("/lgn")
-    }
-
-    if(props?.skipAuth !== true){
-      auth().then((res)=>{
-          if(res.authorized){
-              // userInstitution (component state) should match institution (session storage)
-          }
-          else{
-              setInstitution("") // session storage
-              setUserInstitution("") //  component state
-          }
-      })
     }
 
     if(userInstitution == ''){
