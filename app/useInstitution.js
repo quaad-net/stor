@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 
 const useInstitution = () => {
 
@@ -6,11 +6,12 @@ const useInstitution = () => {
      
         try{
             const userInstitution = sessionStorage.getItem('institution');
-            return userInstitution
+            if(userInstitution === null || userInstitution === undefined){return ''}
+            else{return userInstitution}
         }
-        catch(err){
-          return ""
-      }
+        catch{
+          return ''
+        }
     } 
 
     const [institution, setInstitution] = useState(getInstitution());

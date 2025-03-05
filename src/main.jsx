@@ -25,92 +25,40 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/",
-        element: <Lgn />,
+        path: "/lgn",
+        element: <Lgn />,  
       },
-    ],
-  },
-  {
-    path: "/pick",
-    element: <App />,
-    children: [
       {
         path: "/pick",
         element: <InventoryPick />,
       },
-    ],
-  },
-  {
-    path: "/receive",
-    element: <App />,
-    children: [
       {
         path: "/receive",
         element: <Receive />,
       },
-    ],
-  },
-  {
-    path: "/browse",
-    element: <App />,
-    children: [
       {
         path: "/browse",
         element: <Browse />,
       },
-    ],
-  },
-  {
-    path: "/problem",
-    element: <App />,
-    children: [
       {
         path: "/problem",
         element: <Problem />,
       },
-    ],
-  },
-  {
-    path: "/lgn",
-    element: <App />,
-    children: [
       {
-        path: "/lgn",
-        element: <Lgn />,
+        path: "/user",
+        element: <User />,
       },
-    ],
-  },
-  {
-  path: "/user",
-  element: <App />,
-  children: [
-    {
-      path: "/user",
-      element: <User />,
-    },
-  ],
-  },
-  {
-    path: "/label",
-    element: <App />,
-    children: [
       {
         path: "/label",
         element: <Labels />,
       },
-    ],
-    },
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          path: "*",
-          element: <ErrorPage />,
-        },
-      ],
+      {
+        path: "/*",
+        element: <ErrorPage />,
       }
-]);
+    ]
+  },
+])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

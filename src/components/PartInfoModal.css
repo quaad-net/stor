@@ -138,11 +138,6 @@ legend{
     border-bottom: 1px solid transparent;
 }
 
-#submit-parts-btn:hover{
-    border-color: transparent;
-    color: var(--main-background-color)
-}
-
 .bullet{
     margin-right: 2px;
 }
@@ -160,11 +155,6 @@ legend{
     margin-top: 10px;
 }
 
-#prev-part-btn:hover, #prev-part-btn:focus, #next-part-btn:hover, #next-part-btn:focus{
-    border-color: transparent;
-    color: var(--main-background-color)
-}
-
 #part-info-remove-btn{
     display: inline;
     color: gray;
@@ -176,10 +166,14 @@ legend{
     margin-top: 10px;
 }
 
-#part-info-remove-btn:hover{
+#part-info-remove-btn:hover, #part-info-remove-btn:focus,
+#submit-parts-btn:hover, #submit-parts-btn:focus,
+#prev-part-btn:hover, #prev-part-btn:focus, 
+#next-part-btn:hover, #next-part-btn:focus{
     border-color: transparent;
     color: var(--main-background-color)
 }
+
 
 @media(max-width:500px){
     .part-info-modal-data{

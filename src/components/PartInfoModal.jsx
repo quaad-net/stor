@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import useToken from "../../app/useToken";
 import './PartInfoModal.css';
-const apiUrl = import.meta.env.VITE_API_URL; // Gets either production or dev environment API URL.
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function PartInfoModal(props){
 
     const [idx, setIdx] = useState(0);
-    const [nextPartBtns, setNextPartBtns] = useState("");
-    const modal = document.querySelector("#part-info-modal");
-    const modalContent = document.querySelector(".part-info-modal-data");
     const numParts = props.parts.length;
     const { token } = useToken();
 
@@ -65,7 +61,7 @@ export default function PartInfoModal(props){
         }
 
         async function handleSubmit(){
-            const req = await fetch(`${apiUrl}/pick`, {
+            await fetch(`${apiUrl}/pick`, {
                 method: "POST",
                 body: JSON.stringify(props.parts),
                 headers: {
@@ -101,7 +97,7 @@ export default function PartInfoModal(props){
                                     <button id="submit-parts-btn" onClick={()=>{
                                         document.querySelector('#submit-parts-btn').blur();
                                         handleSubmit()
-                                        .catch((err)=>{console.error("Request Failed. Check authorization!")});
+                                        .catch(()=>{console.error("Request Failed. Check authorization!")});
                                     }
                                     }>
                                         Submit Part{numParts > 1 ? 's' : ''}

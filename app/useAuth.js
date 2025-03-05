@@ -1,10 +1,10 @@
 import useToken from './useToken';
 
-async function auth(){
+function useAuth(){
     
     const {token} = useToken();
     
-    const checkAuth = await fetch('http://localhost:5050/auth-endpoint',
+    const checkAuth = fetch('http://localhost:5050/auth-endpoint',
         {
             method: 'POST',
             headers: {
@@ -20,10 +20,10 @@ async function auth(){
     .then((res)=>{
         return {email: res.payload, authorized: true}
     })
-    .catch((err)=>{
+    .catch(()=>{
         return {authorized: false}
     })
     return checkAuth
 }
 
-export default auth;
+export default useAuth;

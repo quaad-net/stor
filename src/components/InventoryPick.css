@@ -101,6 +101,11 @@ input:focus{
     background-color: rgb(20, 20, 20);
 }
 
+#scan-btn:focus, #reorder-btn:focus, #comment-btn:focus, #view-added-parts-btn:focus{
+    background-color: rgb(20, 20, 20);;
+}
+
+
 .section1 input, .section2 input{
     border-right: 1px solid gray;
     width: 100%;

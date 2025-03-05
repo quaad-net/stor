@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useToken from "../../app/useToken";
 import "./Register.css";
 const apiUrl = import.meta.env.VITE_API_URL; 
 
 export default function Register(){
 
-    const [regDeclined, setRegDeclined] = useState(false);
-    const {token, setToken} = useToken();
+    const {setToken} = useToken();
     const navigate = useNavigate();
 
     function clearInvalids(){
@@ -41,10 +39,10 @@ export default function Register(){
     // Check if user already exists.
     async function currentuser(){
 
-        const email =  document.querySelector('#email').value;
-        const employeeID = document.querySelector('#employeeId').value
+        const email =  document.querySelector('#email').value.trim();
+        const employeeID = document.querySelector('#employeeId').value.trim();
 
-        const req = await fetch(`${apiUrl}/currentuser`, {
+        await fetch(`${apiUrl}/currentuser`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -65,12 +63,12 @@ export default function Register(){
 
     function registerRequest(){
 
-        const email =  document.querySelector('#email').value;
-        const institution = document.querySelector('#institution').value
-        const password = document.querySelector('#password').value;
-        const employeeID = document.querySelector('#employeeId').value
+        const email =  document.querySelector('#email').value.trim();
+        const institution = document.querySelector('#institution').value.trim();
+        const password = document.querySelector('#password').value.trim();
+        const employeeID = document.querySelector('#employeeId').value.trim();
 
-        const req = fetch(`${apiUrl}/register`, 
+        fetch(`${apiUrl}/register`, 
             {
                 method: "POST",
                 headers: {

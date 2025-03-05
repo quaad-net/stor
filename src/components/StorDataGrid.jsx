@@ -1,6 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import './StorDataGrid.css';
-import {CustomNoRowsOverlay, GridOverlayHeight} from './GridOverlayHeight.jsx';
+import {CustomNoRowsOverlay} from './GridOverlayHeight.jsx'; //  { GridOverlayHeight }
 
 
 // const myTestData = {

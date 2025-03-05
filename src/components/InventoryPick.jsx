@@ -1,23 +1,21 @@
 import './InventoryPick.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import PartInfoModal from './PartInfoModal';
-import ShowInstitution from './Institution';
 
 function InventoryPick(){
 
     const [partInfo, setPartInfo] = useState([]); 
     const [reorder, setReorder] = useState(false);
     const [formDate, setFormDate] = useState(new Date());
-    const [noteAdded, setNoteAdded ] = useState(false);
     
-     
     useEffect(()=>{
-        document.querySelector('#first-name').addEventListener('change', ()=>{
-            const updatedDateTime = new Date();
-            setFormDate(updatedDateTime);
-        })
-
-    }, [])
+        const updateDatetime = () =>{
+            const dt = new Date();
+            setFormDate(dt);
+        }
+        document.querySelector('#first-name').addEventListener('change', (updateDatetime))
+        return document.querySelector('#first-name').removeEventListener('change', (updateDatetime))
+    },[])
 
     function removePart(id){
 
@@ -70,17 +68,17 @@ function InventoryPick(){
     function addPartHist(partCode){
         const part = partCode;
         if(part !== ''){
-            const fName = document.querySelector('#first-name').value;
-            const lName = document.querySelector('#last-name').value;
-            const trade = document.querySelector('#trade').value;
-            const description = document.querySelector('#description').value;
-            const qty = document.querySelector('#quantity').value;
-            const unit = document.querySelector('#unit').value;
-            const warehouse = document.querySelector('#warehouse').value;
-            const woNo = document.querySelector('#wo-no').value;
+            const fName = document.querySelector('#first-name').value.trim();
+            const lName = document.querySelector('#last-name').value.trim();
+            const trade = document.querySelector('#trade').value.trim();
+            const description = document.querySelector('#description').value.trim();
+            const qty = document.querySelector('#quantity').value.trim();
+            const unit = document.querySelector('#unit').value.trim();
+            const warehouse = document.querySelector('#warehouse').value.trim();
+            const woNo = document.querySelector('#wo-no').value.trim();
             const key = partInfo.length;
             const id = `added-part-${key}`;
-            const reorderAmt = document.querySelector("#reorder-amt").value;
+            const reorderAmt = document.querySelector("#reorder-amt").value.trim();
             const partInfoArr = [
                 ...partInfo, 
                 {
@@ -137,17 +135,6 @@ function InventoryPick(){
             </>
         )
     }
-
-    function NoteAdded(){
-        if(noteAdded){
-            return(
-                <>
-                    <input type="checkbox" id="note-added-chkbx" name="note-added" checked readOnly/>
-                    <label htmlFor="note-added" id="note-added-lbl">Note Added</label>
-                </>
-            )
-        }
-    } 
 
     function showInValids(){
         const inputs = document.querySelectorAll('input');
@@ -292,7 +279,6 @@ function InventoryPick(){
                         </button>
                     </div>
                 </form>
-                <div id="institution-domain"><ShowInstitution/></div>
                 <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
             </div>
         </>

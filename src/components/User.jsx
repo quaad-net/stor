@@ -2,37 +2,33 @@ import { useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 import "./User.css";
 const apiUrl = import.meta.env.VITE_API_URL;
-import ShowInstitution from './Institution'; 
 
 export default function User(){
     
     const location = useLocation();
-    const userEmail = location?.state?.email 
-    const skipAuth = location?.state?.skipAuth
-    const [userData, setUserData] = useState({}) 
-
-    async function getUserData(){ 
-        fetch(`${apiUrl}/users`, 
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: userEmail  
-            })
-        }
-        )
-        .then((res)=>{return res.json()})
-        .then((res)=>{
-            setUserData(res[0])
-        })
-        .catch(()=>{console.log('Could not retrieve user info.')});
-    }
+    const userEmail = location?.state?.email; 
+    const [userData, setUserData] = useState({});
 
     useEffect(()=>{
-        getUserData();
-    }, [])
+        fetch(`${apiUrl}/users`, 
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: userEmail  
+                })
+            }
+            )
+            .then((res)=>{return res.json()})
+            .then((res)=>{
+                setUserData(res[0])
+            })
+            .catch(()=>{console.log('Could not retrieve user info.')});
+            window.scrollTo(0, 0)
+            
+    }, [userEmail])
 
     return(
         <>
@@ -56,7 +52,6 @@ export default function User(){
                     </div>
                 </div>
             </fieldset>
-            <div id="institution-domain"><ShowInstitution/></div>
         </>
     )
 }

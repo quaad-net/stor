@@ -1,7 +1,5 @@
 // Viewing component for database records.
 
-import { useEffect, useState } from "react";
-import { Link, replace } from "react-router-dom";
 import StorDataGrid from './StorDataGrid';
 
 // Test data

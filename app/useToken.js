@@ -7,9 +7,8 @@ const useToken = () => {
         const userToken = JSON.parse(tokenString); 
         return userToken
         }
-        catch(err){
-          const userToken = {};
-          return userToken
+        catch{
+          return {}
       }
     } 
 

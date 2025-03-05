@@ -1,41 +1,31 @@
-import useInstitution from "../../app/useInstitution";
+import useUser from "../../app/useUser";
 import useToken from "../../app/useToken";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useInstitution from "../../app/useInstitution";
 import "./Institution.css"
-import auth from "../../app/auth";
 
 export default function ShowInstitution(props){ 
 
-    const {token, setToken} = useToken();
+    const {setToken} = useToken();
+    const {setUser} = useUser();
     const navigate = useNavigate();
-    
-    // Shows user institution if user is not logged-in.
-    const {institution, setInstitution} = useInstitution(); // session storage
-    const [userInstitution, setUserInstitution] = useState(""); //  component state
-
-    auth().then((res)=>{
-        if(res.authorized){  
-            setUserInstitution(institution); // component state
-        }
-        else{
-            setUserInstitution(""); //  component state
-        }
-    })
+    const {setInstitution} = useInstitution();
 
     function logout(){
       setToken({});
-      setInstitution('');
+      setUser('')
+      setInstitution('')
+      props.setCurrentInstitution('');
       navigate("/lgn")
     }
 
     function VistorHtml(){return(<>@<span>VISITOR</span>stor</>)}
 
-    function UserHtml(){return(<>@<span>{userInstitution?.toUpperCase()}</span>stor | <span id="logout" onClick={logout}>logout</span></>)}
+    function UserHtml(){return(<>@<span>{props.currentInstitution?.toUpperCase()}</span>stor | <span id="logout" onClick={logout}>logout</span></>)}
 
     return(
       <>
-        {userInstitution == '' ? <VistorHtml/> : <UserHtml/>}
+        {props.currentInstitution == '' ? <VistorHtml/> : <UserHtml/>}
       </>
     )
   }

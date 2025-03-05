@@ -3,7 +3,7 @@ import "./Navbar.css"
 import { useEffect, useState } from "react";
 import NavModal from "./NavModal";
 
-export default function AppropiateNav(){
+export default function AppropiateNav(props){
 
     const [mobileView, setMobileView]= useState(false);
 
@@ -19,11 +19,11 @@ export default function AppropiateNav(){
       return function cleanup(){
         atMedia.removeEventListener('change', updateMobileView);
       }
-    })
+    },[])
 
   const navBarItems = [
     {
-      title: 'Login',
+      title: props.currentInstitution != '' ? 'User' : 'Login',
       code: 1,
       to: "/lgn",
       icon: "/login.svg"

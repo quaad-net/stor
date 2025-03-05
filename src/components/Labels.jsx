@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import "./Labels.css";
-import { display } from "@mui/system";
 import IconBar from './IconBar'
 import './IconBar.css'
 const apiUrl = import.meta.env.VITE_API_URL;
-import React from "react";
 import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
 import useToken from "../../app/useToken";
-import ShowInstitution from "./Institution";
 
 export default function Labels() {
 
@@ -117,14 +114,14 @@ export default function Labels() {
                     newWindow.print(); 
                     newWindow.document.close(); 
                 }
-                catch(err){alert('!')}
+                catch{alert('!')}
             }
         }
     ]
 
     function getLabelsByQuery(){
         try{
-            const qry = document.querySelector('#label-search-box').value;
+            const qry = document.querySelector('#label-search-box').value.trim();
             if(partCodeSearch){
                 fetch(`${apiUrl}/labels/partcode/${qry}`, 
                     {
@@ -347,11 +344,11 @@ export default function Labels() {
                             will return everything from 110 to and including 113-F-D.
                         </li>
                         <li>
-                            A less specific binLocation string is evaluated as being "less than" a more specific binLocation string.
+                            A less specific binLocation string is evaluated as being &quot;less than&quot; a more specific binLocation string.
                             So, 110-F-F is greater that 110-F. Therefore<br/>
                             <span className="example">Qry</span> 109:110-F<br/>
                             will return parts up to and including the entire 110-E section and will not include any bins at 110-F-?
-                            unless there is a part who's location is exactly "110-F'.
+                            unless there is a part who&apos;s location is exactly &quot;110-F&quot;.
                         </li>
                     </ul>
                 </td>
@@ -413,7 +410,6 @@ export default function Labels() {
                 </table>
             </div>
             <QueryResCount/>
-            <div id="institution-domain"><ShowInstitution/></div>
         </div>
     )
 }

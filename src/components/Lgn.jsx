@@ -1,37 +1,38 @@
-import { useEffect, useState } from "react";
 import "./Lgn.css";
 import useToken from "../../app/useToken";
-import auth from "../../app/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext} from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL; 
+import useUser from "../../app/useUser";
+import {useEffect } from "react";
 import useInstitution from "../../app/useInstitution";
 
 export default function Lgn(){
 
-    const [pendingAuth, setPendingAuth] = useState(true);
-    const {token, setToken} = useToken();
-    const {institution, setInstitution} = useInstitution();
-    
+    const {setToken} = useToken();
+    const {user, setUser} = useUser();
+    const [currentInstitution, setCurrentInstitution] = useOutletContext();
+    const {setInstitution} = useInstitution();
     const navigate = useNavigate();
-
-    auth().then((res)=>{
-        if(res.authorized){
+    
+    useEffect(()=>{
+        if(user != ''){
             navigate("/user",{ 
                 state: {
                     authorized: true,
-                    email: res.email
+                    email: user,
                 }
             })
         }
-        else{
-            setPendingAuth('failed')
-        }
-    })
-    
+        else{window.scrollTo(0,0)}
+
+    },[navigate, user])
+
     function UserLogin(){
+
         function loginRequest(){
-            const email = document.querySelector('#user').value;
-            const req = fetch(`${apiUrl}/login`, 
+
+            const email = document.querySelector('#user').value.trim();
+            fetch(`${apiUrl}/login`, 
                 {
                     method: "POST",
                     headers: {
@@ -47,13 +48,14 @@ export default function Lgn(){
 
                 if(data?.token !== undefined){
 
-                    setToken(data.token)
-                    setInstitution(data.institution)
+                    setToken(data.token);
+                    setUser(data.email);
+                    setInstitution(data.institution);
+                    setCurrentInstitution(data.institution);
                     navigate("/user",{ 
                         state: {
                             authorized: true,
                             email: data.email,
-                            skipAuth: true
                         }
                     })
                 }
@@ -62,6 +64,7 @@ export default function Lgn(){
                 }
             }).catch((err)=>{
                 alert('Unsuccessful login attempt!')
+                console.error(err);
             })
         }
     
@@ -137,12 +140,5 @@ export default function Lgn(){
         )
     }
 
-
-    function ReturnNul(){return <></>}
-
-    return(
-        <>
-            {pendingAuth == true ?  <ReturnNul/> : <UserLogin/>}
-        </>
-    )
+    return(<UserLogin/>)
 }
