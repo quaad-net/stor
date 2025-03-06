@@ -142,13 +142,21 @@ input:focus{
 }
 
 #reorder-content{
-    height: 10px;
+    height: 10px; 
     margin-bottom: 15px;
 }
 
 #reorder-chkbx{
     height: 10px;
+}
 
+#reorder-lbl{
+    font-size: small;
+}
+
+#no-reorder-stand-in{
+    font-size: small;
+    color: transparent;
 }
 
 input[type="checkbox"]:checked {

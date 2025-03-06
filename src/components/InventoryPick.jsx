@@ -123,6 +123,13 @@ function InventoryPick(){
                 </>
             )
         }
+        else{
+            return(
+                <>
+                    <div id="no-reorder-stand-in">&nbsp;</div>
+                </>
+            )
+        }
     }
 
     function ReOrderAmt(){
