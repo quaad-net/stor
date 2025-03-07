@@ -306,7 +306,8 @@ export default function Labels() {
             <tr>
                 <td style={{border: 'none'}}>
                     <div>. . .</div>
-                    <h2>Syntax Guide</h2>
+                    <h2 id="label-h2">Part Code Query</h2>
+                    <p id="label-p">Syntax Guide</p>
                     <ul>
                         <li>Case insensitive.</li>
                         <li>
@@ -333,7 +334,8 @@ export default function Labels() {
             <tr>
                 <td style={{border: 'none'}}>
                     <div>. . .</div>
-                    <h2>Syntax Guide</h2>
+                    <h2 id="label-h2">Bin Loc Query</h2>
+                    <p id="label-p">Syntax Guide</p>
                     <ul>
                         <li>Case insensitive.</li>
                         <li><span className="example">Format</span> &lt;binLocation&gt;:&lt;binLocation&gt;</li>
@@ -415,13 +417,13 @@ export default function Labels() {
         return(
             <div id="create-single-label">
                 <div id="single-lbl-partcode-binLocation">
-                    <input className="single-lbl" id="single-lbl-partCode" placeholder="Part Code" type="text" maxLength="30" required/>
-                    <input className="single-lbl" id="single-lbl-binLocation" placeholder="Bin Location" type="text" maxLength="10" required/>
+                    <input className="single-lbl" id="single-lbl-partCode" placeholder="Part Code" type="text" maxLength="30" />
+                    <input className="single-lbl" id="single-lbl-binLocation" placeholder="Bin Location" type="text" maxLength="10" />
                 </div>
-                <input className="single-lbl" id="single-lbl-description" placeholder="Description" type="text" maxLength="70" required/>
+                <input className="single-lbl" id="single-lbl-description" placeholder="Description" type="text" maxLength="70" />
                 <div id="single-lbl-min-max">
-                    <input className="single-lbl" id="single-lbl-min" placeholder="Min" type="text" maxLength="6" required/>
-                    <input className="single-lbl" id="single-lbl-max" placeholder="Max" type="text" maxLength="6"required />
+                    <input className="single-lbl" id="single-lbl-min" placeholder="Min" type="text" maxLength="6" />
+                    <input className="single-lbl" id="single-lbl-max" placeholder="Max" type="text" maxLength="6" />
                 </div>
                 <button type="button" id="create-single-label-btn" onClick={()=>{
                     document.querySelector('#create-single-label-btn').blur();
@@ -463,8 +465,8 @@ export default function Labels() {
                             }
             }}
             />
-            <div>
-                <div id="label-query-type" style={{display: 'inline', marginRight: '5px'}}>{partCodeSearch ? 'P' : 'B'}
+            <div id="label-icon-functions">
+                <div id="label-query-type" style={{display: 'inline', marginRight: '5px' }}>{partCodeSearch ? 'P' : 'B'}
                 </div>
                 <IconBar icons={icons}/>
             </div>

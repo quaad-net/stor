@@ -20,7 +20,8 @@
 #label-query-type{
     color: gray;
     width: fit-content;
-    font-size: medium;
+    font-size: small;
+
 }
 
 #label-roll{
@@ -140,6 +141,10 @@ li{
     color: white;
 }
 
+#label-h2{
+    margin-bottom: 0;
+}
+
 /* CreateSingleLabel */
 
 #create-single-label{
@@ -184,6 +189,7 @@ li{
 }
 
 @media(max-width: 750px){
+
     .label-table, #label-search-box{
         width: 95%;
     }
