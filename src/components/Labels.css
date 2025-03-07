@@ -140,6 +140,49 @@ li{
     color: white;
 }
 
+/* CreateSingleLabel */
+
+#create-single-label{
+    margin-top: 20px;
+}
+
+.single-lbl{
+    display: block;
+    width: 80%;
+    margin: auto;
+    border-color: gray;
+    transition: border-color 1s;
+}
+
+.single-lbl:hover, .single-lbl:focus{
+    border-color: white;
+}
+
+#create-single-label-btn{
+    all: unset;
+    width: fit-content;
+    margin-top: 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-family: "DM Sans", sans-serif;
+    font-size: large;
+    background-color: transparent;
+    border-radius: 7px;
+    border-bottom-left-radius: 0;
+    padding: 5px;
+    color: var(--form-btn-text-color);
+    transition: color 0.5s;
+}
+
+#create-single-label-btn:hover, #create-single-label-btn:focus{
+    color: lightcoral;
+}
+
+#create-single-label-btn:hover{
+    cursor: pointer;
+}
+
 @media(max-width: 750px){
     .label-table, #label-search-box{
         width: 95%;

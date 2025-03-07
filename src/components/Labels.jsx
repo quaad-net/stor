@@ -1,4 +1,4 @@
-import {useState } from "react";
+import { useState } from "react";
 import "./Labels.css";
 import IconBar from './IconBar'
 import './IconBar.css'
@@ -11,6 +11,7 @@ export default function Labels() {
 
     const [partCodeSearch, setPartCodeSearch] = useState(false);
     const [queryRes, setQueryRes] = useState([]);
+    const [createLabel, setCreateLabel] = useState(false)
     const {token} = useToken(); 
 
     const partCodeMaxChar = 30;
@@ -48,7 +49,8 @@ export default function Labels() {
             modQueryRes.push(modRecord)
         })
 
-        setQueryRes(modQueryRes)
+        setQueryRes(modQueryRes);
+        setCreateLabel(false); // prevents <CreateSingleLabel/> from being rendered.
     }
 
     const icons = [
@@ -67,6 +69,7 @@ export default function Labels() {
             styleBackground: 'url("/question-mark.svg") no-repeat center',
             title: 'Show Syntax Guide',
             onclick(){ // Setting QueryRes to original state will show syntaxHelpr by default
+                setCreateLabel(false);
                 setQueryRes([]);
             }
         },
@@ -76,6 +79,14 @@ export default function Labels() {
             title: 'Clear Search Input',
             onclick(){
                 document.querySelector('#label-search-box').value = '';
+            }
+        },
+        {     
+            id:'label-create-single-label-icon',   
+            styleBackground: 'url("/text.svg") no-repeat center',
+            title: 'Create Label',
+            onclick(){
+                setCreateLabel(true);
             }
         },
         {
@@ -114,7 +125,10 @@ export default function Labels() {
                     newWindow.print(); 
                     newWindow.document.close(); 
                 }
-                catch{alert('!')}
+                catch(err){
+                    alert('!');
+                    console.log(err);
+                }
             }
         }
     ]
@@ -378,6 +392,65 @@ export default function Labels() {
         return(<>&lt;<i>Preview</i>&gt;</>)
     }
 
+    function CreateSingleLabel(){
+
+        function getSingleLabelData(){
+
+            const partCode = document.querySelector('#single-lbl-partCode').value;
+            const warehouseBinLocation = document.querySelector('#single-lbl-binLocation').value;
+            const description = document.querySelector('#single-lbl-description').value;
+            const warehouseMinimum = document.querySelector('#single-lbl-min').value;
+            const warehouseMaximum = document.querySelector('#single-lbl-max').value;
+
+            const obj  = { 
+                partCode: partCode, 
+                warehouseBinLocation: warehouseBinLocation,  
+                description: description, 
+                warehouseMinimum: warehouseMinimum, 
+                warehouseMaximum: warehouseMaximum
+            };
+            setQueryRes([obj]);
+        }
+
+        return(
+            <div id="create-single-label">
+                <div id="single-lbl-partcode-binLocation">
+                    <input className="single-lbl" id="single-lbl-partCode" placeholder="Part Code" type="text" maxLength="30" required/>
+                    <input className="single-lbl" id="single-lbl-binLocation" placeholder="Bin Location" type="text" maxLength="10" required/>
+                </div>
+                <input className="single-lbl" id="single-lbl-description" placeholder="Description" type="text" maxLength="70" required/>
+                <div id="single-lbl-min-max">
+                    <input className="single-lbl" id="single-lbl-min" placeholder="Min" type="text" maxLength="6" required/>
+                    <input className="single-lbl" id="single-lbl-max" placeholder="Max" type="text" maxLength="6"required />
+                </div>
+                <button type="button" id="create-single-label-btn" onClick={()=>{
+                    document.querySelector('#create-single-label-btn').blur();
+                    getSingleLabelData();
+                    setCreateLabel(false);
+                }}>Create Label</button>
+            </div>
+        )
+    }
+
+    function LabelTable(){
+        return(
+            <>
+                <div id="label-preview">{queryRes.length>0 ? <Preview/> : ''}</div>
+                <table className="label-table" align="center">
+                    <thead>
+                        <tr><th scope="column" className="xl6322727"></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="xl6322727 label-null"></td>
+                        </tr>
+                        {queryRes.length>0? <AppropiateLabels/>: <SyntaxHelpr/>}
+                    </tbody>
+                </table>
+            </>
+        )
+    }
+
     return(
         <div>
             <input title='Query' id='label-search-box' type="search" 
@@ -391,25 +464,14 @@ export default function Labels() {
             }}
             />
             <div>
-            <div id="label-query-type" style={{display: 'inline'}}>{partCodeSearch ? 'P' : 'B'}
-            </div>
-            <IconBar icons={icons}/>
+                <div id="label-query-type" style={{display: 'inline', marginRight: '5px'}}>{partCodeSearch ? 'P' : 'B'}
+                </div>
+                <IconBar icons={icons}/>
             </div>
             <div id="label-roll">
-                <div id="label-preview">{queryRes.length>0 ? <Preview/> : ''}</div>
-                <table className="label-table" align="center">
-                    <thead>
-                        <tr><th scope="column" className="xl6322727"></th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="xl6322727 label-null"></td>
-                        </tr>
-                        {queryRes.length>0? <AppropiateLabels/>: <SyntaxHelpr/>}
-                    </tbody>
-                </table>
+                {createLabel ? <CreateSingleLabel/> : <LabelTable/> }
             </div>
-            <QueryResCount/>
+            {createLabel ?  '' : <QueryResCount/>}
         </div>
     )
 }

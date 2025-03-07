@@ -1,6 +1,8 @@
 export default function IconBar(props){
     
-    const data = props.icons
+    const data = props.icons;
+    const numIcons = props.icons.length;
+    const lastIcon = data[numIcons - 1];
     const icons = data.map((icon)=>{
         return(
             <span key={`${icon.id}-key`}>
@@ -9,7 +11,7 @@ export default function IconBar(props){
                     document.querySelector(`#${icon.id}`).blur();
                     icon.onclick();
                 }}>
-                </button><span className="icon-bar-dots">..</span>
+                </button><span {...(icon.id == lastIcon.id ? {id: 'icon-bar-last-dots'} : {})} className="icon-bar-dots">..</span>
             </span>
         )
     })

@@ -26,6 +26,14 @@
     color: gray
 }
 
+#icon-bar-last-dots{
+    display: none;
+}
+
+/* .icon-bar-dots:last-child{
+    display: none;
+} */
+
 .icon-bar-icon:hover{
     background-color: rgb(24, 24, 24) !important;
     cursor: pointer;
