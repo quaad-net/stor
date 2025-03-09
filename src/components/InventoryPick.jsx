@@ -71,7 +71,10 @@ function InventoryPick(){
             const fName = document.querySelector('#first-name').value.trim();
             const lName = document.querySelector('#last-name').value.trim();
             const trade = document.querySelector('#trade').value.trim();
-            const description = document.querySelector('#description').value.trim();
+            const tmpDesc = document.querySelector('#description').value.toString().trim();
+            let description;
+            if(tmpDesc.length > 35){description = tmpDesc.substring(0, 34) + '...'}
+            else{description = tmpDesc};
             const qty = document.querySelector('#quantity').value.trim();
             const unit = document.querySelector('#unit').value.trim();
             const warehouse = document.querySelector('#warehouse').value.trim();
@@ -138,7 +141,9 @@ function InventoryPick(){
                 <input id='reorder-amt' 
                     type='text' 
                     title="Reorder Qty" 
-                    {...(reorder ? {placeholder: 'ReOrdQty' } : {defaultValue:"NoReOrd", readOnly: true})}    />
+                    {...(reorder ? {placeholder: 'ReOrdQty' } : {defaultValue:"NoReOrd", readOnly: true})}
+                    maxLength='10'
+                />
             </>
         )
     }
@@ -179,11 +184,11 @@ function InventoryPick(){
                         <legend>Technician Info</legend>
                         <div className="header">
                             <div className="header__name">
-                                <input id='first-name' type='text' title="First Name" placeholder="First Name" required />
-                                <input id='last-name' type='text' title="Last Name" placeholder="Last Name" required />
+                                <input id='first-name' type='text' title="First Name" placeholder="First Name" required maxLength="20" />
+                                <input id='last-name' type='text' title="Last Name" placeholder="Last Name" required maxLength="20" />
                             </div>
                             <div>
-                                <input id='trade' type='text' title="Trade" placeholder="Trade" required/>
+                                <input id='trade' type='text' title="Trade" placeholder="Trade" required maxLength="20"/>
                             </div>
                             <div id="date">{formDate.toDateString()}</div>
                         </div>
@@ -202,11 +207,11 @@ function InventoryPick(){
                                     document.querySelector('#reorder-btn').blur();
                                 }}>
                                 </button> ..
-                                <button type="button" id="comment-btn" onClick={()=>{
+                                {/* <button type="button" id="comment-btn" onClick={()=>{
                                     alert('Add Comment --- currently unavailable.');
                                     document.querySelector('#comment-btn').blur();
                                 }}>
-                                </button> ..
+                                </button> .. */}
                                 <button type="button" id="view-added-parts-btn" onClick={()=>{
                                     showPartInfoModal();
                                     document.querySelector('#view-added-parts-btn').blur();
@@ -224,12 +229,12 @@ function InventoryPick(){
                                 <div id="reorder-selected">
                                 </div>
                                 <div id="part-and-description">
-                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required />
+                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required maxLength="20"/>
                                     <input id='description' type='text' title="Description" placeholder="Description" required />
                                 </div>
                                 <div id="part-qtys">
-                                    <input id='quantity' type='text' title="Quantity" placeholder="QtyUsed" required />
-                                    <input id='unit' type='text' title="Unit" placeholder="Unit"required/>
+                                    <input id='quantity' type='text' title="Quantity" placeholder="QtyUsed" required maxLength="6" />
+                                    <input id='unit' type='text' title="Unit" placeholder="Unit"required maxLength="6"/>
                                     <ReOrderAmt/>
                                 </div>
                             </div>
@@ -238,13 +243,17 @@ function InventoryPick(){
                                     type='text' 
                                     title="Warehouse" 
                                     placeholder="Warehouse"
-                                    required />
+                                    required
+                                    maxLength="20"
+                                />
                                 <input 
                                     id='wo-no' 
                                     type='text' 
                                     title="Workorder No." 
                                     placeholder="WorkOrder" 
-                                    required/>
+                                    required
+                                    maxLength="20"
+                                />
                             </div>
                         </div>
                     </fieldset>

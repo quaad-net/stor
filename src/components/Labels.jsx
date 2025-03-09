@@ -455,7 +455,7 @@ export default function Labels() {
 
     return(
         <div>
-            <input title='Query' id='label-search-box' type="search" 
+            <input title='Query' id='label-search-box' type="search" placeholder={partCodeSearch ? 'PartCode(s)' : 'BinLoc(s)'}
             onKeyDown={(e)=>{
                             if(e.key == 'Enter'){
                                 const searchBox = document.querySelector('#label-search-box');
@@ -465,9 +465,7 @@ export default function Labels() {
                             }
             }}
             />
-            <div id="label-icon-functions">
-                <div id="label-query-type" style={{display: 'inline', marginRight: '5px' }}>{partCodeSearch ? 'P' : 'B'}
-                </div>
+            <div>
                 <IconBar icons={icons}/>
             </div>
             <div id="label-roll">
