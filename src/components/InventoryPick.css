@@ -35,6 +35,11 @@ input:focus{
     width: 100%;
 }
 
+
+#first-name, #last-name{
+    text-transform: capitalize;
+}
+
 #trade{
     box-sizing: border-box;
     height: 50px;

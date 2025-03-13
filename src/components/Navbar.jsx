@@ -23,7 +23,7 @@ export default function AppropiateNav(props){
 
   const navBarItems = [
     {
-      title: props.currentInstitution != '' ? 'User' : 'Login',
+      title: props.currentUserData != '' ? 'User' : 'Login',
       code: 1,
       to: "/lgn",
       icon: "/login.svg"

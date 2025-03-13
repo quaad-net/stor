@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import useToken from "../../app/useToken";
 import "./Register.css";
 const apiUrl = import.meta.env.VITE_API_URL; 
 
 export default function Register(){
 
-    const {setToken} = useToken();
     const navigate = useNavigate();
 
     function clearInvalids(){
@@ -65,7 +63,7 @@ export default function Register(){
 
         const email =  document.querySelector('#email').value.trim();
         const institution = document.querySelector('#institution').value.trim();
-        const password = document.querySelector('#password').value.trim();
+        const password = document.querySelector('#password').value;
         const employeeID = document.querySelector('#employeeId').value.trim();
 
         fetch(`${apiUrl}/register`, 
@@ -83,26 +81,24 @@ export default function Register(){
             }
         ).then((res)=>{return res.json()}
         ).then((data)=>{
-            alert('New user created!');
-            setToken(data.token);
+            alert(data.message);
             document.querySelector('form').reset();
-            navigate("/user",{ 
-                state: {
-                    authorized: true,
-                    email: data.email
-                }
-            })
-        }).catch(()=>{
+            if(data.message == 'User created'){
+                navigate("/lgn",{ 
+                })
+            }
+        }).catch((err)=>{
+            console.error(err);
         })
     }
 
     return(
         <div>
-            <>--- Register ---</>
+            <h2>Register</h2>
             <br/><br/>
             <form>
                 <fieldset className="register-fieldset">
-                    <legend>New User Info</legend>
+                    <legend>New User</legend>
                     <div className="header">
                         <div className="email-pass">
                             <input id='email' type='email' title="Email" placeholder="Email" required />

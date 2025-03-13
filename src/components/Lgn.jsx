@@ -4,14 +4,14 @@ import { useNavigate, useOutletContext} from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL; 
 import useUser from "../../app/useUser";
 import {useEffect } from "react";
-import useInstitution from "../../app/useInstitution";
+import useUserData from "../../app/useUserData";
 
 export default function Lgn(){
 
     const {setToken} = useToken();
     const {user, setUser} = useUser();
-    const [currentInstitution, setCurrentInstitution] = useOutletContext();
-    const {setInstitution} = useInstitution();
+    const { setUserData } = useUserData();
+    const [currentUserData, setCurrentUserData] = useOutletContext();
     const navigate = useNavigate();
     
     useEffect(()=>{
@@ -50,8 +50,8 @@ export default function Lgn(){
 
                     setToken(data.token);
                     setUser(data.email);
-                    setInstitution(data.institution);
-                    setCurrentInstitution(data.institution);
+                    setUserData(data.userData); // updates session storage
+                    setCurrentUserData(data.userData); // updates current state
                     navigate("/user",{ 
                         state: {
                             authorized: true,
@@ -98,7 +98,7 @@ export default function Lgn(){
     
         return(
             <div>
-                <>--- Login or continue as visitor ---</>
+                <h2>Login</h2>
                 <br/><br/>
                 <form>
                     <fieldset className="login-fieldset">

@@ -1,12 +1,32 @@
 import './InventoryPick.css';
 import { useState, useEffect } from 'react';
 import PartInfoModal from './PartInfoModal';
+import useUserData from '../../app/useUserData';
+const apiUrl = import.meta.env.VITE_API_URL;
+import useAuth from '../../app/useAuth';
+import ScannerModal from './ScannerModal';
+import './ScannerModal.css'
 
 function InventoryPick(){
 
     const [partInfo, setPartInfo] = useState([]); 
     const [reorder, setReorder] = useState(false);
     const [formDate, setFormDate] = useState(new Date());
+    const {userData} = useUserData();
+    const [userAuthorized, setUserAuthorized] = useState(false);
+    const [displayCam, setDisplayCam] = useState(false);
+
+    useAuth().then((res)=>{
+        if(res.authorized){setUserAuthorized(true)}
+    },[])
+
+    let userFirstName, userLastName, userTrade;
+    if(userData != ''){
+        const userProps = JSON.parse(userData);
+        userFirstName = userProps.firstName;
+        userLastName = userProps.lastName;
+        userTrade = userProps?.trade || userProps?.position;
+    }
     
     useEffect(()=>{
         const updateDatetime = () =>{
@@ -16,6 +36,36 @@ function InventoryPick(){
         document.querySelector('#first-name').addEventListener('change', (updateDatetime))
         return document.querySelector('#first-name').removeEventListener('change', (updateDatetime))
     },[])
+
+    // Fetches part records when partCode is entered in the form.
+    useEffect(()=>{
+
+        if(userAuthorized){
+
+            const fetchPartDetails = (partCode) =>{
+                fetch(`${apiUrl}/parts/${partCode}`, 
+                )
+                .then((res)=>{ 
+                    if(res.status !== 200){throw new Error(res.status)}
+                    else{return res.json()}
+                })
+                .then((res)=>{
+                    document.querySelector('#description').value = res.description;
+                    document.querySelector('#warehouse').value = res.warehouseCode;
+                })
+                .catch((err)=>{console.log(err)})
+            }
+
+            const partCode = document.querySelector('#part-code')
+            partCode.addEventListener('focusout', ()=>{
+                fetchPartDetails(partCode.value)
+            })
+            return partCode.removeEventListener('focusout', ()=>{
+                fetchPartDetails(partCode.value)
+            })
+
+        }
+    },[userAuthorized])
 
     function removePart(id){
 
@@ -176,19 +226,61 @@ function InventoryPick(){
         })
     }
 
+    function showScannerModal(){
+
+        setDisplayCam(true);
+        const modal = document.querySelector('#scanner-modal');
+        const modalBackground = document.querySelector('.scanner-modal');
+        const close = document.querySelector('.scanner-modal-close');
+        modal.style.display = "block";
+        
+        close.addEventListener('click', ()=>{ 
+            modal.style.display = 'none';
+            setDisplayCam(false);
+            
+        })
+        document.addEventListener('click', (e)=>{
+            if(e.target == modalBackground){
+                modal.style.display = 'none';
+                setDisplayCam(false);
+            }
+        })
+       
+        function removeModal(e){
+            if(e.key === 'Escape'){
+                modal.style.display= "none";
+            }
+        }
+
+        document.addEventListener('keydown', removeModal);
+  
+    }
+
+    function updateDisplayCam(){setDisplayCam(!displayCam)}
+
+    function getScanResult(result){
+        document.querySelector('#part-code').value = result;
+    }
+
     return(
-            <>
+        <>
             <div className="inventory-pick">
                 <form>
                     <fieldset className="ip-fieldset">
-                        <legend>Technician Info</legend>
+                        <legend>User Info</legend>
                         <div className="header">
                             <div className="header__name">
-                                <input id='first-name' type='text' title="First Name" placeholder="First Name" required maxLength="20" />
-                                <input id='last-name' type='text' title="Last Name" placeholder="Last Name" required maxLength="20" />
+                                <input id='first-name' type='text' title="First Name" placeholder="First Name" required maxLength="20" 
+                                {...(userData != '' ? {defaultValue: userFirstName} : {})}
+                                />
+                                <input id='last-name' type='text' title="Last Name" placeholder="Last Name" required maxLength="20" 
+                                {...(userData != '' ? {defaultValue: userLastName} : {})}
+                                />
                             </div>
                             <div>
-                                <input id='trade' type='text' title="Trade" placeholder="Trade" required maxLength="20"/>
+                                <input id='trade' type='text' title="Trade" placeholder="Trade" required maxLength="20"
+                                {...(userData != '' ? {defaultValue: userTrade} : {})}
+                                />
                             </div>
                             <div id="date">{formDate.toDateString()}</div>
                         </div>
@@ -197,22 +289,22 @@ function InventoryPick(){
                         <legend>Part Info</legend>
                         <div id="icon-boxes">
                             <div id="scan-reorder-comment">
-                                <button type="button" id="scan-btn" onClick={()=>{
-                                    alert('Item Scan --- currently unavailable.');
+                                <button type="button" id="scan-btn" title='Scan' onClick={()=>{
                                     document.querySelector('#scan-btn').blur();
+                                    showScannerModal();
                                 }}>
                                 </button> ..
-                                <button type="button" id="reorder-btn" onClick={()=>{
+                                <button type="button" id="reorder-btn" title='Re-order' onClick={()=>{
                                     setReorder(!reorder);
                                     document.querySelector('#reorder-btn').blur();
                                 }}>
                                 </button> ..
-                                {/* <button type="button" id="comment-btn" onClick={()=>{
+                                {/* <button type="button" id="comment-btn" title= 'Add Comment'onClick={()=>{
                                     alert('Add Comment --- currently unavailable.');
                                     document.querySelector('#comment-btn').blur();
                                 }}>
                                 </button> .. */}
-                                <button type="button" id="view-added-parts-btn" onClick={()=>{
+                                <button type="button" id="view-added-parts-btn" title='View Added Parts' onClick={()=>{
                                     showPartInfoModal();
                                     document.querySelector('#view-added-parts-btn').blur();
                                     }}>
@@ -296,6 +388,7 @@ function InventoryPick(){
                     </div>
                 </form>
                 <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
+                <ScannerModal displayCam={displayCam} updateDisplayCam={updateDisplayCam} getScanResult={getScanResult}/>
             </div>
         </>
     )

@@ -16,6 +16,7 @@ import Lgn from "./components/Lgn";
 import User from "./components/User";
 import Labels from "./components/Labels";
 import ErrorPage from "./components/ErrorPage";
+import Register from "./components/Register";
 
 import "./index.css";
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/label",
         element: <Labels />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
       {
         path: "/*",

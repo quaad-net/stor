@@ -1,0 +1,134 @@
+@keyframes slide-down{
+    from {top: -100vh}
+    to {top: 0vh}
+}
+
+.modal {
+    position: fixed; 
+    z-index: 1;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 100rem; 
+    max-height: 100%;
+    overflow: auto;
+}
+
+#scanner-modal{
+    display: none;
+    font-family: "DM Sans", sans-serif;
+    background-color: rgba(25, 25, 25, 0.584);
+    animation-name: slide-down;
+    animation-duration: 0.5s;
+    overflow-x: hidden;
+}
+
+.scanner-modal{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+.scanner-modal-data{
+    color: white;
+    width: 350px;
+    min-height: 350px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 50px;
+    background-color: rgb(90, 77, 0);
+    background-color: rgba(90, 77, 0, 0.899);
+    border: 1px solid transparent;
+    position: relative;
+    transition: opacity 1s;
+}
+
+.scanner-modal-data:hover{
+    border: 1px solid white;
+}
+
+.scanner-modal-row:first-of-type{
+    margin-top: 5px;
+}
+
+.scanner-modal-row{
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: left;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.scanner-modal-close{
+    position: relative;
+    float: right;
+    bottom: 30px;
+    color: white;
+    font-size: 28px;
+    font-weight:bolder;
+}
+
+.scanner-modal-close:hover,
+.scanner-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.scanner-modal-header{
+    margin-top:10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-weight: bolder;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+    background-color: rgb(68, 58, 0);
+}
+
+.scanner-modal-header, .scanner-modal-row{
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border: 1px solid gray; 
+}
+
+.scanner-modal-row:nth-of-type(even){
+    background-color: rgb(68, 58, 0);
+}
+
+.scanner-modal-row:nth-of-type(odd){
+    background-color: rgb(55, 48, 0);
+}
+
+
+.scanner-modal-row:hover{
+    border: 1px solid white
+}
+
+#scanner-done-btn{
+    margin: 0;
+    margin-top: 20px;
+    width: fit-content;
+    height: fit-content;
+    background: none;
+    color: white;
+    padding: 3px 5px;
+    border-radius: 5px;
+    border: 1px solid white;
+
+}
+
+#scanner-done-btn:hover, #scanner-done-btn:focus{
+    color: lightcoral;
+}
+
+
+@media(max-width:500px){
+    .scanner-modal-data{
+        width: 75%;
+    }
+}
