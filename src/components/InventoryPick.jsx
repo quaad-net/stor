@@ -249,6 +249,7 @@ function InventoryPick(){
         function removeModal(e){
             if(e.key === 'Escape'){
                 modal.style.display= "none";
+                setDisplayCam(false);
             }
         }
 
@@ -259,7 +260,10 @@ function InventoryPick(){
     function updateDisplayCam(){setDisplayCam(!displayCam)}
 
     function getScanResult(result){
+
         document.querySelector('#part-code').value = result;
+        document.querySelector('#part-code').focus();
+        document.querySelector('#part-code').blur();
     }
 
     return(
@@ -299,11 +303,6 @@ function InventoryPick(){
                                     document.querySelector('#reorder-btn').blur();
                                 }}>
                                 </button> ..
-                                {/* <button type="button" id="comment-btn" title= 'Add Comment'onClick={()=>{
-                                    alert('Add Comment --- currently unavailable.');
-                                    document.querySelector('#comment-btn').blur();
-                                }}>
-                                </button> .. */}
                                 <button type="button" id="view-added-parts-btn" title='View Added Parts' onClick={()=>{
                                     showPartInfoModal();
                                     document.querySelector('#view-added-parts-btn').blur();

@@ -1,32 +1,20 @@
 import { useState } from 'react';
-// import { QrReader } from 'react-qr-reader';
 import { Scanner } from '@yudiel/react-qr-scanner';
 
 export default function ScannerModal(props){
 
-    const [scanResult, setScanResult] = useState('00-0000');
+    const [scanResult, setScanResult] = useState('00-00000');
 
     function NewScan(){
 
         function Cam(){
             return (
                 <>
-                  {/* <QrReader
-                    onResult={(result, error) => {
-                      if (!!result) {
-                        setScanResult(result?.text);
-                      }
-            
-                      if (!!error) {
-                        // console.info(error);
-                      }
-                    }}
-                    style={{ width: '100%' }}
-                    constraints={{facingMode: {ideal: 'environment' }}}
-                  /> */}
                   <Scanner
-                    onResult={(result)=>{setScanResult(result)}}
-                    onError={(err)=>{console.log(err)}}
+                    onScan={(result)=>{
+                        setScanResult(result[0].rawValue);
+                    }}
+                    onError={(error)=>{console.log(error)}}
                     styles={{ width: '100%'}}
                     constraints={{facingMode: {ideal: 'environment' }}}
                   />
@@ -72,6 +60,7 @@ export default function ScannerModal(props){
                     <button id='scanner-done-btn'type='button' onClick={()=>{
                         props.updateDisplayCam();
                         props.getScanResult(scanResult);
+                        setScanResult("00-00000")
                         document.querySelector('#scanner-modal').style.display = 'none'
                     }}>
                         Done
