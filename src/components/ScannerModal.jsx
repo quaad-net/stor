@@ -21,7 +21,7 @@ export default function ScannerModal(props){
                       }
                     }}
                     style={{ width: '100%' }}
-                    constraints={{facingMode: 'user'}}
+                    constraints={{facingMode: {ideal: 'environment' }}}
                   />
                 </>
               )
