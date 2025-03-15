@@ -67,7 +67,7 @@ input:focus{
 #icon-boxes{
     width: fit-content;
     margin: auto;
-    background-color: rgba(91, 77, 0, 0.207);
+    /* background-color: rgba(91, 77, 0, 0.207); */
     border-radius: 5px;
     padding-bottom: 5px;
 }
@@ -90,10 +90,6 @@ input:focus{
     background: url("/delivery-handcart.svg") no-repeat center;
 }
 
-#comment-btn{
-    background: url("/chat-message.svg") no-repeat center;
-}
-
 #view-added-parts-btn{
     background: url("/list-white.svg") no-repeat center;
 }
@@ -103,7 +99,6 @@ input:focus{
     padding: 12.5px;
     border-radius: 5px;
     margin: 0 5px 0 5px;
-    border: none;
 }
 
 #scan-btn:hover, #reorder-btn:hover, #comment-btn:hover, #view-added-parts-btn:hover{
