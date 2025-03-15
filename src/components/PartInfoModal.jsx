@@ -86,11 +86,11 @@ export default function PartInfoModal(props){
                         <span className="part-info-modal-close">&times;</span>
                         <div className="part-info-modal-header">{currentPart.part} ({idx + 1} of {numParts})</div>
                         <span className="part-info-modal-rows">
-                            <div className="part-info-modal-row" id="part-modal-description">Description: {currentPart.description}</div>
-                            <div className="part-info-modal-row" id="part-modal-qty">Qty: {currentPart.qty}</div>
-                            <div className="part-info-modal-row" id="part-modal-unit">Unit: {currentPart.unit}</div>
-                            <div className="part-info-modal-row" id="part-modal-warehouse">Warehouse: {currentPart.warehouse}</div>
-                            <div className="part-info-modal-row" id="part-modal-workorder">Workorder: {currentPart.workorder}</div>
+                            <div className="part-info-modal-row" id="part-modal-description"><strong>Description:</strong> {currentPart.description}</div>
+                            <div className="part-info-modal-row" id="part-modal-qty"><strong>Qty:</strong> {currentPart.qty}</div>
+                            <div className="part-info-modal-row" id="part-modal-unit"><strong>Unit:</strong> {currentPart.unit}</div>
+                            <div className="part-info-modal-row" id="part-modal-warehouse"><strong>Warehouse:</strong> {currentPart.warehouse}</div>
+                            <div className="part-info-modal-row" id="part-modal-workorder"><strong>Workorder:</strong> {currentPart.workorder}</div>
                         </span>
                         <fieldset>
                                 <legend>

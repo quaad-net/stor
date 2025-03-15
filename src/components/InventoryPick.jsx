@@ -37,29 +37,29 @@ function InventoryPick(){
         return document.querySelector('#first-name').removeEventListener('change', (updateDatetime))
     },[])
 
-    // Fetches part records when partCode is entered in the form.
+    const fetchPartDetails = (partCode) =>{
+        fetch(`${apiUrl}/parts/${partCode}`, 
+        )
+        .then((res)=>{ 
+            if(res.status !== 200){throw new Error(res.status)}
+            else{return res.json()}
+        })
+        .then((res)=>{
+            document.querySelector('#description').value = res.description;
+            document.querySelector('#warehouse').value = res.warehouseCode;
+        })
+        .catch((err)=>{console.log(err)})
+    }
+
     useEffect(()=>{
 
         if(userAuthorized){
-
-            const fetchPartDetails = (partCode) =>{
-                fetch(`${apiUrl}/parts/${partCode}`, 
-                )
-                .then((res)=>{ 
-                    if(res.status !== 200){throw new Error(res.status)}
-                    else{return res.json()}
-                })
-                .then((res)=>{
-                    document.querySelector('#description').value = res.description;
-                    document.querySelector('#warehouse').value = res.warehouseCode;
-                })
-                .catch((err)=>{console.log(err)})
-            }
 
             const partCode = document.querySelector('#part-code')
             partCode.addEventListener('focusout', ()=>{
                 fetchPartDetails(partCode.value)
             })
+
             return partCode.removeEventListener('focusout', ()=>{
                 fetchPartDetails(partCode.value)
             })
@@ -297,12 +297,12 @@ function InventoryPick(){
                                     document.querySelector('#scan-btn').blur();
                                     showScannerModal();
                                 }}>
-                                </button> ..
+                                </button> <span className='ip-icon-dots'>..</span>
                                 <button type="button" id="reorder-btn" title='Re-order' onClick={()=>{
                                     setReorder(!reorder);
                                     document.querySelector('#reorder-btn').blur();
                                 }}>
-                                </button> ..
+                                </button> <span className='ip-icon-dots'>..</span>
                                 <button type="button" id="view-added-parts-btn" title='View Added Parts' onClick={()=>{
                                     showPartInfoModal();
                                     document.querySelector('#view-added-parts-btn').blur();
@@ -320,7 +320,21 @@ function InventoryPick(){
                                 <div id="reorder-selected">
                                 </div>
                                 <div id="part-and-description">
-                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required maxLength="20"/>
+                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required maxLength="20"
+                                    onKeyDown={(e)=>{ 
+                                        // Fetches part records when partCode is entered and "Enter" is pressed.
+                                        // // This is necessary since 'focusout' event is not currently fully supported on mobile web browsers.
+                                        if(e.key == 'Enter'){
+                                            e.preventDefault();
+                                            if(userAuthorized){
+                                                const partCode = document.querySelector('#part-code');
+                                                if(partCode.value !== ""){
+                                                    fetchPartDetails(partCode.value);
+                                                }
+                                            }
+                                        }
+                                    }}
+                                    />
                                     <input id='description' type='text' title="Description" placeholder="Description" required />
                                 </div>
                                 <div id="part-qtys">

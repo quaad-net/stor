@@ -16,6 +16,7 @@ import Lgn from "./components/Lgn";
 import User from "./components/User";
 import Labels from "./components/Labels";
 import ErrorPage from "./components/ErrorPage";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Register from "./components/Register";
 
 import "./index.css";
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorBoundary/>,
     children: [
       {
         path: "/lgn",

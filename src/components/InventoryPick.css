@@ -78,6 +78,10 @@ input:focus{
     border-radius: 3px;
 }
 
+.ip-icon-dots{
+    color: gray;
+}
+
 #scan-btn{
     background: url("/qr-code-white.svg") no-repeat center;
 }
