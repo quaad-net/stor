@@ -113,9 +113,8 @@ export default function AppropiateNav(props){
         {/* mobileView currently has the same attribute names. Uncomment below and replace "<div className="nav-menu">" for unique mobile styling. */}
         {/* <div {...(mobileView? {className: 'mb-nav-menu'}:{className:"nav-menu"})}> */}
         <div className="nav-menu">
-          <button 
+          <button
             type="button" 
-            title="Menu" 
             alt="Menu" 
             id="menu-icon-btn" 
             onClick={()=>{
@@ -126,7 +125,7 @@ export default function AppropiateNav(props){
         </div>
         <div className="nav-icon-container">
           <fieldset className='nav-icon-main-fieldset'>
-            <legend><img id="nav-icon-main" src="/maze-logo.svg" width="50px" /></legend>
+            <legend><img id="nav-icon-main" src="/maze-logo.svg" width="50px" style={{margin: '10px' }} /></legend>
           </fieldset>
         </div>
       </div>

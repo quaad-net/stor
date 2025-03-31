@@ -1,0 +1,21 @@
+.inventory-mobile-drawer{
+    display: none;
+}
+
+.inventory-mobile-drawer-styled-box{
+    display: none;
+}
+
+@media (max-width: 899px){
+
+}
+
+@media(max-width: 500px){
+    .inventory-mobile-drawer{
+        display: block;
+    }
+
+    .inventory-mobile-drawer-styled-box{
+        display: block;
+    }
+}

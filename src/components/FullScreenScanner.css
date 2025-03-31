@@ -1,0 +1,11 @@
+.fullscreen-scanner{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media(max-width: 750px ){
+    .fullscreen-scanner{
+        width: 100%;
+    }
+}

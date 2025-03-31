@@ -31,7 +31,7 @@ export default function Lgn(){
 
         function loginRequest(){
 
-            const email = document.querySelector('#user').value.trim();
+            const email = document.querySelector('#user').value.toLowerCase().trim();
             fetch(`${apiUrl}/login`, 
                 {
                     method: "POST",

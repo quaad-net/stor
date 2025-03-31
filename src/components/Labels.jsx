@@ -150,6 +150,7 @@ export default function Labels() {
                     if(res.status == 401){throw new Error('Unauthorized user')}
                     else if(res.status == 404){throw new Error('Cannot run query')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
+                    else if(res.status == 500){throw new Error('Something went wrong')}
                     else{
                         return res.json()
                     }
@@ -185,6 +186,7 @@ export default function Labels() {
                     if(res.status == 401){throw new Error('Unauthorized user')}
                     else if(res.status == 404){throw new Error('Cannot run query')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
+                    else if(res.status == 500){throw new Error('Something went wrong')}
                     else{
                         return res.json()
                     }

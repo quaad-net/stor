@@ -1,11 +1,10 @@
 import './InventoryPick.css';
 import { useState, useEffect } from 'react';
-import PartInfoModal from './PartInfoModal';
 import useUserData from '../../app/useUserData';
-const apiUrl = import.meta.env.VITE_API_URL;
-import useAuth from '../../app/useAuth';
-import ScannerModal from './ScannerModal';
 import './ScannerModal.css'
+import SidebarTools from './SidebarTools';
+import UserFormDialog from './UserFormDialog';
+import InventoryPickActions from './InventoryPickActions';
 
 function InventoryPick(){
 
@@ -15,71 +14,63 @@ function InventoryPick(){
     const {userData} = useUserData();
     const [userAuthorized, setUserAuthorized] = useState(false);
     const [displayCam, setDisplayCam] = useState(false);
+    const [pickUserFirstName, setPickUserFirstName] = useState('');
+    const [pickUserLastName, setPickUserLastName] = useState('');
+    const [pickUserTrade, setPickUserTrade] = useState('');
+    const [multiParts, setMultiParts] = useState(false);
+    const [partsAdded, setPartsAdded] = useState(false);
+    const [idx, setIdx] = useState(0);  // Used to maintain/sychronize view of part detail across UI.
+    const [sidebarHeight, setSidebarHeight] = useState('435px');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
-    useAuth().then((res)=>{
-        if(res.authorized){setUserAuthorized(true)}
-    },[])
-
-    let userFirstName, userLastName, userTrade;
-    if(userData != ''){
-        const userProps = JSON.parse(userData);
-        userFirstName = userProps.firstName;
-        userLastName = userProps.lastName;
-        userTrade = userProps?.trade || userProps?.position;
-    }
+    useEffect(()=>{setPartsAdded(partInfo.length > 0)});
+    useEffect(()=>{setMultiParts(partInfo.length > 1)});
+    useEffect(()=>{
+        // Note: isEditing is used to prevent effect from setting idx (this allows the UI view to remain on the same part)
+        // after editing part details using <InventoryPickActions/> => <PickUpdate/>.
+        // isEditing also needs to be set to false when adding a new part right after editing a part,
+        // which is done in <InventoryPickActions/> => <PickAdd/>
+        if(!isEditing){ 
+            if(partInfo.length > 0){setIdx(partInfo.length -1)}; // prev: partInfo[partInfo.length-1] !== undefined
+            if(partInfo.length == 0){setIdx(0)}
+        }
+        else{
+            setIsEditing(false);
+        }
+    },[partInfo.length])
     
     useEffect(()=>{
-        const updateDatetime = () =>{
-            const dt = new Date();
-            setFormDate(dt);
+        if(userData != ''){
+            const userProps = JSON.parse(userData);
+            setPickUserFirstName(userProps.firstName?.toUpperCase());
+            setPickUserLastName(userProps.lastName?.toUpperCase());
+            setPickUserTrade(userProps?.trade || userProps?.position)
         }
-        document.querySelector('#first-name').addEventListener('change', (updateDatetime))
-        return document.querySelector('#first-name').removeEventListener('change', (updateDatetime))
-    },[])
-
-    const fetchPartDetails = (partCode) =>{
-        fetch(`${apiUrl}/parts/${partCode}`, 
-        )
-        .then((res)=>{ 
-            if(res.status !== 200){throw new Error(res.status)}
-            else{return res.json()}
-        })
-        .then((res)=>{
-            document.querySelector('#description').value = res.description;
-            document.querySelector('#warehouse').value = res.warehouseCode;
-        })
-        .catch((err)=>{console.log(err)})
-    }
-
-    useEffect(()=>{
-
-        if(userAuthorized){
-
-            const partCode = document.querySelector('#part-code')
-            partCode.addEventListener('focusout', ()=>{
-                fetchPartDetails(partCode.value)
-            })
-
-            return partCode.removeEventListener('focusout', ()=>{
-                fetchPartDetails(partCode.value)
-            })
-
+        else{
+            setPickUserFirstName('Guest');
+            setPickUserLastName('User');
+            setPickUserTrade('Dept 0000')
         }
-    },[userAuthorized])
+    }, [])
 
-    function removePart(id){
+    function removePart(index){
 
-        const modal = document.querySelector('#part-info-modal');
         const updatedPartInfo = [];
+        let deletedPart; 
         partInfo.map((p)=>{
-            if(p.id !== id){
-                updatedPartInfo.push(p)
+            if(p.id != `added-part-${index}`){
+                const newPartDetails = {...p, id: `added-part-${updatedPartInfo.length}`}
+                updatedPartInfo.push(newPartDetails)
+            }
+            else{
+                deletedPart = {...p}
             }
         })
+        setIsEditing(false)
         setPartInfo(updatedPartInfo);
-        alert('Part Removed');
-        modal.style.display = 'none';
-
+        setIdx(0)
+        alert(`Part ${deletedPart.part} Removed`);
     }
 
     function showPartInfoModal(){
@@ -115,87 +106,46 @@ function InventoryPick(){
         clearInvalids();
     }
 
-    function addPartHist(partCode){
-        const part = partCode;
-        if(part !== ''){
-            const fName = document.querySelector('#first-name').value.trim();
-            const lName = document.querySelector('#last-name').value.trim();
-            const trade = document.querySelector('#trade').value.trim();
-            const tmpDesc = document.querySelector('#description').value.toString().trim();
-            let description;
-            if(tmpDesc.length > 35){description = tmpDesc.substring(0, 34) + '...'}
-            else{description = tmpDesc};
-            const qty = document.querySelector('#quantity').value.trim();
-            const unit = document.querySelector('#unit').value.trim();
-            const warehouse = document.querySelector('#warehouse').value.trim();
-            const woNo = document.querySelector('#wo-no').value.trim();
-            const key = partInfo.length;
-            const id = `added-part-${key}`;
-            const reorderAmt = document.querySelector("#reorder-amt").value.trim();
-            const partInfoArr = [
-                ...partInfo, 
-                {
-                    part: part,
-                    id: id,
-                    description: description,
-                    qty: qty,
-                    unit: unit,
-                    warehouse: warehouse,
-                    workorder: woNo,
-                    reorder: reorder,
-                    reorderAmt: reorderAmt,
-                    technicianInfo :
-                        {
-                            firstName: fName,
-                            lastName: lName,
-                            trade: trade,
-                            date: formDate.toDateString(),
-                        }
-                }
-            ];
-            setPartInfo(partInfoArr);
-            document.querySelector('#part-code').value = '';
-            document.querySelector('#description').value = '';
-            document.querySelector('#quantity').value = '';
-            document.querySelector('#unit').value = '';
-            setReorder(false);
-            async => {
-                document.querySelector('#warehouse').value = partInfo[partInfo.length -1].warehouse;
-                document.querySelector('#wo-no').value = partInfo[partInfo.length -1].workorder;
+    function addPartHist(partDetails){
+        const part = partDetails.partCode;
+        const fName = pickUserFirstName;
+        const lName = pickUserLastName;
+        const trade = pickUserTrade;
+        const tmpDesc = partDetails.description;
+        let description;
+        if(tmpDesc.length > 35){description = tmpDesc.substring(0, 34) + '...'}
+        else{description = tmpDesc};
+        const qty = partDetails.qty;
+        const unit = partDetails.unit;
+        const warehouse = partDetails.warehouse;
+        const woNo = partDetails.workorder;
+        const reorder = partDetails.reorder;
+        const reorderAmt = partDetails?.reorderAmt;
+        const key = partInfo.length;
+        const id = `added-part-${key}`;
+        const partInfoArr = [
+            ...partInfo, 
+            {
+                part: part,
+                id: id,
+                description: description,
+                qty: qty,
+                unit: unit,
+                warehouse: warehouse,
+                workorder: woNo,
+                reorder: reorder,
+                reorderAmt: reorderAmt,
+                technicianInfo :
+                    {
+                        firstName: fName,
+                        lastName: lName,
+                        trade: trade,
+                        date: formDate.toDateString(),
+                    }
             }
-        } 
-    }
-
-    function ReOrder(){
-
-        if(reorder){
-            return(
-                <>
-                    <input type="checkbox" id="reorder-chkbx" name="reorder" checked readOnly/>
-                    <label htmlFor="reorder" id="reorder-lbl">Re-order</label>
-                </>
-            )
-        }
-        else{
-            return(
-                <>
-                    <div id="no-reorder-stand-in">&nbsp;</div>
-                </>
-            )
-        }
-    }
-
-    function ReOrderAmt(){
-        return(
-            <>
-                <input id='reorder-amt' 
-                    type='text' 
-                    title="Reorder Qty" 
-                    {...(reorder ? {placeholder: 'ReOrdQty' } : {defaultValue:"NoReOrd", readOnly: true})}
-                    maxLength='10'
-                />
-            </>
-        )
+        ];
+        
+        setPartInfo(partInfoArr);
     }
 
     function showInValids(){
@@ -257,151 +207,142 @@ function InventoryPick(){
   
     }
 
-    function updateDisplayCam(){setDisplayCam(!displayCam)}
+    // function updateDisplayCam(){setDisplayCam(!displayCam)}
 
-    function getScanResult(result){
+    // function getScanResult(result){
 
-        document.querySelector('#part-code').value = result;
-        document.querySelector('#part-code').focus();
-        document.querySelector('#part-code').blur();
+    //     document.querySelector('#part-code').value = result;
+    //     document.querySelector('#part-code').focus();
+    //     document.querySelector('#part-code').blur();
+    // }
+
+    function userFormDialogSubmit({ firstName, lastName, dept}){
+        setPickUserFirstName(firstName);
+        setPickUserLastName(lastName);
+        setPickUserTrade(dept);
+    }
+
+    function setIdxNext(){
+        const hasNext = partInfo[idx + 1] !== undefined
+        if(hasNext){
+            setIdx(idx + 1)
+        }
+        else{setIdx(0)}
+    }
+
+    function setIdxPrev(){
+        const hasPrev = partInfo[idx - 1] !== undefined
+        if(hasPrev){
+            setIdx(idx - 1)
+        }
+        else{setIdx(partInfo.length - 1)}
+    }
+
+    function updateIdx(index){
+        setIdx(index)
+    }
+
+    function PartView(){
+
+        const addedParts = partInfo.length > 0;
+
+        const tools = [
+            {
+                id: 'ip-added-parts-list-icon',
+                onclick: (e)=>{
+                    e.preventDefault();
+                    document.querySelector('#ip-added-parts-list-icon').blur();
+                },
+                img: '/list-white.svg',
+            },
+        ]
+
+        function ShowReorder(){
+
+            const ReorderIcon = () =>{
+                return(
+                    <>
+                        <div style={{float: 'right', marginRight: '10px'}}>
+                            <span>{partInfo[idx]?.reorderAmt}</span>
+                            <img src ='/added-to-cart.svg'/>
+                        </div>
+                    </>
+                )
+            }
+
+            return(
+                <>{partInfo[idx]?.reorder === true ? <ReorderIcon/> : <></> }</>
+            )
+
+        }
+
+        return(
+            <fieldset className="ip-fieldset" id="ip-fieldset-2" style={{marginTop: '10px'}}>
+                <legend>< img src='/four-square.svg'/></legend>
+                <SidebarTools tools={tools} height={sidebarHeight} partInfo={partInfo} updateIdx={updateIdx} idx={idx}/>
+                <div><ShowReorder/></div>
+                <div id='ip-part-details'>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Part Code</div>
+                        <h3 className='part-detail-value' id='part-code'>{partInfo.length > 0 ? partInfo[idx].part: '00-00000'}</h3>
+                    </div>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Description</div>
+                        <h3 className='part-detail-value' id='description'>{partInfo.length > 0 ? partInfo[idx].description: 'ABC XYZ 000 111'}</h3>
+                    </div>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Quantity</div>
+                        <h3 className='part-detail-value' id='quantity'>{partInfo.length > 0 ? partInfo[idx].qty: '00'}</h3>
+                    </div>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Unit</div>
+                        <h3 className='part-detail-value' id='unit'>{partInfo.length > 0 ? partInfo[idx].unit: 'EA'}</h3>
+                    </div>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Warehouse</div>
+                        <h3 className='part-detail-value' id='warehouse'>{partInfo.length > 0 ? partInfo[idx].warehouse: 'NWQ-0000'}</h3>
+                    </div>
+                    <div className='ip-part-detail'>
+                        <div style={{color: 'gray'}}>Workorder No.</div>
+                        <h3 className='part-detail-value' id='wo-no'>{partInfo.length > 0 ? partInfo[idx].workorder: 'FS-00000'}</h3>
+                    </div>
+                    {partInfo.length>0 ? <Delete/> : <></>}
+                </div>
+            </fieldset>
+        )
+    }
+
+    function Delete(){
+        return(
+        <div>
+            <img style={{float: 'left', marginRight: '20px'}} className='ip-delete' src='/delete.svg' onClick={()=>{removePart(idx)}}/>
+        </div>)
     }
 
     return(
         <>
             <div className="inventory-pick">
-                <form>
-                    <fieldset className="ip-fieldset">
-                        <legend>User Info</legend>
-                        <div className="header">
-                            <div className="header__name">
-                                <input id='first-name' type='text' title="First Name" placeholder="First Name" required maxLength="20" 
-                                {...(userData != '' ? {defaultValue: userFirstName} : {})}
-                                />
-                                <input id='last-name' type='text' title="Last Name" placeholder="Last Name" required maxLength="20" 
-                                {...(userData != '' ? {defaultValue: userLastName} : {})}
-                                />
-                            </div>
-                            <div>
-                                <input id='trade' type='text' title="Trade" placeholder="Trade" required maxLength="20"
-                                {...(userData != '' ? {defaultValue: userTrade} : {})}
-                                />
-                            </div>
-                            <div id="date">{formDate.toDateString()}</div>
+                <form id="ip-form"> 
+                    <fieldset className="ip-fieldset" style={{paddingBottom: '10px'}}>
+                        <legend><img src='/user-small.svg'/></legend>
+                        <div>
+                            <UserFormDialog userFormDialogSubmit={userFormDialogSubmit}/>
+                            <div  style={{margin: '5px', color: 'gray'}}>User</div>
+                            <h2 id='user-name' style={{margin: '5px'}}>{pickUserFirstName +' '+ pickUserLastName}</h2>
+                            <div style={{margin: '5px', color: 'gray'}}>{pickUserTrade}</div>
                         </div>
                     </fieldset>
-                    <fieldset className="ip-fieldset" id="ip-fieldset-2">
-                        <legend>Part Info</legend>
-                        <div id="icon-boxes">
-                            <div id="scan-reorder-comment">
-                                <button type="button" id="scan-btn" title='Scan' onClick={()=>{
-                                    document.querySelector('#scan-btn').blur();
-                                    showScannerModal();
-                                }}>
-                                </button> <span className='ip-icon-dots'>..</span>
-                                <button type="button" id="reorder-btn" title='Re-order' onClick={()=>{
-                                    setReorder(!reorder);
-                                    document.querySelector('#reorder-btn').blur();
-                                }}>
-                                </button> <span className='ip-icon-dots'>..</span>
-                                <button type="button" id="view-added-parts-btn" title='View Added Parts' onClick={()=>{
-                                    showPartInfoModal();
-                                    document.querySelector('#view-added-parts-btn').blur();
-                                    }}>
-                                </button> 
-                            </div>
-                        </div>
-                        <div id="reorder-div">
-                            <div id="reorder-content">
-                                <ReOrder/>
-                            </div>
-                        </div>
-                        <div className="item-details">
-                            <div className='section1'>
-                                <div id="reorder-selected">
-                                </div>
-                                <div id="part-and-description">
-                                    <input id='part-code' type='text' title="Part Code" placeholder="PartNo" required maxLength="20"
-                                    onKeyDown={(e)=>{ 
-                                        // Fetches part records when partCode is entered and "Enter" is pressed.
-                                        // // This is necessary since 'focusout' event is not currently fully supported on mobile web browsers.
-                                        if(e.key == 'Enter'){
-                                            e.preventDefault();
-                                            if(userAuthorized){
-                                                const partCode = document.querySelector('#part-code');
-                                                if(partCode.value !== ""){
-                                                    fetchPartDetails(partCode.value);
-                                                }
-                                            }
-                                        }
-                                    }}
-                                    />
-                                    <input id='description' type='text' title="Description" placeholder="Description" required />
-                                </div>
-                                <div id="part-qtys">
-                                    <input id='quantity' type='text' title="Quantity" placeholder="QtyUsed" required maxLength="6" />
-                                    <input id='unit' type='text' title="Unit" placeholder="Unit"required maxLength="6"/>
-                                    <ReOrderAmt/>
-                                </div>
-                            </div>
-                            <div className="section2">
-                                <input id='warehouse' 
-                                    type='text' 
-                                    title="Warehouse" 
-                                    placeholder="Warehouse"
-                                    required
-                                    maxLength="20"
-                                />
-                                <input 
-                                    id='wo-no' 
-                                    type='text' 
-                                    title="Workorder No." 
-                                    placeholder="WorkOrder" 
-                                    required
-                                    maxLength="20"
-                                />
-                            </div>
-                        </div>
-                    </fieldset>
-                    <div id="part-info"></div>
-                    <div className='form-submit-btns'>
-                        <button type="submit" id="inventory-pick-add-btn" className="add-btn" onClick={(e)=> {
-                            e.preventDefault();
-                            document.querySelector('#inventory-pick-add-btn').blur();
-                            const part = document.querySelector('#part-code').value;
-                            const form = document.querySelector('form')
-                            if(form.checkValidity()){
-                                showInValids();
-                                addPartHist(part);
-                                alert(`Part ${part} added.`)
-                            }
-                            else{ 
-                                showInValids();
-                                alert('Please fill out all fields.')
-                            }
-                        }}>
-                            Add
-                        </button>
-                        <button type="button" id="inventory-pick-clear-btn" className="clear-btn" onClick={()=>{
-                            document.querySelector('#inventory-pick-clear-btn').blur();
-                            const clear = confirm('Clear form?');
-                            if(clear){
-                                document.querySelector('form').reset();
-                                clearInvalids();
-
-                            }
-                            setReorder(false);
-                        }}>Clear
-                        </button>
-                        <button type="button" id="inventory-pick-submit-btn" className="submit-btn" onClick={()=>{
-                            document.querySelector('#inventory-pick-submit-btn').blur();
-                            showPartInfoModal()
-                            }}>
-                            Submit
-                        </button>
-                    </div>
+                    <PartView/>
+                    <InventoryPickActions
+                        setIsEditing={setIsEditing} 
+                        setPartInfo={setPartInfo}
+                        idx={idx} 
+                        partInfo={partInfo} 
+                        addPartHist={addPartHist} multiParts={multiParts} 
+                        setIdxPrev={setIdxPrev} 
+                        setIdxNext={setIdxNext}
+                    />
                 </form>
-                <PartInfoModal parts={partInfo} removePart={removePart} modalSubmit={modalSubmit}/>
-                <ScannerModal displayCam={displayCam} updateDisplayCam={updateDisplayCam} getScanResult={getScanResult}/>
             </div>
         </>
     )

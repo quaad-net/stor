@@ -1,8 +1,3 @@
-.StorDataGridContainer{
-    display: flex;
-    flex-direction: column;
-    /*setting max-height allows the DataGrid row virtualization to improve 
-    performance by limiting the number of elements rendered in the DOM*/
-    max-height: 400px;
+.MuiDataGrid-cell, .MuiDataGrid-selectedRowCount, .MuiTablePagination-selectLabel, .MuiToolbar-root{
+    color: white
 }
-

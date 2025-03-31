@@ -8,25 +8,6 @@ legend{
     color: whitesmoke;
 }
 
-input{
-    all: unset;
-    box-sizing: border-box;
-    height: 50px;
-    color: grey;
-    font-size: large;
-    text-align: left;
-    padding-left: 10px;
-    margin: 1px;
-    border-bottom: 1px solid gold;
-    background-color: none;
-    border-radius: 2px;
-    transition: border-color 0.5s;
-}
-
-input:focus{
-    color: white;
-}
-
 .email-pass{
     display: inline;
 }

@@ -2,206 +2,49 @@
     border: 1px solid gray;
     border-radius: 2px;
     text-align: left;
+    padding-left: 0;
+    min-width: 300px;
+    max-width: 700px;
 }
 
-legend{
-    color: whitesmoke;
+#ip-fieldset-2{
+    min-height: 475px;
+    max-height: 475px;
+    overflow-y: auto;
 }
-
-.item-details input, .header input{
-    all: unset;
-    box-sizing: border-box;
-    height: 50px;
-    color: grey;
-    font-size: large;
-    text-align: left;
-    padding-left: 10px;
-    margin: 1px;
-    border-bottom: 1px solid gold;
-    background-color: none;
-    border-radius: 2px;
-    transition: border-color 0.5s;
-}
-
-input:focus{
-    color: white;
-}
-
-.header__name{
-    display: flex;
-}
-
-.header__name input{
-    width: 100%;
-}
-
 
 #first-name, #last-name{
     text-transform: capitalize;
 }
 
-#trade{
-    box-sizing: border-box;
-    height: 50px;
-    width: 100%;
-    font-size: large;
-    text-align: left;
-    padding-left: 10px;
-    margin: 1px;
-}
-
-#date{
-    box-sizing: border-box;
-    height: 50px;
-    color: gray;
-    font-size: large;
-    text-align: left;
-    padding-top: 10px;
-    padding-left: 10px;
-    margin: 1px;
-    border-radius: 2px;
-    border-bottom: 2px solid trans;
-    background-color: none;
-}
-
-#icon-boxes{
-    width: fit-content;
-    margin: auto;
-    /* background-color: rgba(91, 77, 0, 0.207); */
-    border-radius: 5px;
-    padding-bottom: 5px;
-}
-
-#scan-reorder-comment{ /* Entire section */
+#ip-part-details{
     display: inline;
-    border: 1px solid transparent;
-    border-radius: 3px;
-}
-
-.ip-icon-dots{
-    color: gray;
-}
-
-#scan-btn{
-    background: url("/qr-code-white.svg") no-repeat center;
-}
-
-#reorder-btn{
-    background: url("/delivery-handcart.svg") no-repeat center;
-}
-
-#view-added-parts-btn{
-    background: url("/list-white.svg") no-repeat center;
-}
-
-#scan-btn, #reorder-btn, #comment-btn, #view-added-parts-btn{
-    background-size: 25px;
-    padding: 12.5px;
-    border-radius: 5px;
-    margin: 0 5px 0 5px;
-}
-
-#scan-btn:hover, #reorder-btn:hover, #comment-btn:hover, #view-added-parts-btn:hover{
-    background-color: rgb(20, 20, 20);
-    cursor: pointer;
-}
-
-#scan-btn:focus, #reorder-btn:focus, #comment-btn:focus, #view-added-parts-btn:focus{
-    background-color: rgb(20, 20, 20);;
-}
-
-
-.section1 input, .section2 input{
-    border-right: 1px solid gray;
-    width: 100%;
-}
-
-#part-and-description{
-    display: flex;
-}
-
-#part-code{
-    width: 25%;
 }
 
 #description{
-    width: 75%;
+    word-break: break-all;
+    line-break: anywhere;
 }
 
-#part-qtys{
-    display: flex;
-    flex-direction: row;
+.ip-part-detail{
+    margin: 20px;
 }
 
-#quantity, #unit, #reorder-amt{
-    width: 1fr;
+.ip-part-detail h3{
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-#reorder-amt{
-    border-right: 0;
-}
-
-.section2{
-    display: flex;
-    flex-direction: row;
-}
-
-#reorder-content{
-    height: 10px; 
-    margin-bottom: 15px;
-}
-
-#reorder-chkbx{
-    height: 10px;
-}
-
-#reorder-lbl{
-    font-size: small;
-}
-
-#no-reorder-stand-in{
-    font-size: small;
-    color: transparent;
-}
-
-input[type="checkbox"]:checked {
-    background: url("/checkmark.svg") no-repeat left;
-    background-size: 10px;
-    border: 0;
-}
-
-#inventory-pick-add-btn, #inventory-pick-clear-btn, #inventory-pick-submit-btn{
-    width: 75px;
-    margin-top: 15px;
-    margin-left: 10px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    font-family: "DM Sans", sans-serif;
-    font-size: small;
-    background-color: transparent;
-    border-radius: 7px;
-    border-bottom-left-radius: 0;
-    padding: 5px;
-    color: var(--form-btn-text-color);
-    transition: color 0.5s;
-}
-
-#inventory-pick-add-btn:hover, 
-#inventory-pick-clear-btn:hover,
- #inventory-pick-submit-btn:hover{   
+.ip-delete:hover, .ip-edit:hover{
     cursor: pointer;
-    color: gold
-}
-
-#inventory-pick-add-btn:focus,
-#inventory-pick-clear-btn:focus,
-#inventory-pick-submit-btn:focus{   
-    color: gold;
 }
 
 @media(max-width: 750px) {
 
-    .section1 input, .section2 input{
-        width: 100%;
+    .ip-form{
+        width: 85vw;
+        margin: auto;
     }
+
 }
