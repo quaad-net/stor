@@ -16,7 +16,7 @@ export default function Lgn(){
     
     useEffect(()=>{
         if(user != ''){
-            navigate("/user",{ 
+            navigate("/inventory",{ 
                 state: {
                     authorized: true,
                     email: user,

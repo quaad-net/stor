@@ -12,7 +12,7 @@ import App from "./App";
 // import Problem from "./components/Problem";
 // import Receive from "./components/Receive";
 // import Browse from "./components/Browse";
-// import Lgn from "./components/Lgn";
+import Lgn from "./components/Lgn";
 // import User from "./components/User";
 // import Labels from "./components/Labels";
 import ErrorPage from "./components/ErrorPage";
@@ -33,10 +33,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorBoundary/>,
     children: [
-      // {
-      //   path: "/lgn",
-      //   element: <Lgn />,  
-      // },
+      {
+        path: "/lgn",
+        element: <Lgn />,  
+      },
       // {
       //   path: "/pick",
       //   element: <InventoryPick />,

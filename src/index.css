@@ -4,6 +4,10 @@
   --stor-gold: linear-gradient(to right, #bf953f, #b38728, #aa771c);
 }
 
+/* *{
+  font-family: "DM Sans", sans-serif;
+} */
+
 .stor-input{
   all: unset;
   box-sizing: border-box;

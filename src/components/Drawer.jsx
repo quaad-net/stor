@@ -76,7 +76,7 @@ function SwipeableEdgeDrawer(props) {
         <div><strong>active:</strong> {props.listSelectionDetail?.active}</div>
         <div><strong>fy14Expn:</strong> {props.listSelectionDetail?.fy14Expn}</div>
         <div><strong>invtAvail:</strong> {props.listSelectionDetail?.invtAvail}</div>
-        <div><strong>lastPODate:</strong> {props.listSelectionDetail?.lastPODate}</div>
+        <div><strong>lastPODate:</strong> (props.listSelectionDetail?.lastPODate)</div>
         <div><strong>min:</strong> {props.listSelectionDetail?.min}</div>
         <div><strong>max:</strong> {props.listSelectionDetail?.max}</div>
         <div><strong>vendorName:</strong> {props.listSelectionDetail?.vendorName}</div>

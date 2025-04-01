@@ -47,6 +47,7 @@
 }
 
 .comment-modal-comment{
+    color: black;
     font-family: "DM Sans", sans-serif;
     border-radius: 5px;
     font-size: large;
@@ -58,6 +59,7 @@
     min-height: 275px;
     max-height: 275px;
     width: 250px;
+    max-width: 250px;
     padding: 20px;
     padding-top: 5px;
 }

@@ -112,12 +112,12 @@ function CommentModal(props){
                             >
                             </textarea>
                             <div style={{marginLeft: '70px'}}>
-                                <IconButton sx={{color: 'white', marginRight: '20px'}} onClick={()=>{
+                                <IconButton disableRipple sx={{color: 'white', marginRight: '20px'}}  onClick={()=>{
                                     document.querySelector('textarea').value = ''
                                 }} >
                                     <PlaylistRemoveOutlinedIcon fontSize='large'/>
                                 </IconButton >
-                                <IconButton sx={{color: 'white'}} onClick={()=>{
+                                <IconButton disableRipple sx={{color: 'white'}} onClick={()=>{
                                     props.setUserComment(comment);
                                     document.querySelector('#comment-modal').style.display = 'none'
                                 }} >

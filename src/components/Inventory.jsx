@@ -14,10 +14,6 @@ import { IconButton } from '@mui/material';
 import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
 // import PaginationRounded from './PaginationRounded';
-import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
-import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import CommentModal from './CommentModal';
 
 import './Inventory.css'
 
@@ -367,6 +363,17 @@ export default function Inventory() {
         const [userComment, setUserComment] = React.useState('');
         const [userQty, setUserQty] = React.useState('');
 
+        React.useEffect(()=>{
+            const focusOnCommentImg = document.querySelector('.inventory-focus-on-comment');
+            const commentBox = document.querySelector('.inventory-comment-box');
+            focusOnCommentImg.addEventListener('click', ()=>{
+                commentBox.focus()
+            })
+            return focusOnCommentImg.addEventListener('click', ()=>{
+                commentBox.focus()
+            })
+        }, [])
+
         function submitUserInput(){
 
             const parts = [...partListItems];
@@ -401,7 +408,7 @@ export default function Inventory() {
             }
             else{alert('Please enter a number.')}
         }
-    
+
         function CompletedCountCheck(){
             return <img width='20px' src='/circled-check-red.svg'/>
         }
@@ -420,34 +427,62 @@ export default function Inventory() {
                     ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={()=>{
                         setIdxPrev();
                     }}>
-                        <ArrowCircleLeftRoundedIcon fontSize='large' />
+                        {/* <ArrowCircleLeftRoundedIcon fontSize='medium' /> */}
+                        <img src='/left-circled-arrow.svg' width='35px'/>
                     </IconButton>
                     <IconButton sx={{color: 'white', marginRight: '25px', 
                         ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={submitUserInput}>
-                        <CheckCircleRoundedIcon fontSize='large'/>
+                        {/* <CheckCircleRoundedIcon fontSize='medium'/> */}
+                        <img src='/circled-check.svg' width='35px'/>
                     </IconButton>
                     <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
                     }}>
-                        <ArrowCircleRightRoundedIcon fontSize='large'/>
+                        {/* <ArrowCircleRightRoundedIcon fontSize='medium'/> */}
+                        <img src='/right-circled-arrow.svg' width='35px'/>
                     </IconButton>
                 </div>  
                 <br/>
                 <div>
-                    <label style={{marginLeft: '10px'}} htmlFor="inventory-user-qty-input"><i>Qty Avail:</i></label><br/>
+                    {/* <label style={{marginLeft: '10px'}} htmlFor="inventory-user-qty-input"><i>Qty Avail:</i></label><br/>
                     <input 
                         className="stor-input"
                         style={{paddingLeft: 5, width: 75, marginLeft: '10px', ...(props?.mobileView ? {borderColor: 'white'} : {})}} 
                         name="inventory-user-qty-input" 
                         id='inventory-user-qty-input'
                         onChange={(e)=>{setUserQty(e.target.value)}}
-                    />
-                    <CommentModal
-                        mobileView={props?.mobileView}
-                        setUserComment={setUserComment}
-                    />
+                    /> */}
+                    <fieldset 
+                        style={{
+                            width: 'fit-content', 
+                            height: 'fit-content', 
+                            borderRadius: '5px',
+                            ...(props?.mobileView ? {marginLeft: '10px'} : {}),
+                        }}>
+                        <legend>Qty Avail</legend>
+                        <input 
+                            maxLength={10}
+                            style={{      
+                                border: 'none', 
+                                fontFamily: `"DM Sans", sans-serif`, 
+                                fontSize: 'large',
+                                backgroundColor: 'transparent',
+                                color: 'white',
+                                width: '75px',
+                                maxWidth: '100px',
+                                height: 'fit-content'
+                            }}
+                            name="inventory-user-qty-input" 
+                            id='inventory-user-qty-input'
+                            onChange={(e)=>{setUserQty(e.target.value)}}
+                        />
+                    </fieldset>
+                    <IconButton className='inventory-focus-on-comment' sx={{marginLeft: '5px'}} disableRipple onClick={()=>{
+                        // document.querySelector('.inventory-comment-box').focus();
+                    }} >
+                        <img src='/round-message.svg' width='25px'/>
+                    </IconButton>
                 </div>
-                <br/>
                 {/* {props?.mobileView ? <br/> : <></>} */}
                 <div style={{fontSize: '20px', 
                     ...(props?.mobileView ? {width: '200px', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
@@ -461,6 +496,41 @@ export default function Inventory() {
                 <div style={{...(props?.mobileView ? 
                     {width: '300px', paddingLeft: '10px'} : {})}}><strong>Description:</strong> {partListItems[idx]?.description}
                 </div>
+                <br/>
+                <fieldset style={{
+                    borderRadius: '5px', 
+                    height: '115px', 
+                    maxHeight: '115px', 
+                    width: '300px', 
+                    maxWidth: '300px',
+                    ...(props?.mobileView ? {marginLeft: '10px'} : {}),
+                    }}>
+                    <legend>Comment</legend>
+                    <textarea 
+                        className='inventory-comment-box'
+                        maxLength={250}
+                        placeholder={'...'}
+                        style={{
+                            resize: 'none', 
+                            border: 'none', 
+                            fontFamily: `"DM Sans", sans-serif`, 
+                            fontSize: 'large',
+                            backgroundColor: 'transparent',
+                            color: 'white',
+                            scrollbarWidth: 'thin',
+                            msOverflowStyle: 'none', 
+                            scrollbarWidth: 'none', 
+                            '::WebkitScrollbar': {display: 'none'}
+                        }} 
+                        rows="3" 
+                        cols="28" 
+                        onChange={(e)=>{
+                            setUserComment(e.target.value)
+                        }}
+                        >
+                    </textarea>
+                </fieldset>
+                <br/>
             </div>
             
         )
