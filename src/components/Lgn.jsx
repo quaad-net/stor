@@ -140,5 +140,5 @@ export default function Lgn(){
         )
     }
 
-    return(<UserLogin/>)
+    return(<></>)
 }
