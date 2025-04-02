@@ -53,24 +53,25 @@ function SwipeableEdgeDrawer(props) {
   };
 
   React.useEffect(()=>{
+    
     const verts = document.querySelectorAll('.list-vert'); 
     verts.forEach((vert)=>{
         vert.addEventListener('click', ()=>{
-          setOpen(true)
+        setOpen(true)
         });
     })
     return verts.forEach((vert)=>{
       vert.addEventListener('click', ()=>{
         setOpen(true)
       });
-  })
+    })
   })
 
   function SkeletonContent(){
     if(!props.updateInventory){
     return(
       <div style={{padding: '5px'}}>
-        <div><strong>{props.listSelectionDetail?.description}</strong></div><br/>
+        <div style={{fontSize: 'large'}}><strong>{props.listSelectionDetail?.description}</strong></div><br/>
         <div><strong>code:</strong> {props.listSelectionDetail?.code}</div>
         <div><strong>binLoc:</strong> {props.listSelectionDetail?.binLoc}</div>
         <div><strong>active:</strong> {props.listSelectionDetail?.active}</div>

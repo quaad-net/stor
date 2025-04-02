@@ -71,10 +71,7 @@ export default function Lgn(){
         function clearInvalids(){
             const inputs = document.querySelectorAll('input');
             inputs.forEach((input)=>{
-                input.style.borderColor = 'gold';
-                input.style.borderRightColor = 'grey';
-                input.style.borderLeftColor = 'grey';
-                input.style.backgroundColor = '#242424';
+                //
             })
         }
     
@@ -82,63 +79,65 @@ export default function Lgn(){
             const inputs = document.querySelectorAll('input');
             inputs.forEach((input)=>{
                 if(!input.checkValidity()){
-                    input.style.borderColor = 'lightcoral'
-                    input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)'; 
-                    input.style.borderRightColor = 'grey';
-                    input.style.borderLeftColor = 'grey';
-                }
-                else{
-                    input.style.borderColor = 'gold';
-                    input.style.borderRightColor = 'grey';
-                    input.style.borderLeftColor = 'grey';
-                    input.style.backgroundColor = '#242424';
+                    //
                 }
             })
         }
     
         return(
-            <div>
+            <div style={{height: '100vh', width: '95%', margin: 'auto'}}>
                 <h2>Login</h2>
                 <br/><br/>
                 <form>
                     <fieldset className="login-fieldset">
-                        <legend>Login</legend>
+                        <legend><img src='/user-small.svg' width='25px'/></legend>
                         <div className="header">
                             <div className="user-pass">
-                                <input id='user' type='text' title="User" placeholder="User" required />
-                                <input id='password' type='password' title="Password" placeholder="Password" required />
+                                <input className="stor-input" id='user' type='text' placeholder="User" required />
+                                <input className="stor-input" id='password' type='password' placeholder="Password" required />
                             </div>
                             <div>
                             </div>
                         </div>
                     </fieldset>
                     <br/>
-                    <button type="submit" id="login-submit-btn" className="submit-btn" onClick={(e)=>{
-                        e.preventDefault();
-                        document.querySelector('#login-submit-btn').blur();
-                        const form = document.querySelector('form')
-                        if(!form.checkValidity()){
-                            showInValids();
-                            alert('Please fill out all fields.')
-                        }
-                        else{
-                            loginRequest();
-                            clearInvalids();
+                    <div style={{width: 'fit-content', margin: 'auto'}}>
+                        <button 
+                            style={{color: 'white'}}
+                            type="submit" 
+                            id="login-submit-btn" 
+                            className="submit-btn" 
+                            onClick={(e)=>{
+                                e.preventDefault();
+                                document.querySelector('#login-submit-btn').blur();
+                                const form = document.querySelector('form')
+                            if(!form.checkValidity()){
+                                showInValids();
+                                alert('Please correct field(s).')
+                            }
+                            else{
+                                loginRequest();
+                                clearInvalids();
+                                document.querySelector('form').reset();
+                            }
+                            }}>
+                            Submit
+                        </button>
+                        <button 
+                            style={{color: 'white'}} 
+                            type="button" 
+                            id="login-clear-btn" 
+                            className="clear-btn" onClick={()=>{
+                            document.querySelector('#login-clear-btn').blur();
                             document.querySelector('form').reset();
-                        }
-                        }}>
-                        Submit
-                    </button>
-                    <button type="button" id="login-clear-btn" className="clear-btn" onClick={()=>{
-                        document.querySelector('#login-clear-btn').blur();
-                        document.querySelector('form').reset();
-                        clearInvalids();
-                        }}>Clear
-                    </button>
+                            clearInvalids();
+                            }}>Clear
+                        </button>
+                    </div>
                 </form>
             </div>
         )
     }
 
-    return(<></>)
+    return(<UserLogin/>)
 }

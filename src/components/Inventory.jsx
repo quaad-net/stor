@@ -13,6 +13,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton } from '@mui/material';
 import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
+import useToken from '../../app/useToken';
+import { useNavigate } from 'react-router-dom';
 // import PaginationRounded from './PaginationRounded';
 
 import './Inventory.css'
@@ -22,6 +24,21 @@ export default function Inventory() {
     const [idx, setIdx] = React.useState(0) // Use to maintain detailed view of query record in various components.
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
+    // const [tabletView, setTabletView] = React.useState(false)
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const { token } = useToken();
+    const navigate = useNavigate();
+
+    // React.useEffect(()=>{
+    //   const atMedia = window.matchMedia("(min-width:501px) and (max-width: 899px)")
+      
+    //   function updateTabletView(){
+    //     setTabletView(atMedia.matches)
+    //   }
+    //   atMedia.addEventListener('change', updateTabletView);
+
+    //   return atMedia.removeEventListener('change', updateTabletView);
+    // },[])
 
     React.useEffect(()=>{
         inventoryQuery({query: '110-a:110-b', queryType: 'binLoc'})
@@ -61,11 +78,12 @@ export default function Inventory() {
 
     function inventoryQuery({query, queryType}){
 
-        const apiUrl = import.meta.env.VITE_API_URL;
-
         if(query === ''){throw new Error('Invalid syntax')}
         
-        fetch(`${apiUrl}/inventory/${queryType}/${query}`, {method: 'POST'})
+        fetch(`${apiUrl}/inventory/${queryType}/${query}`, {
+            method: 'POST',
+            headers: {Authorization: `Bearer ${token}`}
+        })
         .then((res)=>{
             if(res.status == 401){throw new Error('Unauthorized user')}
             else if(res.status == 404){throw new Error('Cannot run query')}
@@ -87,8 +105,10 @@ export default function Inventory() {
         })
         .catch((err)=>{
             if (err.message=='Invalid syntax'){alert(err.message)}
-            else if(err.message == 'Unauthorized user'){alert(err.message)}
-            else if(err.message == 'Cannot run query'){alert(err.message)}
+            else if(err.message == 'Unauthorized user'){
+                navigate("/")
+            }
+            else if(err.message == 'Cannot run query'){alert('Could not complete query!')}
             else{
                 alert('Something went wrong!')
                 console.log(err)
@@ -313,10 +333,11 @@ export default function Inventory() {
 
     function DesktopTabletContent(){
         if(!updateInventory){
+        // Inventory Detaiil
         return(
           <div style={{padding: '5px', maxWidth: 400}}>
             <br/>
-            <div><strong>{partListItems[idx]?.description}</strong></div><br/>
+            <div style={{fontSize: 'large'}}><strong>{partListItems[idx]?.description}</strong></div><br/>
             <div><strong>code:</strong> {partListItems[idx]?.code}</div>
             <div><strong>binLoc:</strong> {partListItems[idx]?.binLoc}</div>
             <div><strong>active:</strong> {partListItems[idx]?.active}</div>
@@ -378,6 +399,7 @@ export default function Inventory() {
 
             const parts = [...partListItems];
             const currentPart = parts[idx];
+            let resStatus;
 
             let userCompletedCount = false
             let userCompletedComment = false;
@@ -386,25 +408,30 @@ export default function Inventory() {
                 if(userComment?.trim() != ''){
                     userCompletedComment = true;
                 }
-                //updat db with part info
                 const partDetails = {
                     code: currentPart.code,
                     binLoc: currentPart.binLoc,
                     inventoryCount: Number(userQty),
-                    comment: userComment?.trim()
+                    comment: userComment?.trim(),
+                    description: currentPart.description
                 } 
 
-                //POST
-                // console.log(partDetails)
-                // console.log(`userCompletedCount: ${userCompletedCount}`)
-                // console.log(`userCompletedComment: ${userCompletedComment}`)
-
-                //if succcess with request
-                currentPart.completedCount = true;
-                if(userCompletedComment){currentPart.completedComment = true}
-                setPartListItems(parts);
-
-                //if not successful...alert
+                //POST codemark
+                fetch(`${apiUrl}/inventorycount`, {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                    body: JSON.stringify(partDetails)
+                })
+                .then((res)=>{
+                    if(res.status == 201){
+                        currentPart.completedCount = true;
+                        if(userCompletedComment){currentPart.completedComment = true}
+                        setPartListItems(parts);
+                    }
+                    else{
+                        alert(`${res.status} Error`)
+                    }
+                })
             }
             else{alert('Please enter a number.')}
         }
@@ -419,7 +446,7 @@ export default function Inventory() {
     
         if(partListItems.length > 0){
         return(
-            <div style={{width: props?.mobileView ? 350 : 400}}>
+            <div style={{width: props?.mobileView ? '100%' : 400}}>
                 <div style={{...(props?.mobileView ? 
                     {width: '75px', float: 'right', overflow: 'hidden', textOverflow: 'ellipsis'} : {})}}
                 > 
@@ -427,31 +454,20 @@ export default function Inventory() {
                     ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={()=>{
                         setIdxPrev();
                     }}>
-                        {/* <ArrowCircleLeftRoundedIcon fontSize='medium' /> */}
                         <img src='/left-circled-arrow.svg' width='35px'/>
                     </IconButton>
                     <IconButton sx={{color: 'white', marginRight: '25px', 
                         ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={submitUserInput}>
-                        {/* <CheckCircleRoundedIcon fontSize='medium'/> */}
                         <img src='/circled-check.svg' width='35px'/>
                     </IconButton>
                     <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
                     }}>
-                        {/* <ArrowCircleRightRoundedIcon fontSize='medium'/> */}
                         <img src='/right-circled-arrow.svg' width='35px'/>
                     </IconButton>
                 </div>  
                 <br/>
                 <div>
-                    {/* <label style={{marginLeft: '10px'}} htmlFor="inventory-user-qty-input"><i>Qty Avail:</i></label><br/>
-                    <input 
-                        className="stor-input"
-                        style={{paddingLeft: 5, width: 75, marginLeft: '10px', ...(props?.mobileView ? {borderColor: 'white'} : {})}} 
-                        name="inventory-user-qty-input" 
-                        id='inventory-user-qty-input'
-                        onChange={(e)=>{setUserQty(e.target.value)}}
-                    /> */}
                     <fieldset 
                         style={{
                             width: 'fit-content', 
@@ -478,12 +494,10 @@ export default function Inventory() {
                         />
                     </fieldset>
                     <IconButton className='inventory-focus-on-comment' sx={{marginLeft: '5px'}} disableRipple onClick={()=>{
-                        // document.querySelector('.inventory-comment-box').focus();
                     }} >
                         <img src='/round-message.svg' width='25px'/>
                     </IconButton>
                 </div>
-                {/* {props?.mobileView ? <br/> : <></>} */}
                 <div style={{fontSize: '20px', 
                     ...(props?.mobileView ? {width: '200px', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
                     {partListItems[idx]?.completedCount ? <CompletedCountCheck/>:''}
@@ -547,11 +561,7 @@ export default function Inventory() {
                     setUpdateInventory={setUpdateInventory} 
                     updateInventory={updateInventory}
                 />
-                {/* <ReturnedResults/> */}
                 {renderParts}
-                {/* <div className='inventory-pag-div'>
-                    <PaginationRounded/>
-                </div> */}
                 <SwipeableEdgeDrawer 
                     listSelectionDetail={partListItems[idx]}
                     resultCount={partListItems.length}
@@ -560,7 +570,7 @@ export default function Inventory() {
                 />
             </List>
             <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
-                <h1 style={{margin: '0', padding: '0'}}>/<DeskTopTabletHeader/>
+                <h1 style={{margin: '0', padding: '0'}}><DeskTopTabletHeader/>
                 </h1>
                 <DesktopTabletContent/>
             </div>

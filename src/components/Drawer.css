@@ -6,11 +6,7 @@
     display: none;
 }
 
-@media (max-width: 899px){
-
-}
-
-@media(max-width: 500px){
+@media(max-width: 899px){
     .inventory-mobile-drawer{
         display: block;
     }

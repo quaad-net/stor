@@ -26,6 +26,8 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import QrCodeIcon from '@mui/icons-material/QrCode';
+import BasicModal from './BasicModal';
+import ShowInstitution from './Institution';
 // import PaginationRounded from './PaginationRounded';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -126,6 +128,7 @@ export default function AppBarHideOnScroll(props) {
         }));
 
         const menuId = 'primary-search-account-menu';
+
         const renderMenu = (
           <Menu
               anchorEl={anchorEl}
@@ -142,78 +145,138 @@ export default function AppBarHideOnScroll(props) {
               open={isMenuOpen}
               onClose={handleMenuClose}
           >
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+              {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
           </Menu>
         );
     
         const mobileMenuId = 'primary-search-account-menu-mobile';
-        const renderMobileMenu = (
-        <ThemeProvider theme={darkTheme}>
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-            }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-            }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >   
-            {/* add click function <MenuItem onClick={onclick}> */}
-            <MenuItem>
-              <IconButton 
-                size="large" 
-                aria-label="sort" 
-                color="inherit" 
-                onClick={props.sort}>
-                <SwapVertIcon/>
-              </IconButton>
-              {/* <span>Sort</span> */}
-            </MenuItem>
-            <MenuItem> 
-            <IconButton
-              size="large"
-              aria-label="update inventory"
-              color="inherit"
-              onClick={()=>{props.setUpdateInventory(true)}}
+
+        // Used for mobile menu modal.
+        const modalBtnProps = {
+          size: 'large',
+          ariaLabel: 'show more',
+          ariaControls: {mobileMenuId},
+          ariaHasPopUp: 'true',
+          color: 'inherit',
+          // onClick: ()=>{}
+        }
+
+        function ModalMobileMenu(){ 
+          return(
+            <>
+              <div style={{width: '250px', margin: 'auto'}}>
+                <IconButton 
+                  disableRipple
+                  size="large" 
+                  aria-label="sort" 
+                  color="inherit" 
+                  onClick={props.sort}>
+                  <img src='/pulsar-sort.svg' width='25px'/>
+                  <span style={{fontSize: '15px'}}>Sort</span>
+                </IconButton>
+                <IconButton
+                  disableRipple
+                  size="large"
+                  aria-label="update inventory"
+                  color="inherit"
+                  onClick={()=>{
+                    props.setUpdateInventory(true);
+                  }}
+                    >
+                  <img src='/pulsar-stacked-boxes.svg' width='25px' />
+                  <span style={{fontSize: '15px'}}>Update</span>
+                </IconButton>
+                <IconButton 
+                  disableRipple
+                  size="large" 
+                  aria-label="quick inventory update" 
+                  color="inherit" 
                 >
-                <WarehouseIcon/>
-            </IconButton>
-            {/* <span>Update Inventory</span> */}
-            </MenuItem>
-            <MenuItem>
-              <IconButton 
-                size="large" 
-                aria-label="quick inventory update" 
-                color="inherit" 
-              >
-                <QrCodeIcon />
-              </IconButton>
-            </MenuItem>
-            <MenuItem>
-              <IconButton 
-                size="large" 
-                aria-label="inventory details" 
-                color="inherit"
-                onClick={()=>{props.setUpdateInventory(false)}}
-              >
-                <FormatListBulletedIcon />
-              </IconButton>
-            </MenuItem>
-        </Menu>
-        </ThemeProvider>
-        );
+                  <img src='/pulsar-qr.svg' width='25px'/>
+                  <span style={{fontSize: '15px'}}>Quick Update</span>
+                </IconButton>
+                <IconButton 
+                  disableRipple
+                  size="large" 
+                  aria-label="inventory details" 
+                  color="inherit"
+                  onClick={()=>{props.setUpdateInventory(false)}}
+                >
+                  <img src='/squared-bullet-list.svg' width='25px' />
+                  <span style={{fontSize: '15px'}}>Details</span>
+                </IconButton>
+              </div>
+            </>
+          )
+       }
+
+        // const renderMobileMenu = (
+        // <ThemeProvider theme={darkTheme}>
+        // <Menu
+        //     anchorEl={mobileMoreAnchorEl}
+        //     anchorOrigin={{
+        //     vertical: 'top',
+        //     horizontal: 'right',
+        //     }}
+        //     id={mobileMenuId}
+        //     keepMounted
+        //     transformOrigin={{
+        //     vertical: 'top',
+        //     horizontal: 'right',
+        //     }}
+        //     open={isMobileMenuOpen}
+        //     onClose={handleMobileMenuClose}
+        // >   
+        //     {/* add click function <MenuItem ...btn... onClick={onclick}> */}
+        //     <MenuItem>
+        //       <IconButton 
+        //         size="large" 
+        //         aria-label="sort" 
+        //         color="inherit" 
+        //         onClick={props.sort}>
+        //         <SwapVertIcon/>
+        //       </IconButton>
+        //       {/* <span>Sort</span> */}
+        //     </MenuItem>
+        //     <MenuItem> 
+        //     <IconButton
+        //       size="large"
+        //       aria-label="update inventory"
+        //       color="inherit"
+        //       onClick={()=>{props.setUpdateInventory(true)}}
+        //         >
+        //         <WarehouseIcon/>
+        //     </IconButton>
+        //     {/* <span>Update Inventory</span> */}
+        //     </MenuItem>
+        //     <MenuItem>
+        //       <IconButton 
+        //         size="large" 
+        //         aria-label="quick inventory update" 
+        //         color="inherit" 
+        //       >
+        //         <QrCodeIcon />
+        //       </IconButton>
+        //     </MenuItem>
+        //     <MenuItem>
+        //       <IconButton 
+        //         size="large" 
+        //         aria-label="inventory details" 
+        //         color="inherit"
+        //         onClick={()=>{props.setUpdateInventory(false)}}
+        //       >
+        //         <FormatListBulletedIcon />
+        //       </IconButton>
+        //     </MenuItem>
+        // </Menu>
+        // </ThemeProvider>
+        // );
 
         return(
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
-                <IconButton
+                {/* <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
@@ -221,15 +284,16 @@ export default function AppBarHideOnScroll(props) {
                 sx={{ mr: 2 }}
                 >
                   <MenuIcon />
-                </IconButton>
-                <Typography
+                </IconButton> */}
+                {/* <Typography
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{ display: { xs: 'none', sm: 'block' } }}
                 >
                 STOR
-                </Typography>
+                </Typography> */}
+                <img src='/stor-logo.svg' width='25px' style={{marginRight: '10px'}}/>
                 <Search>
                   <SearchIconWrapper>
                       <SearchIcon />
@@ -249,19 +313,19 @@ export default function AppBarHideOnScroll(props) {
                 </Search>
                 <input type='checkbox' 
                   defaultChecked={binLocQuery}
-                  name='querytype' 
+                  name='query-type' 
                   id='query-type' 
                   onClick={()=>setBinLocQuery(!binLocQuery)}/>
-                <label htmlFor='querytype'>BinLoc</label>
+                <label htmlFor='query-type'>BinLoc</label>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  {/* <PaginationRounded/> */}
+                  <ShowInstitution/>
                   <IconButton 
                     size="large" 
                     aria-label="sort" 
                     color="inherit" 
                     onClick={props.sort}>
-                      <SwapVertIcon/>
+                    <img src='/pulsar-sort.svg' width='25px'/>
                   </IconButton>
                   <IconButton
                     size="large"
@@ -269,14 +333,14 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit"
                     onClick={()=>{props.setUpdateInventory(true)}}
                       >
-                      <WarehouseIcon/>
+                      <img src='/pulsar-stacked-boxes.svg' width='25px' />
                   </IconButton>
                   <IconButton 
                     size="large" 
                     aria-label="quick inventory update" 
                     color="inherit" 
                   >
-                    <QrCodeIcon />
+                    <img src='/pulsar-qr.svg' width='25px'/>
                   </IconButton>
                   <IconButton 
                     size="large" 
@@ -284,11 +348,12 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit" 
                     onClick={()=>{props.setUpdateInventory(false)}}
                   >
-                    <FormatListBulletedIcon />
+                    <img src='/squared-bullet-list.svg' width='25px' />
                   </IconButton>
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  <IconButton
+                  {/* mobile  icon for "more"*/}
+                  {/* <IconButton
                       size="large"
                       aria-label="show more"
                       aria-controls={mobileMenuId}
@@ -297,10 +362,12 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit"
                   >
                       <MoreIcon />
-                  </IconButton>
+                  </IconButton> */}
+                  <ShowInstitution mobileView={true}/>
+                  <BasicModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  
             </Toolbar>
-              {renderMobileMenu}
+              {/* {renderMobileMenu} */}
               {renderMenu}
             </Box>
         )

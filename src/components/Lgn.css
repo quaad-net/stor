@@ -8,7 +8,6 @@ legend{
     color: whitesmoke;
 }
 
-
 .user-pass{
     display: inline;
 }
@@ -16,7 +15,6 @@ legend{
 #user{
     display: inline;
     width: 49.5%;
-    border-right: 1px solid gray;
 }
 
 #password{
@@ -34,22 +32,19 @@ legend{
     font-family: "DM Sans", sans-serif;
     font-size: small;
     background-color: transparent;
-    border-radius: 7px;
-    border-bottom-left-radius: 0;
     padding: 5px;
     color: var(--form-btn-text-color);
-    transition: color 0.5s;
 }
 
 #login-submit-btn:focus,
 #login-clear-btn:focus{   
-    color: gold;
+    background-color: rgba(255, 255, 255, 0.055);
 }
 
 #login-submit-btn:hover,
 #login-clear-btn:hover{   
     cursor: pointer;
-    color: gold;
+    background-color: rgba(255, 255, 255, 0.055);
 }
 
 @media(max-width: 750px) {
@@ -59,6 +54,5 @@ legend{
     
     #password{
         width: 100%;
-        border-right: 1px solid gray;
     }
 }

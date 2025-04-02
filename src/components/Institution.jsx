@@ -1,38 +1,50 @@
 import useUser from "../../app/useUser";
 import useToken from "../../app/useToken";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import useUserData from "../../app/useUserData";
+import UserInfoModal from "./UserInfoModal";
+
 import "./Institution.css"
 
 export default function ShowInstitution(props){ 
 
-    const {setToken} = useToken();
-    const {setUser} = useUser();
-    const navigate = useNavigate();
-    const {setUserData} = useUserData();
+  const {setToken} = useToken();
+  const {setUser} = useUser();
+  const navigate = useNavigate();
+  const {setUserData} = useUserData();
+  const [currentUserData, setCurrentUserData] = useOutletContext();
 
-    function logout(){
-      setToken({});
-      setUser('')
-      setUserData('');
-      props.setCurrentUserData('');
-      navigate("/lgn")
-    }
+  function logout(){
+    setToken({});
+    setUser('')
+    setUserData('');
+    setCurrentUserData('');
+    navigate("/lgn")
+  }
 
-    function VistorHtml(){return(<>@<span>VISITOR</span>stor</>)}
+  function VistorHtml(){return(<>@<span>VISITOR</span>stor</>)}
 
-    function UserHtml(){
-
-      const userData = JSON.parse(props.currentUserData)
-      return(<>@
-        <span>{userData.institution.toString().toUpperCase()}</span>stor | <span id="logout" onClick={logout}>logout
-        </span></>
+  function UserHtml(){
+    
+    const userData = JSON.parse(currentUserData) 
+    return(
+      <div style={{width: 'fit-content', margin: 'auto'}}>
+        <img src='/user-small.svg' width='25px' style={{float: 'left'}}/>
+        @<span>{userData.institution.toString().toUpperCase()}</span>stor |&nbsp;
+        <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
+      </div>
+    )
+  }
+    function OutPut(){
+      return(
+        <>
+          {currentUserData == '' ? <VistorHtml/> : <UserHtml/>}
+        </>
       )
     }
 
     return(
-      <>
-        {props.currentUserData == '' ? <VistorHtml/> : <UserHtml/>}
-      </>
+      <UserInfoModal modalContent={<OutPut/>} iconSize={props.mobileView ? '20px' : '25px'}/>
     )
+
   }
