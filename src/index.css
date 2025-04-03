@@ -2,8 +2,7 @@
 :root{
   background-color: #242424 !important;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --stor-gold: linear-gradient(to right, #bf953f, #b38728, #aa771c);
-  
+  --stor-gold: linear-gradient(to right, #bf953f, #b38728, #aa771c);  
 }
 
 /* *{

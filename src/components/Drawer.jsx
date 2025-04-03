@@ -67,29 +67,29 @@ function SwipeableEdgeDrawer(props) {
     })
   })
 
-  function SkeletonContent(){
-    if(!props.updateInventory){
-    return(
-      <div style={{padding: '5px'}}>
-        <div style={{fontSize: 'large'}}><strong>{props.listSelectionDetail?.description}</strong></div><br/>
-        <div><strong>code:</strong> {props.listSelectionDetail?.code}</div>
-        <div><strong>binLoc:</strong> {props.listSelectionDetail?.binLoc}</div>
-        <div><strong>active:</strong> {props.listSelectionDetail?.active}</div>
-        <div><strong>fy14Expn:</strong> {props.listSelectionDetail?.fy14Expn}</div>
-        <div><strong>invtAvail:</strong> {props.listSelectionDetail?.invtAvail}</div>
-        <div><strong>lastPODate:</strong> {props.listSelectionDetail?.lastPODate}</div>
-        <div><strong>min:</strong> {props.listSelectionDetail?.min}</div>
-        <div><strong>max:</strong> {props.listSelectionDetail?.max}</div>
-        <div><strong>vendorName:</strong> {props.listSelectionDetail?.vendorName}</div>
-        <div><strong>vendorNo:</strong> {props.listSelectionDetail?.vendorNo}</div>
-        <div><strong>mfgNo:</strong> {props.listSelectionDetail?.mfgNo}</div>
-      </div>
-    )
-    }
-    else{
-      return(<div>{props.updateInventoryCounts}</div>)
-    }
-  }
+  // function SkeletonContent(){
+  //   if(!props.updateInventory){
+  //   return(
+  //     <div style={{padding: '5px'}}>
+  //       <div style={{fontSize: 'large'}}><strong>{props.listSelectionDetail?.description}</strong></div><br/>
+  //       <div><strong>code:</strong> {props.listSelectionDetail?.code}</div>
+  //       <div><strong>binLoc:</strong> {props.listSelectionDetail?.binLoc}</div>
+  //       <div><strong>active:</strong> {props.listSelectionDetail?.active}</div>
+  //       <div><strong>fy14Expn:</strong> {props.listSelectionDetail?.fy14Expn}</div>
+  //       <div><strong>invtAvail:</strong> {props.listSelectionDetail?.invtAvail}</div>
+  //       <div><strong>lastPODate:</strong> {props.listSelectionDetail?.lastPODate}</div>
+  //       <div><strong>min:</strong> {props.listSelectionDetail?.min}</div>
+  //       <div><strong>max:</strong> {props.listSelectionDetail?.max}</div>
+  //       <div><strong>vendorName:</strong> {props.listSelectionDetail?.vendorName}</div>
+  //       <div><strong>vendorNo:</strong> {props.listSelectionDetail?.vendorNo}</div>
+  //       <div><strong>mfgNo:</strong> {props.listSelectionDetail?.mfgNo}</div>
+  //     </div>
+  //   )
+  //   }
+  //   else{
+  //     return(<div>{props.updateInventoryCounts}</div>)
+  //   }
+  // }
 
   function ReturnedResults(){
     return(
@@ -137,7 +137,7 @@ function SwipeableEdgeDrawer(props) {
         </StyledBox>
         <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
           <div style={{backgroundColor: 'rgba(255, 255, 255, 0.044)'}}>{
-            props.resultCount > 0 ? <SkeletonContent/> : <></>}
+            props.resultCount > 0 ? props.InventoryDetailContent : <></>}
           </div>
         </StyledBox>
       </SwipeableDrawer>

@@ -22,7 +22,7 @@ export default function ShowInstitution(props){
     navigate("/lgn")
   }
 
-  function VistorHtml(){return(<>@<span>VISITOR</span>stor</>)}
+  function VistorHtml(){return(<>@<span><strong>VISITOR</strong></span>stor</>)}
 
   function UserHtml(){
     
@@ -30,7 +30,7 @@ export default function ShowInstitution(props){
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
         <img src='/user-small.svg' width='25px' style={{float: 'left'}}/>
-        @<span>{userData.institution.toString().toUpperCase()}</span>stor |&nbsp;
+        @<span><strong>{userData.institution.toString().toUpperCase()}</strong></span>stor |&nbsp;
         <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
       </div>
     )

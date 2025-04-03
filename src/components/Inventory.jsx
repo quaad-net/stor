@@ -331,25 +331,85 @@ export default function Inventory() {
     }
 
 
-    function DesktopTabletContent(){
+    function InventoryDetailContent(props){ //prev: DesktopTabletContent
         if(!updateInventory){
         // Inventory Detaiil
         return(
-          <div style={{padding: '5px', maxWidth: 400}}>
-            <br/>
-            <div style={{fontSize: 'large'}}><strong>{partListItems[idx]?.description}</strong></div><br/>
-            <div><strong>code:</strong> {partListItems[idx]?.code}</div>
-            <div><strong>binLoc:</strong> {partListItems[idx]?.binLoc}</div>
-            <div><strong>active:</strong> {partListItems[idx]?.active}</div>
-            <div><strong>fy14Expn:</strong> {partListItems[idx]?.fy14Expn}</div>
-            <div><strong>invtAvail:</strong> {partListItems[idx]?.invtAvail}</div>
-            <div><strong>lastPODate:</strong> {partListItems[idx]?.lastPODate}</div>
-            <div><strong>min:</strong> {partListItems[idx]?.min}</div>
-            <div><strong>max:</strong> {partListItems[idx]?.max}</div>
-            <div><strong>vendorName:</strong> {partListItems[idx]?.vendorName}</div>
-            <div><strong>vendorNo:</strong> {partListItems[idx]?.vendorNo}</div>
-            <div><strong>mfgNo:</strong> {partListItems[idx]?.mfgNo}</div>
-          </div>
+            <> 
+                <div style={{ 
+                        display: 'flex', 
+                        minWidth: '350px',
+                        minHeight: '100px', 
+                        backgroundColor: props.mobileView ? 'transparent' : 'rgba(22, 22, 22, 0.34)',
+                        // backgroundColor: 'rgba(22, 22, 22, 0.34)', 
+                        borderRadius: '2px', 
+                        marginBottom: '10px'
+                        }}>
+                    <div style={{width: '25%', height: '100%', width: '25%',}}>
+                        <div style={{padding: '5px'}}>
+                            <span style={{color: props.mobileView ? 'white' : 'gold'}}><strong>{partListItems[idx]?.code}</strong></span><br/>
+                            <span 
+                                style={{
+                                    display: 'block', 
+                                    width: '100%', 
+                                    borderBottom: props.mobileView ? '1px solid gold' : '1px solid white'
+                                }}>&nbsp;</span><span>{partListItems[idx]?.binLoc}    
+                            </span>
+                        </div>
+                    </div>
+                    <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>{partListItems[idx]?.description} </div>
+                </div>
+                <div style={{display: 'flex'}}>
+                    <div style={{marginBottom: '10px'}}>
+                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        <legend style={{color: 'white', fontSize: '13px'}}>active</legend>
+                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.active}</span>
+                        </fieldset>
+                    </div>
+                    <div style={{marginBottom: '10px'}}>
+                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        <legend style={{color: 'white', fontSize: '13px'}}>fy14Expn</legend>
+                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.fy14Expn}</span>
+                        </fieldset>
+                    </div>
+                    <div style={{marginBottom: '10px'}}>
+                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        <legend style={{color: 'white', fontSize: '13px'}}>invtAvail</legend>
+                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}</span>
+                        </fieldset>
+                    </div>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        <legend style={{color: 'white', fontSize: '13px'}}>lastPODate</legend>
+                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
+                        </fieldset>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>min</legend>
+                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min }</span>
+                    </fieldset>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>max</legend>
+                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.max === '' || undefined ? '-'  : partListItems[idx]?.max }</span>
+                    </fieldset>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>vendorNo</legend>
+                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
+                    </fieldset>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>mfgNo</legend>
+                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
+                    </fieldset>
+                </div>
+            </>
         )
         }
         else{
@@ -357,7 +417,7 @@ export default function Inventory() {
                 <>
                     <br/>
                     <div>
-                        <UpdateInventoryCounts 
+                        <UpdateInventoryCounts {...(props.mobileView ? {mobileView: true}: {})}
                         />
                     </div>
                 </>)
@@ -384,16 +444,16 @@ export default function Inventory() {
         const [userComment, setUserComment] = React.useState('');
         const [userQty, setUserQty] = React.useState('');
 
-        React.useEffect(()=>{
-            const focusOnCommentImg = document.querySelector('.inventory-focus-on-comment');
-            const commentBox = document.querySelector('.inventory-comment-box');
-            focusOnCommentImg.addEventListener('click', ()=>{
-                commentBox.focus()
-            })
-            return focusOnCommentImg.addEventListener('click', ()=>{
-                commentBox.focus()
-            })
-        }, [])
+        // React.useEffect(()=>{
+        //     const focusOnCommentImg = document.querySelector('.inventory-focus-on-comment');
+        //     const commentBox = document.querySelector('.inventory-comment-box');
+        //     focusOnCommentImg.addEventListener('click', ()=>{
+        //         commentBox.focus()
+        //     })
+        //     return focusOnCommentImg.addEventListener('click', ()=>{
+        //         commentBox.focus()
+        //     })
+        // }, [])
 
         function submitUserInput(){
 
@@ -493,10 +553,10 @@ export default function Inventory() {
                             onChange={(e)=>{setUserQty(e.target.value)}}
                         />
                     </fieldset>
-                    <IconButton className='inventory-focus-on-comment' sx={{marginLeft: '5px'}} disableRipple onClick={()=>{
+                    {/* <IconButton className='inventory-focus-on-comment' sx={{marginLeft: '5px'}} disableRipple onClick={()=>{
                     }} >
-                        <img src='/round-message.svg' width='25px'/>
-                    </IconButton>
+                        <img src='/maze.svg' width='25px'/>
+                    </IconButton> */}
                 </div>
                 <div style={{fontSize: '20px', 
                     ...(props?.mobileView ? {width: '200px', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
@@ -563,16 +623,17 @@ export default function Inventory() {
                 />
                 {renderParts}
                 <SwipeableEdgeDrawer 
+                    InventoryDetailContent={<InventoryDetailContent mobileView={true}/>}
                     listSelectionDetail={partListItems[idx]}
                     resultCount={partListItems.length}
                     updateInventory={updateInventory}
-                    updateInventoryCounts={<UpdateInventoryCounts mobileView={true}/>}
+                    // updateInventoryCounts={<UpdateInventoryCounts mobileView={true}/>}
                 />
             </List>
             <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
                 <h1 style={{margin: '0', padding: '0'}}><DeskTopTabletHeader/>
                 </h1>
-                <DesktopTabletContent/>
+                <InventoryDetailContent/>
             </div>
         </>
     );
