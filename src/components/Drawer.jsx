@@ -93,7 +93,10 @@ function SwipeableEdgeDrawer(props) {
 
   function ReturnedResults(){
     return(
+      <>
       <span>Returned {props.resultCount} Results</span>
+      {props.mainContentHeader}
+      </>
     )
   }
 
@@ -136,8 +139,8 @@ function SwipeableEdgeDrawer(props) {
           <Typography sx={{ p: 2, color: 'text.secondary' }}> <ReturnedResults/></Typography>
         </StyledBox>
         <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
-          <div style={{backgroundColor: 'rgba(255, 255, 255, 0.044)'}}>{
-            props.resultCount > 0 ? props.InventoryDetailContent : <></>}
+          <div style={{backgroundColor: 'rgba(255, 255, 255, 0.044)'}}>
+            {props.resultCount > 0 ? props.InventoryDetailContent : <></>}
           </div>
         </StyledBox>
       </SwipeableDrawer>

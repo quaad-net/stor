@@ -36,6 +36,10 @@ input{
 
 @media(max-width: 899px){
 
+    #stor-logo-header-logo{
+        display: none;
+    }
+
     .inventory-list{
         max-width: none;
         max-height: none;

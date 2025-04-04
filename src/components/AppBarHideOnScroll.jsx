@@ -8,7 +8,6 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Slide from '@mui/material/Slide';
-
 import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -28,7 +27,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import BasicModal from './BasicModal';
 import ShowInstitution from './Institution';
-// import PaginationRounded from './PaginationRounded';
+import SelectAutoWidth from './SelectAutoWidth';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function HideOnScroll(props) {
@@ -55,18 +54,17 @@ HideOnScroll.propTypes = {
 
 export default function AppBarHideOnScroll(props) {
 
-    const darkTheme = createTheme({
-      palette: {
-        mode: 'dark',
-      },
-    });
+  const [queryType, setQueryType] = React.useState('binLoc');
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
     function AppBarTools(){
         const [query, setQuery] = React.useState('');
         const [anchorEl, setAnchorEl] = React.useState(null);
-        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-        const [binLocQuery, setBinLocQuery] = React.useState(true);
-    
+        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);    
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     
@@ -129,6 +127,11 @@ export default function AppBarHideOnScroll(props) {
 
         const menuId = 'primary-search-account-menu';
 
+        const queryTypeSelections = [
+          {value: 'binLoc', name: 'Loc'},
+          {value: 'partCode', name: 'Code'}
+        ]
+
         const renderMenu = (
           <Menu
               anchorEl={anchorEl}
@@ -145,8 +148,6 @@ export default function AppBarHideOnScroll(props) {
               open={isMenuOpen}
               onClose={handleMenuClose}
           >
-              {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
           </Menu>
         );
     
@@ -166,6 +167,7 @@ export default function AppBarHideOnScroll(props) {
           return(
             <>
               <div style={{width: '250px', margin: 'auto'}}>
+                <img src='stor-logo.svg' width='25px' style={{float: 'right'}}/>
                 <IconButton 
                   disableRipple
                   size="large" 
@@ -184,7 +186,7 @@ export default function AppBarHideOnScroll(props) {
                     props.setUpdateInventory(true);
                   }}
                     >
-                  <img src='/pulsar-stacked-boxes.svg' width='25px' />
+                  <img src='/database-update.svg' width='25px' />
                   <span style={{fontSize: '15px'}}>Update</span>
                 </IconButton>
                 <IconButton 
@@ -194,7 +196,7 @@ export default function AppBarHideOnScroll(props) {
                   color="inherit" 
                 >
                   <img src='/pulsar-qr.svg' width='25px'/>
-                  <span style={{fontSize: '15px'}}>Quick Update</span>
+                  <span style={{fontSize: '15px'}}>QUpdate (inactive)</span>
                 </IconButton>
                 <IconButton 
                   disableRipple
@@ -203,7 +205,7 @@ export default function AppBarHideOnScroll(props) {
                   color="inherit"
                   onClick={()=>{props.setUpdateInventory(false)}}
                 >
-                  <img src='/squared-bullet-list.svg' width='25px' />
+                  <img src='/info.svg' width='25px' />
                   <span style={{fontSize: '15px'}}>Details</span>
                 </IconButton>
               </div>
@@ -211,89 +213,10 @@ export default function AppBarHideOnScroll(props) {
           )
        }
 
-        // const renderMobileMenu = (
-        // <ThemeProvider theme={darkTheme}>
-        // <Menu
-        //     anchorEl={mobileMoreAnchorEl}
-        //     anchorOrigin={{
-        //     vertical: 'top',
-        //     horizontal: 'right',
-        //     }}
-        //     id={mobileMenuId}
-        //     keepMounted
-        //     transformOrigin={{
-        //     vertical: 'top',
-        //     horizontal: 'right',
-        //     }}
-        //     open={isMobileMenuOpen}
-        //     onClose={handleMobileMenuClose}
-        // >   
-        //     {/* add click function <MenuItem ...btn... onClick={onclick}> */}
-        //     <MenuItem>
-        //       <IconButton 
-        //         size="large" 
-        //         aria-label="sort" 
-        //         color="inherit" 
-        //         onClick={props.sort}>
-        //         <SwapVertIcon/>
-        //       </IconButton>
-        //       {/* <span>Sort</span> */}
-        //     </MenuItem>
-        //     <MenuItem> 
-        //     <IconButton
-        //       size="large"
-        //       aria-label="update inventory"
-        //       color="inherit"
-        //       onClick={()=>{props.setUpdateInventory(true)}}
-        //         >
-        //         <WarehouseIcon/>
-        //     </IconButton>
-        //     {/* <span>Update Inventory</span> */}
-        //     </MenuItem>
-        //     <MenuItem>
-        //       <IconButton 
-        //         size="large" 
-        //         aria-label="quick inventory update" 
-        //         color="inherit" 
-        //       >
-        //         <QrCodeIcon />
-        //       </IconButton>
-        //     </MenuItem>
-        //     <MenuItem>
-        //       <IconButton 
-        //         size="large" 
-        //         aria-label="inventory details" 
-        //         color="inherit"
-        //         onClick={()=>{props.setUpdateInventory(false)}}
-        //       >
-        //         <FormatListBulletedIcon />
-        //       </IconButton>
-        //     </MenuItem>
-        // </Menu>
-        // </ThemeProvider>
-        // );
-
         return(
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
-                {/* <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                sx={{ mr: 2 }}
-                >
-                  <MenuIcon />
-                </IconButton> */}
-                {/* <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: { xs: 'none', sm: 'block' } }}
-                >
-                STOR
-                </Typography> */}
-                <img src='/stor-logo.svg' width='25px' style={{marginRight: '10px'}}/>
+                <img id='stor-logo-header-logo' src='/stor-logo.svg' width='25px' style={{marginRight: '10px'}}/>
                 <Search>
                   <SearchIconWrapper>
                       <SearchIcon />
@@ -306,17 +229,17 @@ export default function AppBarHideOnScroll(props) {
                       onKeyDown={(e)=>{
                         if(e.key === "Enter"){
                           setQuery(e.target.value.trim())
-                          props.inventoryQuery({query: e.target.value?.trim(), queryType: binLocQuery ? 'binLoc': 'partCode'});
+                          props.inventoryQuery({query: e.target.value?.trim(), queryType: queryType});
                         }
                       }}
                   />
                 </Search>
-                <input type='checkbox' 
-                  defaultChecked={binLocQuery}
-                  name='query-type' 
-                  id='query-type' 
-                  onClick={()=>setBinLocQuery(!binLocQuery)}/>
-                <label htmlFor='query-type'>BinLoc</label>
+                <SelectAutoWidth 
+                  onSelectChange={setQueryType} 
+                  menuItems={queryTypeSelections} 
+                  selectionLabel='Type'
+                  defaultSelection={queryType} 
+                />
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <ShowInstitution/>
@@ -333,7 +256,7 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit"
                     onClick={()=>{props.setUpdateInventory(true)}}
                       >
-                      <img src='/pulsar-stacked-boxes.svg' width='25px' />
+                      <img src='/database-update.svg' width='25px' />
                   </IconButton>
                   <IconButton 
                     size="large" 
@@ -348,21 +271,10 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit" 
                     onClick={()=>{props.setUpdateInventory(false)}}
                   >
-                    <img src='/squared-bullet-list.svg' width='25px' />
+                    <img src='/info.svg' width='25px' />
                   </IconButton>
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  {/* mobile  icon for "more"*/}
-                  {/* <IconButton
-                      size="large"
-                      aria-label="show more"
-                      aria-controls={mobileMenuId}
-                      aria-haspopup="true"
-                      onClick={handleMobileMenuOpen}
-                      color="inherit"
-                  >
-                      <MoreIcon />
-                  </IconButton> */}
                   <ShowInstitution mobileView={true}/>
                   <BasicModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  

@@ -347,7 +347,7 @@ export default function Inventory() {
                         }}>
                     <div style={{width: '25%', height: '100%', width: '25%',}}>
                         <div style={{padding: '5px'}}>
-                            <span style={{color: props.mobileView ? 'white' : 'gold'}}><strong>{partListItems[idx]?.code}</strong></span><br/>
+                            <span style={{color: props.mobileView ? 'white' : 'gold'}}>{partListItems[idx]?.code}</span><br/>
                             <span 
                                 style={{
                                     display: 'block', 
@@ -424,18 +424,22 @@ export default function Inventory() {
         }
     }
 
-    function DeskTopTabletHeader(){
+    function MainContentHeader(props){
         if(updateInventory){
-            return(<span>Inventory Update</span>)
+            if(props.mobileView){return <img src='/database-update.svg' width='25px' style={{float: 'right'}}/> }
+            else{return(<span>Inventory Update<img src='/database-update.svg' width='25px' style={{marginLeft: '10px'}}/></span>)}
         }
         else{
-            return(<span>Inventory Detail</span>)
+            if(props.mobileView){return <img src='/info.svg' width='25px' style={{float: 'right'}}/> }
+            else{return(<><span>Inventory Detail<img src='/info.svg' width='25px' style={{marginLeft: '10px'}}/></span></>)}
         }
     }
 
     function ReturnedResults(){
         return(
+        <>
           <div style={{marginLeft: '70px', color: 'rgba(128, 128, 128, 0.255)'}}>Returned {partListItems?.length} Results</div>
+        </>
         )
       }
 
@@ -476,7 +480,6 @@ export default function Inventory() {
                     description: currentPart.description
                 } 
 
-                //POST codemark
                 fetch(`${apiUrl}/inventorycount`, {
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
@@ -623,6 +626,7 @@ export default function Inventory() {
                 />
                 {renderParts}
                 <SwipeableEdgeDrawer 
+                    mainContentHeader={<MainContentHeader mobileView={true}/>}
                     InventoryDetailContent={<InventoryDetailContent mobileView={true}/>}
                     listSelectionDetail={partListItems[idx]}
                     resultCount={partListItems.length}
@@ -631,7 +635,7 @@ export default function Inventory() {
                 />
             </List>
             <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
-                <h1 style={{margin: '0', padding: '0'}}><DeskTopTabletHeader/>
+                <h1 style={{margin: '0', padding: '0'}}><MainContentHeader/>
                 </h1>
                 <InventoryDetailContent/>
             </div>
