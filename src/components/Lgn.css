@@ -9,31 +9,31 @@ legend{
 }
 
 .user-pass{
-    display: inline;
+    /* width: 300px; */
+    margin: 'auto'
 }
 
 #user{
-    display: inline;
-    width: 49.5%;
+    width: 100%;
 }
 
 #password{
-    display: inline;
-    width: 49.5%;
+    width: 100%;
 }
 
 #login-submit-btn, #login-clear-btn{
     all: unset;
+    display: block;
     width: 75px;
+    margin: 'auto';
     margin-top: 10px;
-    margin-left: 10px;
     border-radius: 5px;
-    border: 1px solid transparent;
     font-family: "DM Sans", sans-serif;
     font-size: small;
     background-color: transparent;
     padding: 5px;
     color: var(--form-btn-text-color);
+    text-align: center;
 }
 
 #login-submit-btn:focus,

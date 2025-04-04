@@ -15,6 +15,7 @@ import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
 import useToken from '../../app/useToken';
 import { useNavigate } from 'react-router-dom';
+
 // import PaginationRounded from './PaginationRounded';
 
 import './Inventory.css'
@@ -24,7 +25,7 @@ export default function Inventory() {
     const [idx, setIdx] = React.useState(0) // Use to maintain detailed view of query record in various components.
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
-    // const [tabletView, setTabletView] = React.useState(false)
+    const [authorizedUser, setAuthorizedUser] = React.useState(false);
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
     const navigate = useNavigate();
@@ -90,6 +91,7 @@ export default function Inventory() {
             else if(res.status == 400){throw new Error('Invalid syntax')}
             else if(res.status == 500){throw new Error('Something went wrong')}
             else{
+                setAuthorizedUser(true)
                 return res.json()
             }
         })
@@ -106,7 +108,7 @@ export default function Inventory() {
         .catch((err)=>{
             if (err.message=='Invalid syntax'){alert(err.message)}
             else if(err.message == 'Unauthorized user'){
-                navigate("/")
+                navigate("/lgn");
             }
             else if(err.message == 'Cannot run query'){alert('Could not complete query!')}
             else{
@@ -331,7 +333,7 @@ export default function Inventory() {
     }
 
 
-    function InventoryDetailContent(props){ //prev: DesktopTabletContent
+    function InventoryDetailContent(props){
         if(!updateInventory){
         // Inventory Detaiil
         return(
@@ -435,29 +437,10 @@ export default function Inventory() {
         }
     }
 
-    function ReturnedResults(){
-        return(
-        <>
-          <div style={{marginLeft: '70px', color: 'rgba(128, 128, 128, 0.255)'}}>Returned {partListItems?.length} Results</div>
-        </>
-        )
-      }
-
     function UpdateInventoryCounts(props){
 
         const [userComment, setUserComment] = React.useState('');
         const [userQty, setUserQty] = React.useState('');
-
-        // React.useEffect(()=>{
-        //     const focusOnCommentImg = document.querySelector('.inventory-focus-on-comment');
-        //     const commentBox = document.querySelector('.inventory-comment-box');
-        //     focusOnCommentImg.addEventListener('click', ()=>{
-        //         commentBox.focus()
-        //     })
-        //     return focusOnCommentImg.addEventListener('click', ()=>{
-        //         commentBox.focus()
-        //     })
-        // }, [])
 
         function submitUserInput(){
 
@@ -556,10 +539,6 @@ export default function Inventory() {
                             onChange={(e)=>{setUserQty(e.target.value)}}
                         />
                     </fieldset>
-                    {/* <IconButton className='inventory-focus-on-comment' sx={{marginLeft: '5px'}} disableRipple onClick={()=>{
-                    }} >
-                        <img src='/maze.svg' width='25px'/>
-                    </IconButton> */}
                 </div>
                 <div style={{fontSize: '20px', 
                     ...(props?.mobileView ? {width: '200px', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
@@ -614,31 +593,33 @@ export default function Inventory() {
         }
         else{return <></>}
     }
-
-    return (
-        <>
-            <List className='inventory-list' sx={{height:'100%', bgcolor: 'rgb(22, 22, 22)', marginTop: '0', paddingTop: '0' }}>
-                <AppBarHideOnScroll 
-                    inventoryQuery={inventoryQuery} 
-                    sort={sort} 
-                    setUpdateInventory={setUpdateInventory} 
-                    updateInventory={updateInventory}
-                />
-                {renderParts}
-                <SwipeableEdgeDrawer 
-                    mainContentHeader={<MainContentHeader mobileView={true}/>}
-                    InventoryDetailContent={<InventoryDetailContent mobileView={true}/>}
-                    listSelectionDetail={partListItems[idx]}
-                    resultCount={partListItems.length}
-                    updateInventory={updateInventory}
-                    // updateInventoryCounts={<UpdateInventoryCounts mobileView={true}/>}
-                />
-            </List>
-            <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
-                <h1 style={{margin: '0', padding: '0'}}><MainContentHeader/>
-                </h1>
-                <InventoryDetailContent/>
-            </div>
-        </>
-    );
+    if(authorizedUser){
+        return (
+            <>
+                <List className='inventory-list' sx={{height:'100%', bgcolor: 'rgb(22, 22, 22)', marginTop: '0', paddingTop: '0' }}>
+                    <AppBarHideOnScroll 
+                        inventoryQuery={inventoryQuery} 
+                        sort={sort} 
+                        setUpdateInventory={setUpdateInventory} 
+                        updateInventory={updateInventory}
+                    />
+                    {renderParts}
+                    <SwipeableEdgeDrawer 
+                        mainContentHeader={<MainContentHeader mobileView={true}/>}
+                        InventoryDetailContent={<InventoryDetailContent mobileView={true}/>}
+                        listSelectionDetail={partListItems[idx]}
+                        resultCount={partListItems.length}
+                        updateInventory={updateInventory}
+                        // updateInventoryCounts={<UpdateInventoryCounts mobileView={true}/>}
+                    />
+                </List>
+                <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
+                    <h1 style={{margin: '0', padding: '0'}}><MainContentHeader/>
+                    </h1>
+                    <InventoryDetailContent/>
+                </div>
+            </>
+        )
+    }
+    else return <></>
 }

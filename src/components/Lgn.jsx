@@ -3,8 +3,9 @@ import useToken from "../../app/useToken";
 import { useNavigate, useOutletContext} from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL; 
 import useUser from "../../app/useUser";
-import {useEffect } from "react";
+import {useEffect, useState } from "react";
 import useUserData from "../../app/useUserData";
+import useAuth from "../../app/useAuth";
 
 export default function Lgn(){
 
@@ -12,20 +13,24 @@ export default function Lgn(){
     const {user, setUser} = useUser();
     const { setUserData } = useUserData();
     const [currentUserData, setCurrentUserData] = useOutletContext();
+    const [authorizedUser, setAuthorizedUser] = useState(true);
     const navigate = useNavigate();
-    
-    useEffect(()=>{
-        if(user != ''){
-            navigate("/inventory",{ 
-                state: {
-                    authorized: true,
-                    email: user,
-                }
-            })
-        }
-        else{window.scrollTo(0,0)}
 
-    },[navigate, user])
+    useAuth().then((res)=>{
+        if(!res.authorized){
+            setAuthorizedUser(false)
+        }
+        else{
+            navigate("/inventory")
+        }
+    })   
+
+    // useEffect(()=>{
+    //     // if(user != ''){
+    //     //     navigate("/inventory")
+    //     // }
+
+    // },[navigate, user]) 
 
     function UserLogin(){
 
@@ -52,12 +57,7 @@ export default function Lgn(){
                     setUser(data.email);
                     setUserData(data.userData); // updates session storage
                     setCurrentUserData(data.userData); // updates current state
-                    navigate("/user",{ 
-                        state: {
-                            authorized: true,
-                            email: data.email,
-                        }
-                    })
+                    navigate("/inventory")
                 }
                 else{
                     throw new Error()
@@ -89,7 +89,7 @@ export default function Lgn(){
                 <h2>Login</h2>
                 <br/><br/>
                 <form>
-                    <fieldset className="login-fieldset">
+                    <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
                         <legend><img src='/user-small.svg' width='25px'/></legend>
                         <div className="header">
                             <div className="user-pass">
@@ -138,6 +138,8 @@ export default function Lgn(){
             </div>
         )
     }
-
-    return(<UserLogin/>)
+    if(authorizedUser){
+        return <></>
+    }
+    else return(<UserLogin/>)
 }
