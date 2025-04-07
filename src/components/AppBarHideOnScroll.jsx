@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
@@ -11,23 +10,12 @@ import Slide from '@mui/material/Slide';
 import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import SwapVertIcon from '@mui/icons-material/SwapVert';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import WarehouseIcon from '@mui/icons-material/Warehouse';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import QrCodeIcon from '@mui/icons-material/QrCode';
 import BasicModal from './BasicModal';
 import ShowInstitution from './Institution';
 import SelectAutoWidth from './SelectAutoWidth';
+import FullScreenScanner from './FullScreenScanner';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function HideOnScroll(props) {
@@ -55,6 +43,7 @@ HideOnScroll.propTypes = {
 export default function AppBarHideOnScroll(props) {
 
   const [queryType, setQueryType] = React.useState('binLoc');
+
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
@@ -192,15 +181,6 @@ export default function AppBarHideOnScroll(props) {
                 <IconButton 
                   disableRipple
                   size="large" 
-                  aria-label="quick inventory update" 
-                  color="inherit" 
-                >
-                  <img src='/pulsar-qr.svg' width='25px'/>
-                  <span style={{fontSize: '15px'}}>QUpdate (inactive)</span>
-                </IconButton>
-                <IconButton 
-                  disableRipple
-                  size="large" 
                   aria-label="inventory details" 
                   color="inherit"
                   onClick={()=>{props.setUpdateInventory(false)}}
@@ -208,6 +188,8 @@ export default function AppBarHideOnScroll(props) {
                   <img src='/info.svg' width='25px' />
                   <span style={{fontSize: '15px'}}>Details</span>
                 </IconButton>
+                <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
+                <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
           )
@@ -260,22 +242,16 @@ export default function AppBarHideOnScroll(props) {
                   </IconButton>
                   <IconButton 
                     size="large" 
-                    aria-label="quick inventory update" 
-                    color="inherit" 
-                  >
-                    <img src='/pulsar-qr.svg' width='25px'/>
-                  </IconButton>
-                  <IconButton 
-                    size="large" 
                     aria-label="inventory details" 
                     color="inherit" 
                     onClick={()=>{props.setUpdateInventory(false)}}
                   >
                     <img src='/info.svg' width='25px' />
                   </IconButton>
+                  <FullScreenScanner getScanResult={props.getScanResult}/>
                 </Box>
+                {/*Mobile menubar */}
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  <ShowInstitution mobileView={true}/>
                   <BasicModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  
             </Toolbar>

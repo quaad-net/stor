@@ -11,9 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import { Scanner } from '@yudiel/react-qr-scanner';
+import { ThemeProvider, createTheme } from '@mui/material'
 
 import './FullScreenScanner.css'
 
@@ -33,20 +32,18 @@ export default function FullScreenScanner(props) {
     setOpen(false);
   };
 
-    const Img = styled.img`
-    width: 24px;
-    border-radius: 5px;
-    float: right;
-    &:hover {
-      cursor: pointer;
-    }`;
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
     function NewScan(props){
 
       function Cam(){
           return (
               <>
-                <Scanner
+                <Scanner 
                   onScan={(result)=>{
                       setScanResult(result[0].rawValue);
                   }}
@@ -58,25 +55,31 @@ export default function FullScreenScanner(props) {
             )
       }
 
-      function NoCam(){
-          return(<></>)
-      }
-
       return(
-          <>{props.displayCam ? <Cam/> : <NoCam/>}</>
+          <>{props.displayCam ? <Cam/> : <></>}</>
       )
   }
 
   return (
+    <ThemeProvider theme={darkTheme}>
     <React.Fragment>
-    <Img src= '/qr-code-white.svg' onClick={handleClickOpen} />
+      <IconButton
+        disableRipple
+        size="large" 
+        aria-label="quick inventory update" 
+        color="inherit" 
+        onClick={handleClickOpen}>
+          <img src= '/pulsar-qr.svg' width='25px'/>
+          {props?.btnDescription || <></>}
+      </IconButton>
       <Dialog
         fullScreen
         open={open}
         onClose={handleClose}
         slots={{transition: Transition}}
+        sx={{'& .MuiPaper-root': {backgroundColor: 'black'}}}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative'}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -109,5 +112,6 @@ export default function FullScreenScanner(props) {
         </div>
       </Dialog>
     </React.Fragment>
+    </ThemeProvider>
   );
 }

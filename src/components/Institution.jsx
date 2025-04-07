@@ -43,8 +43,7 @@ export default function ShowInstitution(props){
       )
     }
 
-    return(
-      <UserInfoModal modalContent={<OutPut/>} iconSize={props.mobileView ? '20px' : '25px'}/>
-    )
+    return(<UserInfoModal {...(props?.btnDescription ? {btnDescription: props.btnDescription} : {})} modalContent={<OutPut/>} iconSize='25px'/>)
+    
 
   }

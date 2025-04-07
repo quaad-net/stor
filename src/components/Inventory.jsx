@@ -15,10 +15,13 @@ import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
 import useToken from '../../app/useToken';
 import { useNavigate } from 'react-router-dom';
-
-// import PaginationRounded from './PaginationRounded';
-
+import useUserData from '../../app/useUserData';
+import BasicModalSelection from './BasicModalSelection';
+import CustomContentFormModal from './CustomContentFormModal';
 import './Inventory.css'
+import { ConstructionTwoTone } from '@mui/icons-material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -26,26 +29,16 @@ export default function Inventory() {
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
     const [authorizedUser, setAuthorizedUser] = React.useState(false);
+
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
     const navigate = useNavigate();
-
-    // React.useEffect(()=>{
-    //   const atMedia = window.matchMedia("(min-width:501px) and (max-width: 899px)")
-      
-    //   function updateTabletView(){
-    //     setTabletView(atMedia.matches)
-    //   }
-    //   atMedia.addEventListener('change', updateTabletView);
-
-    //   return atMedia.removeEventListener('change', updateTabletView);
-    // },[])
+    const { userData } = useUserData();
 
     React.useEffect(()=>{
         inventoryQuery({query: '110-a:110-b', queryType: 'binLoc'})
     },[])
     
-
     React.useEffect(()=>{
 
         // onClick, vert will update content in drawer.
@@ -179,6 +172,10 @@ export default function Inventory() {
         setPartListItems(items);
         setIdx(0);
         removeActiveSelection();
+    }
+
+    function getScanResult(result){
+        inventoryQuery({query: result, queryType: 'partCode' });
     }
 
 
@@ -359,7 +356,9 @@ export default function Inventory() {
                             </span>
                         </div>
                     </div>
-                    <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>{partListItems[idx]?.description} </div>
+                    <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
+                        {partListItems[idx]?.description}&nbsp;<button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img src='/database-update.svg' width='15px'/></button>
+                    </div>
                 </div>
                 <div style={{display: 'flex'}}>
                     <div style={{marginBottom: '10px'}}>
@@ -419,7 +418,7 @@ export default function Inventory() {
                 <>
                     <br/>
                     <div>
-                        <UpdateInventoryCounts {...(props.mobileView ? {mobileView: true}: {})}
+                        <UpdateInventoryDetails {...(props.mobileView ? {mobileView: true}: {})}
                         />
                     </div>
                 </>)
@@ -437,40 +436,67 @@ export default function Inventory() {
         }
     }
 
-    function UpdateInventoryCounts(props){
-
+    function UpdateInventoryDetails(props){
         const [userComment, setUserComment] = React.useState('');
+        const [userUpdate, setUserUpdate] = React.useState(null);
         const [userQty, setUserQty] = React.useState('');
+        const [userPick, setUserPick] = React.useState('');
+        const [userBinLoc, setUserBinLoc] = React.useState('');
+        const [updateType, setUpdateType] = React.useState('Count');
+        const [workorder, setWorkorder] = React.useState('');
+        const [qtyUsed, setQtyUsed] = React.useState(0);
+        const [reorder, setReorder] = React.useState(false);
+        const [inventoryCount, setInventoryCount] = React.useState(undefined);
+        const [reorderAmt, setReorderAmt] = React.useState(0);
+        const [displayFormModal, setDisplayFormModal] = React.useState(false);
+        const [formModalContent, SetFormModalContent] = React.useState(null);
+        const [tmpUpdateType, setTmpUpdateType] = React.useState('Count')
 
-        function submitUserInput(){
+        // React.useEffect(()=>{
+        //     console.log()
+        // }, [])
+
+        const updateTypes = [
+            {name: 'Count', onclick: ()=>{}}, 
+            {name: 'BinLoc', onclick: ()=>{}},
+            {name: 'Pick', onclick: ()=>{}},
+            {name: 'Reorder', onclick: ()=>{}},
+
+        ]
+
+        async function submitUserInput(input){
+            //takes input obj
 
             const parts = [...partListItems];
             const currentPart = parts[idx];
-            let resStatus;
+            const user = JSON.parse(userData);
+            const now = new Date();
 
             let userCompletedCount = false
             let userCompletedComment = false;
-            if(Number(userQty) * 0 === 0){
+
+            if(input.updateType === 'Count'){
                 userCompletedCount = true;
-                if(userComment?.trim() != ''){
+                if(input.userComment?.trim() != ''){
                     userCompletedComment = true;
                 }
                 const partDetails = {
                     code: currentPart.code,
                     binLoc: currentPart.binLoc,
-                    inventoryCount: Number(userQty),
-                    comment: userComment?.trim(),
-                    description: currentPart.description
+                    inventoryCount: input.count,
+                    comment: input?.comment?.trim() || '',
+                    description: currentPart.description,
+                    user: user.email,
+                    date: now
                 } 
-
-                fetch(`${apiUrl}/inventorycount`, {
+                fetch(`${apiUrl}/inventory_count`, {
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
                     body: JSON.stringify(partDetails)
                 })
                 .then((res)=>{
                     if(res.status == 201){
-                        currentPart.completedCount = true;
+                        if(userCompletedCount){currentPart.completedCount = true};
                         if(userCompletedComment){currentPart.completedComment = true}
                         setPartListItems(parts);
                     }
@@ -478,8 +504,508 @@ export default function Inventory() {
                         alert(`${res.status} Error`)
                     }
                 })
+
             }
-            else{alert('Please enter a number.')}
+            else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' ){
+                await fetch(`${apiUrl}/inventory_tasks`, {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                    body: JSON.stringify({
+                        code: currentPart.code,
+                        binLoc: currentPart.binLoc,
+                        taskType: input.updateType,
+                        taskValues: input.taskValues,
+                        comment: input.comment?.trim() || '',
+                        description: currentPart.description,
+                        user: user.email,
+                        date: now,
+                        completed: false
+                    })
+                })
+                .then((res)=>{
+                    if(res.status == 201){
+                        alert('Submitted!');
+                        setPartListItems(parts)
+                    }
+                    else{
+                        alert(`${res.status} Error`)
+                    }
+                })
+            }
+        }
+
+        function PickModalContent(){
+
+            function PickExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        onClick={()=>{
+                            setUpdateType('Pick');
+                        }} 
+                        style={{listStyle: 'square', margin: '5px'}}
+                        
+                    >Pick
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function PickForm(){
+                const [tmpWorkOrder, setTmpWorkOrder] = React.useState(0);
+                const [tmpReorderAmt, setTmpReorderAmt] = React.useState(0);
+                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpQtyUsed, setTmpQtyUsed]  = React.useState(0);
+
+                function submitForm(){
+                    try{
+                        if(Number(tmpWorkOrder) * 0  === 0 && tmpWorkOrder != ''){}
+                        else{throw new Error('Please enter a numeric value for Workorder!')};
+                        if(Number(tmpQtyUsed) * 0  === 0 && tmpQtyUsed != ''){}
+                        else{throw new Error('Please enter a numeric value for Qty Used!')};
+                        if(Number(tmpReorderAmt) * 0 == 0){}
+                        else{throw new Error('Please enter a numeric value for Reorder Amount!')}
+                        submitUserInput({taskValues: JSON.stringify({
+                            workorder: tmpWorkOrder, qtyUsed: tmpQtyUsed, reorderAmt:  tmpReorderAmt}), 
+                            comment: tmpComment, updateType: 'Pick'}
+                        );
+                    }
+                    catch(err){
+                        alert(err.message)
+                    }
+                }
+                
+                return(
+                    <>  
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <input 
+                                    className='stor-input'
+                                    // id='inventory-pick-modal-workorder'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(#) Workorder' 
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpWorkOrder(e.target.value);
+                                    }}
+                                />
+                                <input 
+                                    className='stor-input'
+                                    // id='inventory-pick-modal-qty-used'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(#) Qty Used' 
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpQtyUsed(e.target.value);
+                                    }}
+                                />
+                                <input 
+                                    className='stor-input'
+                                    // id='inventory-pick-modal-reorder-amt'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(#) Reorder Amount' 
+                                    onChange={(e)=>{
+                                        setTmpReorderAmt(e.target.value);
+                                    }}
+                                />
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <button 
+                                    type='button' 
+                                    style={{ 
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white',
+                                        width: 'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'}} 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='/circled-check.svg' width='30px'/>
+                                </button>
+                                <button 
+                                    type='reset' 
+                                    style={{
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white', 
+                                        width:'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'
+                                    }}>
+                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>}/>)
+        }
+
+        function CountModalContent(){
+
+            function CountExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        onClick={()=>{
+                            setUpdateType('Count');
+                        }} 
+                        style={{listStyle: 'square', margin: '5px'}}
+                        
+                    >Count
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function CountForm(){
+                const [tmpCount, setTmpCount] = React.useState(0);
+                const [tmpComment, setTmpComment]  = React.useState('');
+
+                function submitForm(){
+                    try{
+                        if(Number(tmpCount) * 0  === 0 && tmpCount != ''){}
+                        else{throw new Error('Please enter a numeric value for Count!')};
+                        submitUserInput({count: tmpCount, comment: tmpComment, updateType: 'Count'}
+                        );
+                    }
+                    catch(err){
+                        alert(err.message)
+                    }
+                }
+                
+                return(
+                    <>  
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <input 
+                                    className='stor-input'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(#) Count' 
+                                    onChange={(e)=>{
+                                        setTmpCount(e.target.value);
+                                    }}
+                                />
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <button 
+                                    type='button' 
+                                    style={{ 
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white',
+                                        width: 'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'}} 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='/circled-check.svg' width='30px'/>
+                                </button>
+                                <button 
+                                    type='reset' 
+                                    style={{
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white', 
+                                        width:'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'
+                                    }}>
+                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>}/>)
+        }
+
+        function ReorderModalContent(){
+
+            function ReordExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        onClick={()=>{
+                            setUpdateType('Reord');
+                        }} 
+                        style={{listStyle: 'square', margin: '5px'}}
+                        
+                    >Reord
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function ReordForm(){
+                const [tmpReord, setTmpReord] = React.useState(0);
+                const [tmpComment, setTmpComment]  = React.useState('');
+
+                function submitForm(){
+                    try{
+                        if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
+                        else{throw new Error('Please enter a numeric value for Reorder!')};
+                        submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})
+                    }
+                    catch(err){
+                        alert(err.message)
+                    }
+                }
+                
+                return(
+                    <>  
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <input 
+                                    className='stor-input'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(#) Reorder' 
+                                    onChange={(e)=>{
+                                        setTmpReord(e.target.value);
+                                    }}
+                                />
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <button 
+                                    type='button' 
+                                    style={{ 
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white',
+                                        width: 'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'}} 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='/circled-check.svg' width='30px'/>
+                                </button>
+                                <button 
+                                    type='reset' 
+                                    style={{
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white', 
+                                        width:'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'
+                                    }}>
+                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} />)
+        }
+
+        function LocationModalContent(){
+
+            function LocExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        onClick={()=>{
+                            setUpdateType('Loc');
+                        }} 
+                        style={{listStyle: 'square', margin: '5px'}}
+                        
+                    >Loc
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function LocationForm(){
+                const [tmpLoc, setTmpLoc] = React.useState('');
+                const [tmpComment, setTmpComment]  = React.useState('');
+
+                function submitForm(){
+                    try{
+                        if(tmpLoc != ''){}
+                        else{throw new Error('Please enter a new BinLoc!')};
+                        submitUserInput({taskValues: JSON.stringify({binLoc: tmpLoc}), comment: tmpComment, updateType: 'Loc'})
+                    }
+                    catch(err){
+                        alert(err.message)
+                    }
+                }
+                
+                return(
+                    <>  
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <input 
+                                    className='stor-input'
+                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder={`("") BinLoc`} 
+                                    onChange={(e)=>{
+                                        setTmpLoc(e.target.value);
+                                    }}
+                                />
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <button 
+                                    type='button' 
+                                    style={{ 
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white',
+                                        width: 'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'}} 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='/circled-check.svg' width='30px'/>
+                                </button>
+                                <button 
+                                    type='reset' 
+                                    style={{
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white', 
+                                        width:'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'
+                                    }}>
+                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} />)
+        }
+
+        function FormClose(props){
+            return(
+                <button 
+                    type='button' 
+                    style={{ 
+                        all: 'unset', 
+                        fontSize: 'small', 
+                        color: 'white',
+                        width: 'fit-content', 
+                        textAlign: 'center', 
+                        margin:'10px',
+                        marginTop: '5px', 
+                        marginBottom: '5px'}} 
+                        onClick={(e)=>{
+                            e.preventDefault();
+                            props.submitForm();
+                        }}>
+                            <img src='/check-filled-white-small.svg' width='30px'/>
+                </button>
+            )
+        }
+
+        function FormReset(){
+            return(
+                <button 
+                    type='reset' 
+                    style={{
+                        all: 'unset', 
+                        fontSize: 'small', 
+                        color: 'white', 
+                        width:'fit-content', 
+                        textAlign: 'center', 
+                        margin:'10px',
+                        marginTop: '5px', 
+                        marginBottom: '5px'
+                    }}>
+                    <img src='/cancel-filled-white-small.svg' width='30px'/>
+                </button>
+            )
+        }
+
+
+        function CommentBox(props){
+            return(
+                <textarea 
+                {...(props?.commentBoxId ? {id: props.commentBoxId} : {})}
+                onChange={(e)=>{
+                    props.setTmpComment(e.target.value)
+                }}
+                className={`inventory-comment-box`}
+                maxLength={250}
+                placeholder={'(...) Comment'}
+                style={{
+                    resize: 'none', 
+                    border: 'none', 
+                    width: '200px',
+                    padding: '12px',
+                    paddingRight: '20px',
+                    fontFamily: `Inter, system-ui, Avenir, Helvetica, Arial, sans-serif`, 
+                    fontSize: 'medium',
+                    backgroundColor: 'transparent',
+                    color: 'white',
+                    msOverflowStyle: 'none', 
+                    scrollbarWidth: 'none', 
+                    '::WebkitScrollbar': {display: 'none'}
+                }} 
+                rows="3" 
+                cols="28" 
+                >
+                </textarea>
+            )
         }
 
         function CompletedCountCheck(){
@@ -492,19 +1018,23 @@ export default function Inventory() {
     
         if(partListItems.length > 0){
         return(
-            <div style={{width: props?.mobileView ? '100%' : 400}}>
-                <div style={{...(props?.mobileView ? 
-                    {width: '75px', float: 'right', overflow: 'hidden', textOverflow: 'ellipsis'} : {})}}
+            <div style={{width: props?.mobileView ? '100%' : 400, margin: 'auto'}}>
+                <div 
+                    style={{...(props?.mobileView ? 
+                        {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '30px'})}}
                 > 
                     <IconButton className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
-                    ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={()=>{
+                    }} 
+                    onClick={()=>{
                         setIdxPrev();
                     }}>
                         <img src='/left-circled-arrow.svg' width='35px'/>
                     </IconButton>
                     <IconButton sx={{color: 'white', marginRight: '25px', 
-                        ...(props?.mobileView ? {marginBottom: '20px'} : {})}} onClick={submitUserInput}>
-                        <img src='/circled-check.svg' width='35px'/>
+                        }} 
+                        onClick={()=>{setUpdateInventory(false)}}
+                    > 
+                        <img src='/pulsar-circled-info.svg' width='35px'/>
                     </IconButton>
                     <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
@@ -513,79 +1043,30 @@ export default function Inventory() {
                     </IconButton>
                 </div>  
                 <br/>
-                <div>
-                    <fieldset 
-                        style={{
-                            width: 'fit-content', 
-                            height: 'fit-content', 
-                            borderRadius: '5px',
-                            ...(props?.mobileView ? {marginLeft: '10px'} : {}),
-                        }}>
-                        <legend>Qty Avail</legend>
-                        <input 
-                            maxLength={10}
-                            style={{      
-                                border: 'none', 
-                                fontFamily: `"DM Sans", sans-serif`, 
-                                fontSize: 'large',
-                                backgroundColor: 'transparent',
-                                color: 'white',
-                                width: '75px',
-                                maxWidth: '100px',
-                                height: 'fit-content'
-                            }}
-                            name="inventory-user-qty-input" 
-                            id='inventory-user-qty-input'
-                            onChange={(e)=>{setUserQty(e.target.value)}}
-                        />
-                    </fieldset>
+                <div style={{display: 'flex', ...(props.mobileView ? {margin: 'auto', width: 'fit-content'} : {})}}>
+                    <CountModalContent/>
+                    <PickModalContent/>
+                    <ReorderModalContent/>
+                    <LocationModalContent/>
                 </div>
-                <div style={{fontSize: '20px', 
-                    ...(props?.mobileView ? {width: '200px', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
-                    {partListItems[idx]?.completedCount ? <CompletedCountCheck/>:''}
-                    {partListItems[idx]?.completedComment ? <CompletedCommentCheck/>:''}
+                <div style={{...(props.mobileView ? {margin: 'auto'}: {}), border: '1px solid white', width: '90%'}}></div>
+                <div style={{display: 'flex', marginTop: '10px'}}>
+                    <div style={{width: '25%', overflow: 'auto', scrollbarWidth: 'thin'}}>
+                        <div style={{
+                            ...(props?.mobileView ? {width: '25%', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
+                            {partListItems[idx]?.completedCount ? <CompletedCountCheck/>:''}
+                            {partListItems[idx]?.completedComment ? <CompletedCommentCheck/>:''}
+                        </div>
+                    </div>
+                    <div style={{width: '75%'}}>
+                        <div style={{maxWidth:'230px', lineBreak: 'loose', ...(props?.mobileView ? 
+                                {paddingLeft: '10px'} : {})}} ><strong>Bin Location:</strong> {partListItems[idx]?.binLoc}
+                            </div>
+                        <div style={{maxWidth:'230px', lineBreak: 'loose', ...(props?.mobileView ? 
+                            {paddingLeft: '10px'} : {})}}><strong>Description:</strong> {partListItems[idx]?.description}
+                        </div>
+                    </div>
                 </div>
-                <br/>
-                <div style={{...(props?.mobileView ? 
-                    {width: '300px', paddingLeft: '10px'} : {})}} ><strong>Bin Location:</strong> {partListItems[idx]?.binLoc}
-                </div>
-                <div style={{...(props?.mobileView ? 
-                    {width: '300px', paddingLeft: '10px'} : {})}}><strong>Description:</strong> {partListItems[idx]?.description}
-                </div>
-                <br/>
-                <fieldset style={{
-                    borderRadius: '5px', 
-                    height: '115px', 
-                    maxHeight: '115px', 
-                    width: '300px', 
-                    maxWidth: '300px',
-                    ...(props?.mobileView ? {marginLeft: '10px'} : {}),
-                    }}>
-                    <legend>Comment</legend>
-                    <textarea 
-                        className='inventory-comment-box'
-                        maxLength={250}
-                        placeholder={'...'}
-                        style={{
-                            resize: 'none', 
-                            border: 'none', 
-                            fontFamily: `"DM Sans", sans-serif`, 
-                            fontSize: 'large',
-                            backgroundColor: 'transparent',
-                            color: 'white',
-                            scrollbarWidth: 'thin',
-                            msOverflowStyle: 'none', 
-                            scrollbarWidth: 'none', 
-                            '::WebkitScrollbar': {display: 'none'}
-                        }} 
-                        rows="3" 
-                        cols="28" 
-                        onChange={(e)=>{
-                            setUserComment(e.target.value)
-                        }}
-                        >
-                    </textarea>
-                </fieldset>
                 <br/>
             </div>
             
@@ -602,6 +1083,7 @@ export default function Inventory() {
                         sort={sort} 
                         setUpdateInventory={setUpdateInventory} 
                         updateInventory={updateInventory}
+                        getScanResult={getScanResult}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
@@ -610,7 +1092,6 @@ export default function Inventory() {
                         listSelectionDetail={partListItems[idx]}
                         resultCount={partListItems.length}
                         updateInventory={updateInventory}
-                        // updateInventoryCounts={<UpdateInventoryCounts mobileView={true}/>}
                     />
                 </List>
                 <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>

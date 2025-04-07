@@ -63,8 +63,8 @@ export default function Lgn(){
                     throw new Error()
                 }
             }).catch((err)=>{
-                alert('Unsuccessful login attempt!')
                 console.error(err);
+                alert('Unsuccessful login attempt!')
             })
         }
     
