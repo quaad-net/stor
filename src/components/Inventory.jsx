@@ -357,7 +357,7 @@ export default function Inventory() {
                         </div>
                     </div>
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
-                        {partListItems[idx]?.description}&nbsp;<button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img className='inventory-switch-view' src='/database-update.svg' width='15px'/></button>
+                        {partListItems[idx]?.description}<br/><button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img className='inventory-switch-view' src='/database-update.svg' width='15px'/></button>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
@@ -536,10 +536,6 @@ export default function Inventory() {
 
         function PickModalContent(){
 
-            // function setUpdateTypeToPick(){
-            //     setUpdateType('Pick')
-            // }
-
             function PickExposedEL(){
                 function ListItem(){
                     return(
@@ -548,9 +544,9 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Pick');
                         }} 
-                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                        
-                    >Pick
+                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Pick
                     </li>
                     )
                 }
@@ -665,7 +661,6 @@ export default function Inventory() {
             return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>}/>)
         }
 
-        //codemark
         function CountModalContent(){
 
             function CountExposedEL(){
@@ -676,9 +671,9 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Count');
                         }} 
-                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                        
-                    >Count
+                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Count
                     </li>
                     )
                 }
@@ -768,9 +763,9 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Reord');
                         }} 
-                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                        
-                    >Reord
+                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Reord
                     </li>
                     )
                 }
@@ -859,9 +854,10 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Loc');
                         }} 
-                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                        
-                    >Loc
+                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
+                    
+                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Loc
                     </li>
                     )
                 }

@@ -35,10 +35,12 @@ export default function CustomContentFormModal(props) {
             <ThemeProvider theme={darkTheme}>
                 {props.exposedEl.map((el, index)=>{
                     return(
-                    <span key={index} className='form-modal-exposed-el' onClick={()=>{
+                    <span key={index} className='form-modal-exposed-el' 
+                    onClick={()=>{
                         setOpen(true);
-                        }}>
-                            {el}
+                        }}
+                    >
+                        {el}
                     </span>)
                 })}
                 <Modal className='custom-content-form-modal' sx={{backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}
