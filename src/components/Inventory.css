@@ -38,6 +38,10 @@ input{
     cursor: pointer;
 }
 
+.inventory-switch-view:hover{
+    cursor: pointer;
+}
+
 @media(max-width: 899px){
 
     #stor-logo-header-logo{

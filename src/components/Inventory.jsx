@@ -357,7 +357,7 @@ export default function Inventory() {
                         </div>
                     </div>
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
-                        {partListItems[idx]?.description}&nbsp;<button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img src='/database-update.svg' width='15px'/></button>
+                        {partListItems[idx]?.description}&nbsp;<button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img className='inventory-switch-view' src='/database-update.svg' width='15px'/></button>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
@@ -536,6 +536,10 @@ export default function Inventory() {
 
         function PickModalContent(){
 
+            // function setUpdateTypeToPick(){
+            //     setUpdateType('Pick')
+            // }
+
             function PickExposedEL(){
                 function ListItem(){
                     return(
@@ -544,7 +548,7 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Pick');
                         }} 
-                        style={{listStyle: 'square', margin: '5px'}}
+                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         
                     >Pick
                     </li>
@@ -661,6 +665,7 @@ export default function Inventory() {
             return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>}/>)
         }
 
+        //codemark
         function CountModalContent(){
 
             function CountExposedEL(){
@@ -671,7 +676,7 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Count');
                         }} 
-                        style={{listStyle: 'square', margin: '5px'}}
+                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         
                     >Count
                     </li>
@@ -763,7 +768,7 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Reord');
                         }} 
-                        style={{listStyle: 'square', margin: '5px'}}
+                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         
                     >Reord
                     </li>
@@ -854,7 +859,7 @@ export default function Inventory() {
                         onClick={()=>{
                             setUpdateType('Loc');
                         }} 
-                        style={{listStyle: 'square', margin: '5px'}}
+                        style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid white', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         
                     >Loc
                     </li>
@@ -1049,7 +1054,7 @@ export default function Inventory() {
                     <ReorderModalContent/>
                     <LocationModalContent/>
                 </div>
-                <div style={{...(props.mobileView ? {margin: 'auto'}: {}), border: '1px solid white', width: '90%'}}></div>
+                <div id='inventory-update-type-divider' style={{...(props.mobileView ? {margin: 'auto'}: {}), border: '1px solid white', width: '90%', marginTop: '5px'}}></div>
                 <div style={{display: 'flex', marginTop: '10px'}}>
                     <div style={{width: '25%', overflow: 'auto', scrollbarWidth: 'thin'}}>
                         <div style={{
