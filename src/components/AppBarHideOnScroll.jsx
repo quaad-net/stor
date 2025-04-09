@@ -207,7 +207,8 @@ export default function AppBarHideOnScroll(props) {
                   </SearchIconWrapper>
                   <StyledInputBase
                       className='inventory-list-searchbox'
-                      placeholder="Query..."
+                      // placeholder={props?.resultCount ?  `${props?.resultCount} Records...` : 'Query...'}
+                      placeholder='Query...'
                       inputProps={{ 'aria-label': 'search' }}
                       
                       onKeyDown={(e)=>{

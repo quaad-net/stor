@@ -135,12 +135,11 @@ export default function Tasks(props) {
                     <div style={{width: '150px'}}>{props?.task.taskType}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}>{props?.task.code} | {props?.task.date}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}>@{props?.task.user.split('@')[0]}</div>
-                    <IconButton disableRipple>
-                        <input type='checkbox' readOnly onClick={()=>{
+                    <IconButton disableRipple  onClick={()=>{
                             setTaskToDelete({id: props?.task._id, index: props?.index})
-                            setModalOpen(!modalOpen)
-                            // deleteTask(props?.task._id, props?.index);   
-                        }} 
+                            setModalOpen(!modalOpen)   
+                        }}>
+                        <input type='checkbox' readOnly
                         />
                         <span style={{fontSize: '15px'}}>Complete?</span>
                     </IconButton>

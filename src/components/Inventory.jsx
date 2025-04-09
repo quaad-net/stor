@@ -22,6 +22,7 @@ import './Inventory.css'
 import { ConstructionTwoTone } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import BasicMessageModal from './BasicMessageModal';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -29,6 +30,8 @@ export default function Inventory() {
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
     const [authorizedUser, setAuthorizedUser] = React.useState(false);
+    const [basicMessageModalOpen, setBasicMessageModalOpen] = React.useState(false);
+    const [basicMessageModalContent, setBasicMessageModalContent] = React.useState('');
 
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
@@ -36,7 +39,7 @@ export default function Inventory() {
     const { userData } = useUserData();
 
     React.useEffect(()=>{
-        inventoryQuery({query: '110-a:110-b', queryType: 'binLoc'})
+        inventoryQuery({query: '110-a:110-b', queryType: 'binLoc', noDialog: true})
     },[])
     
     React.useEffect(()=>{
@@ -70,7 +73,7 @@ export default function Inventory() {
         })
     })
 
-    function inventoryQuery({query, queryType}){
+    function inventoryQuery({query, queryType, noDialog}){
 
         if(query === ''){throw new Error('Invalid syntax')}
         
@@ -92,9 +95,13 @@ export default function Inventory() {
             if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
             else{
                 if(res.length == 0){
-                    alert('No match found');
+                    setBasicMessageModalContent('No match found.')
+                    if(!noDialog){setBasicMessageModalOpen(true)}
                 }else{
                     setPartListItems(res);
+                    setIdx(0);
+                    setBasicMessageModalContent(`Returned ${res.length} records.`);
+                    if(!noDialog){setBasicMessageModalOpen(true)};
                 }
             };
         })
@@ -574,6 +581,7 @@ export default function Inventory() {
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
+                                    inputMode='numeric'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -585,7 +593,8 @@ export default function Inventory() {
                                         setTmpWorkOrder(e.target.value);
                                     }}
                                 />
-                                <input 
+                                <input
+                                    inputMode='numeric'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -597,7 +606,8 @@ export default function Inventory() {
                                         setTmpQtyUsed(e.target.value);
                                     }}
                                 />
-                                <input 
+                                <input
+                                    inputMode='numeric'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -686,6 +696,7 @@ export default function Inventory() {
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
+                                    inputMode='numeric'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -773,6 +784,7 @@ export default function Inventory() {
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
+                                    inputMode='numeric'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -1149,6 +1161,7 @@ export default function Inventory() {
                         setUpdateInventory={setUpdateInventory} 
                         updateInventory={updateInventory}
                         getScanResult={getScanResult}
+                        resultCount={partListItems.length}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
@@ -1164,6 +1177,7 @@ export default function Inventory() {
                     </h1>
                     <InventoryDetailContent/>
                 </div>
+                <BasicMessageModal setModalOpen={setBasicMessageModalOpen} modalOpen={basicMessageModalOpen} modalContent={basicMessageModalContent} />
             </>
         )
     }
