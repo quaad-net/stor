@@ -442,7 +442,6 @@ export default function Inventory() {
         const [userQty, setUserQty] = React.useState('');
         const [userPick, setUserPick] = React.useState('');
         const [userBinLoc, setUserBinLoc] = React.useState('');
-        const [updateType, setUpdateType] = React.useState('Count');
         const [workorder, setWorkorder] = React.useState('');
         const [qtyUsed, setQtyUsed] = React.useState(0);
         const [reorder, setReorder] = React.useState(false);
@@ -450,17 +449,12 @@ export default function Inventory() {
         const [reorderAmt, setReorderAmt] = React.useState(0);
         const [displayFormModal, setDisplayFormModal] = React.useState(false);
         const [formModalContent, SetFormModalContent] = React.useState(null);
-        const [tmpUpdateType, setTmpUpdateType] = React.useState('Count')
-
-        // React.useEffect(()=>{
-        //     console.log()
-        // }, [])
 
         const updateTypes = [
-            {name: 'Count', onclick: ()=>{}}, 
-            {name: 'BinLoc', onclick: ()=>{}},
-            {name: 'Pick', onclick: ()=>{}},
-            {name: 'Reorder', onclick: ()=>{}},
+            {name: 'Count'}, 
+            {name: 'Loc'},
+            {name: 'Pick'},
+            {name: 'Reord'},
 
         ]
 
@@ -477,14 +471,15 @@ export default function Inventory() {
 
             if(input.updateType === 'Count'){
                 userCompletedCount = true;
-                if(input.userComment?.trim() != ''){
+                if(input?.userComment != undefined && input.userComment?.trim() != '' ){
+                    console.log(input.userComment)
                     userCompletedComment = true;
                 }
                 const partDetails = {
                     code: currentPart.code,
                     binLoc: currentPart.binLoc,
                     inventoryCount: input.count,
-                    comment: input?.comment?.trim() || '',
+                    comment: input?.comment.trim() || '',
                     description: currentPart.description,
                     user: user.email,
                     date: now
@@ -506,7 +501,7 @@ export default function Inventory() {
                 })
 
             }
-            else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' ){
+            else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
                 await fetch(`${apiUrl}/inventory_tasks`, {
                     method: 'POST', 
                     headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
@@ -515,7 +510,7 @@ export default function Inventory() {
                         binLoc: currentPart.binLoc,
                         taskType: input.updateType,
                         taskValues: input.taskValues,
-                        comment: input.comment?.trim() || '',
+                        comment: input?.comment.trim() || '',
                         description: currentPart.description,
                         user: user.email,
                         date: now,
@@ -541,9 +536,6 @@ export default function Inventory() {
                     return(
                     <li 
                         className='inventory-update-type'
-                        onClick={()=>{
-                            setUpdateType('Pick');
-                        }} 
                         // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                     ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Pick
@@ -583,8 +575,7 @@ export default function Inventory() {
                             <form>
                                 <input 
                                     className='stor-input'
-                                    // id='inventory-pick-modal-workorder'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -596,8 +587,7 @@ export default function Inventory() {
                                 />
                                 <input 
                                     className='stor-input'
-                                    // id='inventory-pick-modal-qty-used'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -609,8 +599,7 @@ export default function Inventory() {
                                 />
                                 <input 
                                     className='stor-input'
-                                    // id='inventory-pick-modal-reorder-amt'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -624,7 +613,7 @@ export default function Inventory() {
                                 <button 
                                     type='button' 
                                     style={{ 
-                                        all: 'unset', 
+                                        all: 'unset',
                                         fontSize: 'small', 
                                         color: 'white',
                                         width: 'fit-content', 
@@ -668,10 +657,6 @@ export default function Inventory() {
                     return(
                     <li 
                         className='inventory-update-type'
-                        onClick={()=>{
-                            setUpdateType('Count');
-                        }} 
-                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                     ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Count
                     </li>
@@ -702,7 +687,7 @@ export default function Inventory() {
                             <form>
                                 <input 
                                     className='stor-input'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -760,10 +745,6 @@ export default function Inventory() {
                     return(
                     <li 
                         className='inventory-update-type'
-                        onClick={()=>{
-                            setUpdateType('Reord');
-                        }} 
-                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                     ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Reord
                     </li>
@@ -793,7 +774,7 @@ export default function Inventory() {
                             <form>
                                 <input 
                                     className='stor-input'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -851,12 +832,7 @@ export default function Inventory() {
                     return(
                     <li 
                         className='inventory-update-type'
-                        onClick={()=>{
-                            setUpdateType('Loc');
-                        }} 
-                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    
                     ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Loc
                     </li>
                     )
@@ -885,7 +861,7 @@ export default function Inventory() {
                             <form>
                                 <input 
                                     className='stor-input'
-                                    style={{borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
@@ -934,6 +910,81 @@ export default function Inventory() {
                 )
             }
             return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} />)
+        }
+
+        function OtherModalContent(){
+
+            function OtherExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
+                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Other
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function OtherForm(){
+                const [tmpComment, setTmpComment]  = React.useState('');
+
+                function submitForm(){
+                    try{
+                        if(tmpComment != undefined && tmpComment?.trim() != ''){}
+                        else{throw new Error('Please enter comment!')};
+                        submitUserInput({taskValues: JSON.stringify('Other'), comment: tmpComment, updateType: 'Other'})
+                    }
+                    catch(err){
+                        alert(err.message)
+                    }
+                }
+                
+                return(
+                    <>  
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <button 
+                                    type='button' 
+                                    style={{ 
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white',
+                                        width: 'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'}} 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='/circled-check.svg' width='30px'/>
+                                </button>
+                                <button 
+                                    type='reset' 
+                                    style={{
+                                        all: 'unset', 
+                                        fontSize: 'small', 
+                                        color: 'white', 
+                                        width:'fit-content', 
+                                        textAlign: 'center', 
+                                        margin:'10px',
+                                        marginTop: '5px', 
+                                        marginBottom: '5px'
+                                    }}>
+                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} />)
         }
 
         function FormClose(props){
@@ -1022,7 +1073,7 @@ export default function Inventory() {
             <div style={{width: props?.mobileView ? '100%' : 400, margin: 'auto'}}>
                 <div 
                     style={{...(props?.mobileView ? 
-                        {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '30px'})}}
+                        {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '45px'})}}
                 > 
                     <IconButton className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
                     }} 
@@ -1044,27 +1095,40 @@ export default function Inventory() {
                     </IconButton>
                 </div>  
                 <br/>
-                <div style={{display: 'flex', ...(props.mobileView ? {margin: 'auto', width: 'fit-content'} : {})}}>
-                    <CountModalContent/>
-                    <PickModalContent/>
-                    <ReorderModalContent/>
-                    <LocationModalContent/>
+                <div style={{ ...(props.mobileView ? {margin: 'auto', width: 'fit-content'} : {})}}>
+                    <div style={{display: 'flex'}}>
+                        <CountModalContent/>
+                        <PickModalContent/>
+                        <ReorderModalContent/>
+                    </div>
+                    <div style={{display:'flex', marginLeft: '35px'}}>
+                        <LocationModalContent/>
+                        <OtherModalContent/>
+                    </div>
                 </div>
-                <div id='inventory-update-type-divider' style={{...(props.mobileView ? {margin: 'auto'}: {}), border: '1px solid white', width: '90%', marginTop: '5px'}}></div>
+                <div id='inventory-update-type-divider' style={{...(props.mobileView ? {margin: 'auto'}: {}), border: '1px solid white', width: '80%', marginTop: '5px'}}></div>
                 <div style={{display: 'flex', marginTop: '10px'}}>
                     <div style={{width: '25%', overflow: 'auto', scrollbarWidth: 'thin'}}>
                         <div style={{
-                            ...(props?.mobileView ? {width: '25%', paddingLeft: '10px'} : {})}}><strong>Part Code:{props?.mobileView ? <br/> : <></>}</strong> {partListItems[idx]?.code}&nbsp; 
+                            ...(props?.mobileView ? {width: '25%', paddingLeft: '10px'} : {})}}><strong>Code:&nbsp;{props?.mobileView ? <br/> : <></>}</strong> 
+                            <span style={{color: 'gray'}}>{partListItems[idx]?.code.length > 10 ? partListItems[idx]?.code.substring(0, 10) + '...' : partListItems[idx]?.code}</span>&nbsp; 
                             {partListItems[idx]?.completedCount ? <CompletedCountCheck/>:''}
                             {partListItems[idx]?.completedComment ? <CompletedCommentCheck/>:''}
                         </div>
                     </div>
                     <div style={{width: '75%'}}>
                         <div style={{maxWidth:'230px', lineBreak: 'loose', ...(props?.mobileView ? 
-                                {paddingLeft: '10px'} : {})}} ><strong>Bin Location:</strong> {partListItems[idx]?.binLoc}
+                                {paddingLeft: '10px'} : {})}} ><strong>Bin Location:</strong>&nbsp;
+                                <span style={{color: 'gray'}}>
+                                    {partListItems[idx]?.binLoc.length > 15 ? partListItems[idx]?.binLoc.substring(0, 15) + '...' : partListItems[idx]?.binLoc}
+                                </span>
                             </div>
                         <div style={{maxWidth:'230px', lineBreak: 'loose', ...(props?.mobileView ? 
-                            {paddingLeft: '10px'} : {})}}><strong>Description:</strong> {partListItems[idx]?.description}
+                            {paddingLeft: '10px'} : {})}}><strong>Description:</strong>&nbsp; 
+                            <span style={{color: 'gray'}}>
+                                {partListItems[idx]?.description.length > 30 ? 
+                                partListItems[idx]?.description.substring(0, 30) + '...' :  partListItems[idx]?.description}
+                            </span>
                         </div>
                     </div>
                 </div>

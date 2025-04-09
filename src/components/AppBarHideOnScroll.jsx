@@ -17,6 +17,7 @@ import ShowInstitution from './Institution';
 import SelectAutoWidth from './SelectAutoWidth';
 import FullScreenScanner from './FullScreenScanner';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Tasks from './Tasks';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -189,6 +190,7 @@ export default function AppBarHideOnScroll(props) {
                   <span style={{fontSize: '15px'}}>Details</span>
                 </IconButton>
                 <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
+                <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                 <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
@@ -222,9 +224,10 @@ export default function AppBarHideOnScroll(props) {
                   selectionLabel='Type'
                   defaultSelection={queryType} 
                 />
-                <Box sx={{ flexGrow: 1 }} />
+                <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <ShowInstitution/>
+                  <Tasks/>
                   <IconButton 
                     size="large" 
                     aria-label="sort" 
@@ -234,7 +237,7 @@ export default function AppBarHideOnScroll(props) {
                   </IconButton>
                   <IconButton
                     size="large"
-                    aria-label="warehouse"
+                    aria-label="update inventory"
                     color="inherit"
                     onClick={()=>{props.setUpdateInventory(true)}}
                       >

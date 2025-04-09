@@ -43,7 +43,7 @@ export default function UserInfoModal(props) {
         color="inherit"     
       >
         <img src='/user-small.svg' width={props.iconSize}/>
-        {props?.btnDescription ? props.btnDescription : <></>}
+        {props?.btnDescription || <></>}
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}
         open={open}

@@ -42,6 +42,30 @@ input{
     cursor: pointer;
 }
 
+.inventory-desktop-tablet-content{
+    height: 70%;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    ::-webkit-scrollbar{display: none}
+}
+
+.custom-content-form-modal .stor-input:focus{
+    border-color: white;
+  }
+
+@media(max-height: 280px){
+    .inventory-desktop-tablet-content{
+        height: 50%;
+    } 
+}
+
+@media(max-height: 200px){
+    .inventory-desktop-tablet-content{
+        display: none;
+    } 
+}
+
 @media(max-width: 899px){
 
     #stor-logo-header-logo{

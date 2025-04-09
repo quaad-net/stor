@@ -71,7 +71,7 @@ function SwipeableEdgeDrawer(props) {
     if(open && props.updateInventory){
       return (
         <>
-          <span>{props.listSelectionDetail?.code}</span>
+          <span><span style={{color: 'gray'}}>{props.listSelectionDetail?.code}</span></span>
           {props?.mainContentHeader}
         </>
       )
@@ -79,7 +79,7 @@ function SwipeableEdgeDrawer(props) {
     else{
       return(
         <>
-        <span>Returned {props.resultCount} Results</span>
+        <span>Returned {props?.resultCount} Results</span>
         {props?.mainContentHeader}
         </>
       )
@@ -116,7 +116,7 @@ function SwipeableEdgeDrawer(props) {
             top: -drawerBleeding,
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
-            visibility: 'visible',
+            visibility: 'collaspe',
             right: 0,
             left: 0,
           }}
