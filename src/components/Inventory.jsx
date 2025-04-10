@@ -1162,6 +1162,7 @@ export default function Inventory() {
                         updateInventory={updateInventory}
                         getScanResult={getScanResult}
                         resultCount={partListItems.length}
+                        partListItems={partListItems}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 

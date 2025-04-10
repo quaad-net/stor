@@ -18,10 +18,10 @@ import SelectAutoWidth from './SelectAutoWidth';
 import FullScreenScanner from './FullScreenScanner';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Tasks from './Tasks';
+import Labels from './Labels';
 
 function HideOnScroll(props) {
   const { children, window } = props;
-  // Normally won't need to set the window ref as useScrollTrigger.
   // Will default to window.
   // For iframe only.
   const trigger = useScrollTrigger({
@@ -158,39 +158,47 @@ export default function AppBarHideOnScroll(props) {
             <>
               <div style={{width: '250px', margin: 'auto'}}>
                 <img src='stor-logo.svg' width='25px' style={{float: 'right'}}/>
-                <IconButton 
-                  disableRipple
-                  size="large" 
-                  aria-label="sort" 
-                  color="inherit" 
-                  onClick={props.sort}>
-                  <img src='/pulsar-sort.svg' width='25px'/>
-                  <span style={{fontSize: '15px'}}>Sort</span>
-                </IconButton>
-                <IconButton
-                  disableRipple
-                  size="large"
-                  aria-label="update inventory"
-                  color="inherit"
-                  onClick={()=>{
-                    props.setUpdateInventory(true);
-                  }}
+                <div>
+                  <div style={{display: 'flex'}}>
+                    <IconButton
+                      disableRipple
+                      size="large" 
+                      aria-label="sort" 
+                      color="inherit" 
+                      onClick={props.sort}>
+                      <img src='/pulsar-sort.svg' width='25px'/>
+                      <span style={{fontSize: '15px'}}>Sort</span>
+                    </IconButton>
+                    <IconButton
+                      size="large"
+                      aria-label="update inventory"
+                      color="inherit"
+                      onClick={()=>{
+                        props.setUpdateInventory(true);
+                      }}
+                        >
+                      <img src='/database-update.svg' width='25px' />
+                      <span style={{fontSize: '15px'}}>Update</span>
+                    </IconButton>
+                  </div>
+                  <div style={{display: 'flex'}}>
+                    <IconButton 
+                      disableRipple
+                      size="large" 
+                      aria-label="inventory details" 
+                      color="inherit"
+                      onClick={()=>{props.setUpdateInventory(false)}}
                     >
-                  <img src='/database-update.svg' width='25px' />
-                  <span style={{fontSize: '15px'}}>Update</span>
-                </IconButton>
-                <IconButton 
-                  disableRipple
-                  size="large" 
-                  aria-label="inventory details" 
-                  color="inherit"
-                  onClick={()=>{props.setUpdateInventory(false)}}
-                >
-                  <img src='/info.svg' width='25px' />
-                  <span style={{fontSize: '15px'}}>Details</span>
-                </IconButton>
-                <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
-                <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
+                      <img src='/info.svg' width='25px' />
+                      <span style={{fontSize: '15px'}}>Details</span>
+                    </IconButton>
+                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
+                  </div>
+                  <div style={{display: 'flex'}}>
+                    <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
+                    <Labels mobileView={true} queryRes={props?.partListItems}/>
+                  </div>
+                </div>
                 <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
@@ -229,7 +237,9 @@ export default function AppBarHideOnScroll(props) {
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <ShowInstitution/>
                   <Tasks/>
+                  <Labels queryRes={props?.partListItems}/>
                   <IconButton 
+                    disableRipple
                     size="large" 
                     aria-label="sort" 
                     color="inherit" 
@@ -237,6 +247,7 @@ export default function AppBarHideOnScroll(props) {
                     <img src='/pulsar-sort.svg' width='25px'/>
                   </IconButton>
                   <IconButton
+                    disableRipple
                     size="large"
                     aria-label="update inventory"
                     color="inherit"
@@ -245,6 +256,7 @@ export default function AppBarHideOnScroll(props) {
                       <img src='/database-update.svg' width='25px' />
                   </IconButton>
                   <IconButton 
+                    disableRipple
                     size="large" 
                     aria-label="inventory details" 
                     color="inherit" 
