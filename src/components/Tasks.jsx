@@ -192,7 +192,7 @@ export default function Tasks(props) {
                         {itemOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                     <div style={{width: '150px'}}>{props?.task.taskType}</div>
-                    <div style={{fontSize: '13px', color: 'gray'}}>{props?.task.code} | {props?.task.date}</div>
+                    <div style={{fontSize: '13px', color: 'gray'}}><span style={{color: 'goldenrod'}}>{props?.task.code}</span> | {props?.task.date}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}>@{props?.task.user.split('@')[0]}</div>
                     <IconButton disableRipple  onClick={()=>{
                             setTaskToDelete({id: props?.task._id, index: props?.index})

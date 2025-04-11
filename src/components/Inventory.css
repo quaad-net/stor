@@ -53,7 +53,7 @@ input{
 
 .custom-content-form-modal .stor-input:focus{
     border-color: white;
-  }
+}
 
 @media(max-height: 280px){
     .inventory-desktop-tablet-content{

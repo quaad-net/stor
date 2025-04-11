@@ -6,6 +6,7 @@ import QRCode from "react-qr-code";
 import { useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 const apiUrl = import.meta.env.VITE_API_URL;
+import './Labels.css'
 
 export default function Labels(props){
     const [modalOpen, setModalOpen] = useState(false);
@@ -107,7 +108,7 @@ export default function Labels(props){
         const [formMin, setFormMin] = useState('');
         const [formMax, setFormMax] = useState('');
         return(
-            <form>
+            <form className="stor-new-label-form">
                 <input
                     maxLength={codeMaxChar}
                     className='stor-input'

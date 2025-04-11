@@ -119,7 +119,8 @@ export default function AppBarHideOnScroll(props) {
 
         const queryTypeSelections = [
           {value: 'binLoc', name: 'Loc'},
-          {value: 'partCode', name: 'Code'}
+          {value: 'partCode', name: 'Code'},
+          {value: 'descr', name: 'Descr'}
         ]
 
         const renderMenu = (
@@ -215,7 +216,6 @@ export default function AppBarHideOnScroll(props) {
                   </SearchIconWrapper>
                   <StyledInputBase
                       className='inventory-list-searchbox'
-                      // placeholder={props?.resultCount ?  `${props?.resultCount} Records...` : 'Query...'}
                       placeholder='Query...'
                       inputProps={{ 'aria-label': 'search' }}
                       
