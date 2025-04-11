@@ -44,7 +44,7 @@ export default function BasicMessageModal(props) {
                 </div>
                 {props?.noDefaultBtns ? <></> : 
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                    <IconButton disableRipple onClick={()=>{
+                    <IconButton autoFocus disableRipple onClick={()=>{
                         handleClose();
                     }}><span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                     </IconButton>

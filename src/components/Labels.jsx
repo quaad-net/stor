@@ -13,7 +13,7 @@ export default function Labels(props){
     const { token } = useToken();
 
     const codeMaxChar = 30;
-    const descriptionMaxChar = 70;
+    const descriptionMaxChar = 93; //70
     const binLocMaxChar = 10;
     const minMaxChar = 6;
     const maxMaxChar = 6;
@@ -35,7 +35,8 @@ export default function Labels(props){
 
             const modRecord = {
                 code: modCode?.substring(0, codeMaxChar),
-                description: record.description?.substring(0, descriptionMaxChar),
+                description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
+                    record.description,
                 binLoc: modBinLoc?.substring(0, binLocMaxChar),
                 min: record.min === '' ? '?': record.min.toString()?.substring(0, minMaxChar),
                 max: record.max === '' ? '?' : record.max.toString()?.substring(0, maxMaxChar),

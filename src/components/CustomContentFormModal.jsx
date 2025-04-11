@@ -21,8 +21,11 @@ export default function CustomContentFormModal(props) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+    const handleClose = () => {
+        setOpen(false);
+        props?.setAlertContent('');
+        props?.setDisplayAlert(false);
+    };
     const darkTheme = createTheme({
     palette: {
         mode: 'dark',

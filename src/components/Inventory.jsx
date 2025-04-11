@@ -23,6 +23,7 @@ import { ConstructionTwoTone } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import BasicMessageModal from './BasicMessageModal';
+import Alert from '@mui/material/Alert';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -75,8 +76,7 @@ export default function Inventory() {
 
     function inventoryQuery({query, queryType, noDialog}){
 
-        if(query === ''){throw new Error('Invalid syntax')}
-        
+        if(query === ''){throw new Error('Invalid syntax')};
         fetch(`${apiUrl}/inventory/${queryType}/${query}`, {
             method: 'POST',
             headers: {Authorization: `Bearer ${token}`}
@@ -106,13 +106,20 @@ export default function Inventory() {
             };
         })
         .catch((err)=>{
-            if (err.message=='Invalid syntax'){alert(err.message)}
+            if (err.message=='Invalid syntax'){
+                setBasicMessageModalContent(err.message);
+                setBasicMessageModalOpen(true);
+            }
             else if(err.message == 'Unauthorized user'){
                 navigate("/lgn");
             }
-            else if(err.message == 'Cannot run query'){alert('Could not complete query!')}
+            else if(err.message == 'Cannot run query'){
+                setBasicMessageModalContent('Could not complete query!');
+                setBasicMessageModalOpen(true);
+            }
             else{
-                alert('Something went wrong!')
+                setBasicMessageModalContent('Something went wrong!');
+                setBasicMessageModalOpen(true);
                 console.log(err)
             }
         })
@@ -293,8 +300,8 @@ export default function Inventory() {
         const uni = /^3.*$/;
         const mech = /^7.*$/;
         const plumb = /^5.*$/;
-        const elec = /^2.*.$/;
-        const storGold = 'linear-gradient(to right, #bf953f, #b38728, #aa771c)'
+        const elec = /^2.*$/;
+        const storGold = 'linear-gradient(to right, #bf953f, #b38728, #aa771c)';
 
         const bg = props.avaBgIndx % 2 === 0;
 
@@ -467,83 +474,106 @@ export default function Inventory() {
 
         async function submitUserInput(input){
             //takes input obj
+            try{
+                const parts = [...partListItems];
+                const currentPart = parts[idx];
+                const user = JSON.parse(userData);
+                const now = new Date();
 
-            const parts = [...partListItems];
-            const currentPart = parts[idx];
-            const user = JSON.parse(userData);
-            const now = new Date();
+                let userCompletedCount = false
+                let userCompletedComment = false;
 
-            let userCompletedCount = false
-            let userCompletedComment = false;
-
-            if(input.updateType === 'Count'){
-                userCompletedCount = true;
-                if(input?.userComment != undefined && input.userComment?.trim() != '' ){
-                    console.log(input.userComment)
-                    userCompletedComment = true;
-                }
-                const partDetails = {
-                    code: currentPart.code,
-                    binLoc: currentPart.binLoc,
-                    inventoryCount: input.count,
-                    comment: input?.comment.trim() || '',
-                    description: currentPart.description,
-                    user: user.email,
-                    date: now
-                } 
-                fetch(`${apiUrl}/inventory_count`, {
-                    method: 'POST', 
-                    headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-                    body: JSON.stringify(partDetails)
-                })
-                .then((res)=>{
-                    if(res.status == 201){
-                        if(userCompletedCount){currentPart.completedCount = true};
-                        if(userCompletedComment){currentPart.completedComment = true}
-                        setPartListItems(parts);
+                if(input.updateType === 'Count'){
+                    userCompletedCount = true;
+                    if(input?.userComment != undefined && input.userComment?.trim() != '' ){
+                        console.log(input.userComment)
+                        userCompletedComment = true;
                     }
-                    else{
-                        alert(`${res.status} Error`)
-                    }
-                })
-
-            }
-            else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
-                await fetch(`${apiUrl}/inventory_tasks`, {
-                    method: 'POST', 
-                    headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-                    body: JSON.stringify({
+                    const partDetails = {
                         code: currentPart.code,
                         binLoc: currentPart.binLoc,
-                        taskType: input.updateType,
-                        taskValues: input.taskValues,
+                        inventoryCount: input.count,
                         comment: input?.comment.trim() || '',
                         description: currentPart.description,
                         user: user.email,
-                        date: now,
-                        completed: false
+                        date: now
+                    } 
+                    fetch(`${apiUrl}/inventory_count`, {
+                        method: 'POST', 
+                        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                        body: JSON.stringify(partDetails)
                     })
-                })
-                .then((res)=>{
-                    if(res.status == 201){
-                        alert('Submitted!');
-                        setPartListItems(parts)
-                    }
-                    else{
-                        alert(`${res.status} Error`)
-                    }
-                })
+                    .then((res)=>{
+                        if(res.status == 201){
+                            if(userCompletedCount){currentPart.completedCount = true};
+                            if(userCompletedComment){currentPart.completedComment = true}
+                            setPartListItems(parts);
+                        }
+                        else{
+                            setBasicMessageModalContent(`${res.status} Error`);
+                            setBasicMessageModalOpen(true);
+                        }
+                    })
+
+                }
+                else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
+                    await fetch(`${apiUrl}/inventory_tasks`, {
+                        method: 'POST', 
+                        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                        body: JSON.stringify({
+                            code: currentPart.code,
+                            binLoc: currentPart.binLoc,
+                            taskType: input.updateType,
+                            taskValues: input.taskValues,
+                            comment: input?.comment.trim() || '',
+                            description: currentPart.description,
+                            user: user.email,
+                            date: now,
+                            completed: false
+                        })
+                    })
+                    .then((res)=>{
+                        if(res.status == 201){
+                            setBasicMessageModalContent('Submitted');
+                            setBasicMessageModalOpen(true);
+                            setPartListItems(parts);
+                        }
+                        else{
+                            setBasicMessageModalContent(`${res.status} Error`);
+                            setBasicMessageModalOpen(true);
+                        }
+                    })
+                }
+            }
+            catch(err){
+                setBasicMessageModalContent('Could not complete update!');
+                setBasicMessageModalOpen(true);
             }
         }
 
         function PickModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
 
             function PickExposedEL(){
                 function ListItem(){
                     return(
                     <li 
                         className='inventory-update-type'
-                        // style={{textAlign: 'center', width: '55px', listStyle: 'none', margin: '5px', border: '1px solid gray', borderRadius: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                     ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Pick
                     </li>
@@ -572,12 +602,14 @@ export default function Inventory() {
                         );
                     }
                     catch(err){
-                        alert(err.message)
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
                     }
                 }
                 
                 return(
                     <>  
+                        <ErrorAlert/>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
@@ -657,10 +689,26 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>}/>)
+            return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function CountModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
 
             function CountExposedEL(){
                 function ListItem(){
@@ -687,12 +735,14 @@ export default function Inventory() {
                         );
                     }
                     catch(err){
-                        alert(err.message)
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
                     }
                 }
                 
                 return(
                     <>  
+                        <ErrorAlert/>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
@@ -746,10 +796,26 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>}/>)
+            return(<CustomContentFormModal exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function ReorderModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
 
             function ReordExposedEL(){
                 function ListItem(){
@@ -771,16 +837,18 @@ export default function Inventory() {
                 function submitForm(){
                     try{
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
-                        else{throw new Error('Please enter a numeric value for Reorder!')};
+                        else{throw new Error('Please enter a numeric value for Reorder Amount!')};
                         submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})
                     }
                     catch(err){
-                        alert(err.message)
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
                     }
                 }
                 
                 return(
                     <>  
+                        <ErrorAlert/>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
@@ -790,7 +858,7 @@ export default function Inventory() {
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
-                                    placeholder='(#) Reorder' 
+                                    placeholder='(#) Reorder Amount' 
                                     onChange={(e)=>{
                                         setTmpReord(e.target.value);
                                     }}
@@ -834,10 +902,26 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} />)
+            return(<CustomContentFormModal exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function LocationModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
 
             function LocExposedEL(){
                 function ListItem(){
@@ -863,12 +947,14 @@ export default function Inventory() {
                         submitUserInput({taskValues: JSON.stringify({binLoc: tmpLoc}), comment: tmpComment, updateType: 'Loc'})
                     }
                     catch(err){
-                        alert(err.message)
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
                     }
                 }
                 
                 return(
                     <>  
+                        <ErrorAlert/>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
@@ -921,10 +1007,26 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} />)
+            return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
         function OtherModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
 
             function OtherExposedEL(){
                 function ListItem(){
@@ -945,16 +1047,18 @@ export default function Inventory() {
                 function submitForm(){
                     try{
                         if(tmpComment != undefined && tmpComment?.trim() != ''){}
-                        else{throw new Error('Please enter comment!')};
+                        else{throw new Error('Please enter details in Comment!')};
                         submitUserInput({taskValues: JSON.stringify('Other'), comment: tmpComment, updateType: 'Other'})
                     }
                     catch(err){
-                        alert(err.message)
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
                     }
                 }
                 
                 return(
                     <>  
+                        <ErrorAlert/>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <CommentBox setTmpComment={setTmpComment}/>
@@ -996,7 +1100,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} />)
+            return(<CustomContentFormModal exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
         function FormClose(props){

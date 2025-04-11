@@ -18,6 +18,11 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Collapse } from '@mui/material';
 import useToken from '../../app/useToken';
 import BasicDialogModal from './BasicDialogModal';
+import BasicMessageModal from './BasicMessageModal'
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import { styled } from '@mui/material/styles';
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,8 +31,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Tasks(props) {
     const [open, setOpen] = React.useState(false);
     const [tasksListItems, setTasksListItems] = React.useState([]);
+    const [unfilteredTasks, setUnfilteredTasks] = React.useState([]);
     const [modalOpen, setModalOpen] = React.useState(false);
     const [taskToDelete, setTaskToDelete] = React.useState({})
+    const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
+    const [basicMessageContent, setBasicMessageContent] = React.useState('')
+    const [userFilter, setUserFilter] = React.useState('')
     const { token } = useToken();
     const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -39,15 +48,32 @@ export default function Tasks(props) {
         setOpen(false);
     };
     
+    React.useEffect(()=>{
+        getTasks(); 
+    }, [open])
+
     const darkTheme = createTheme({
     palette: {
         mode: 'dark',
     },
     });
 
-    React.useEffect(()=>{
-        getTasks(); 
-    }, [open])
+    const StyledTextfield = styled(TextField)({
+        '& .MuiOutlinedInput-root': {
+          '&:hover fieldset': {
+            borderColor: '#B2BAC2',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#B2BAC2',
+          },
+        },
+        '& #outlined-start-adornment-label':{
+            color: 'gray',
+            '&.Mui-focused': {
+                color: 'whitesmoke'
+            }
+        }
+    });
 
     async function getTasks(){
         try{
@@ -59,17 +85,19 @@ export default function Tasks(props) {
         )
         .then((res)=>{return res.json()})
         .then((res)=>{ 
-            setTasksListItems(res)
+            setTasksListItems(res);
+            setUnfilteredTasks(res);
         })
         }
         catch(err){
-            alert('Could not fetch records!');
+            setBasicMessageContent('Could not fetch records!');
+            setBasicMessageOpen(true);
             console.log(err);
         }
     }
 
-    async function deleteTask(taskId, index){
-        try{
+    async function deleteTask(taskId){
+     
             fetch(`${apiUrl}/inventory_tasks/delete/${taskId}`,
                 {
                     method: 'POST',
@@ -82,20 +110,50 @@ export default function Tasks(props) {
                     console.log(res)
                     throw new Error()
                 };
-                const updatedTasklist = [];
-                tasksListItems.map((task, idx)=>{
-                    if(idx != index){
-                        updatedTasklist.push(task)
+                
+                const updatedTaskslist = [];
+                tasksListItems.map((task)=>{
+                    // if(idx != index){
+                    //     updatedTaskslist.push(task)
+                    // }
+                    if(task._id != taskId){
+                        updatedTaskslist.push(task)
                     }
-                    setTasksListItems(updatedTasklist);
-                    setTaskToDelete({});
                 })
+                setTasksListItems(updatedTaskslist);
+
+                const updatedUnfilteredTasks = [];
+                unfilteredTasks.map((task)=>{
+                    if(task._id != taskId){
+                        updatedUnfilteredTasks.push(task)
+                    }
+                })
+                setUnfilteredTasks(updatedUnfilteredTasks);
+                setTaskToDelete({});
             })
-        }
-        catch(err){
-            console.log(err);
-            alert('Could not delete task!');
-        }
+            .catch((err)=>{
+                console.log(err);
+                setBasicMessageContent('Could not delete task!');
+                setBasicMessageOpen(true);
+            })
+    }
+
+    function filterByUser(user){
+        const userTasks = [];
+        const reStr = '^' + user;
+        const reUser = new RegExp(reStr, 'i')
+        tasksListItems.forEach((task)=>{
+            if(reUser.test(task.user)){
+                userTasks.push(task)
+            }
+        setTasksListItems(userTasks);
+        setUserFilter(user);
+        })
+    }
+
+    function unfilter(){
+        setTasksListItems(unfilteredTasks);
+        setUserFilter('');
     }
 
     function ModalContent(){
@@ -106,9 +164,10 @@ export default function Tasks(props) {
                     Continue?
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                    <IconButton disableRipple onClick={()=>{
+                    <IconButton autoFocus disableRipple onClick={()=>{
                         setModalOpen(false);
-                        deleteTask(taskToDelete.id, taskToDelete.index);
+                        // deleteTask(taskToDelete.id, taskToDelete.index);
+                        deleteTask(taskToDelete.id)
                     }}><span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
@@ -189,15 +248,30 @@ export default function Tasks(props) {
                             <CloseIcon />
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            TASKS
+                            TASKS<span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            {/* save */}
-                        </Button>
+                        {/* codemark */}
+                        {userFilter != '' ? 
+                        <IconButton disableRipple onClick={unfilter}>
+                            <FilterListOffIcon fontSize='20px'/>
+                        </IconButton> : <></>}
+                        <StyledTextfield
+                            variant='outlined'
+                            label="Filter by User"
+                            id="outlined-start-adornment"
+                            size='small'
+                            sx={{ m: 1, width: '150px', marginTop: '15px'}}
+                            slotProps={{
+                                input: {
+                                startAdornment: <InputAdornment position="start"><img src='/user-small.svg' width='20px'/></InputAdornment>,
+                                },
+                            }}
+                            onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
+                        />
                         </Toolbar>
                     </AppBar>
                     <List>
-                        {tasksListItems.map((task, index)=>{
+                        {tasksListItems?.map((task, index)=>{
                             return (
                                 <TaskItem task={task} key={index} index={index}/>
                             )
@@ -207,6 +281,7 @@ export default function Tasks(props) {
                 </React.Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
+            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
         </>
     );
 }

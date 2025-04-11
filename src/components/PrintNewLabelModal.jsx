@@ -31,11 +31,11 @@ export default function PrintNewLabelModal(props) {
         <>
         <div>
             <ThemeProvider theme={darkTheme}>
-                <Modal className='custom-content-form-modal' sx={{backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}
+                <Modal className='new-label-form' sx={{backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'}}
                     open={props.modalOpen}
                     onClose={handleClose}
-                    aria-labelledby="custom-content-form-modal-title"
-                    aria-describedby="custom-content-form-modal-description"
+                    aria-labelledby="new-label-form"
+                    aria-describedby="new-label-form"
                     >
                     <Box sx={style}>
                         {props?.modalContent}
