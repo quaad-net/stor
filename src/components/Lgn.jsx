@@ -3,9 +3,10 @@ import useToken from "../../app/useToken";
 import { useNavigate, useOutletContext} from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL; 
 import useUser from "../../app/useUser";
-import {useEffect, useState } from "react";
+import {useState } from "react";
 import useUserData from "../../app/useUserData";
 import useAuth from "../../app/useAuth";
+import BasicMessageModal from './BasicMessageModal';
 
 export default function Lgn(){
 
@@ -15,6 +16,8 @@ export default function Lgn(){
     const [currentUserData, setCurrentUserData] = useOutletContext();
     const [authorizedUser, setAuthorizedUser] = useState(true);
     const navigate = useNavigate();
+    const [basicMessageOpen, setBasicMessageOpen ] = useState(false);
+    const [basicMessageContent, setBasicMessageContent] = useState('');
 
     useAuth().then((res)=>{
         if(!res.authorized){
@@ -24,13 +27,6 @@ export default function Lgn(){
             navigate("/inventory")
         }
     })   
-
-    // useEffect(()=>{
-    //     // if(user != ''){
-    //     //     navigate("/inventory")
-    //     // }
-
-    // },[navigate, user]) 
 
     function UserLogin(){
 
@@ -64,7 +60,8 @@ export default function Lgn(){
                 }
             }).catch((err)=>{
                 console.error(err);
-                alert('Unsuccessful login attempt!')
+                setBasicMessageContent('Unsuccessful login attempt!')
+                setBasicMessageOpen(true);
             })
         }
     
@@ -83,10 +80,16 @@ export default function Lgn(){
                 }
             })
         }
+
+        function Dialog(){
+            return(
+                <span style={{color: 'white'}}>{basicMessageContent}</span>
+            )
+        }
     
         return(
-            <div style={{height: '100vh', width: '95%', margin: 'auto'}}>
-                <h2>Login</h2>
+            <div style={{height: '100vh', width: '95%', margin: 'auto', color: 'white'}}>
+                <h1>&nbsp;</h1>
                 <br/><br/>
                 <form>
                     <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
@@ -113,7 +116,8 @@ export default function Lgn(){
                                 const form = document.querySelector('form')
                             if(!form.checkValidity()){
                                 showInValids();
-                                alert('Please correct field(s).')
+                                setBasicMessageContent('Missing field(s)')
+                                setBasicMessageOpen(true);
                             }
                             else{
                                 loginRequest();
@@ -135,6 +139,7 @@ export default function Lgn(){
                         </button>
                     </div>
                 </form>
+                <BasicMessageModal setModalOpen={setBasicMessageOpen} modalOpen={basicMessageOpen} modalContent={<Dialog/>}/>
             </div>
         )
     }

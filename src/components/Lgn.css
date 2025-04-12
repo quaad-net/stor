@@ -1,6 +1,6 @@
 .login-fieldset{
     border: 1px solid gray;
-    border-radius: 2px;
+    border-radius: 5px;
     text-align: left;
 }
 
@@ -9,7 +9,6 @@ legend{
 }
 
 .user-pass{
-    /* width: 300px; */
     margin: 'auto'
 }
 
@@ -23,10 +22,10 @@ legend{
 
 #login-submit-btn, #login-clear-btn{
     all: unset;
-    display: block;
+    display: inline;
     width: 75px;
     margin: 'auto';
-    margin-top: 10px;
+    margin-top: 20px;
     border-radius: 5px;
     font-family: "DM Sans", sans-serif;
     font-size: small;

@@ -203,7 +203,7 @@ export default function Labels(props){
                     setModalOpen(true);
                 }}>
                 <img src='/pulsar-labels.svg' width='25px'/>
-                {props?.mobileView ?  <span style={{fontSize: '15px'}}>Print</span> : <></>}
+                {props?.mobileView ?  <span style={{fontSize: '15px'}}>Label</span> : <></>}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<PrintType/>} noDefaultBtns={true} />
             <PrintNewLabelModal modalOpen={formModalOpen} setModalOpen={setFormModalOpen} modalContent={<Form/>}/>

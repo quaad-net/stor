@@ -24,6 +24,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
+import { Collapse } from '@mui/material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -40,7 +43,7 @@ export default function Inventory() {
     const { userData } = useUserData();
 
     React.useEffect(()=>{
-        inventoryQuery({query: '110-a:110-b', queryType: 'binLoc', noDialog: true})
+        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true})
     },[])
     
     React.useEffect(()=>{
@@ -345,8 +348,27 @@ export default function Inventory() {
 
 
     function InventoryDetailContent(props){
+        const [warehouseOpen, setWarehouseOpen ]= React.useState(false);
+        const [wMin, setWMin] = React.useState('');
+        const [wMax, setWMax] = React.useState('');
+        const [wAvail, setWAvail] = React.useState('');
         if(!updateInventory){
         // Inventory Detaiil
+
+        function getWarehouseDetails(){ 
+            try{
+                fetch(`/${apiUrl}/inventory_ext/${partListItems[idx].code}/${partListItems[idx].binLoc}`)
+                .then((res)=>{if(res.status == 200){return res.json}else{throw new Error()}})
+                .then((res)=>{
+                    const data = JSON.parse(res);
+                    setWMin(data.min); 
+                    setWMax(data.max);
+                    setWAvail(data.invtAvail);
+                })
+            }
+            catch(err){}
+        }
+
         return(
             <> 
                 <div style={{ 
@@ -354,7 +376,6 @@ export default function Inventory() {
                         minWidth: '350px',
                         minHeight: '100px', 
                         backgroundColor: props.mobileView ? 'transparent' : 'rgba(22, 22, 22, 0.34)',
-                        // backgroundColor: 'rgba(22, 22, 22, 0.34)', 
                         borderRadius: '2px', 
                         marginBottom: '10px'
                         }}>
@@ -378,50 +399,58 @@ export default function Inventory() {
                     <div style={{marginBottom: '10px'}}>
                         <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>active</legend>
-                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.active}</span>
+                        <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.active}</span>
                         </fieldset>
                     </div>
                     <div style={{marginBottom: '10px'}}>
-                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                        <legend style={{color: 'white', fontSize: '13px'}}>fy14Expn</legend>
-                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.fy14Expn}</span>
-                        </fieldset>
-                    </div>
-                    <div style={{marginBottom: '10px'}}>
-                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                        <legend style={{color: 'white', fontSize: '13px'}}>invtAvail</legend>
-                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}</span>
-                        </fieldset>
-                    </div>
-                </div>
-                <div style={{marginBottom: '10px'}}>
                         <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>lastPODate</legend>
-                        <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
+                        <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
                         </fieldset>
+                    </div>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                    <legend style={{color: 'white', fontSize: '13px'}}>min</legend>
-                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min }</span>
-                    </fieldset>
-                </div>
-                <div style={{marginBottom: '10px'}}>
-                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                    <legend style={{color: 'white', fontSize: '13px'}}>max</legend>
-                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.max === '' || undefined ? '-'  : partListItems[idx]?.max }</span>
+                    <legend style={{color: 'white', fontSize: '13px'}}>Vendor</legend>
+                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.vendorName === '' || undefined ? '-'  : partListItems[idx]?.vendorName }</span>
                     </fieldset>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>vendorNo</legend>
-                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
+                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
                     </fieldset>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>mfgNo</legend>
-                    <span style={{color: 'white', fontSize: '25px'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
+                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
+                    </fieldset>
+                </div>
+                {/* <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>Warehouse</legend>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setWarehouseOpen(!warehouseOpen)}
+                    >
+                        {warehouseOpen ? <KeyboardArrowUpIcon sx={{color: 'white'}} /> : <KeyboardArrowDownIcon sx={{color: 'white'}} />}
+                    </IconButton>
+                    <Collapse in={warehouseOpen} timeout="auto" unmountOnExit>
+                        <span style={{fontSize: '13px'}}>wCode | wName</span> <br/>
+                        avail: #### | min: #### | max: ####
+                    </Collapse>
+                    </fieldset>
+                </div> */}
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        <legend style={{color: 'white', fontSize: '13px'}}>Warehouse</legend>
+                        <span style={{color: 'gray'}}>
+                            avail: {partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}&nbsp;
+                            | min: {partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min}&nbsp;
+                            | max: {partListItems[idx]?.max === '' || undefined ? '-'  : partListItems[idx]?.max }&nbsp;
+                        </span>
                     </fieldset>
                 </div>
             </>
