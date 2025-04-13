@@ -171,6 +171,7 @@ export default function AppBarHideOnScroll(props) {
                       <span style={{fontSize: '15px'}}>Sort</span>
                     </IconButton>
                     <IconButton
+                      disableRipple
                       size="large"
                       aria-label="update inventory"
                       color="inherit"

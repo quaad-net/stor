@@ -103,7 +103,7 @@ export default function Inventory() {
                 }else{
                     setPartListItems(res);
                     setIdx(0);
-                    setBasicMessageModalContent(`Returned ${res.length} records.`);
+                    setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
                     if(!noDialog){setBasicMessageModalOpen(true)};
                 }
             };
@@ -353,7 +353,7 @@ export default function Inventory() {
         const [wMax, setWMax] = React.useState('');
         const [wAvail, setWAvail] = React.useState('');
         if(!updateInventory){
-        // Inventory Detaiil
+        // Inventory Detail
 
         function getWarehouseDetails(){ 
             try{
@@ -399,32 +399,32 @@ export default function Inventory() {
                     <div style={{marginBottom: '10px'}}>
                         <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>active</legend>
-                        <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.active}</span>
+                        <span style={{color: 'gray'}}>{partListItems[idx]?.active}</span>
                         </fieldset>
                     </div>
                     <div style={{marginBottom: '10px'}}>
                         <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>lastPODate</legend>
-                        <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
+                        <span style={{color: 'gray'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
                         </fieldset>
                     </div>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>Vendor</legend>
-                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.vendorName === '' || undefined ? '-'  : partListItems[idx]?.vendorName }</span>
+                    <span style={{color: 'gray'}}>{partListItems[idx]?.vendorName === '' || undefined ? '-'  : partListItems[idx]?.vendorName }</span>
                     </fieldset>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>vendorNo</legend>
-                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
+                    <span style={{color: 'gray'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
                     </fieldset>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>mfgNo</legend>
-                    <span style={{color: 'gray', fontSize: '25px'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
+                    <span style={{color: 'gray'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
                     </fieldset>
                 </div>
                 {/* <div style={{marginBottom: '10px'}}>
