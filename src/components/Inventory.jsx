@@ -289,7 +289,7 @@ export default function Inventory() {
                         </React.Fragment>
                     }
                     />
-                    <IconButton className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}>
+                    <IconButton disableRipple className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}>
                         <MoreVertIcon sx={{marginTop: '15px', fontSize: 30}}/>
                     </IconButton>
                 </ListItem>
