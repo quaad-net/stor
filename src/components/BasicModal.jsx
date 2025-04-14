@@ -44,7 +44,7 @@ export default function BasicModal(props) {
         aria-haspopup={btnProps?.ariaHasPopUp}
         color={btnProps?.color}
       >
-        <img src='/mixed-apps-menu.svg' width='20px'></img>
+        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/a0bb141e-5952-4119-6843-6a0739ed7800/public' width='20px' />
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}
         open={open}

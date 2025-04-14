@@ -16,17 +16,13 @@ import SwipeableEdgeDrawer from './Drawer';
 import useToken from '../../app/useToken';
 import { useNavigate } from 'react-router-dom';
 import useUserData from '../../app/useUserData';
-import BasicModalSelection from './BasicModalSelection';
 import CustomContentFormModal from './CustomContentFormModal';
 import './Inventory.css'
-import { ConstructionTwoTone } from '@mui/icons-material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
-import { Collapse } from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import { Collapse } from '@mui/material';
+// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -236,11 +232,11 @@ export default function Inventory() {
     }
 
     function ListItemCompletedCountCheck(){
-        return <img width='15px' src='/circled-check-red.svg' />
+        return <img width='15px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/99ff1897-b735-41a9-2b89-86c705ffac00/public' />
     }
 
     function ListItemCompletedCommentCheck(){
-        return <img width='15px' src='/comment-blue-2.svg' />
+        return <img width='15px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/617932f3-e74b-4d6e-5d9c-5c6b326e9e00/public' />
     }
 
     const renderParts = partListItems.map((part, index)=>{
@@ -392,7 +388,10 @@ export default function Inventory() {
                         </div>
                     </div>
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
-                        {partListItems[idx]?.description}<br/><button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}><img className='inventory-switch-view' src='/database-update.svg' width='15px'/></button>
+                        {partListItems[idx]?.description}<br/>
+                            <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
+                                <img className='inventory-switch-view' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                            </button>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
@@ -470,12 +469,12 @@ export default function Inventory() {
 
     function MainContentHeader(props){
         if(updateInventory){
-            if(props.mobileView){return <img src='/database-update.svg' width='25px' style={{float: 'right'}}/> }
-            else{return(<span>Inventory Update<img src='/database-update.svg' width='25px' style={{marginLeft: '10px'}}/></span>)}
+            if(props.mobileView){return <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' style={{float: 'right'}}/> }
+            else{return(<span>Inventory Update<img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' style={{marginLeft: '10px'}}/></span>)}
         }
         else{
-            if(props.mobileView){return <img src='/info.svg' width='25px' style={{float: 'right'}}/> }
-            else{return(<><span>Inventory Detail<img src='/info.svg' width='25px' style={{marginLeft: '10px'}}/></span></>)}
+            if(props.mobileView){return <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' style={{float: 'right'}}/> }
+            else{return(<><span>Inventory Detail<img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' style={{marginLeft: '10px'}}/></span></>)}
         }
     }
 
@@ -604,7 +603,7 @@ export default function Inventory() {
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Pick
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Pick
                     </li>
                     )
                 }
@@ -696,7 +695,7 @@ export default function Inventory() {
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='/circled-check.svg' width='30px'/>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
                                 </button>
                                 <button 
                                     type='reset' 
@@ -710,7 +709,7 @@ export default function Inventory() {
                                         marginTop: '5px', 
                                         marginBottom: '5px'
                                     }}>
-                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
                                 </button>
                                 </div>
                             </form>
@@ -745,7 +744,7 @@ export default function Inventory() {
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Count
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Count
                     </li>
                     )
                 }
@@ -803,7 +802,7 @@ export default function Inventory() {
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='/circled-check.svg' width='30px'/>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
                                 </button>
                                 <button 
                                     type='reset' 
@@ -817,7 +816,7 @@ export default function Inventory() {
                                         marginTop: '5px', 
                                         marginBottom: '5px'
                                     }}>
-                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
                                 </button>
                                 </div>
                             </form>
@@ -852,7 +851,7 @@ export default function Inventory() {
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Reord
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Reord
                     </li>
                     )
                 }
@@ -909,7 +908,7 @@ export default function Inventory() {
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='/circled-check.svg' width='30px'/>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
                                 </button>
                                 <button 
                                     type='reset' 
@@ -923,7 +922,7 @@ export default function Inventory() {
                                         marginTop: '5px', 
                                         marginBottom: '5px'
                                     }}>
-                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
                                 </button>
                                 </div>
                             </form>
@@ -958,7 +957,7 @@ export default function Inventory() {
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Loc
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Loc
                     </li>
                     )
                 }
@@ -1014,7 +1013,7 @@ export default function Inventory() {
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='/circled-check.svg' width='30px'/>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
                                 </button>
                                 <button 
                                     type='reset' 
@@ -1028,7 +1027,7 @@ export default function Inventory() {
                                         marginTop: '5px', 
                                         marginBottom: '5px'
                                     }}>
-                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
                                 </button>
                                 </div>
                             </form>
@@ -1063,7 +1062,7 @@ export default function Inventory() {
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='/square-outlined-small.svg' width='10px'/>&nbsp;Other
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Other
                     </li>
                     )
                 }
@@ -1107,7 +1106,7 @@ export default function Inventory() {
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='/circled-check.svg' width='30px'/>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
                                 </button>
                                 <button 
                                     type='reset' 
@@ -1121,7 +1120,7 @@ export default function Inventory() {
                                         marginTop: '5px', 
                                         marginBottom: '5px'
                                     }}>
-                                        <img src='/pulsar-clear.svg' width='30px'/>
+                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
                                 </button>
                                 </div>
                             </form>
@@ -1149,7 +1148,7 @@ export default function Inventory() {
                             e.preventDefault();
                             props.submitForm();
                         }}>
-                            <img src='/check-filled-white-small.svg' width='30px'/>
+                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/0d0f6783-8081-4128-8b54-71ddf7866200/public' width='30px'/>
                 </button>
             )
         }
@@ -1168,7 +1167,7 @@ export default function Inventory() {
                         marginTop: '5px', 
                         marginBottom: '5px'
                     }}>
-                    <img src='/cancel-filled-white-small.svg' width='30px'/>
+                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/be1b3d86-7615-4a9c-e914-29d2c7a7c000/public' width='30px'/>
                 </button>
             )
         }
@@ -1206,11 +1205,11 @@ export default function Inventory() {
         }
 
         function CompletedCountCheck(){
-            return <img width='20px' src='/circled-check-red.svg'/>
+            return <img width='20px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/99ff1897-b735-41a9-2b89-86c705ffac00/public'/>
         }
 
         function CompletedCommentCheck(){
-            return <img width='20px' src='/comment-blue-2.svg'/> 
+            return <img width='20px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/617932f3-e74b-4d6e-5d9c-5c6b326e9e00/public'/> 
         }
     
         if(partListItems.length > 0){
@@ -1225,18 +1224,18 @@ export default function Inventory() {
                     onClick={()=>{
                         setIdxPrev();
                     }}>
-                        <img src='/left-circled-arrow.svg' width='35px'/>
+                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/704de6cc-f6c5-478e-4dff-95a4447d2b00/public' width='35px'/>
                     </IconButton>
                     <IconButton sx={{color: 'white', marginRight: '25px', 
                         }} 
                         onClick={()=>{setUpdateInventory(false)}}
                     > 
-                        <img src='/pulsar-circled-info.svg' width='35px'/>
+                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public' width='35px'/>
                     </IconButton>
                     <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
                     }}>
-                        <img src='/right-circled-arrow.svg' width='35px'/>
+                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/37f1140b-a129-45f0-af7b-a207b79e6300/public' width='35px'/>
                     </IconButton>
                 </div>  
                 <br/>

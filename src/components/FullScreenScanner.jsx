@@ -69,7 +69,7 @@ export default function FullScreenScanner(props) {
         aria-label="quick inventory update" 
         color="inherit" 
         onClick={handleClickOpen}>
-          <img src= '/pulsar-qr.svg' width='25px'/>
+          <img src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/bd236486-e7c9-4bfb-df9d-05ae43c63300/public' width='25px'/>
           {props?.btnDescription || <></>}
       </IconButton>
       <Dialog

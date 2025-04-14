@@ -16,7 +16,7 @@ import BasicModal from './BasicModal';
 import ShowInstitution from './Institution';
 import SelectAutoWidth from './SelectAutoWidth';
 import FullScreenScanner from './FullScreenScanner';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import Tasks from './Tasks';
 import Labels from './Labels';
 
@@ -158,7 +158,7 @@ export default function AppBarHideOnScroll(props) {
           return(
             <>
               <div style={{width: '250px', margin: 'auto'}}>
-                <img src='stor-logo.svg' width='25px' style={{float: 'right'}}/>
+                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{float: 'right'}}/>
                 <div>
                   <div style={{display: 'flex'}}>
                     <IconButton
@@ -167,7 +167,7 @@ export default function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                      <img src='/pulsar-sort.svg' width='25px'/>
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
                       <span style={{fontSize: '15px'}}>Sort</span>
                     </IconButton>
                     <IconButton
@@ -179,7 +179,7 @@ export default function AppBarHideOnScroll(props) {
                         props.setUpdateInventory(true);
                       }}
                         >
-                      <img src='/database-update.svg' width='25px' />
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
                       <span style={{fontSize: '15px'}}>Update</span>
                     </IconButton>
                   </div>
@@ -191,7 +191,7 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit"
                       onClick={()=>{props.setUpdateInventory(false)}}
                     >
-                      <img src='/info.svg' width='25px' />
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
                       <span style={{fontSize: '15px'}}>Details</span>
                     </IconButton>
                     <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
@@ -210,7 +210,7 @@ export default function AppBarHideOnScroll(props) {
         return(
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
-                <img id='stor-logo-header-logo' src='/stor-logo.svg' width='25px' style={{marginRight: '10px'}}/>
+                <img id='stor-logo-header-logo' src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{marginRight: '10px'}}/>
                 <Search>
                   <SearchIconWrapper>
                       <SearchIcon />
@@ -245,7 +245,7 @@ export default function AppBarHideOnScroll(props) {
                     aria-label="sort" 
                     color="inherit" 
                     onClick={props.sort}>
-                    <img src='/pulsar-sort.svg' width='25px'/>
+                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
                   </IconButton>
                   <IconButton
                     disableRipple
@@ -254,7 +254,7 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit"
                     onClick={()=>{props.setUpdateInventory(true)}}
                       >
-                      <img src='/database-update.svg' width='25px' />
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
                   </IconButton>
                   <IconButton 
                     disableRipple
@@ -263,7 +263,7 @@ export default function AppBarHideOnScroll(props) {
                     color="inherit" 
                     onClick={()=>{props.setUpdateInventory(false)}}
                   >
-                    <img src='/info.svg' width='25px' />
+                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
                   </IconButton>
                   <FullScreenScanner getScanResult={props.getScanResult}/>
                 </Box>

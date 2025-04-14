@@ -89,13 +89,13 @@ export default function Labels(props){
                 <IconButton disableRipple onClick={()=>{
                     setModalOpen(false);
                     printLabels();
-                }}><span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Results</span>
+                }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Results</span>
                 </IconButton>
                 <IconButton disableRipple onClick={()=>{
                     setModalOpen(false);
                     setFormModalOpen(true);
                     }}>
-                    <span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;New Label </span>
+                    <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;New Label </span>
                 </IconButton>
             </div>
         )
@@ -180,12 +180,12 @@ export default function Labels(props){
                             max: formMax
                         }
                         printLabels(labelDetails)
-                    }}><span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Create</span>
+                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Create</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{
                         setFormModalOpen(false);
                         }}>
-                        <span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Cancel</span>
+                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel</span>
                     </IconButton>
                 </div>
             </form>
@@ -202,7 +202,7 @@ export default function Labels(props){
                 onClick={()=>{
                     setModalOpen(true);
                 }}>
-                <img src='/pulsar-labels.svg' width='25px'/>
+                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/d056b8a6-4f17-4e11-f316-0b0a6781f600/public' width='25px'/>
                 {props?.mobileView ?  <span style={{fontSize: '15px'}}>Label</span> : <></>}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<PrintType/>} noDefaultBtns={true} />

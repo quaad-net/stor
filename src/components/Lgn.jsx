@@ -93,7 +93,7 @@ export default function Lgn(){
                 <br/><br/>
                 <form>
                     <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
-                        <legend><img src='/user-small.svg' width='25px'/></legend>
+                        <legend><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='25px'/></legend>
                         <div className="header">
                             <div className="user-pass">
                                 <input className="stor-input" id='user' type='text' placeholder="User" required />

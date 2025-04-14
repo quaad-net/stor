@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -12,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Collapse } from '@mui/material';
@@ -168,10 +165,10 @@ export default function Tasks(props) {
                         setModalOpen(false);
                         // deleteTask(taskToDelete.id, taskToDelete.index);
                         deleteTask(taskToDelete.id)
-                    }}><span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -226,7 +223,7 @@ export default function Tasks(props) {
                         color="inherit"
                         onClick={handleClickOpen}
                     >
-                        <img src='/checklist.svg' width='25px' />
+                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/02c21f70-0082-4bd8-b5d7-39168aed8100/public' width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -263,7 +260,7 @@ export default function Tasks(props) {
                             sx={{ m: 1, width: '150px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='/user-small.svg' width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='20px'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
