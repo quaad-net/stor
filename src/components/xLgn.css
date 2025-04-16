@@ -9,16 +9,20 @@ legend{
 }
 
 .user-pass{
-    width: 300px;
-    margin: auto;
+    margin: 'auto'
 }
 
-#user, #email, #password, #employeeId, #institution{
+#user{
+    width: 100%;
+}
+
+#password{
     width: 100%;
 }
 
 #login-submit-btn, #login-clear-btn{
     all: unset;
+    display: inline;
     width: 75px;
     margin: 'auto';
     margin-top: 20px;
@@ -31,39 +35,18 @@ legend{
     text-align: center;
 }
 
-#login-register-btn, #login-login-btn{
-    all: unset;
-    width: fit-content;
-    margin: 'auto';
-    margin-top: 20px;
-    border-radius: 5px;
-    font-family: "DM Sans", sans-serif;
-    background-color: transparent;
-    padding: 5px;
-    color: var(--form-btn-text-color);
-    text-align: center;
-}
-
-#login-submit-btn, #login-clear-btn{
-    display: inline;
-}
-
 #login-submit-btn:focus,
-#login-clear-btn:focus, 
-#login-register-btn:focus, 
-#login-login-btn:focus{   
+#login-clear-btn:focus{   
     background-color: rgba(255, 255, 255, 0.055);
 }
 
 #login-submit-btn:hover,
-#login-clear-btn:hover, 
-#login-register-btn:hover,
-#login-login-btn:hover{   
+#login-clear-btn:hover{   
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.055);
 }
 
-/* @media(max-width: 750px) {
+@media(max-width: 750px) {
     #user{
         width: 100%;
     }
@@ -71,4 +54,4 @@ legend{
     #password{
         width: 100%;
     }
-} */
+}

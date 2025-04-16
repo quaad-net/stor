@@ -14,8 +14,8 @@ export default function Labels(props){
     const { token } = useToken();
 
     const codeMaxChar = 30;
-    const descriptionMaxChar = 93; //70
-    const binLocMaxChar = 10;
+    const descriptionMaxChar = 186; // 70 // 93
+    const binLocMaxChar = 20;  // 10
     const minMaxChar = 6;
     const maxMaxChar = 6;
     const modQueryRes = [];

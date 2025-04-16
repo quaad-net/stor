@@ -6,33 +6,33 @@ export default function Register(){
 
     const navigate = useNavigate();
 
-    function clearInvalids(){
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach((input)=>{
-            input.style.borderColor = 'gold';
-            input.style.borderRightColor = 'grey';
-            input.style.borderLeftColor = 'grey';
-            input.style.backgroundColor = '#242424';
-        })
-    }
+    // function clearInvalids(){
+    //     const inputs = document.querySelectorAll('input');
+    //     inputs.forEach((input)=>{
+    //         input.style.borderColor = 'gold';
+    //         input.style.borderRightColor = 'grey';
+    //         input.style.borderLeftColor = 'grey';
+    //         input.style.backgroundColor = '#242424';
+    //     })
+    // }
 
-    function showInValids(){
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach((input)=>{
-            if(!input.checkValidity()){
-                input.style.borderColor = 'lightcoral'
-                input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)'; 
-                input.style.borderRightColor = 'grey';
-                input.style.borderLeftColor = 'grey';
-            }
-            else{
-                input.style.borderColor = 'gold';
-                input.style.borderRightColor = 'grey';
-                input.style.borderLeftColor = 'grey';
-                input.style.backgroundColor = '#242424';
-            }
-        })
-    }
+    // function showInValids(){
+    //     const inputs = document.querySelectorAll('input');
+    //     inputs.forEach((input)=>{
+    //         if(!input.checkValidity()){
+    //             input.style.borderColor = 'lightcoral'
+    //             input.style.backgroundColor = 'rgba(240, 128, 128, 0.071)'; 
+    //             input.style.borderRightColor = 'grey';
+    //             input.style.borderLeftColor = 'grey';
+    //         }
+    //         else{
+    //             input.style.borderColor = 'gold';
+    //             input.style.borderRightColor = 'grey';
+    //             input.style.borderLeftColor = 'grey';
+    //             input.style.backgroundColor = '#242424';
+    //         }
+    //     })
+    // }
 
     // Check if user already exists.
     async function currentuser(){
@@ -94,7 +94,7 @@ export default function Register(){
 
     return(
         <div>
-            <h2>Register</h2>
+            <h2></h2>
             <br/><br/>
             <form>
                 <fieldset className="register-fieldset">

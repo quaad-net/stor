@@ -255,7 +255,7 @@ export default function Inventory() {
                     className={`inventory-list-item ${index == partListItems.length -1 ? 'last-list-item' : ''}
                     ${index === idx ? 'inventory-list-active' : ''} inventory-li-${index}`} 
                     sx={{marginTop: '0', 
-                        ':hover': {backgroundColor: 'rgba(255, 255, 255, 0.005) !important'},
+                        // ':hover': {backgroundColor: 'rgba(255, 255, 255, 0.027) !important'},
                     }} 
                     >
                     <GetAvatar partCode={part.code} avaBgIndx={index}/>
