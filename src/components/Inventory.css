@@ -55,6 +55,10 @@ input{
     border-color: white;
 }
 
+.modal-btn:hover{
+    cursor: pointer;
+}
+
 @media(max-height: 280px){
     .inventory-desktop-tablet-content{
         height: 50%;

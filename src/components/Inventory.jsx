@@ -188,9 +188,35 @@ export default function Inventory() {
     }
 
     function getScanResult(result){
-        inventoryQuery({query: result, queryType: 'partCode' });
-    }
+        //Function accounts for the following variety of scan results:
+            // "22-11147,1"
+            // "49735,2,1"
+            // 70-11235-7032
+            // 71-00170
 
+        let newResult = result.replace(`"`, ``);
+        const hasComma = /,/;
+        if(hasComma.test(newResult)){
+            newResult = newResult.split(',')[0].trim();
+        };
+
+        const resultArr = newResult.split('');
+        let hyphenCount = 0;
+        resultArr.forEach((char)=>{
+            if(char == '-'){hyphenCount++};
+        })
+        switch(hyphenCount){
+            case 1:
+                inventoryQuery({query: newResult, queryType: 'partCode' })
+                break;
+            case 2:
+                const modResult = newResult.split('-')[0] + '-' + newResult.split('-')[1];
+                inventoryQuery({query: modResult, queryType: 'partCode' })
+                break;
+            default:
+                inventoryQuery({query: newResult, queryType: 'descr' })
+        }
+    }
 
     function setIdxNext(){
     
@@ -680,7 +706,7 @@ export default function Inventory() {
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button 
+                                <button
                                     type='button' 
                                     style={{ 
                                         all: 'unset',
