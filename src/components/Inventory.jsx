@@ -75,14 +75,17 @@ export default function Inventory() {
 
     function inventoryQuery({query, queryType, noDialog}){
 
-        if(query === ''){throw new Error('Invalid syntax')};
-        fetch(`${apiUrl}/inventory/${queryType}/${query}`, {
+        fetch(`${apiUrl}/inventory/${queryType}/`, {
             method: 'POST',
-            headers: {Authorization: `Bearer ${token}`}
+            headers: {
+                Authorization: `Bearer ${token}`, 
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({query: query})
         })
         .then((res)=>{
             if(res.status == 401){throw new Error('Unauthorized user')}
-            else if(res.status == 404){throw new Error('Cannot run query')}
+            else if(res.status == 404){throw new Error('No match')}
             else if(res.status == 400){throw new Error('Invalid syntax')}
             else if(res.status == 500){throw new Error('Something went wrong')}
             else{
@@ -116,13 +119,73 @@ export default function Inventory() {
                 setBasicMessageModalContent('Could not complete query!');
                 setBasicMessageModalOpen(true);
             }
+            else if(err.message == 'No match'){
+                setBasicMessageModalContent('No match found!');
+                setBasicMessageModalOpen(true);
+            }
             else{
-                setBasicMessageModalContent('Something went wrong!');
+                setBasicMessageModalContent('Could not complete query!');
                 setBasicMessageModalOpen(true);
                 console.log(err)
             }
         })
     }
+
+    // function inventoryQuery({query, queryType, noDialog}){
+
+    //     if(query === ''){throw new Error('Invalid syntax')};
+    //     fetch(`${apiUrl}/inventory/${queryType}/${query}`, {
+    //         method: 'POST',
+    //         headers: {Authorization: `Bearer ${token}`}
+    //     })
+    //     .then((res)=>{
+    //         if(res.status == 401){throw new Error('Unauthorized user')}
+    //         else if(res.status == 404){throw new Error('No match')}
+    //         else if(res.status == 400){throw new Error('Invalid syntax')}
+    //         else if(res.status == 500){throw new Error('Something went wrong')}
+    //         else{
+    //             setAuthorizedUser(true)
+    //             return res.json()
+    //         }
+    //     })
+    //     .then((res)=>{
+    //         if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
+    //         else{
+    //             if(res.length == 0){
+    //                 setBasicMessageModalContent('No match found.')
+    //                 if(!noDialog){setBasicMessageModalOpen(true)}
+    //             }else{
+    //                 setPartListItems(res);
+    //                 setIdx(0);
+    //                 setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
+    //                 if(!noDialog){setBasicMessageModalOpen(true)};
+    //             }
+    //         };
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err)
+    //         if (err.message=='Invalid syntax'){
+    //             setBasicMessageModalContent(err.message);
+    //             setBasicMessageModalOpen(true);
+    //         }
+    //         else if(err.message == 'Unauthorized user'){
+    //             navigate("/lgn");
+    //         }
+    //         else if(err.message == 'Cannot run query'){
+    //             setBasicMessageModalContent('Could not complete query!');
+    //             setBasicMessageModalOpen(true);
+    //         }
+    //         else if(err.message == 'No match'){
+    //             setBasicMessageModalContent('No match found!');
+    //             setBasicMessageModalOpen(true);
+    //         }
+    //         else{
+    //             setBasicMessageModalContent('Something went wrong!');
+    //             setBasicMessageModalOpen(true);
+    //             console.log(err)
+    //         }
+    //     })
+    // }
 
     function sort(){
 
@@ -598,9 +661,37 @@ export default function Inventory() {
                         }
                     })
                 }
+                else if(input.updateType === 'Label' ){
+                    await fetch(`${apiUrl}/inventory_tasks_print`, {
+                        method: 'POST', 
+                        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                        body: JSON.stringify({
+                            code: currentPart.code,
+                            binLoc: currentPart.binLoc,
+                            description: currentPart.description,
+                            min: currentPart.min,
+                            max: currentPart.max,
+                            comment: input?.comment.trim() || '',
+                            user: user.email,
+                            date: now,
+                            completed: false
+                        })
+                    })
+                    .then((res)=>{
+                        if(res.status == 201){
+                            setBasicMessageModalContent('Submitted');
+                            setBasicMessageModalOpen(true);
+                            setPartListItems(parts);
+                        }
+                        else{
+                            setBasicMessageModalContent(`${res.status} Error`);
+                            setBasicMessageModalOpen(true);
+                        }
+                    })
+                }
             }
             catch(err){
-                setBasicMessageModalContent('Could not complete update!');
+                setBasicMessageModalContent('Could not complete request!');
                 setBasicMessageModalOpen(true);
             }
         }
@@ -1064,6 +1155,84 @@ export default function Inventory() {
             return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
+        function LabelModalContent(){
+            const [displayAlert, setDisplayAlert] = React.useState(false);
+            const [alertContent, setAlertContent] = React.useState('');
+
+            function ErrorAlert(){
+                return(
+                    <Alert 
+                        sx={{
+                            display: displayAlert ? 'block' : 'none', 
+                            backgroundColor: 'transparent', 
+                            color: 'whitesmoke'
+                        }} 
+                        variant='standard' 
+                        severity="error">{alertContent}
+                    </Alert>
+                )
+            }
+
+            function LabelExposedEL(){
+                function ListItem(){
+                    return(
+                    <li 
+                        className='inventory-update-type'
+                        style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
+                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Label
+                    </li>
+                    )
+                }
+                return<ListItem/>
+            }
+
+            function LabelForm(){
+                const [tmpComment, setTmpComment]  = React.useState('');
+
+                function submitForm(){
+                    try{
+                        submitUserInput({updateType: 'Label', comment: tmpComment});
+                    }
+                    catch(err){
+                        setAlertContent(err.message);
+                        setDisplayAlert(true);
+                    }
+                }
+                
+                return(
+                    <>  
+                        <ErrorAlert/>
+                        <div style={{width: '100%', margin: 'auto'}}>
+                            <form>
+                                <CommentBox setTmpComment={setTmpComment}/>
+                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                    <div>Add to print jobs.</div>
+                                    <button
+                                        type='button' 
+                                        style={{ 
+                                            all: 'unset',
+                                            fontSize: 'small', 
+                                            color: 'white',
+                                            width: 'fit-content', 
+                                            textAlign: 'center', 
+                                            margin:'10px',
+                                            marginTop: '5px', 
+                                            marginBottom: '5px'}} 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                submitForm();
+                                            }}>
+                                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                )
+            }
+            return(<CustomContentFormModal exposedEl={[<LabelExposedEL/>]} modalContent={<LabelForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+        }
+
         function OtherModalContent(){
             const [displayAlert, setDisplayAlert] = React.useState(false);
             const [alertContent, setAlertContent] = React.useState('');
@@ -1273,6 +1442,7 @@ export default function Inventory() {
                     </div>
                     <div style={{display:'flex', marginLeft: '35px'}}>
                         <LocationModalContent/>
+                        <LabelModalContent/>
                         <OtherModalContent/>
                     </div>
                 </div>

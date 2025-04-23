@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
 import { useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
+import PrintJobs from "./PrintJobs";
 const apiUrl = import.meta.env.VITE_API_URL;
 import './Labels.css'
 
@@ -49,10 +50,71 @@ export default function Labels(props){
 
     async function printLabels(labelDetails){
         try{
-            const recs = validateQueryRes();
+            // const recs = validateQueryRes();
+            let recs; 
+            if(!labelDetails){recs = validateQueryRes()}
             const req =  await fetch(`${apiUrl}/print/labels`, {
                 method: "POST",
                 body: labelDetails ? JSON.stringify([labelDetails]) : JSON.stringify(recs),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            const res = await req.text();
+            const parser = new DOMParser()
+            const plainLabels = parser.parseFromString(res, 'text/html');
+            const labelData  = plainLabels.querySelectorAll('.label-labeldata');
+
+            // Add QRCode to Each Label
+            labelData.forEach((label)=>{ 
+                const partCode = label.querySelector('#label-part-code');
+                ReactDOM.render(<QRCode value={partCode.textContent} size={50} />, label.querySelector('.qr'));
+            });
+
+            // Open new window for labels doc.
+            const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
+            const newWindow = window.open('', '_blank');
+            newWindow.document.open(); 
+            newWindow.document.write(plainLabelsTxt); 
+            newWindow.print(); 
+            newWindow.document.close(); 
+        }
+        catch(err){
+            alert('!');
+            console.log(err);
+        }
+    }
+
+    async function printPrintJobs(parts){
+        try{
+            const modParts = []
+            parts.forEach((record)=>{
+                // This prevents errors resulting from numeric types in code and binLoc field.
+                let modBinLoc, modCode;
+                if(typeof record.binLoc == 'number'){ 
+                    modBinLoc = `_${record.binLoc}`
+                }
+                else{modBinLoc = record.binLoc};
+                if(typeof record.code == 'number'){ 
+                    modCode = `_${record.code}`
+                }
+                else{modCode = record.code};
+    
+                const modRecord = {
+                    code: modCode?.substring(0, codeMaxChar),
+                    description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
+                        record.description,
+                    binLoc: modBinLoc?.substring(0, binLocMaxChar),
+                    min: record.min === '' ? '?': record.min.toString()?.substring(0, minMaxChar),
+                    max: record.max === '' ? '?' : record.max.toString()?.substring(0, maxMaxChar),
+                }
+                modParts.push(modRecord)
+            })
+
+            const req =  await fetch(`${apiUrl}/print/labels`, {
+                method: "POST",
+                body: JSON.stringify(modParts),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -97,6 +159,8 @@ export default function Labels(props){
                     }}>
                     <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;New Label </span>
                 </IconButton>
+                <br/>
+                <PrintJobs printPrintJobs={printPrintJobs}/>
             </div>
         )
     }
@@ -195,11 +259,13 @@ export default function Labels(props){
     return(
         <>
             <IconButton 
+                // id="inventory-labels"
                 disableRipple
                 size="large" 
                 aria-label="sort" 
                 color="inherit" 
                 onClick={()=>{
+                    // document.querySelector('#inventory-labels').blur();
                     setModalOpen(true);
                 }}>
                 <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/d056b8a6-4f17-4e11-f316-0b0a6781f600/public' width='25px'/>

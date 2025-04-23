@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Tasks(props) {
+export default function PrintJobs(props) {
     const [open, setOpen] = React.useState(false);
     const [tasksListItems, setTasksListItems] = React.useState([]);
     const [unfilteredTasks, setUnfilteredTasks] = React.useState([]);
@@ -34,11 +34,12 @@ export default function Tasks(props) {
     const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
     const [basicMessageContent, setBasicMessageContent] = React.useState('')
     const [userFilter, setUserFilter] = React.useState('')
+    const [deleteAllModalOpen, setDeleteAllModalOpen] = React.useState(false);
     const { token } = useToken();
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpen(true)
     };
 
     const handleClose = () => {
@@ -46,7 +47,12 @@ export default function Tasks(props) {
     };
     
     // React.useEffect(()=>{
-    //     getTasks(); 
+    //     document.addEventListener('keydown', (e)=>{
+    //         if(e.key === 'Enter'){e.preventDefault()}
+    //     })
+    //     return document.removeEventListener('keydown', (e)=>{
+    //         if(e.key === 'Enter'){e.preventDefault()}
+    //     })
     // }, [open])
 
     const darkTheme = createTheme({
@@ -73,8 +79,8 @@ export default function Tasks(props) {
     });
 
     async function getTasks(){
-        try{
-        fetch(`${apiUrl}/inventory_tasks/get-all`, 
+
+        fetch(`${apiUrl}/inventory_tasks_print/get-all`, 
             {
                 method: 'POST', 
                 headers: {Authorization: `Bearer ${token}`}
@@ -91,17 +97,16 @@ export default function Tasks(props) {
             setTasksListItems(res);
             setUnfilteredTasks(res);
         })
-        }
-        catch(err){
-            setBasicMessageContent('Could not fetch records!');
+        .catch((err)=>{
+            console.log(err)
+            setBasicMessageContent('Could not complete operation!');
             setBasicMessageOpen(true);
-            console.log(err);
-        }
+        })
     }
 
     async function deleteTask(taskId){
      
-            fetch(`${apiUrl}/inventory_tasks/delete/${taskId}`,
+            fetch(`${apiUrl}/inventory_tasks_print/delete/${taskId}`,
                 {
                     method: 'POST',
                     headers: {Authorization: `Bearer ${token}`}
@@ -110,15 +115,11 @@ export default function Tasks(props) {
             .then((res)=>{
                 if(res.status == 200){}
                 else{
-                    console.log(res)
                     throw new Error()
                 };
                 
                 const updatedTaskslist = [];
                 tasksListItems.map((task)=>{
-                    // if(idx != index){
-                    //     updatedTaskslist.push(task)
-                    // }
                     if(task._id != taskId){
                         updatedTaskslist.push(task)
                     }
@@ -136,9 +137,41 @@ export default function Tasks(props) {
             })
             .catch((err)=>{
                 console.log(err);
-                setBasicMessageContent('Could not delete task!');
+                setBasicMessageContent('Could not complete operation!');
                 setBasicMessageOpen(true);
             })
+    }
+
+    async function deleteAllTasks(){
+     
+        const  ids = [];
+        tasksListItems.forEach((task)=>{
+            ids.push(task._id)
+        })
+        await fetch(`${apiUrl}/inventory_tasks_print/delete-all`,
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type" : 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ids: ids}),
+            }
+        )
+        .then((res)=>{
+            if(res.status == 200){}
+            else{
+                throw new Error()
+            };
+            setTasksListItems([]);
+            setUnfilteredTasks([]);
+            setTaskToDelete({});
+        })
+        .catch((err)=>{
+            console.log(err);
+            setBasicMessageContent('Could not complete operation!');
+            setBasicMessageOpen(true);
+        })
     }
 
     function filterByUser(user){
@@ -160,17 +193,17 @@ export default function Tasks(props) {
     }
 
     function ModalContent(){
+
         return(
             <>
                 <span>
-                    Task will be removed...this cannot be undone.
+                    Item will be removed...this cannot be undone.
                     Continue?
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         setModalOpen(false);
-                        // deleteTask(taskToDelete.id, taskToDelete.index);
-                        deleteTask(taskToDelete.id)
+                        deleteTask(taskToDelete.id);
                     }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
@@ -181,9 +214,31 @@ export default function Tasks(props) {
         )
     }
 
+    function DeleteAllModalContent(){
+
+        return(
+            <>
+                <span>
+                    All items will be removed...this cannot be undone.
+                    Continue?
+                </span>
+                <div style={{width: 'fit-content', margin: 'auto'}}>
+                    <IconButton autoFocus disableRipple onClick={()=>{
+                        setDeleteAllModalOpen(false);
+                        deleteAllTasks();
+                        getTasks();
+                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
+                    </IconButton>
+                    <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
+                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel </span>
+                    </IconButton>
+                </div>
+            </>
+        )
+    }
+
     function TaskItem(props){
         const [itemOpen, setItemOpen] = React.useState(false);
-        
         return(
             <>
                 <ListItemButton sx={{display: 'block'}} onClick={()=>{setItemOpen(!itemOpen)}}>
@@ -194,7 +249,6 @@ export default function Tasks(props) {
                     >
                         {itemOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
-                    <div style={{width: '150px'}}>{props?.task.taskType}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}><span style={{color: 'goldenrod'}}>{props?.task.code}</span> | {props?.task.date}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}>@{props?.task.user.split('@')[0]}</div>
                     <IconButton disableRipple  onClick={()=>{
@@ -209,8 +263,18 @@ export default function Tasks(props) {
                     <Collapse in={itemOpen} timeout="auto" unmountOnExit>
                         <div><strong>binLoc:</strong><span style={{color: 'gray'}}> {props?.task.binLoc}</span></div>
                         <div><strong>description:</strong><span style={{color: 'gray'}}> {props?.task.description}</span></div>
-                        <div style={{lineBreak: 'anywhere'}}><strong>details:</strong><span style={{color: 'gray'}}> {props?.task.taskValues}</span></div>
+                        {/* <div style={{lineBreak: 'anywhere'}}><strong>details:</strong><span style={{color: 'gray'}}> {props?.task.taskValues}</span></div> */}
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
+                        <br/>
+                        <IconButton disableRipple size='small' onClick={()=>{
+                            props.printPrintJobs([{
+                                code: props?.task.code,
+                                description: props?.task.description,
+                                binLoc: props?.task.binLoc,
+                                min: props?.task.min,
+                                max: props?.task.max
+                            }])
+                        }}><span style={{fontSize: '12px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/2c23b09c-dc25-43bc-aa6a-af7d7c06c900/public' width='20px'/></span></IconButton>
                     </Collapse>
                 </ListItemButton>
                 <Divider />
@@ -222,18 +286,13 @@ export default function Tasks(props) {
         <>
             <ThemeProvider theme={darkTheme}>
                 <React.Fragment>
-                    <IconButton
-                        disableRipple
-                        size="large"
-                        aria-label="tasks"
-                        color="inherit"
+                    <IconButton 
+                        disableRipple 
                         onClick={()=>{
                             handleClickOpen();
                             getTasks();
-                        }}
-                    >
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/02c21f70-0082-4bd8-b5d7-39168aed8100/public' width='25px' />
-                        {props?.btnDescription || <></>}
+                        }}>
+                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Print Jobs </span>
                     </IconButton>
                     <Dialog
                     sx={{'& .MuiAppBar-root': {backgroundColor: {}}, '& .MuiPaper-root': {backgroundColor: 'black'}}}
@@ -254,9 +313,9 @@ export default function Tasks(props) {
                             <CloseIcon />
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            TASKS<span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
+                            PRINT <span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
                         </Typography>
-                        {userFilter != '' ? 
+                        {/* {userFilter != '' ? 
                         <IconButton disableRipple onClick={unfilter}>
                             <FilterListOffIcon fontSize='20px'/>
                         </IconButton> : <></>}
@@ -271,14 +330,47 @@ export default function Tasks(props) {
                                 startAdornment: <InputAdornment position="start"><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='20px'/></InputAdornment>,
                                 },
                             }}
-                            onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
-                        />
+                            onKeyDown={(e)=>{
+                                // e.preventDefault();
+                                document.querySelector('#outlined-start-adornment').focus();
+                                if (e.key === 'Enter'){filterByUser(e.target.value)
+
+                                }}}
+                        /> */}
                         </Toolbar>
                     </AppBar>
                     <List>
+                        {tasksListItems.length > 1 ?
+                        <>
+                            <ListItemButton 
+                            >
+                                <IconButton 
+                                    size='small'
+                                    disableRipple
+                                    sx={{marginLeft: '10px', marginRight: '0'}}
+                                    onClick={()=>{
+                                        props.printPrintJobs(tasksListItems)
+                                    }}
+                                >
+                                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/2c23b09c-dc25-43bc-aa6a-af7d7c06c900/public' width='20px' style={{marginRight: '5px'}}/>
+                                    <span style={{color: 'gray', fontSize: '12px'}}></span>
+                                </IconButton> |
+                                <IconButton 
+                                    disableRipple
+                                    onClick={()=>{
+                                    setDeleteAllModalOpen(true);
+                                    }}>
+                                        {/* <input type='checkbox' readOnly color='transparent' id='printjobs-complete-all-checkbox'/> */}
+                                        <span style={{fontSize: '15px'}}>Remove All?</span>
+                                </IconButton>
+                            </ListItemButton>
+                            <Divider/>
+                        </>
+                        : <></>
+                        }
                         {tasksListItems?.map((task, index)=>{
                             return (
-                                <TaskItem task={task} key={index} index={index}/>
+                                <TaskItem task={task} key={index} index={index} printPrintJobs={props.printPrintJobs}/>
                             )
                         })}
                     </List>
@@ -286,6 +378,7 @@ export default function Tasks(props) {
                 </React.Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
+            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>
             <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
         </>
     );
