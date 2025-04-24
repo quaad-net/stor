@@ -19,6 +19,7 @@ import FullScreenScanner from './FullScreenScanner';
 import { createTheme } from '@mui/material/styles';
 import Tasks from './Tasks';
 import Labels from './Labels';
+import Pag from './Pag';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -160,7 +161,9 @@ export default function AppBarHideOnScroll(props) {
               <div style={{width: '250px', margin: 'auto'}}>
                 <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{float: 'right'}}/>
                 <div>
+                  <br/>
                   <div style={{display: 'flex'}}>
+                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
                     <IconButton
                       disableRipple
                       size="large" 
@@ -170,6 +173,8 @@ export default function AppBarHideOnScroll(props) {
                       <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
                       <span style={{fontSize: '15px'}}>Sort</span>
                     </IconButton>
+                  </div>
+                  <div style={{display: 'flex'}}>
                     <IconButton
                       disableRipple
                       size="large"
@@ -182,8 +187,6 @@ export default function AppBarHideOnScroll(props) {
                       <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
                       <span style={{fontSize: '15px'}}>Update</span>
                     </IconButton>
-                  </div>
-                  <div style={{display: 'flex'}}>
                     <IconButton 
                       disableRipple
                       size="large" 
@@ -194,14 +197,16 @@ export default function AppBarHideOnScroll(props) {
                       <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
                       <span style={{fontSize: '15px'}}>Details</span>
                     </IconButton>
-                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
                   </div>
                   <div style={{display: 'flex'}}>
                     <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                     <Labels mobileView={true} queryRes={props?.partListItems}/>
                   </div>
+                  <div style={{display: 'flex'}}>
+                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
+                    <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
+                  </div>
                 </div>
-                <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
           )
@@ -236,9 +241,7 @@ export default function AppBarHideOnScroll(props) {
                 />
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <ShowInstitution/>
-                  <Tasks/>
-                  <Labels queryRes={props?.partListItems}/>
+                  <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
                   <IconButton 
                     disableRipple
                     size="large" 
@@ -247,6 +250,9 @@ export default function AppBarHideOnScroll(props) {
                     onClick={props.sort}>
                     <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
                   </IconButton>
+                  <ShowInstitution/>
+                  <Tasks/>
+                  <Labels queryRes={props?.partListItems}/>
                   <IconButton
                     disableRipple
                     size="large"

@@ -66,7 +66,7 @@ export default function FullScreenScanner(props) {
       <IconButton
         disableRipple
         size="large" 
-        aria-label="quick inventory update" 
+        aria-label="query by qr-scan" 
         color="inherit" 
         onClick={handleClickOpen}>
           <img src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/bd236486-e7c9-4bfb-df9d-05ae43c63300/public' width='25px'/>

@@ -32,6 +32,9 @@ export default function Inventory() {
     const [authorizedUser, setAuthorizedUser] = React.useState(false);
     const [basicMessageModalOpen, setBasicMessageModalOpen] = React.useState(false);
     const [basicMessageModalContent, setBasicMessageModalContent] = React.useState('');
+    const [pagListItems, setPagListItems] = React.useState([]);
+    const [pagIdxMax, setPagIdxMax] = React.useState(1);
+    const [currentPage, setCurrentPage] = React.useState(1);
 
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
@@ -100,7 +103,16 @@ export default function Inventory() {
                     setBasicMessageModalContent('No match found.')
                     if(!noDialog){setBasicMessageModalOpen(true)}
                 }else{
-                    setPartListItems(res);
+                    if(res.length > 30){  
+                        setPagIdxMax(Math.ceil((res.length / 30).toFixed(1)));
+                        setPagListItems(res);
+                        paginate(res, 1);
+                    }
+                    else{
+                        setPartListItems(res);
+                        setPagIdxMax(1);
+                        setPagListItems([]);
+                    }
                     setIdx(0);
                     setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
                     if(!noDialog){setBasicMessageModalOpen(true)};
@@ -130,6 +142,20 @@ export default function Inventory() {
             }
         })
     }
+
+    const itemsPerPage = 30;
+    function paginate(items, page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        setCurrentPage(page);
+        setPartListItems(items.slice(start, end));
+    }
+    
+    function displayPage(page) {
+        paginate(pagListItems, page);
+    }
+    
+    
 
     // function inventoryQuery({query, queryType, noDialog}){
 
@@ -1491,6 +1517,9 @@ export default function Inventory() {
                         getScanResult={getScanResult}
                         resultCount={partListItems.length}
                         partListItems={partListItems}
+                        pagIdxMax={pagIdxMax}
+                        displayPage={displayPage}
+                        currentPage={currentPage}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
