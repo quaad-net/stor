@@ -149,69 +149,12 @@ export default function Inventory() {
         const end = start + itemsPerPage;
         setCurrentPage(page);
         setPartListItems(items.slice(start, end));
+        setIdx(0);
     }
     
     function displayPage(page) {
         paginate(pagListItems, page);
     }
-    
-    
-
-    // function inventoryQuery({query, queryType, noDialog}){
-
-    //     if(query === ''){throw new Error('Invalid syntax')};
-    //     fetch(`${apiUrl}/inventory/${queryType}/${query}`, {
-    //         method: 'POST',
-    //         headers: {Authorization: `Bearer ${token}`}
-    //     })
-    //     .then((res)=>{
-    //         if(res.status == 401){throw new Error('Unauthorized user')}
-    //         else if(res.status == 404){throw new Error('No match')}
-    //         else if(res.status == 400){throw new Error('Invalid syntax')}
-    //         else if(res.status == 500){throw new Error('Something went wrong')}
-    //         else{
-    //             setAuthorizedUser(true)
-    //             return res.json()
-    //         }
-    //     })
-    //     .then((res)=>{
-    //         if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
-    //         else{
-    //             if(res.length == 0){
-    //                 setBasicMessageModalContent('No match found.')
-    //                 if(!noDialog){setBasicMessageModalOpen(true)}
-    //             }else{
-    //                 setPartListItems(res);
-    //                 setIdx(0);
-    //                 setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
-    //                 if(!noDialog){setBasicMessageModalOpen(true)};
-    //             }
-    //         };
-    //     })
-    //     .catch((err)=>{
-    //         console.log(err)
-    //         if (err.message=='Invalid syntax'){
-    //             setBasicMessageModalContent(err.message);
-    //             setBasicMessageModalOpen(true);
-    //         }
-    //         else if(err.message == 'Unauthorized user'){
-    //             navigate("/lgn");
-    //         }
-    //         else if(err.message == 'Cannot run query'){
-    //             setBasicMessageModalContent('Could not complete query!');
-    //             setBasicMessageModalOpen(true);
-    //         }
-    //         else if(err.message == 'No match'){
-    //             setBasicMessageModalContent('No match found!');
-    //             setBasicMessageModalOpen(true);
-    //         }
-    //         else{
-    //             setBasicMessageModalContent('Something went wrong!');
-    //             setBasicMessageModalOpen(true);
-    //             console.log(err)
-    //         }
-    //     })
-    // }
 
     function sort(){
 

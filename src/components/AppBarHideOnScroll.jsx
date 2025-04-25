@@ -163,18 +163,6 @@ export default function AppBarHideOnScroll(props) {
                 <div>
                   <br/>
                   <div style={{display: 'flex'}}>
-                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
-                    <IconButton
-                      disableRipple
-                      size="large" 
-                      aria-label="sort" 
-                      color="inherit" 
-                      onClick={props.sort}>
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
-                      <span style={{fontSize: '15px'}}>Sort</span>
-                    </IconButton>
-                  </div>
-                  <div style={{display: 'flex'}}>
                     <IconButton
                       disableRipple
                       size="large"
@@ -205,6 +193,18 @@ export default function AppBarHideOnScroll(props) {
                   <div style={{display: 'flex'}}>
                     <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
                     <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
+                  </div>
+                  <div style={{display: 'flex'}}>
+                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
+                    <IconButton
+                      disableRipple
+                      size="large" 
+                      aria-label="sort" 
+                      color="inherit" 
+                      onClick={props.sort}>
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
+                      <span style={{fontSize: '15px'}}>Sort</span>
+                    </IconButton>
                   </div>
                 </div>
               </div>
