@@ -20,9 +20,7 @@ import CustomContentFormModal from './CustomContentFormModal';
 import './Inventory.css'
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
-// import { Collapse } from '@mui/material';
-// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import UsageChart from './UsageChart';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -35,14 +33,17 @@ export default function Inventory() {
     const [pagListItems, setPagListItems] = React.useState([]);
     const [pagIdxMax, setPagIdxMax] = React.useState(1);
     const [currentPage, setCurrentPage] = React.useState(1);
-
+    const [usageChartData, setUsageChartData] = React.useState([]);
+    const [usageQuery, setUsageQuery] = React.useState('');
+    const [suggestedMin, setSuggestedMin] = React.useState(undefined);
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
     const navigate = useNavigate();
     const { userData } = useUserData();
+    const user = JSON.parse(userData);
 
     React.useEffect(()=>{
-        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true})
+        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true});
     },[])
     
     React.useEffect(()=>{
@@ -51,6 +52,8 @@ export default function Inventory() {
         const verts = document.querySelectorAll('.list-vert');
         const partList = document.querySelectorAll('.inventory-list-item');
 
+        // To index : partListItems[Number(vertIdx)].<property>
+        /// Or add function on jsx element "renderParts"
         verts.forEach((vert)=>{
             const vertIdx = vert.getAttribute('id').replace('list-vert-', '');
             vert.addEventListener('click', ()=>{
@@ -59,7 +62,7 @@ export default function Inventory() {
                     item.style.backgroundColor = 'rgb(22, 22, 22)';
                 })
                 const li = document.querySelector(`.inventory-li-${vertIdx}`);
-                li.style.backgroundColor = 'rgba(255, 255, 255, 0.027)';
+                li.style.backgroundColor = 'rgba(255, 255, 255, 0.027)';    
             });
         })
 
@@ -78,6 +81,7 @@ export default function Inventory() {
 
     function inventoryQuery({query, queryType, noDialog}){
 
+        // setUsageChartData([]);
         fetch(`${apiUrl}/inventory/${queryType}/`, {
             method: 'POST',
             headers: {
@@ -103,7 +107,7 @@ export default function Inventory() {
                     setBasicMessageModalContent('No match found.')
                     if(!noDialog){setBasicMessageModalOpen(true)}
                 }else{
-                    if(res.length > 30){  
+                    if(res.length > 30){  // Needs to be paginated.
                         setPagIdxMax(Math.ceil((res.length / 30).toFixed(1)));
                         setPagListItems(res);
                         paginate(res, 1);
@@ -114,6 +118,7 @@ export default function Inventory() {
                         setPagListItems([]);
                     }
                     setIdx(0);
+                    getUsageData(res[0].code, res[0].warehouseCode);
                     setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
                     if(!noDialog){setBasicMessageModalOpen(true)};
                 }
@@ -143,6 +148,23 @@ export default function Inventory() {
         })
     }
 
+    function getUsageData(partcode, warehouseCode){
+        fetch(`${apiUrl}/inventory/usage_analysis/${user.institution}/${partcode}-${warehouseCode}`)
+        .then((res)=>{
+            if(res.status !== 200){
+                setUsageChartData([]);
+                throw new Error();
+            }
+            return res.json()
+        })
+        .then((res)=>{
+            setUsageQuery(`${partcode}-${warehouseCode}`);
+            setSuggestedMin(res.suggestedMin);
+            setUsageChartData([res.p1Usage, res.p2Usage, res.p3Usage]);
+        })
+        .catch()
+    }
+
     const itemsPerPage = 30;
     function paginate(items, page) {
         const start = (page - 1) * itemsPerPage;
@@ -150,6 +172,8 @@ export default function Inventory() {
         setCurrentPage(page);
         setPartListItems(items.slice(start, end));
         setIdx(0);
+        const firstItem = items.slice(start, end)[0]
+        getUsageData(firstItem.code, firstItem.warehouseCode);
     }
     
     function displayPage(page) {
@@ -217,6 +241,7 @@ export default function Inventory() {
         setPartListItems(items);
         setIdx(0);
         removeActiveSelection();
+        getUsageData(items[0].code, items[0].warehouseCode)
     }
 
     function getScanResult(result){
@@ -240,11 +265,11 @@ export default function Inventory() {
         switch(hyphenCount){
             case 1:
                 inventoryQuery({query: newResult, queryType: 'partCode' })
-                break;
+                break
             case 2:
                 const modResult = newResult.split('-')[0] + '-' + newResult.split('-')[1];
                 inventoryQuery({query: modResult, queryType: 'partCode' })
-                break;
+                break
             default:
                 inventoryQuery({query: newResult, queryType: 'descr' })
         }
@@ -300,8 +325,8 @@ export default function Inventory() {
     const renderParts = partListItems.map((part, index)=>{
 
         let modPartCode, modDescription, modBinLoc;
-        if(part.code.length > 15){modPartCode = (part.code)?.substring(0, 15) + '...'}
-        else{modPartCode = part.code}
+        if(part.code.length + part.warehouseCode.length > 20){modPartCode = (part.code +'-' + part.warehouseCode)?.substring(0, 20) + '...'}
+        else{modPartCode = part.code + '-' + part.warehouseCode}
         if(part.description.length > 27){modDescription = (part.description)?.substring(0, 27) + '...'}
         else{modDescription = part.description}
         if(part.binLoc.length > 20){modBinLoc = (part.binLoc)?.substring(0, 20) + '...'}
@@ -343,8 +368,12 @@ export default function Inventory() {
                         </React.Fragment>
                     }
                     />
-                    <IconButton disableRipple className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}>
-                        <MoreVertIcon sx={{marginTop: '15px', fontSize: 30}}/>
+                    <IconButton disableRipple className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}
+                        //vert click function
+                        onClick={()=>{getUsageData(part.code, part.warehouseCode)}}
+                    >
+                        <MoreVertIcon sx={{marginTop: '15px', fontSize: 30}}
+                        />
                     </IconButton>
                 </ListItem>
                 <Divider variant="inset" component="li" />  
@@ -409,20 +438,6 @@ export default function Inventory() {
         if(!updateInventory){
         // Inventory Detail
 
-        function getWarehouseDetails(){ 
-            try{
-                fetch(`/${apiUrl}/inventory_ext/${partListItems[idx].code}/${partListItems[idx].binLoc}`)
-                .then((res)=>{if(res.status == 200){return res.json}else{throw new Error()}})
-                .then((res)=>{
-                    const data = JSON.parse(res);
-                    setWMin(data.min); 
-                    setWMax(data.max);
-                    setWAvail(data.invtAvail);
-                })
-            }
-            catch(err){}
-        }
-
         return(
             <> 
                 <div style={{ 
@@ -433,7 +448,7 @@ export default function Inventory() {
                         borderRadius: '2px', 
                         marginBottom: '10px'
                         }}>
-                    <div style={{width: '25%', height: '100%', width: '25%',}}>
+                    <div style={{width: '25%', height: '100%'}}>
                         <div style={{padding: '5px'}}>
                             <span style={{color: props.mobileView ? 'white' : 'gold'}}>{partListItems[idx]?.code}</span><br/>
                             <span 
@@ -468,38 +483,10 @@ export default function Inventory() {
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                    <legend style={{color: 'white', fontSize: '13px'}}>Vendor</legend>
-                    <span style={{color: 'gray'}}>{partListItems[idx]?.vendorName === '' || undefined ? '-'  : partListItems[idx]?.vendorName }</span>
-                    </fieldset>
-                </div>
-                <div style={{marginBottom: '10px'}}>
-                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                    <legend style={{color: 'white', fontSize: '13px'}}>vendorNo</legend>
-                    <span style={{color: 'gray'}}>{partListItems[idx]?.vendorNo === '' || undefined ? '-'  : partListItems[idx]?.vendorNo }</span>
-                    </fieldset>
-                </div>
-                <div style={{marginBottom: '10px'}}>
-                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                     <legend style={{color: 'white', fontSize: '13px'}}>mfgNo</legend>
                     <span style={{color: 'gray'}}>{partListItems[idx]?.mfgNo === '' || undefined ? '-'  : partListItems[idx]?.mfgNo }</span>
                     </fieldset>
                 </div>
-                {/* <div style={{marginBottom: '10px'}}>
-                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                    <legend style={{color: 'white', fontSize: '13px'}}>Warehouse</legend>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setWarehouseOpen(!warehouseOpen)}
-                    >
-                        {warehouseOpen ? <KeyboardArrowUpIcon sx={{color: 'white'}} /> : <KeyboardArrowDownIcon sx={{color: 'white'}} />}
-                    </IconButton>
-                    <Collapse in={warehouseOpen} timeout="auto" unmountOnExit>
-                        <span style={{fontSize: '13px'}}>wCode | wName</span> <br/>
-                        avail: #### | min: #### | max: ####
-                    </Collapse>
-                    </fieldset>
-                </div> */}
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>Warehouse</legend>
@@ -508,6 +495,19 @@ export default function Inventory() {
                             | min: {partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min}&nbsp;
                             | max: {partListItems[idx]?.max === '' || undefined ? '-'  : partListItems[idx]?.max }&nbsp;
                         </span>
+                    </fieldset>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                        {usageChartData.length > 0 ?
+                            <>
+                                <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day</legend>
+                                <span style={{color: 'gray'}}>{usageQuery} | suggested min: {suggestedMin}</span>
+                                <UsageChart yData={usageChartData} mobileView={props?.mobileView}/> 
+                            </>
+                            :
+                                <></>
+                        }
                     </fieldset>
                 </div>
             </>
@@ -563,7 +563,6 @@ export default function Inventory() {
             try{
                 const parts = [...partListItems];
                 const currentPart = parts[idx];
-                const user = JSON.parse(userData);
                 const now = new Date();
 
                 let userCompletedCount = false

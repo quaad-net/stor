@@ -20,6 +20,8 @@ import { createTheme } from '@mui/material/styles';
 import Tasks from './Tasks';
 import Labels from './Labels';
 import Pag from './Pag';
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function HideOnScroll(props) {
   const { children, window } = props;

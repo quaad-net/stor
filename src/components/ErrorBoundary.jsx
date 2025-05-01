@@ -1,19 +1,32 @@
 import { useRouteError, useNavigate} from 'react-router-dom';
-import { useState} from 'react';
-import useAuth from '../../app/useAuth';
+import { useEffect} from 'react';
+import useToken from '../../app/useToken';
 
 function ErrorBoundary() {
-
     const error = useRouteError();
-    console.error(error);
-    const auth = useAuth();
     const navigate = useNavigate();
+    const { token } = useToken();
 
-    if(!auth.authorized){navigate('/lgn')}
+    console.error(error);
+    
+    useEffect(()=>{
+        fetch('http://localhost:5050/auth-endpoint',
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+        .then((res)=>{ 
+            if(res.status == 200){console.log(res.status)}
+            else{ navigate('/lgn') }
+        })
+    }, [])
 
     return (
     <div id='error-boundary' style={{height: '100vh', width: 'fit-content', margin: 'auto', paddingTop: '200px', color: 'white'}}>
-        <h1>!</h1>
+        <h1>!!!</h1>
         <p>
             <i></i>
         </p>

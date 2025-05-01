@@ -1,5 +1,3 @@
-// import AppropiateNav from "./components/Navbar";
-// import ShowInstitution from "./components/Institution";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useUserData from "../app/useUserData";
@@ -22,13 +20,6 @@ const App = () => {
 
   return (
     <>
-      {/* <AppropiateNav currentUserData={currentUserData}/>
-      <div className="min-max-content">
-        <Outlet context={[currentUserData, setCurrentUserData]}/> 
-        <div id="institution-domain">
-          <ShowInstitution currentUserData={currentUserData} setCurrentUserData={setCurrentUserData}/>
-        </div>
-      </div> */}
       <Outlet context={[currentUserData, setCurrentUserData]}/> 
     </>
   );

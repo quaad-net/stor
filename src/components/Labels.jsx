@@ -50,7 +50,6 @@ export default function Labels(props){
 
     async function printLabels(labelDetails){
         try{
-            // const recs = validateQueryRes();
             let recs; 
             if(!labelDetails){recs = validateQueryRes()}
             const req =  await fetch(`${apiUrl}/print/labels`, {
@@ -102,7 +101,8 @@ export default function Labels(props){
                 else{modCode = record.code};
     
                 const modRecord = {
-                    code: modCode?.substring(0, codeMaxChar),
+                    // code: modCode?.substring(0, codeMaxChar),
+                    code: modCode,
                     description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
                         record.description,
                     binLoc: modBinLoc?.substring(0, binLocMaxChar),

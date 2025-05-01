@@ -20,6 +20,7 @@
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
+    "@mui/x-charts": "^8.1.0",
     "@mui/x-data-grid": "^7.23.3",
     "@yudiel/react-qr-scanner": "^2.2.1",
     "dotenv": "^16.4.7",
