@@ -247,7 +247,20 @@ export default function AppBarHideOnScroll(props) {
                   defaultSelection={queryType} 
                 />
                 <IconButton size='small' onClick={()=>{
-                  if(props.filterOn){props.setPartListItems(props.unfilteredPartListItems)};
+                  if(props.filterOn){ //User is turning filter off on click.
+                    if(props.unfilteredPartListItems.length > 30){  // Needs to be paginated.
+                      props.setPagIdxMax(Math.ceil((props.unfilteredPartListItems.length / 30).toFixed(1)));
+                      props.setPagListItems(props.unfilteredPartListItems);
+                      props.paginate(props.unfilteredPartListItems, 1); // Function will setPartListItems
+                    }
+                    else{
+                        props.setPartListItems(props.unfilteredPartListItems);
+                        props.setPagIdxMax(1);
+                        props.setPagListItems([]);
+                    }
+                    props.setIdx(0);
+                    props.getUsageData(props.unfilteredPartListItems[0].code, props.unfilteredPartListItems[0].warehouseCode);
+                  };
                   props.setfilterOn(!props.filterOn);
                 }}>
                   {props.filterOn ? <FilterListOffIcon sx={{color: 'white'}}/> : <FilterListIcon sx={{color: 'white'}}/>}

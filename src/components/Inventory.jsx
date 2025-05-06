@@ -1597,12 +1597,17 @@ export default function Inventory() {
                         resultCount={partListItems.length}
                         partListItems={partListItems}
                         pagIdxMax={pagIdxMax}
+                        setPagListItems={setPagListItems}
+                        setPagIdxMax={setPagIdxMax}
                         displayPage={displayPage}
                         currentPage={currentPage}
                         setfilterOn={setfilterOn}
                         filterOn={filterOn}
                         setPartListItems={setPartListItems}
                         unfilteredPartListItems={unfilteredPartListItems}
+                        paginate={paginate}
+                        setIdx={setIdx}
+                        getUsageData={getUsageData}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
