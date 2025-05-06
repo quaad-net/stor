@@ -9,12 +9,13 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 250,
+//   width: 250,
+    width: 'fit-content',
   bgcolor:    'background.paper', 
   border: '1px solid gray',
   boxShadow: 24,
   p: 4,
-  borderRadius: '10px'
+  borderRadius: '10px',
 };
 
 export default function BasicMessageModal(props) {
@@ -39,7 +40,10 @@ export default function BasicMessageModal(props) {
     function ModalContent(){
         return(
             <>
-                <div style={{width: 'fit-content', margin: 'auto'}}>
+                <div style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px', overflowY: 'auto',
+                    scrollbarWidth:'thin', scrollbarColor: 'black'
+                    // msOverflowStyle: 'none', scrollbarWidth: 'none', '::WebkitScrollbar': {display: 'none'}
+                }}>
                     {props?.modalContent}
                 </div>
                 {props?.noDefaultBtns ? <></> : 

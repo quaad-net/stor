@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import BasicModal from './BasicModal';
+import MoreModal from './MoreModal';
 import ShowInstitution from './Institution';
 import SelectAutoWidth from './SelectAutoWidth';
 import FullScreenScanner from './FullScreenScanner';
@@ -22,6 +22,7 @@ import Labels from './Labels';
 import Pag from './Pag';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import SyntaxHelper from './SyntaxHelper';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -95,7 +96,7 @@ export default function AppBarHideOnScroll(props) {
         }));
           
         const SearchIconWrapper = styled('div')(({ theme }) => ({
-            padding: theme.spacing(0, 2),
+            // padding: theme.spacing(0, 2),
             height: '100%',
             position: 'absolute',
             pointerEvents: 'none',
@@ -109,7 +110,8 @@ export default function AppBarHideOnScroll(props) {
             '& .MuiInputBase-input': {
                 padding: theme.spacing(1, 1, 1, 0),
                 // vertical padding + font size from searchIcon
-                paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+                // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+                paddingLeft: '5px',
                 transition: theme.transitions.create('width'),
                 width: '100%',
                 [theme.breakpoints.up('md')]: {
@@ -121,9 +123,11 @@ export default function AppBarHideOnScroll(props) {
         const menuId = 'primary-search-account-menu';
 
         const queryTypeSelections = [
+          //Name : as it appears to user
           {value: 'binLoc', name: 'Loc'},
           {value: 'partCode', name: 'Code'},
-          {value: 'descr', name: 'Descr'}
+          {value: 'descr', name: 'Descr'},
+          props.filterOn ? {value: 'ware', name: 'Ware'} : {}
         ]
 
         const renderMenu = (
@@ -149,7 +153,6 @@ export default function AppBarHideOnScroll(props) {
 
         // Used for mobile menu modal.
         const modalBtnProps = {
-          size: 'large',
           ariaLabel: 'show more',
           ariaControls: {mobileMenuId},
           ariaHasPopUp: 'true',
@@ -161,7 +164,8 @@ export default function AppBarHideOnScroll(props) {
           return(
             <>
               <div style={{width: '250px', margin: 'auto'}}>
-                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{float: 'right'}}/>
+                {/* <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{float: 'right'}}/> */}
+                <SyntaxHelper mobileMenu />
                 <div>
                   <br/>
                   <div style={{display: 'flex'}}>
@@ -189,15 +193,14 @@ export default function AppBarHideOnScroll(props) {
                     </IconButton>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
+                    <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks&nbsp;&nbsp;&nbsp;</span>}/>
                     <Labels mobileView={true} queryRes={props?.partListItems}/>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan</span>}/>
+                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan&nbsp;&nbsp;&nbsp;</span>}/>
                     <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
                     <IconButton
                       disableRipple
                       size="large" 
@@ -205,8 +208,9 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit" 
                       onClick={props.sort}>
                       <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
-                      <span style={{fontSize: '15px'}}>Sort</span>
+                      <span style={{fontSize: '15px'}}>Sort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </IconButton>
+                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
                   </div>
                 </div>
               </div>
@@ -217,14 +221,15 @@ export default function AppBarHideOnScroll(props) {
         return(
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
-                <img id='stor-logo-header-logo' src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{marginRight: '10px'}}/>
+                <SyntaxHelper />
+                {/* <img id='stor-logo-header-logo' src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{marginRight: '10px'}}/> */}
                 <Search>
-                  <SearchIconWrapper>
-                      <SearchIcon />
-                  </SearchIconWrapper>
+                  {/* <SearchIconWrapper>
+                       <SearchIcon />
+                  </SearchIconWrapper> */}
                   <StyledInputBase
                       className='inventory-list-searchbox'
-                      placeholder='Query...'
+                      placeholder={props.filterOn? 'Filter...' : 'Query...'}
                       inputProps={{ 'aria-label': 'search' }}
                       
                       onKeyDown={(e)=>{
@@ -241,43 +246,80 @@ export default function AppBarHideOnScroll(props) {
                   selectionLabel='Type'
                   defaultSelection={queryType} 
                 />
+                <IconButton size='small' onClick={()=>{
+                  if(props.filterOn){props.setPartListItems(props.unfilteredPartListItems)};
+                  props.setfilterOn(!props.filterOn);
+                }}>
+                  {props.filterOn ? <FilterListOffIcon sx={{color: 'white'}}/> : <FilterListIcon sx={{color: 'white'}}/>}
+                </IconButton>
+                
+                {/* Tablet and esktop menu items. */}
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
-                  <IconButton 
-                    disableRipple
-                    size="large" 
-                    aria-label="sort" 
-                    color="inherit" 
-                    onClick={props.sort}>
-                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
-                  </IconButton>
-                  <ShowInstitution/>
-                  <Tasks/>
-                  <Labels queryRes={props?.partListItems}/>
-                  <IconButton
-                    disableRipple
-                    size="large"
-                    aria-label="update inventory"
-                    color="inherit"
-                    onClick={()=>{props.setUpdateInventory(true)}}
-                      >
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
-                  </IconButton>
-                  <IconButton 
-                    disableRipple
-                    size="large" 
-                    aria-label="inventory details" 
-                    color="inherit" 
-                    onClick={()=>{props.setUpdateInventory(false)}}
-                  >
-                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
-                  </IconButton>
-                  <FullScreenScanner getScanResult={props.getScanResult}/>
+                  {props?.pagIdxMax > 1 ?
+                  <div>
+                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Page</div>
+                  </div>
+                  :
+                  <></>
+                  }
+                  <div>
+                    <IconButton 
+                      disableRipple
+                      size="large" 
+                      aria-label="sort" 
+                      color="inherit" 
+                      onClick={props.sort}>
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
+                    </IconButton>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Sort</div>
+                  </div>
+                  <div>
+                    <Tasks/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Tasks</div>
+                  </div>
+                  <div>
+                    <Labels queryRes={props?.partListItems}/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Label</div>
+                  </div>
+                  <div>
+                    <IconButton
+                      disableRipple
+                      size="large"
+                      aria-label="update inventory"
+                      color="inherit"
+                      onClick={()=>{props.setUpdateInventory(true)}}
+                        >
+                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
+                    </IconButton>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Update</div>
+                  </div>
+                  <div>
+                    <IconButton 
+                      disableRipple
+                      size="large" 
+                      aria-label="inventory details" 
+                      color="inherit" 
+                      onClick={()=>{props.setUpdateInventory(false)}}
+                    >
+                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
+                    </IconButton>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
+                  </div>
+                  <div>
+                    <FullScreenScanner getScanResult={props.getScanResult}/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Scan</div>
+                  </div>
+                  <div>
+                    <ShowInstitution/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>User</div>
+                  </div>
                 </Box>
                 {/*Mobile menubar */}
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  <BasicModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
+                  <FullScreenScanner getScanResult={props.getScanResult} qrImgWidth='20px'/>
+                  <MoreModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  
             </Toolbar>
               {/* {renderMobileMenu} */}

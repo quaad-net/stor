@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import { ThemeProvider, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material';
+import StorToolTip from './StorToolTip';
 
 import './FullScreenScanner.css'
 
@@ -69,8 +70,11 @@ export default function FullScreenScanner(props) {
         aria-label="query by qr-scan" 
         color="inherit" 
         onClick={handleClickOpen}>
-          <img src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/bd236486-e7c9-4bfb-df9d-05ae43c63300/public' width='25px'/>
-          {props?.btnDescription || <></>}
+        <img 
+          src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/bd236486-e7c9-4bfb-df9d-05ae43c63300/public' 
+          width={props?.qrImgWidth  || '25px'}
+        />
+        {props?.btnDescription || <></>}
       </IconButton>
       <Dialog
         fullScreen

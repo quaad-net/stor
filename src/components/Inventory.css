@@ -90,4 +90,8 @@ input{
     .inventory-desktop-tablet-content{
         display: none;
     }
+
+    .not-shown-on-mobile{
+        display: none;
+    }
 }

@@ -17,7 +17,7 @@ const style = {
   borderRadius: '10px'
 };
 
-export default function BasicModal(props) {
+export default function MoreModal(props) {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -38,13 +38,13 @@ export default function BasicModal(props) {
         onClick={()=>{
           handleOpen();
         }}
-        size={btnProps?.size}
         aria-label={btnProps?.ariaLabel}
         aria-controls={btnProps?.ariaControls}
         aria-haspopup={btnProps?.ariaHasPopUp}
         color={btnProps?.color}
       >
-        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/a0bb141e-5952-4119-6843-6a0739ed7800/public' width='20px' />
+          <div style={{fontSize: '15px', float: 'right'}}>+</div>
+        {/* <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/a0bb141e-5952-4119-6843-6a0739ed7800/public' width='20px' /> */}
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}
         open={open}

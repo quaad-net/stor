@@ -10,7 +10,7 @@ import PlumbingIcon from '@mui/icons-material/Plumbing';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton } from '@mui/material';
+import { IconButton, Switch } from '@mui/material';
 import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
 import useToken from '../../app/useToken';
@@ -21,9 +21,11 @@ import './Inventory.css'
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
 import UsageChart from './UsageChart';
+import StorToolTip from './StorToolTip';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
+    const [unfilteredPartListItems, setUnfilteredPartListItems] = React.useState([])
     const [idx, setIdx] = React.useState(0) // Use to maintain detailed view of query record in various components.
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
@@ -36,6 +38,7 @@ export default function Inventory() {
     const [usageChartData, setUsageChartData] = React.useState([]);
     const [usageQuery, setUsageQuery] = React.useState('');
     const [suggestedMin, setSuggestedMin] = React.useState(undefined);
+    const [filterOn, setfilterOn] = React.useState(false);
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
     const navigate = useNavigate();
@@ -81,79 +84,190 @@ export default function Inventory() {
 
     function inventoryQuery({query, queryType, noDialog}){
 
-        // setUsageChartData([]);
-        fetch(`${apiUrl}/inventory/${queryType}/`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`, 
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({query: query})
-        })
-        .then((res)=>{
-            if(res.status == 401){throw new Error('Unauthorized user')}
-            else if(res.status == 404){throw new Error('No match')}
-            else if(res.status == 400){throw new Error('Invalid syntax')}
-            else if(res.status == 500){throw new Error('Something went wrong')}
-            else{
-                setAuthorizedUser(true)
-                return res.json()
-            }
-        })
-        .then((res)=>{
-            if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
-            else{
-                if(res.length == 0){
-                    setBasicMessageModalContent('No match found.')
-                    if(!noDialog){setBasicMessageModalOpen(true)}
-                }else{
-                    if(res.length > 30){  // Needs to be paginated.
-                        setPagIdxMax(Math.ceil((res.length / 30).toFixed(1)));
-                        setPagListItems(res);
-                        paginate(res, 1);
+        try{
+            if(!filterOn){
+                fetch(`${apiUrl}/inventory/${queryType}/`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({query: query})
+                })
+                .then((res)=>{
+                    if(res.status == 401){throw new Error('Unauthorized user')}
+                    else if(res.status == 404){throw new Error('No match')}
+                    else if(res.status == 400){throw new Error('Invalid syntax')}
+                    else if(res.status == 500){throw new Error('Something went wrong')}
+                    else{
+                        setAuthorizedUser(true)
+                        return res.json()
+                    }
+                })
+                .then((res)=>{
+                    if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
+                    else{
+                        if(res.length == 0){
+                            setBasicMessageModalContent('No match found.')
+                            if(!noDialog){setBasicMessageModalOpen(true)}
+                        }else{
+                            if(res.length > 30){  // Needs to be paginated.
+                                setUnfilteredPartListItems(res)
+                                setPagIdxMax(Math.ceil((res.length / 30).toFixed(1)));
+                                setPagListItems(res);
+                                paginate(res, 1); // Function will setPartListItems
+                            }
+                            else{
+                                setPartListItems(res);
+                                setUnfilteredPartListItems(res)
+                                setPagIdxMax(1);
+                                setPagListItems([]);
+                            }
+                            setIdx(0);
+                            getUsageData(res[0].code, res[0].warehouseCode);
+                            setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
+                            if(!noDialog){setBasicMessageModalOpen(true)};
+                        }
+                    };
+                })
+                .catch((err)=>{
+                    if (err.message=='Invalid syntax'){
+                        setBasicMessageModalContent(err.message);
+                        setBasicMessageModalOpen(true);
+                    }
+                    else if(err.message == 'Unauthorized user'){
+                        navigate("/lgn");
+                    }
+                    else if(err.message == 'Cannot run query'){
+                        setBasicMessageModalContent('Could not complete query!');
+                        setBasicMessageModalOpen(true);
+                    }
+                    else if(err.message == 'No match'){
+                        setBasicMessageModalContent('No match found!');
+                        setBasicMessageModalOpen(true);
                     }
                     else{
-                        setPartListItems(res);
+                        setBasicMessageModalContent('Could not complete query!');
+                        setBasicMessageModalOpen(true);
+                        console.log(err)
+                    }
+                })
+            }
+            else{
+                const modQry = String(query).trim();
+                if(modQry == ''){throw new Error('No input')}
+                const filteredParts = [];
+                const reStr = '^' + modQry;
+                const reQuery = new RegExp(reStr, 'i')
+                const reDescrStr = '.*' + modQry + '.*';
+                const reDesc = new RegExp(reDescrStr, 'i');
+
+                // Determines if partListItems or pagListItems need to be accessed for filtering results
+                if(!pagListItems.length > 0){ 
+                    switch(queryType){
+                        case 'binLoc':
+                            partListItems.forEach((part)=>{
+                                if(reQuery.test(part.binLoc)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'partCode':
+                            partListItems.forEach((part)=>{
+                                if(reQuery.test(part.code)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'descr':
+                            partListItems.forEach((part)=>{
+                                if(reDesc.test(part.description)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'ware':
+                            partListItems.forEach((part)=>{
+                                if(reQuery.test(part.warehouseCode)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        default:
+                    }
+                    if(filteredParts.length > 30){  // Needs to be paginated.
+                        setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                        setPagListItems(filteredParts);
+                        paginate(filteredParts, 1); // Function will setPartListItems
+                    }
+                    else{
+                        setPartListItems(filteredParts);
                         setPagIdxMax(1);
                         setPagListItems([]);
                     }
                     setIdx(0);
-                    getUsageData(res[0].code, res[0].warehouseCode);
-                    setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
-                    if(!noDialog){setBasicMessageModalOpen(true)};
+                    if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                    else{setUsageChartData([])}
                 }
-            };
-        })
-        .catch((err)=>{
-            if (err.message=='Invalid syntax'){
-                setBasicMessageModalContent(err.message);
-                setBasicMessageModalOpen(true);
+                else{ // Accesses pagListItems for filter instead of partListItems
+                    switch(queryType){
+                        case 'binLoc':
+                            pagListItems.forEach((part)=>{
+                                if(reQuery.test(part.binLoc)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'partCode':
+                            pagListItems.forEach((part)=>{
+                                if(reQuery.test(part.code)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'descr':
+                            pagListItems.forEach((part)=>{
+                                if(reDesc.test(part.description)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        case 'ware':
+                            pagListItems.forEach((part)=>{
+                                if(reQuery.test(part.warehouseCode)){
+                                    filteredParts.push(part)
+                                }
+                            })
+                            break
+                        default:
+                    }
+                    if(filteredParts.length > 30){  // Needs to be paginated.
+                        setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                        setPagListItems(filteredParts);
+                        paginate(filteredParts, 1); // Function will setPartListItems
+                    }
+                    else{
+                        setPartListItems(filteredParts);
+                        setPagIdxMax(1);
+                        setPagListItems([]);
+                    }
+                    setIdx(0);
+                    if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                    else{setUsageChartData([])}
+                }
             }
-            else if(err.message == 'Unauthorized user'){
-                navigate("/lgn");
-            }
-            else if(err.message == 'Cannot run query'){
-                setBasicMessageModalContent('Could not complete query!');
-                setBasicMessageModalOpen(true);
-            }
-            else if(err.message == 'No match'){
-                setBasicMessageModalContent('No match found!');
-                setBasicMessageModalOpen(true);
-            }
-            else{
-                setBasicMessageModalContent('Could not complete query!');
-                setBasicMessageModalOpen(true);
-                console.log(err)
-            }
-        })
+        }
+        catch(err){
+            if(err.message == 'No input'){}
+            else{console.log(err)}
+        }
     }
 
     function getUsageData(partcode, warehouseCode){
         fetch(`${apiUrl}/inventory/usage_analysis/${user.institution}/${partcode}-${warehouseCode}`)
         .then((res)=>{
             if(res.status !== 200){
-                setUsageChartData([]);
-                throw new Error();
+                throw new Error()
             }
             return res.json()
         })
@@ -162,7 +276,10 @@ export default function Inventory() {
             setSuggestedMin(res.suggestedMin);
             setUsageChartData([res.p1Usage, res.p2Usage, res.p3Usage]);
         })
-        .catch()
+        .catch((err)=>{
+            setUsageChartData([]);
+            setUsageQuery([])
+        })
     }
 
     const itemsPerPage = 30;
@@ -463,7 +580,12 @@ export default function Inventory() {
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
                         {partListItems[idx]?.description}<br/>
                             <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
-                                <img className='inventory-switch-view' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                                <StorToolTip 
+                                    toolTipEl={
+                                        <img className='inventory-switch-view' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                                    }
+                                    toolTipTitle='Update'
+                                />
                             </button>
                     </div>
                 </div>
@@ -1387,18 +1509,33 @@ export default function Inventory() {
                     onClick={()=>{
                         setIdxPrev();
                     }}>
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/704de6cc-f6c5-478e-4dff-95a4447d2b00/public' width='35px'/>
+                        <StorToolTip 
+                            toolTipEl={
+                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/704de6cc-f6c5-478e-4dff-95a4447d2b00/public' width='35px'/>
+                            }
+                            toolTipTitle='Previous'
+                        />
                     </IconButton>
                     <IconButton sx={{color: 'white', marginRight: '25px', 
                         }} 
                         onClick={()=>{setUpdateInventory(false)}}
                     > 
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public' width='35px'/>
+                        <StorToolTip 
+                            toolTipEl={
+                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public' width='35px'/>
+                            }
+                            toolTipTitle='Info'
+                        />
                     </IconButton>
                     <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
                     }}>
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/37f1140b-a129-45f0-af7b-a207b79e6300/public' width='35px'/>
+                        <StorToolTip 
+                            toolTipEl={
+                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/37f1140b-a129-45f0-af7b-a207b79e6300/public' width='35px'/>
+                            }
+                            toolTipTitle='Next'
+                        />
                     </IconButton>
                 </div>  
                 <br/>
@@ -1462,6 +1599,10 @@ export default function Inventory() {
                         pagIdxMax={pagIdxMax}
                         displayPage={displayPage}
                         currentPage={currentPage}
+                        setfilterOn={setfilterOn}
+                        filterOn={filterOn}
+                        setPartListItems={setPartListItems}
+                        unfilteredPartListItems={unfilteredPartListItems}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
