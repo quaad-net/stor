@@ -15,17 +15,15 @@ export default function Labels(props){
     const { token } = useToken();
 
     const codeMaxChar = 30;
-    const descriptionMaxChar = 186; 
-    const binLocMaxChar = 20; 
+    const descriptionMaxChar = 186; // 70 // 93
+    const binLocMaxChar = 20;  // 10
     const minMaxChar = 6;
     const maxMaxChar = 6;
     const modQueryRes = [];
 
-    function validateQueryRes(includePagResults){
-        let recs;
-        if(includePagResults){recs = props.pagListItems}
-        else{recs = props.queryRes}
-        recs.forEach((record)=>{
+    function validateQueryRes(){
+
+        props?.queryRes.forEach((record)=>{
             // This prevents errors resulting from numeric types in code and binLoc field.
             let modBinLoc, modCode;
             if(typeof record.binLoc == 'number'){ 
@@ -42,21 +40,18 @@ export default function Labels(props){
                 description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
                     record.description,
                 binLoc: modBinLoc?.substring(0, binLocMaxChar),
-                min: record.min === '' ? '- ': record.min.toString()?.substring(0, minMaxChar),
-                max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxMaxChar),
+                min: record.min === '' ? '?': record.min.toString()?.substring(0, minMaxChar),
+                max: record.max === '' ? '?' : record.max.toString()?.substring(0, maxMaxChar),
             }
             modQueryRes.push(modRecord)
         })
         return modQueryRes
     }
 
-    async function printLabels(labelDetails, includePagResults){
+    async function printLabels(labelDetails){
         try{
             let recs; 
-            if(!labelDetails){
-                if(includePagResults){recs = validateQueryRes(includePagResults)}
-                else{recs = validateQueryRes()}
-            }
+            if(!labelDetails){recs = validateQueryRes()}
             const req =  await fetch(`${apiUrl}/print/labels`, {
                 method: "POST",
                 body: labelDetails ? JSON.stringify([labelDetails]) : JSON.stringify(recs),
@@ -111,8 +106,8 @@ export default function Labels(props){
                     description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
                         record.description,
                     binLoc: modBinLoc?.substring(0, binLocMaxChar),
-                    min: record.min === '' ? '- ': record.min.toString()?.substring(0, minMaxChar),
-                    max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxMaxChar),
+                    min: record.min === '' ? '?': record.min.toString()?.substring(0, minMaxChar),
+                    max: record.max === '' ? '?' : record.max.toString()?.substring(0, maxMaxChar),
                 }
                 modParts.push(modRecord)
             })
@@ -153,44 +148,19 @@ export default function Labels(props){
     function PrintType(){
         return(
             <div style={{width: 'fit-content', margin: 'auto'}}>
-                {props?.pagListItems.length > 0 ?
-                <>
-                    <div>
-                        <IconButton disableRipple onClick={()=>{
-                            setModalOpen(false);
-                            printLabels(undefined, true)
-                        }}><span style={{fontSize: '15px'}}>
-                            <img 
-                                src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' 
-                                width='10px' />&nbsp;All Results
-                            </span>
-                        </IconButton>
-                    </div>
-                    <br/>
-                </>
-                :
-                    <></>
-                }
-                <div>
-                    <IconButton disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        printLabels();
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;{props?.pagListItems.length > 0 ? 'Current Page' : 'Results'}</span>
-                    </IconButton>
-                </div>
+                <IconButton disableRipple onClick={()=>{
+                    setModalOpen(false);
+                    printLabels();
+                }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Results</span>
+                </IconButton>
+                <IconButton disableRipple onClick={()=>{
+                    setModalOpen(false);
+                    setFormModalOpen(true);
+                    }}>
+                    <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;New Label </span>
+                </IconButton>
                 <br/>
-                <div>
-                    <IconButton disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        setFormModalOpen(true);
-                        }}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;New Label </span>
-                    </IconButton>
-                </div>
-                <br/>
-                <div>
-                    <PrintJobs printPrintJobs={printPrintJobs}/>
-                </div>
+                <PrintJobs printPrintJobs={printPrintJobs}/>
             </div>
         )
     }

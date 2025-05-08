@@ -194,7 +194,7 @@ export default function AppBarHideOnScroll(props) {
                   </div>
                   <div style={{display: 'flex'}}>
                     <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks&nbsp;&nbsp;&nbsp;</span>}/>
-                    <Labels mobileView={true} queryRes={props?.partListItems}/>
+                    <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                   </div>
                   <div style={{display: 'flex'}}>
                     <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan&nbsp;&nbsp;&nbsp;</span>}/>
@@ -293,7 +293,7 @@ export default function AppBarHideOnScroll(props) {
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Tasks</div>
                   </div>
                   <div>
-                    <Labels queryRes={props?.partListItems}/>
+                    <Labels queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Label</div>
                   </div>
                   <div>

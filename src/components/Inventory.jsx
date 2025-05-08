@@ -153,7 +153,7 @@ export default function Inventory() {
                     }
                 })
             }
-            else{
+            else{ // Filter results.
                 const modQry = String(query).trim();
                 if(modQry == ''){throw new Error('No input')}
                 const filteredParts = [];
@@ -162,21 +162,89 @@ export default function Inventory() {
                 const reDescrStr = '.*' + modQry + '.*';
                 const reDesc = new RegExp(reDescrStr, 'i');
 
+                function assessFilter(filter, type){
+                    // type: code || warehouseCode
+                    const fltr = filter.toString().trim();
+                    const fltrArr = fltr.split(' ');
+                    if(fltrArr.length > 1){
+                        const RegExFilterArr =[];
+                        fltrArr.forEach((f)=>{
+                            if(type == 'partCode'){
+                                const reStr =  '^' + f;
+                                const re = new RegExp(reStr, 'i');
+                                RegExFilterArr.push(re);
+                            }
+                            else if(type == 'warehouseCode'){
+                                const reStr =  '.*' + f;
+                                const re = new RegExp(reStr, 'i');
+                                RegExFilterArr.push(re);
+                            }
+                        })
+                        return RegExFilterArr
+                    }
+                    else{
+                        if(type == 'partCode'){
+                            const reStr = '^' + fltr;
+                            const re = new RegExp(reStr, 'i');
+                            return [re]
+                        }
+                        else if(type == 'warehouseCode'){
+                            const reStr =  '.*' + fltr;
+                            const re = new RegExp(reStr, 'i');
+                            return [re]
+                        }
+                    }
+                }
+
+                function assessBinLoc(binLoc){
+                    let colonCount = 0;
+                    const binLocArr = binLoc.split("")
+                    binLocArr.map((str)=>{
+                        if(str==':'){
+                            colonCount += 1;
+                        }
+                    })
+                    if(colonCount == 1){ // Indicates a range of bin locations.
+                        const binLocSplit = binLoc.split(":");
+                        const binLocStartAt = binLocSplit[0].trim();
+                        const binLocEndAt = binLocSplit[1].trim();
+                        return {locCount: 2, gte: binLocStartAt?.toUpperCase(), lte: binLocEndAt?.toUpperCase()}
+                    }
+                    else{
+                        return { locCount: 1, binLoc: binLoc?.toUpperCase()}
+                    }
+                }
+
                 // Determines if partListItems or pagListItems need to be accessed for filtering results
                 if(!pagListItems.length > 0){ 
                     switch(queryType){
                         case 'binLoc':
+                            const locs = assessBinLoc(modQry)
                             partListItems.forEach((part)=>{
-                                if(reQuery.test(part.binLoc)){
-                                    filteredParts.push(part)
+                                if(locs.locCount == 2){
+                                    if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
+                                        filteredParts.push(part)
+                                    }
+                                }
+                                else{
+                                    const reLoc = new RegExp(locs.binLoc, 'i');
+                                    if(reLoc.test(part.binLoc)){
+                                        filteredParts.push(part)
+                                    }
                                 }
                             })
                             break
                         case 'partCode':
+                            // partListItems.forEach((part)=>{
+                            //     if(reQuery.test(part.code)){
+                            //         filteredParts.push(part)
+                            //     }
+                            // })
+                            const fltr = assessFilter(modQry, 'partCode');
                             partListItems.forEach((part)=>{
-                                if(reQuery.test(part.code)){
+                                fltr.forEach((f)=>{if(f.test(part.code)){
                                     filteredParts.push(part)
-                                }
+                                }})
                             })
                             break
                         case 'descr':
@@ -187,10 +255,16 @@ export default function Inventory() {
                             })
                             break
                         case 'ware':
+                            // partListItems.forEach((part)=>{
+                            //     if(reQuery.test(part.warehouseCode)){
+                            //         filteredParts.push(part)
+                            //     }
+                            // })
+                            const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             partListItems.forEach((part)=>{
-                                if(reQuery.test(part.warehouseCode)){
+                                warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
                                     filteredParts.push(part)
-                                }
+                                }})
                             })
                             break
                         default:
@@ -212,17 +286,32 @@ export default function Inventory() {
                 else{ // Accesses pagListItems for filter instead of partListItems
                     switch(queryType){
                         case 'binLoc':
+                            const locs = assessBinLoc(modQry);
                             pagListItems.forEach((part)=>{
-                                if(reQuery.test(part.binLoc)){
-                                    filteredParts.push(part)
+                                if(locs.locCount == 2){
+                                    if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
+                                        filteredParts.push(part)
+                                    }
+                                }
+                                else{
+                                    const reLoc = new RegExp(locs.binLoc, 'i');
+                                    if(reLoc.test(part.binLoc)){
+                                        filteredParts.push(part)
+                                    }
                                 }
                             })
                             break
-                        case 'partCode':
+                        case 'partCode':  
+                            // pagListItems.forEach((part)=>{
+                            //     if(reQuery.test(part.code)){
+                            //         filteredParts.push(part)
+                            //     }
+                            // })
+                            const fltr = assessFilter(modQry,'partCode');
                             pagListItems.forEach((part)=>{
-                                if(reQuery.test(part.code)){
+                                fltr.forEach((f)=>{if(f.test(part.code)){
                                     filteredParts.push(part)
-                                }
+                                }})
                             })
                             break
                         case 'descr':
@@ -233,10 +322,16 @@ export default function Inventory() {
                             })
                             break
                         case 'ware':
+                            // pagListItems.forEach((part)=>{
+                            //     if(reQuery.test(part.warehouseCode)){
+                            //         filteredParts.push(part)
+                            //     }
+                            // })
+                            const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             pagListItems.forEach((part)=>{
-                                if(reQuery.test(part.warehouseCode)){
+                                warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
                                     filteredParts.push(part)
-                                }
+                                }})
                             })
                             break
                         default:
@@ -624,7 +719,7 @@ export default function Inventory() {
                         {usageChartData.length > 0 ?
                             <>
                                 <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day</legend>
-                                <span style={{color: 'gray'}}>{usageQuery} | suggested min: {suggestedMin}</span>
+                                <span style={{color: 'gray'}}>{usageQuery} {props.mobileView ? <br/> : '|'} suggested min: {suggestedMin}</span>
                                 <UsageChart yData={usageChartData} mobileView={props?.mobileView}/> 
                             </>
                             :
@@ -1598,6 +1693,7 @@ export default function Inventory() {
                         partListItems={partListItems}
                         pagIdxMax={pagIdxMax}
                         setPagListItems={setPagListItems}
+                        pagListItems={pagListItems}
                         setPagIdxMax={setPagIdxMax}
                         displayPage={displayPage}
                         currentPage={currentPage}
