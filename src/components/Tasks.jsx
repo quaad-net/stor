@@ -20,6 +20,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import useUserData from '../../app/useUserData';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,6 +36,8 @@ export default function Tasks(props) {
     const [basicMessageContent, setBasicMessageContent] = React.useState('')
     const [userFilter, setUserFilter] = React.useState('')
     const { token } = useToken();
+    const { userData } = useUserData();
+    const user = JSON.parse(userData);
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleClickOpen = () => {
@@ -44,10 +47,6 @@ export default function Tasks(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    
-    // React.useEffect(()=>{
-    //     getTasks(); 
-    // }, [open])
 
     const darkTheme = createTheme({
     palette: {
@@ -73,17 +72,22 @@ export default function Tasks(props) {
     });
 
     async function getTasks(){
-        try{
         fetch(`${apiUrl}/inventory_tasks/get-all`, 
             {
                 method: 'POST', 
-                headers: {Authorization: `Bearer ${token}`}
+                headers: 
+                    {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                body: JSON.stringify({user: user.email})
             }   
         )
         .then((res)=>{
             if(res.status !== 200){
                 console.log(res.status);
-                throw new Error();
+                if(res.status == 401){throw new Error('Unauthorized')}
+                else{throw new Error()};
             }
             return res.json()
         })
@@ -91,12 +95,12 @@ export default function Tasks(props) {
             setTasksListItems(res);
             setUnfilteredTasks(res);
         })
-        }
-        catch(err){
-            setBasicMessageContent('Could not fetch records!');
+        .catch((err)=>{
+            if(err?.message == 'Unauthorized'){setBasicMessageContent('Unauthorized')}
+            else{setBasicMessageContent('Could not complete operation!')};
             setBasicMessageOpen(true);
             console.log(err);
-        }
+        })
     }
 
     async function deleteTask(taskId){
@@ -136,7 +140,7 @@ export default function Tasks(props) {
             })
             .catch((err)=>{
                 console.log(err);
-                setBasicMessageContent('Could not delete task!');
+                setBasicMessageContent('Could not complete operation!');
                 setBasicMessageOpen(true);
             })
     }

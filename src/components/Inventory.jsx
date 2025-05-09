@@ -806,7 +806,8 @@ export default function Inventory() {
                             setPartListItems(parts);
                         }
                         else{
-                            setBasicMessageModalContent(`${res.status} Error`);
+                            if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}
+                            else{setBasicMessageModalContent(`${res.status} Error`)};
                             setBasicMessageModalOpen(true);
                         }
                     })
@@ -836,7 +837,8 @@ export default function Inventory() {
                             setPartListItems(parts);
                         }
                         else{
-                            setBasicMessageModalContent(`${res.status} Error`);
+                            if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}
+                            else{setBasicMessageModalContent(`${res.status} Error`)};
                             setBasicMessageModalOpen(true);
                         }
                     })
@@ -864,7 +866,8 @@ export default function Inventory() {
                             setPartListItems(parts);
                         }
                         else{
-                            setBasicMessageModalContent(`${res.status} Error`);
+                            if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}
+                            else{setBasicMessageModalContent(`${res.status} Error`)};
                             setBasicMessageModalOpen(true);
                         }
                     })
