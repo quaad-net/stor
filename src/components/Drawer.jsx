@@ -71,8 +71,6 @@ function SwipeableEdgeDrawer(props) {
     if(open && props.updateInventory){
       return (
         <>
-          {/* <span><span style={{color: 'gray'}}>{props.listSelectionDetail?.code}</span></span>
-          {props?.mainContentHeader} */}
           <span>&nbsp;</span>
         </>
       )
@@ -80,8 +78,6 @@ function SwipeableEdgeDrawer(props) {
     else{
       return(
         <>
-        {/* <span>Returned {props?.resultCount} Results</span>
-        {props?.mainContentHeader} */}
         <span>&nbsp;</span>
         </>
       )

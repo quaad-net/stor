@@ -42,7 +42,7 @@ export default function Labels(props){
                 description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
                     record.description,
                 binLoc: modBinLoc?.substring(0, binLocMaxChar),
-                min: record.min === '' ? '- ': record.min.toString()?.substring(0, minMaxChar),
+                min: record.min === '' ? '-': record.min.toString()?.substring(0, minMaxChar),
                 max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxMaxChar),
             }
             modQueryRes.push(modRecord)

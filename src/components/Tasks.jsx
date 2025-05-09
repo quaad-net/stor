@@ -207,7 +207,7 @@ export default function Tasks(props) {
                     </IconButton>
                     <br/>
                     <Collapse in={itemOpen} timeout="auto" unmountOnExit>
-                        <div><strong>binLoc:</strong><span style={{color: 'gray'}}> {props?.task.binLoc}</span></div>
+                        <div><strong>binLoc:</strong><span style={{color: 'gray'}}> {props?.task.binLoc} | {props?.task.warehouseCode}</span></div>
                         <div><strong>description:</strong><span style={{color: 'gray'}}> {props?.task.description}</span></div>
                         <div style={{lineBreak: 'anywhere'}}><strong>details:</strong><span style={{color: 'gray'}}> {props?.task.taskValues}</span></div>
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>

@@ -22,6 +22,7 @@ import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
 import UsageChart from './UsageChart';
 import StorToolTip from './StorToolTip';
+import Styled from '@emotion/styled';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -44,6 +45,18 @@ export default function Inventory() {
     const navigate = useNavigate();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
+
+    const FormButton = Styled.button`
+        all: unset;
+        fontSize: small; 
+        color: white;
+        width: fit-content; 
+        textAlign: center; 
+        margin: 10px;
+        marginTop: 5px; 
+        marginBottom: 5px;
+        &:hover {cursor: pointer}
+    `
 
     React.useEffect(()=>{
         inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true});
@@ -175,7 +188,7 @@ export default function Inventory() {
                                 RegExFilterArr.push(re);
                             }
                             else if(type == 'warehouseCode'){
-                                const reStr =  '.*' + f;
+                                const reStr =  '.*' + f + '$';
                                 const re = new RegExp(reStr, 'i');
                                 RegExFilterArr.push(re);
                             }
@@ -235,11 +248,6 @@ export default function Inventory() {
                             })
                             break
                         case 'partCode':
-                            // partListItems.forEach((part)=>{
-                            //     if(reQuery.test(part.code)){
-                            //         filteredParts.push(part)
-                            //     }
-                            // })
                             const fltr = assessFilter(modQry, 'partCode');
                             partListItems.forEach((part)=>{
                                 fltr.forEach((f)=>{if(f.test(part.code)){
@@ -255,11 +263,6 @@ export default function Inventory() {
                             })
                             break
                         case 'ware':
-                            // partListItems.forEach((part)=>{
-                            //     if(reQuery.test(part.warehouseCode)){
-                            //         filteredParts.push(part)
-                            //     }
-                            // })
                             const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             partListItems.forEach((part)=>{
                                 warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
@@ -302,11 +305,6 @@ export default function Inventory() {
                             })
                             break
                         case 'partCode':  
-                            // pagListItems.forEach((part)=>{
-                            //     if(reQuery.test(part.code)){
-                            //         filteredParts.push(part)
-                            //     }
-                            // })
                             const fltr = assessFilter(modQry,'partCode');
                             pagListItems.forEach((part)=>{
                                 fltr.forEach((f)=>{if(f.test(part.code)){
@@ -322,11 +320,6 @@ export default function Inventory() {
                             })
                             break
                         case 'ware':
-                            // pagListItems.forEach((part)=>{
-                            //     if(reQuery.test(part.warehouseCode)){
-                            //         filteredParts.push(part)
-                            //     }
-                            // })
                             const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             pagListItems.forEach((part)=>{
                                 warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
@@ -794,6 +787,7 @@ export default function Inventory() {
                     const partDetails = {
                         code: currentPart.code,
                         binLoc: currentPart.binLoc,
+                        warehouseCode: currentPart.warehouseCode,
                         inventoryCount: input.count,
                         comment: input?.comment.trim() || '',
                         description: currentPart.description,
@@ -825,6 +819,7 @@ export default function Inventory() {
                         body: JSON.stringify({
                             code: currentPart.code,
                             binLoc: currentPart.binLoc,
+                            warehouseCode: currentPart.warehouseCode,
                             taskType: input.updateType,
                             taskValues: input.taskValues,
                             comment: input?.comment.trim() || '',
@@ -982,37 +977,19 @@ export default function Inventory() {
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button
+                                <FormButton
                                     type='button' 
-                                    style={{ 
-                                        all: 'unset',
-                                        fontSize: 'small', 
-                                        color: 'white',
-                                        width: 'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'}} 
                                         onClick={(e)=>{
                                             e.preventDefault();
                                             submitForm();
                                         }}>
                                             <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                </button>
-                                <button 
+                                </FormButton>
+                                <FormButton 
                                     type='reset' 
-                                    style={{
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white', 
-                                        width:'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'
-                                    }}>
+                                    >
                                         <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
-                                </button>
+                                </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1089,37 +1066,19 @@ export default function Inventory() {
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button 
+                                <FormButton 
                                     type='button' 
-                                    style={{ 
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white',
-                                        width: 'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'}} 
                                         onClick={(e)=>{
                                             e.preventDefault();
                                             submitForm();
                                         }}>
                                             <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                </button>
-                                <button 
+                                </FormButton>
+                                <FormButton 
                                     type='reset' 
-                                    style={{
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white', 
-                                        width:'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'
-                                    }}>
+                                    >
                                         <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
-                                </button>
+                                </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1195,37 +1154,20 @@ export default function Inventory() {
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button 
+                                <FormButton 
                                     type='button' 
-                                    style={{ 
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white',
-                                        width: 'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'}} 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
+                                    onClick={(e)=>{
+                                        e.preventDefault();
+                                        submitForm();
+                                    }}
+                                >
                                             <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                </button>
-                                <button 
+                                </FormButton>
+                                <FormButton 
                                     type='reset' 
-                                    style={{
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white', 
-                                        width:'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'
-                                    }}>
+                                    >
                                         <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
-                                </button>
+                                </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1300,37 +1242,19 @@ export default function Inventory() {
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button 
+                                <FormButton 
                                     type='button' 
-                                    style={{ 
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white',
-                                        width: 'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'}} 
                                         onClick={(e)=>{
                                             e.preventDefault();
                                             submitForm();
                                         }}>
                                             <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                </button>
-                                <button 
+                                </FormButton>
+                                <FormButton 
                                     type='reset' 
-                                    style={{
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white', 
-                                        width:'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'
-                                    }}>
+                                    >
                                         <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
-                                </button>
+                                </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1392,23 +1316,19 @@ export default function Inventory() {
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
                                     <div>Add to print jobs.</div>
-                                    <button
+                                    <FormButton
                                         type='button' 
-                                        style={{ 
-                                            all: 'unset',
-                                            fontSize: 'small', 
-                                            color: 'white',
-                                            width: 'fit-content', 
-                                            textAlign: 'center', 
-                                            margin:'10px',
-                                            marginTop: '5px', 
-                                            marginBottom: '5px'}} 
-                                            onClick={(e)=>{
-                                                e.preventDefault();
-                                                submitForm();
-                                            }}>
-                                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                    </button>
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            submitForm();
+                                        }}>
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                    >
+                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                    </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1471,37 +1391,19 @@ export default function Inventory() {
                             <form>
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <button 
+                                <FormButton 
                                     type='button' 
-                                    style={{ 
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white',
-                                        width: 'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'}} 
                                         onClick={(e)=>{
                                             e.preventDefault();
                                             submitForm();
                                         }}>
                                             <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
-                                </button>
-                                <button 
+                                </FormButton>
+                                <FormButton 
                                     type='reset' 
-                                    style={{
-                                        all: 'unset', 
-                                        fontSize: 'small', 
-                                        color: 'white', 
-                                        width:'fit-content', 
-                                        textAlign: 'center', 
-                                        margin:'10px',
-                                        marginTop: '5px', 
-                                        marginBottom: '5px'
-                                    }}>
+                                    >
                                         <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
-                                </button>
+                                </FormButton>
                                 </div>
                             </form>
                         </div>
@@ -1510,48 +1412,6 @@ export default function Inventory() {
             }
             return(<CustomContentFormModal exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
-
-        function FormClose(props){
-            return(
-                <button 
-                    type='button' 
-                    style={{ 
-                        all: 'unset', 
-                        fontSize: 'small', 
-                        color: 'white',
-                        width: 'fit-content', 
-                        textAlign: 'center', 
-                        margin:'10px',
-                        marginTop: '5px', 
-                        marginBottom: '5px'}} 
-                        onClick={(e)=>{
-                            e.preventDefault();
-                            props.submitForm();
-                        }}>
-                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/0d0f6783-8081-4128-8b54-71ddf7866200/public' width='30px'/>
-                </button>
-            )
-        }
-
-        function FormReset(){
-            return(
-                <button 
-                    type='reset' 
-                    style={{
-                        all: 'unset', 
-                        fontSize: 'small', 
-                        color: 'white', 
-                        width:'fit-content', 
-                        textAlign: 'center', 
-                        margin:'10px',
-                        marginTop: '5px', 
-                        marginBottom: '5px'
-                    }}>
-                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/be1b3d86-7615-4a9c-e914-29d2c7a7c000/public' width='30px'/>
-                </button>
-            )
-        }
-
 
         function CommentBox(props){
             return(
