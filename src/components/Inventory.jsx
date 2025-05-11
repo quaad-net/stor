@@ -10,7 +10,7 @@ import PlumbingIcon from '@mui/icons-material/Plumbing';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton, Switch } from '@mui/material';
+import { IconButton } from '@mui/material';
 import AppBarHideOnScroll from './AppBarHideOnScroll';
 import SwipeableEdgeDrawer from './Drawer';
 import useToken from '../../app/useToken';
@@ -170,8 +170,6 @@ export default function Inventory() {
                 const modQry = String(query).trim();
                 if(modQry == ''){throw new Error('No input')}
                 const filteredParts = [];
-                const reStr = '^' + modQry;
-                const reQuery = new RegExp(reStr, 'i')
                 const reDescrStr = '.*' + modQry + '.*';
                 const reDesc = new RegExp(reDescrStr, 'i');
 
@@ -232,6 +230,7 @@ export default function Inventory() {
                 if(!pagListItems.length > 0){ 
                     switch(queryType){
                         case 'binLoc':
+                            {
                             const locs = assessBinLoc(modQry)
                             partListItems.forEach((part)=>{
                                 if(locs.locCount == 2){
@@ -246,31 +245,37 @@ export default function Inventory() {
                                     }
                                 }
                             })
-                            break
+                            break;
+                            }
                         case 'partCode':
+                            {
                             const fltr = assessFilter(modQry, 'partCode');
                             partListItems.forEach((part)=>{
                                 fltr.forEach((f)=>{if(f.test(part.code)){
                                     filteredParts.push(part)
                                 }})
                             })
-                            break
+                            break;
+                            }
                         case 'descr':
+                            {
                             partListItems.forEach((part)=>{
                                 if(reDesc.test(part.description)){
                                     filteredParts.push(part)
                                 }
                             })
-                            break
+                            break;
+                            }
                         case 'ware':
+                            {
                             const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             partListItems.forEach((part)=>{
                                 warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
                                     filteredParts.push(part)
                                 }})
                             })
-                            break
-                        default:
+                            break;
+                            }
                     }
                     if(filteredParts.length > 30){  // Needs to be paginated.
                         setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
@@ -289,6 +294,7 @@ export default function Inventory() {
                 else{ // Accesses pagListItems for filter instead of partListItems
                     switch(queryType){
                         case 'binLoc':
+                            {
                             const locs = assessBinLoc(modQry);
                             pagListItems.forEach((part)=>{
                                 if(locs.locCount == 2){
@@ -303,8 +309,10 @@ export default function Inventory() {
                                     }
                                 }
                             })
-                            break
-                        case 'partCode':  
+                            break;
+                            }
+                        case 'partCode':
+                            {  
                             const fltr = assessFilter(modQry,'partCode');
                             pagListItems.forEach((part)=>{
                                 fltr.forEach((f)=>{if(f.test(part.code)){
@@ -312,22 +320,26 @@ export default function Inventory() {
                                 }})
                             })
                             break
+                            }
                         case 'descr':
+                            {
                             pagListItems.forEach((part)=>{
                                 if(reDesc.test(part.description)){
                                     filteredParts.push(part)
                                 }
                             })
-                            break
+                            break;
+                            }
                         case 'ware':
+                            {
                             const warehouseFilter = assessFilter(modQry, 'warehouseCode');
                             pagListItems.forEach((part)=>{
                                 warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
                                     filteredParts.push(part)
                                 }})
                             })
-                            break
-                        default:
+                            break;
+                            }
                     }
                     if(filteredParts.length > 30){  // Needs to be paginated.
                         setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
@@ -352,7 +364,8 @@ export default function Inventory() {
     }
 
     function getUsageData(partcode, warehouseCode){
-        fetch(`${apiUrl}/inventory/usage_analysis/${user.institution}/${partcode}-${warehouseCode}`)
+
+        fetch(`${apiUrl}/inventory/usage_analysis/${user.email == 'johndoe@quaad.net' ? 'uwm' : user.institution}/${partcode}-${warehouseCode}`)
         .then((res)=>{
             if(res.status !== 200){
                 throw new Error()
@@ -364,7 +377,7 @@ export default function Inventory() {
             setSuggestedMin(res.suggestedMin);
             setUsageChartData([res.p1Usage, res.p2Usage, res.p3Usage]);
         })
-        .catch((err)=>{
+        .catch(()=>{
             setUsageChartData([]);
             setUsageQuery([])
         })
@@ -470,11 +483,13 @@ export default function Inventory() {
         switch(hyphenCount){
             case 1:
                 inventoryQuery({query: newResult, queryType: 'partCode' })
-                break
+                break;
             case 2:
+                {
                 const modResult = newResult.split('-')[0] + '-' + newResult.split('-')[1];
                 inventoryQuery({query: modResult, queryType: 'partCode' })
-                break
+                break;
+                }
             default:
                 inventoryQuery({query: newResult, queryType: 'descr' })
         }
@@ -636,10 +651,6 @@ export default function Inventory() {
 
 
     function InventoryDetailContent(props){
-        const [warehouseOpen, setWarehouseOpen ]= React.useState(false);
-        const [wMin, setWMin] = React.useState('');
-        const [wMax, setWMax] = React.useState('');
-        const [wAvail, setWAvail] = React.useState('');
         if(!updateInventory){
         // Inventory Detail
 
@@ -747,26 +758,14 @@ export default function Inventory() {
     }
 
     function UpdateInventoryDetails(props){
-        const [userComment, setUserComment] = React.useState('');
-        const [userUpdate, setUserUpdate] = React.useState(null);
-        const [userQty, setUserQty] = React.useState('');
-        const [userPick, setUserPick] = React.useState('');
-        const [userBinLoc, setUserBinLoc] = React.useState('');
-        const [workorder, setWorkorder] = React.useState('');
-        const [qtyUsed, setQtyUsed] = React.useState(0);
-        const [reorder, setReorder] = React.useState(false);
-        const [inventoryCount, setInventoryCount] = React.useState(undefined);
-        const [reorderAmt, setReorderAmt] = React.useState(0);
-        const [displayFormModal, setDisplayFormModal] = React.useState(false);
-        const [formModalContent, SetFormModalContent] = React.useState(null);
 
-        const updateTypes = [
-            {name: 'Count'}, 
-            {name: 'Loc'},
-            {name: 'Pick'},
-            {name: 'Reord'},
+        //  updateTypes = [
+        //     {name: 'Count'}, 
+        //     {name: 'Loc'},
+        //     {name: 'Pick'},
+        //     {name: 'Reord'},
 
-        ]
+        // ]
 
         async function submitUserInput(input){
             //takes input obj
@@ -842,6 +841,11 @@ export default function Inventory() {
                             setBasicMessageModalOpen(true);
                         }
                     })
+                    .catch((err)=>{
+                        console.log(err);
+                        setBasicMessageModalContent('Could not complete request!');
+                        setBasicMessageModalOpen(true);
+                    })
                 }
                 else if(input.updateType === 'Label' ){
                     await fetch(`${apiUrl}/inventory_tasks_print`, {
@@ -871,9 +875,15 @@ export default function Inventory() {
                             setBasicMessageModalOpen(true);
                         }
                     })
+                    .catch((err)=>{
+                        console.log(err)
+                        setBasicMessageModalContent('Could not complete request!');
+                        setBasicMessageModalOpen(true);
+                    })
                 }
             }
             catch(err){
+                console.log(err);
                 setBasicMessageModalContent('Could not complete request!');
                 setBasicMessageModalOpen(true);
             }
@@ -999,7 +1009,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-pick-modal' exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function CountModalContent(){
@@ -1088,7 +1098,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-count-modal' exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function ReorderModalContent(){
@@ -1177,7 +1187,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-reord-modal' exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function LocationModalContent(){
@@ -1264,7 +1274,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
+            return(<CustomContentFormModal key='inventory-location-modal' exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
         function LabelModalContent(){
@@ -1338,7 +1348,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<LabelExposedEL/>]} modalContent={<LabelForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-label-modal' exposedEl={[<LabelExposedEL/>]} modalContent={<LabelForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function OtherModalContent(){
@@ -1413,7 +1423,7 @@ export default function Inventory() {
                     </>
                 )
             }
-            return(<CustomContentFormModal exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
+            return(<CustomContentFormModal key='inventory-other-modal' exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
         function CommentBox(props){

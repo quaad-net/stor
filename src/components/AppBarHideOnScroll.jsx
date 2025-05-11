@@ -11,18 +11,17 @@ import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Menu from '@mui/material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import MoreModal from './MoreModal';
 import ShowInstitution from './Institution';
 import SelectAutoWidth from './SelectAutoWidth';
 import FullScreenScanner from './FullScreenScanner';
-import { createTheme } from '@mui/material/styles';
 import Tasks from './Tasks';
 import Labels from './Labels';
 import Pag from './Pag';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
+import FiscalDashboard from './FiscalDashboard';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -49,22 +48,17 @@ export default function AppBarHideOnScroll(props) {
 
   const [queryType, setQueryType] = React.useState('binLoc');
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
 
     function AppBarTools(){
         const [query, setQuery] = React.useState('');
         const [anchorEl, setAnchorEl] = React.useState(null);
         const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);    
         const isMenuOpen = Boolean(anchorEl);
-        const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+        // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     
-        const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-        };
+        // const handleProfileMenuOpen = (event) => {
+        // setAnchorEl(event.currentTarget);
+        // };
     
         const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -75,9 +69,9 @@ export default function AppBarHideOnScroll(props) {
         handleMobileMenuClose();
         };
     
-        const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-        };
+        // const handleMobileMenuOpen = (event) => {
+        // setMobileMoreAnchorEl(event.currentTarget);
+        // };
 
         const Search = styled('div')(({ theme }) => ({
             position: 'relative',
@@ -95,15 +89,15 @@ export default function AppBarHideOnScroll(props) {
             },
         }));
           
-        const SearchIconWrapper = styled('div')(({ theme }) => ({
-            // padding: theme.spacing(0, 2),
-            height: '100%',
-            position: 'absolute',
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }));
+        // const SearchIconWrapper = styled('div')(({ theme }) => ({
+        //     // padding: theme.spacing(0, 2),
+        //     height: '100%',
+        //     position: 'absolute',
+        //     pointerEvents: 'none',
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     justifyContent: 'center',
+        // }));
           
         const StyledInputBase = styled(InputBase)(({ theme }) => ({
             color: 'inherit',
@@ -197,7 +191,7 @@ export default function AppBarHideOnScroll(props) {
                     <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <FullScreenScanner getScanResult={props.getScanResult} btnDescription={<span style={{fontSize: '15px'}}>Scan&nbsp;&nbsp;&nbsp;</span>}/>
+                    <FiscalDashboard mobileView btnDescription={<span style={{fontSize: '15px'}}>Fiscal&nbsp;&nbsp;&nbsp;</span>}/>
                     <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
                   </div>
                   <div style={{display: 'flex'}}>
@@ -265,8 +259,8 @@ export default function AppBarHideOnScroll(props) {
                 }}>
                   {props.filterOn ? <FilterListOffIcon sx={{color: 'white'}}/> : <FilterListIcon sx={{color: 'white'}}/>}
                 </IconButton>
-                
-                {/* Tablet and esktop menu items. */}
+                <FullScreenScanner getScanResult={props.getScanResult} qrImgWidth='20px'/>
+                {/* Tablet and desktop menu items. */}
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   {props?.pagIdxMax > 1 ?
@@ -321,8 +315,8 @@ export default function AppBarHideOnScroll(props) {
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
                   </div>
                   <div>
-                    <FullScreenScanner getScanResult={props.getScanResult}/>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Scan</div>
+                    <FiscalDashboard/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Fiscal</div>
                   </div>
                   <div>
                     <ShowInstitution/>
@@ -331,7 +325,6 @@ export default function AppBarHideOnScroll(props) {
                 </Box>
                 {/*Mobile menubar */}
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  <FullScreenScanner getScanResult={props.getScanResult} qrImgWidth='20px'/>
                   <MoreModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  
             </Toolbar>

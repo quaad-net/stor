@@ -17,9 +17,9 @@ import useToken from '../../app/useToken';
 import BasicDialogModal from './BasicDialogModal';
 import BasicMessageModal from './BasicMessageModal'
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
+// import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
-import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+// import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -361,7 +361,6 @@ export default function PrintJobs(props) {
                                     onClick={()=>{
                                     setDeleteAllModalOpen(true);
                                     }}>
-                                        {/* <input type='checkbox' readOnly color='transparent' id='printjobs-complete-all-checkbox'/> */}
                                         <span style={{fontSize: '15px'}}>Remove All?</span>
                                 </IconButton>
                             </ListItemButton>

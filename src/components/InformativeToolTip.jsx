@@ -8,18 +8,17 @@ const InfoToolTip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: '#f5f5f9',
+      backgroundColor: '#f5f5f9', //  theme.palette.common.black,
       color: 'whitesmoke',
-      backgroundColor: theme.palette.common.black,
       maxWidth: 220,
       fontSize: theme.typography.pxToRem(12),
       border: '1px solid #dadde9',
     },
 }));
 
-export default function InformativeToolTip() {
+export default function InformativeToolTip(props) {
 return (
-        <BootstrapTooltip
+        <InfoToolTip
             title={
             <React.Fragment>
                 <Typography color="inherit">{props.toolTipHeader}</Typography>
@@ -28,6 +27,6 @@ return (
             }
         >
             <Button>?</Button>
-        </BootstrapTooltip>
+        </InfoToolTip>
     )
 }

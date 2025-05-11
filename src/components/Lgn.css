@@ -17,7 +17,7 @@ legend{
     width: 100%;
 }
 
-#login-submit-btn, #login-clear-btn{
+#login-submit-btn, #login-clear-btn, #login-visitor-btn{
     all: unset;
     width: 75px;
     margin: 'auto';
@@ -44,12 +44,13 @@ legend{
     text-align: center;
 }
 
-#login-submit-btn, #login-clear-btn{
+#login-submit-btn, #login-clear-btn, #login-visitor-btn{
     display: inline;
 }
 
 #login-submit-btn:focus,
 #login-clear-btn:focus, 
+#login-visitor-btn:focus,
 #login-register-btn:focus, 
 #login-login-btn:focus{   
     background-color: rgba(255, 255, 255, 0.055);
@@ -57,18 +58,9 @@ legend{
 
 #login-submit-btn:hover,
 #login-clear-btn:hover, 
+#login-visitor-btn:hover,
 #login-register-btn:hover,
 #login-login-btn:hover{   
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.055);
 }
-
-/* @media(max-width: 750px) {
-    #user{
-        width: 100%;
-    }
-    
-    #password{
-        width: 100%;
-    }
-} */

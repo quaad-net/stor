@@ -50,10 +50,10 @@ export default function FullScreenDialog() {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
+              {/* Header */}
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
-              save
+              {/* commit or close */}
             </Button>
           </Toolbar>
         </AppBar>

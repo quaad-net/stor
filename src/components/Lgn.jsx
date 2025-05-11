@@ -11,7 +11,7 @@ import BasicMessageModal from './BasicMessageModal';
 export default function Lgn(){
 
     const {setToken} = useToken();
-    const {user, setUser} = useUser();
+    const {setUser} = useUser();
     const { setUserData } = useUserData();
     const [currentUserData, setCurrentUserData] = useOutletContext();
     const [authorizedUser, setAuthorizedUser] = useState(true);
@@ -221,6 +221,21 @@ export default function Lgn(){
                             }}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;
                             Clear
                         </button>
+                        {lgnType != 'Register' ?
+                        <button 
+                            style={{color: 'white'}} 
+                            type="button" 
+                            id="login-visitor-btn" 
+                            className="visitor-btn" onClick={()=>{
+                                document.querySelector('#user').value = 'johndoe@quaad.net';
+                                document.querySelector('#password').value = 'quaadnet';
+                                document.querySelector('#login-submit-btn').click();
+                            }}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;
+                            Visitor
+                        </button>
+                        :
+                        <></>
+                        }
                         <div style={{width: 'fit-content', margin: 'auto', marginTop: '150px'}}>
                             <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? "https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/659bef95-723d-44fa-ba47-3152f38e6000/public" : "https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f1a9891e-f1e8-4dc3-d085-18d093d99400/public"} width='25px'/>
                             <button 

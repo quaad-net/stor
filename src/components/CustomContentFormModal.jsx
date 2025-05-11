@@ -20,7 +20,6 @@ const style = {
 export default function CustomContentFormModal(props) {
 
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
         props?.setAlertContent('');

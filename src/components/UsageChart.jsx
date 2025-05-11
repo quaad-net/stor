@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -26,15 +25,6 @@ export default function UsageChart(props) {
                         color: 'white',
                         // showMark: false
                     }]}
-                    // yAxis={[{ position: 'none' }]}
-                    // yAxis={[{tickLabelInterval: (index, value)=>{
-                    //     let maxValue = 0;
-                    //     props.yData?.map((d)=>{
-                    //         if(Number(d) > maxValue){maxValue = Number(d)}
-                    //     })
-                    //     console.log(maxValue)
-                    //     return maxValue == value;
-                    // }}]}
                     height={150}
                     width={250}
                 />

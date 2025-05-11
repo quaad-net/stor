@@ -13,7 +13,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { ThemeProvider, createTheme } from '@mui/material';
-import StorToolTip from './StorToolTip';
 
 import './FullScreenScanner.css'
 

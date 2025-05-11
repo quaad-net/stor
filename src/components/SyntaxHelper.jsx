@@ -22,12 +22,11 @@ export default function SyntaxHelper(props){
                     <h3>Descr Query</h3>
                     <div style={{color: 'gold'}}>[Q]&nbsp;Exact Match</div>
                     <div>- Example&nbsp;=&gt;&nbsp;<span style={{color: 'gray'}}>zurn kit</span></div>
-                    <div>- Searches for exact match within the "description" field.</div>
+                    <div>- Searches for exact match within the &ldquo;description&rdquo; field.</div>
                     <h3>Using Filter</h3>
-                    <div>- Narrows results based on filter input and type selection. 
-                        <br/>Returns records that contain an exact match. 
-                    </div>
-                    <br/>
+                    <div>- Narrows results based on filter input and type selection.</div>
+                    <div>- Returns records that contain an exact match.</div>
+                    <div>- Allows aggregated filtering.</div>
                 </div>
             </>
 

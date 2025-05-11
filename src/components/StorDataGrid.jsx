@@ -10,7 +10,7 @@ import {CustomNoRowsOverlay} from './GridOverlayHeight.jsx'; //  { GridOverlayHe
 //       { id: 3, col1: 'val', col2: 'val' },
 //     ],
 //   columns: [
-//   { field: 'col1', headerName: 'Column 1', width: 150 },  // Note: headerName is simply how you want the field name to appear.
+//   { field: 'col1', headerName: 'Column 1', width: 150 },  // Note: headerName is how you want the field name to appear.
 //   { field: 'col2', headerName: 'Column 2', width: 150 },
 //   ]
 // }

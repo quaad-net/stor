@@ -26,6 +26,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const sampleTasks = [
+
+    {_id: '6820f585014834ae5ed9b45e', code: '58-11887', binLoc: '113-A-C', warehouseCode: 7032, taskType: 'Loc', 
+        comment: '', completed: false, date: '2025-05-11T19:07:49.504Z', description: 'Sloan Handle Cup',
+        taskValues: "{\"binLoc\":\"100-A-A\"}", user: "jane.k@quaad.net"
+    },
+    {_id: '6820f566014834ae5ed9b45d', code: '59-12451S', binLoc: '113-A-C', warehouseCode: 5032, taskType: 'Pick',
+        comment: '', completed: false, date: '2025-05-11T19:07:49.504Z', description: `Sloan Regal 2" Plastic Handle Repair Kit White 23928  S5302305 (First Supply #SLO5302305)`,
+        taskValues: `{"workorder":"82345","qtyUsed":"7","reorderAmt":"8"}`, user: "john.l@quaad.net"
+    },
+    {_id: '6820f551014834ae5ed9b45c', code: '59-11124', binLoc: '113-A-B', warehouseCode: 5032, taskType: 'Other',
+        comment: 'Find new supplier.', completed: false, date: '2025-05-11T19:07:49.504Z', description: 'Lift Rod 50994',
+        taskValues: "Other", user: "mary.m@quaad.net"
+    },
+    {_id: '6820f4fe014834ae5ed9b45b', code: '58-00450', binLoc: '113-A-A', warehouseCode: 5032, taskType: 'Loc',
+        comment: 'Grouping with same brand.', completed: false, date: '2025-05-11T19:07:49.504Z', description: 'Zurn AquaVantage Closet Rebuild Kit P6000-ECA-WS-RK First Supply#: ZURP6000ECAWSRK', 
+        taskValues: `{"binLoc":"119-C-A"}`, user: "matt.n@quaad.net"
+    }
+]
+
 export default function Tasks(props) {
     const [open, setOpen] = React.useState(false);
     const [tasksListItems, setTasksListItems] = React.useState([]);
@@ -72,39 +92,46 @@ export default function Tasks(props) {
     });
 
     async function getTasks(){
-        fetch(`${apiUrl}/inventory_tasks/get-all`, 
-            {
-                method: 'POST', 
-                headers: 
-                    {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                body: JSON.stringify({user: user.email})
-            }   
-        )
-        .then((res)=>{
-            if(res.status !== 200){
-                console.log(res.status);
-                if(res.status == 401){throw new Error('Unauthorized')}
-                else{throw new Error()};
-            }
-            return res.json()
-        })
-        .then((res)=>{ 
-            setTasksListItems(res);
-            setUnfilteredTasks(res);
-        })
-        .catch((err)=>{
-            if(err?.message == 'Unauthorized'){setBasicMessageContent('Unauthorized')}
-            else{setBasicMessageContent('Could not complete operation!')};
-            setBasicMessageOpen(true);
-            console.log(err);
-        })
+
+        if(user.email != 'johndoe@quaad.net'){
+            fetch(`${apiUrl}/inventory_tasks/get-all`, 
+                {
+                    method: 'POST', 
+                    headers: 
+                        {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    body: JSON.stringify({user: user.email})
+                }   
+            )
+            .then((res)=>{
+                if(res.status !== 200){
+                    console.log(res.status);
+                    if(res.status == 401){throw new Error('Unauthorized')}
+                    else{throw new Error()};
+                }
+                return res.json()
+            })
+            .then((res)=>{ 
+                setTasksListItems(res);
+                setUnfilteredTasks(res);
+            })
+            .catch((err)=>{
+                if(err?.message == 'Unauthorized'){setBasicMessageContent('Unauthorized')}
+                else{setBasicMessageContent('Could not complete operation!')};
+                setBasicMessageOpen(true);
+                console.log(err);
+            })
+        }
+        else{
+            setTasksListItems(sampleTasks);
+            setUnfilteredTasks(sampleTasks);
+        }
     }
 
     async function deleteTask(taskId){
-     
+        if(user.email != 'johndoe@quaad.net'){
             fetch(`${apiUrl}/inventory_tasks/delete/${taskId}`,
                 {
                     method: 'POST',
@@ -120,9 +147,6 @@ export default function Tasks(props) {
                 
                 const updatedTaskslist = [];
                 tasksListItems.map((task)=>{
-                    // if(idx != index){
-                    //     updatedTaskslist.push(task)
-                    // }
                     if(task._id != taskId){
                         updatedTaskslist.push(task)
                     }
@@ -143,6 +167,25 @@ export default function Tasks(props) {
                 setBasicMessageContent('Could not complete operation!');
                 setBasicMessageOpen(true);
             })
+        }
+        else{ // With sample data...
+            const updatedTaskslist = [];
+            tasksListItems.map((task)=>{
+                if(task._id != taskId){
+                    updatedTaskslist.push(task)
+                }
+            })
+            setTasksListItems(updatedTaskslist);
+
+            const updatedUnfilteredTasks = [];
+            unfilteredTasks.map((task)=>{
+                if(task._id != taskId){
+                    updatedUnfilteredTasks.push(task)
+                }
+            })
+            setUnfilteredTasks(updatedUnfilteredTasks);
+            setTaskToDelete({});
+        }
     }
 
     function filterByUser(user){
@@ -173,7 +216,6 @@ export default function Tasks(props) {
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         setModalOpen(false);
-                        // deleteTask(taskToDelete.id, taskToDelete.index);
                         deleteTask(taskToDelete.id)
                     }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
                     </IconButton>

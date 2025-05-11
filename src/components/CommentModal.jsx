@@ -56,38 +56,8 @@ function CommentModal(props){
     }, [])
 
     function displayModal(){
-
         const modal = document.querySelector('#comment-modal');
         modal.style.display = "block";
-
-        // Prev
-        // const modal = document.querySelector('#comment-modal');
-        // const close = document.querySelector('.comment-modal-close');
-        // modal.style.display = "block";
-        // close.addEventListener('click', ()=>{ 
-        //     modal.style.display = 'none';
-        // })
-        // document.addEventListener('click', (e)=>{
-        //     if(e.target == modal){
-        //         modal.style.display = 'none';
-        //     }
-        // })
-       
-        // function removeModal(e){
-        //     if(e.key === 'Escape'){
-        //         modal.style.display="none";
-        //     }
-        // }
-    
-        // document.addEventListener('keydown', removeModal);
-    }
-
-    function displayMobileModal(){
-        document.querySelector('.mobile-comment-modal').style.display = 'block'
-    }
-
-    function removeMobileModa(){
-
     }
 
     if(!props.mobileView === true){
