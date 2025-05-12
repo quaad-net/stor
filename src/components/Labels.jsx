@@ -26,7 +26,8 @@ export default function Labels(props){
         if(includePagResults){recs = props.pagListItems}
         else{recs = props.queryRes}
         recs.forEach((record)=>{
-            // This prevents errors resulting from numeric types in code and binLoc field.
+            // This prevents errors resulting from numeric types in code and binLoc field and
+            // distinguishes loc from min/max.
             let modBinLoc, modCode;
             if(typeof record.binLoc == 'number'){ 
                 modBinLoc = `_${record.binLoc}`
@@ -94,7 +95,8 @@ export default function Labels(props){
         try{
             const modParts = []
             parts.forEach((record)=>{
-                // This prevents errors resulting from numeric types in code and binLoc field.
+            // This prevents errors resulting from numeric types in code and binLoc field and
+            // distinguishes loc from min/max.
                 let modBinLoc, modCode;
                 if(typeof record.binLoc == 'number'){ 
                     modBinLoc = `_${record.binLoc}`

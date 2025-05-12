@@ -45,7 +45,6 @@ export default function BasicModalSelection(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    {/* <div style={{padding: '5px', width: 'fit-content', margin: 'auto'}}>{props?.selectionsListName}</div> */}
                     <ul>
                     {props.selections.map((type, index)=>{
                         return(

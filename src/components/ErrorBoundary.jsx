@@ -1,6 +1,7 @@
 import { useRouteError, useNavigate} from 'react-router-dom';
 import { useEffect} from 'react';
 import useToken from '../../app/useToken';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function ErrorBoundary() {
     const error = useRouteError();
@@ -10,7 +11,7 @@ function ErrorBoundary() {
     console.error(error);
     
     useEffect(()=>{
-        fetch('http://localhost:5050/auth-endpoint',
+        fetch(`${apiUrl}/auth-endpoint`,
             {
                 method: 'POST',
                 headers: {

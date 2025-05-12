@@ -13,14 +13,6 @@
     color: rgba(128, 128, 128, 0.155)
 }
 
-/* .last-list-item{
-    margin-bottom: 40px;
-} */
-
-/* .inventory-list-active{
-    background-color: rgba(255, 255, 255, 0.027);
-} */
-
 textarea{
     outline: none;
 }
@@ -44,7 +36,6 @@ input{
 
 .inventory-desktop-tablet-content{
     height: 80%;   
-    /* height: 70% */
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;

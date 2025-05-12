@@ -54,11 +54,6 @@ export default function AppBarHideOnScroll(props) {
         const [anchorEl, setAnchorEl] = React.useState(null);
         const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);    
         const isMenuOpen = Boolean(anchorEl);
-        // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    
-        // const handleProfileMenuOpen = (event) => {
-        // setAnchorEl(event.currentTarget);
-        // };
     
         const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -68,10 +63,6 @@ export default function AppBarHideOnScroll(props) {
         setAnchorEl(null);
         handleMobileMenuClose();
         };
-    
-        // const handleMobileMenuOpen = (event) => {
-        // setMobileMoreAnchorEl(event.currentTarget);
-        // };
 
         const Search = styled('div')(({ theme }) => ({
             position: 'relative',
@@ -158,7 +149,6 @@ export default function AppBarHideOnScroll(props) {
           return(
             <>
               <div style={{width: '250px', margin: 'auto'}}>
-                {/* <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{float: 'right'}}/> */}
                 <SyntaxHelper mobileMenu />
                 <div>
                   <br/>
@@ -191,7 +181,7 @@ export default function AppBarHideOnScroll(props) {
                     <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <FiscalDashboard mobileView btnDescription={<span style={{fontSize: '15px'}}>Fiscal&nbsp;&nbsp;&nbsp;</span>}/>
+                    <FiscalDashboard mobileView btnDescription={<span style={{fontSize: '15px'}}>Fiscal&nbsp;&nbsp;</span>}/>
                     <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
                   </div>
                   <div style={{display: 'flex'}}>
@@ -216,7 +206,6 @@ export default function AppBarHideOnScroll(props) {
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
                 <SyntaxHelper />
-                {/* <img id='stor-logo-header-logo' src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' width='25px' style={{marginRight: '10px'}}/> */}
                 <Search>
                   {/* <SearchIconWrapper>
                        <SearchIcon />

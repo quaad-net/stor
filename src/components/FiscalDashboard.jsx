@@ -317,12 +317,9 @@ export default function FiscalDashboard(props){
 
                 />
                 <ul>
-                    <StyledListItem  onClick={()=>{getDeptExpenditures(deptPeriod, 30)}}>1 mo</StyledListItem>
-                    <br/>
-                    <StyledListItem onClick={()=>{getDeptExpenditures(deptPeriod, 60)}}>2 mo</StyledListItem>
-                    <br/>
-                    <StyledListItem onClick={()=>{getDeptExpenditures(deptPeriod, 90)}}>3 mo</StyledListItem>
-                    <br/>
+                    <StyledListItem  onClick={()=>{getDeptExpenditures(deptPeriod, 30)}}>1 mo</StyledListItem><br/>
+                    <StyledListItem onClick={()=>{getDeptExpenditures(deptPeriod, 60)}}>2 mo</StyledListItem><br/>
+                    <StyledListItem onClick={()=>{getDeptExpenditures(deptPeriod, 90)}}>3 mo</StyledListItem><br/>
                     <StyledListItem onClick={()=>{getDeptExpenditures(deptPeriod, 365)}}>11 mo</StyledListItem>
                 </ul>
             </>
@@ -338,8 +335,10 @@ export default function FiscalDashboard(props){
                 color="inherit" 
                 onClick={()=>{
                     if(user.email != 'johndoe@quaad.net'){
-                        getExpenditures();
-                        getDeptExpenditures(deptPeriod, 365);
+                        if(lineChartData.length === 0){
+                            getExpenditures();
+                            getDeptExpenditures(deptPeriod, 365);
+                        }
                     }
                     setModalOpen(true);
                 }}

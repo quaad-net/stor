@@ -27,7 +27,7 @@ const Root = styled('div')(({ theme }) => ({
 const StyledBox = styled('div')(({ theme }) => ({
   backgroundColor: 'rgb(22, 22, 22)',
   ...theme.applyStyles('dark', {
-    backgroundColor:  'rgb(22, 22, 22)' // grey[800]
+    backgroundColor:  'rgb(22, 22, 22)' 
   }),
 }));
 
