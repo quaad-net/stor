@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 
+// For Box
 const style = {
   position: 'absolute',
   top: '50%',
@@ -40,8 +41,8 @@ export default function BasicMessageModal(props) {
     function ModalContent(){
         return(
             <>
-                <div style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px', overflowY: 'auto',
-                    scrollbarWidth:'thin', scrollbarColor: 'black'
+                <div style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px', // overflowY: 'auto',
+                    scrollbarWidth:'thin', scrollbarColor: 'black',  overflow: props?.overflow || 'auto' //...(props.overflow ? {overflow: props.overflow}: {})
                     // msOverflowStyle: 'none', scrollbarWidth: 'none', '::WebkitScrollbar': {display: 'none'}
                 }}>
                     {props?.modalContent}
@@ -69,8 +70,10 @@ export default function BasicMessageModal(props) {
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
-                        <Box sx={style}>
-                        <ModalContent/>
+                        <Box sx={{...style, width: props?.width || 'fit-content', bgcolor: props?.bgcolor || 'background.paper',
+                            border: props.border || '1px solid gray'
+                        }}>
+                            <ModalContent/>
                         </Box>
                     </Modal>
                 </ThemeProvider>

@@ -177,7 +177,13 @@ export default function Labels(props){
                     <IconButton disableRipple onClick={()=>{
                         setModalOpen(false);
                         printLabels();
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;{props?.pagListItems.length > 0 ? 'Current Page' : 'Results'}</span>
+                    }}><span style={{fontSize: '15px'}}>
+                            <img 
+                                src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' 
+                                width='10px' 
+                            />
+                            &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
+                        </span>
                     </IconButton>
                 </div>
                 <br/>

@@ -1,3 +1,4 @@
+import CircularIndeterminate from './Progress';
 import BasicMessageModal from './BasicMessageModal';
 import Divider from '@mui/material/Divider';
 import FiscalDashedLineChart from './FiscalDashedLineChart';
@@ -6,7 +7,7 @@ import { IconButton } from '@mui/material/';
 import { purplePalette, yellowPalette } from '@mui/x-charts/colorPalettes';
 import Styled from '@emotion/styled'
 import SelectAutoWidth from './SelectAutoWidth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useUserData from  '../../app/useUserData';
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -43,6 +44,13 @@ export default function FiscalDashboard(props){
             cursor: pointer;
         } 
         `
+        // For sample viewer. Only used to effect conditions that require data.length > 0.
+        useEffect(()=>{
+            if(user.email == 'johndoe@quaad.net'){
+                setLineChartData(sampleSeries);
+                setPieChartData(samleDeptData);
+            }
+        }, [])
 
         function getExpenditures(){
 
@@ -144,6 +152,8 @@ export default function FiscalDashboard(props){
 
     function getDeptExpenditures(period, range){
 
+        setPieChartData([]);
+        setOptionsModalOpen(false);
         fetch(`${apiUrl}/proxy/fiscal/uwm-fs-expend/range=${range}`)
         .then((res)=>{
             if(res.status != 200){throw new Error()}
@@ -257,13 +267,18 @@ export default function FiscalDashboard(props){
         return(
             <>
                 <div style={{width:  props.mobileView ? '250px' : '350px'}}>
-                    <div style={{fontWeight: 'bold'}}>Totals</div>
+                    <div style={{fontWeight: 'bold'}}>Expenditures</div>
                     {user.email == 'johndoe@quaad.net' ? 
                     <></>
                     :
-                    <div style={{color: 'gray'}}>monthly</div>
+                    <div style={{color: 'gray'}}>by month</div>
                     }
+                    {/* Prevents line chart from being shown until pie chart loads */}
+                    {pieChartData.length > 0 ?
                     <FiscalDashedLineChart lineChartData={user.email == 'johndoe@quaad.net' ? sampleSeries : lineChartData} xLabels={user.email == 'johndoe@quaad.net' ? sampleSeriesLabels :lineChartXLabels}/>
+                    :
+                    <></>
+                    }
                 </div>
                 <Divider/>
                 {pieChartData.length > 0  || user.email == 'johndoe@quaad.net' ?
@@ -346,7 +361,8 @@ export default function FiscalDashboard(props){
                 <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/c96d1729-7a0e-4d94-b8eb-6d228b0fb700/public' width='25px'/>
                 {props?.btnDescription}
             </IconButton>
-            <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<FiscalModalContent/>} />
+            <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} {...(pieChartData.length == 0 ? {width:'fit-content', bgcolor: 'transparent', border: 'none', overflow: 'hidden'} : {})}
+                modalContent={pieChartData.length > 0 ? <FiscalModalContent/> : <CircularIndeterminate/>} noDefaultBtns={pieChartData.length > 0 ? false : true}/>
             <BasicMessageModal modalOpen={optionsModalOpen} setModalOpen={setOptionsModalOpen} modalContent={<OptionsModalContent/>} noDefaultBtns/>
         </>
     )
