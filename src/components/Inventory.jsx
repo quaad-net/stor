@@ -464,10 +464,10 @@ export default function Inventory() {
 
     function getScanResult(result){
         //Function accounts for the following variety of scan results:
-            // "22-11147,1"
-            // "49735,2,1"
-            // 70-11235-7032
-            // 71-00170
+            // "22-11147,1"  => partCode,min
+            // "49735,2,1" => partCode,max,min
+            // "70-11235-7032" => partCode-warehouseCode
+            // "71-00170" = partCode
 
         let newResult = result.replace(`"`, ``);
         const hasComma = /,/;
