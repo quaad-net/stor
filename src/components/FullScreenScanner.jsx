@@ -50,7 +50,7 @@ export default function FullScreenScanner(props) {
                   onError={(error)=>{console.log(error)}}
                   styles={{ width: '100%'}}
                   constraints={{facingMode: {ideal: 'environment' }}}
-                  // formats={['qr_code', 'linear_codes', 'upc_a', 'upc_e']}
+                  // formats={['qr_code']}
                   formats={['any']}
                 />
               </>

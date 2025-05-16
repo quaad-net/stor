@@ -464,8 +464,8 @@ export default function Inventory() {
 
     function getScanResult(result){
         //Function accounts for the following variety of scan results:
-            // "22-11147,1"  => partCode,min
-            // "49735,2,1" => partCode,max,min
+            // "22-11147,1"  => partCode,min  || vendorPartCode,min
+            // "49735,2,1" => partCode,max,min || vendorPartCode,max,min
             // "70-11235-7032" => partCode-warehouseCode
             // "71-00170" = partCode
 
@@ -654,6 +654,20 @@ export default function Inventory() {
         if(!updateInventory){
         // Inventory Detail
 
+        async function copy(){
+            await navigator.clipboard.writeText(`
+code: ${partListItems[idx]?.code}
+descr: ${partListItems[idx]?.description}
+mfgNo: ${partListItems[idx]?.mfgNo}
+active: ${partListItems[idx]?.active}
+lastPO: ${partListItems[idx]?.lastPODate}
+binLoc: ${partListItems[idx]?.binLoc}
+warehouseCode: ${partListItems[idx]?.warehouseCode}
+min: ${partListItems[idx]?.min}
+max: ${partListItems[idx]?.max}
+        `)
+        } 
+
         return(
             <> 
                 <div style={{ 
@@ -678,14 +692,38 @@ export default function Inventory() {
                     </div>
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
                         {partListItems[idx]?.description}<br/>
-                            <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
-                                <StorToolTip 
-                                    toolTipEl={
-                                        <img className='inventory-switch-view' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
-                                    }
-                                    toolTipTitle='Update'
-                                />
-                            </button>
+                            <span className='inventory-switch-view'>
+                                <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
+                                    <StorToolTip 
+                                        toolTipEl={
+                                            <div style={{color: 'gray'}}>
+                                                <img  src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                                                Update
+                                            </div>
+                                        }
+                                        toolTipTitle='Update Part Details'
+                                    />
+                                </button>
+                            </span>
+                            &nbsp;|&nbsp;
+                            <span className='inventory-copy-details'>
+                                <button 
+                                    style={{all: 'unset'}}
+                                    onClick={()=>{
+                                        copy()         
+                                    }}
+                                >
+                                    <StorToolTip 
+                                        toolTipEl={
+                                            <div style={{color: 'gray'}}>
+                                                <img className='inventory-copy-details' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/73387602-3c93-4c49-0848-095e0c232d00/public' width='15px'/>
+                                                Copy
+                                            </div>
+                                        }
+                                        toolTipTitle='Copy Part Details'
+                                    />
+                                </button>
+                            </span>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
@@ -813,27 +851,33 @@ export default function Inventory() {
 
                 }
                 else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
+                    
+                    const partDetails = {
+                        code: currentPart.code,
+                        binLoc: currentPart.binLoc,
+                        warehouseCode: currentPart.warehouseCode,
+                        taskType: input.updateType,
+                        taskValues: input.taskValues,
+                        comment: input?.comment.trim() || '',
+                        description: currentPart.description,
+                        user: user.email,
+                        date: now,
+                        completed: false
+                    }
+                    
                     await fetch(`${apiUrl}/inventory_tasks`, {
                         method: 'POST', 
                         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-                        body: JSON.stringify({
-                            code: currentPart.code,
-                            binLoc: currentPart.binLoc,
-                            warehouseCode: currentPart.warehouseCode,
-                            taskType: input.updateType,
-                            taskValues: input.taskValues,
-                            comment: input?.comment.trim() || '',
-                            description: currentPart.description,
-                            user: user.email,
-                            date: now,
-                            completed: false
-                        })
+                        body: JSON.stringify(
+                            partDetails
+                        )
                     })
                     .then((res)=>{
                         if(res.status == 201){
                             setBasicMessageModalContent('Submitted');
                             setBasicMessageModalOpen(true);
                             setPartListItems(parts);
+                            sendConfirmation(partDetails)
                         }
                         else{
                             if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}
@@ -848,20 +892,23 @@ export default function Inventory() {
                     })
                 }
                 else if(input.updateType === 'Label' ){
+                    const partDetails = {
+                        code: currentPart.code,
+                        binLoc: currentPart.binLoc,
+                        description: currentPart.description,
+                        min: currentPart.min,
+                        max: currentPart.max,
+                        comment: input?.comment.trim() || '',
+                        user: user.email,
+                        date: now,
+                        completed: false
+                    }
                     await fetch(`${apiUrl}/inventory_tasks_print`, {
                         method: 'POST', 
                         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-                        body: JSON.stringify({
-                            code: currentPart.code,
-                            binLoc: currentPart.binLoc,
-                            description: currentPart.description,
-                            min: currentPart.min,
-                            max: currentPart.max,
-                            comment: input?.comment.trim() || '',
-                            user: user.email,
-                            date: now,
-                            completed: false
-                        })
+                        body: JSON.stringify(
+                            partDetails
+                        )
                     })
                     .then((res)=>{
                         if(res.status == 201){
@@ -887,6 +934,23 @@ export default function Inventory() {
                 setBasicMessageModalContent('Could not complete request!');
                 setBasicMessageModalOpen(true);
             }
+        }
+
+        async function sendConfirmation(partDetails){
+            fetch(`${apiUrl}/${user.institution}/notif`, 
+                {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+                    body: JSON.stringify(partDetails)
+                }
+            )
+            .then((res)=>{
+                return res.json()
+            })
+            .then((res)=>{console.log(res)})
+            .catch((err)=>{
+                console.log(err);
+            })
         }
 
         function PickModalContent(){

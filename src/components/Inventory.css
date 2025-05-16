@@ -26,10 +26,12 @@ input{
     margin-top: 5px;
 }
 
+
 .inventory-update-type:hover{
     cursor: pointer;
 }
 
+.inventory-copy-details:hover,
 .inventory-switch-view:hover{
     cursor: pointer;
 }

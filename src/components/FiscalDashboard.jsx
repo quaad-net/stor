@@ -142,7 +142,7 @@ export default function FiscalDashboard(props){
                 })
 
                 setLineChartData([
-                    {data: finalYrData, label: 'latest_11_mo', id: 'p1Id'},
+                    {data: finalYrData, label: 'latest_11_mo', id: 'p1Id'}, // Add color to obj to change from default.
                     {data: finalPrevYrData, label: 'prior_11_mo', id: 'p2Id'}
                 ]);
                 setLineChartXLabels(xLabels);
