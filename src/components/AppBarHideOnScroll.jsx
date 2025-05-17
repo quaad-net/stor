@@ -21,7 +21,6 @@ import Pag from './Pag';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
-import FiscalDashboard from './FiscalDashboard';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -181,10 +180,6 @@ export default function AppBarHideOnScroll(props) {
                     <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                   </div>
                   <div style={{display: 'flex'}}>
-                    <FiscalDashboard mobileView btnDescription={<span style={{fontSize: '15px'}}>Fiscal&nbsp;&nbsp;</span>}/>
-                    <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
-                  </div>
-                  <div style={{display: 'flex'}}>
                     <IconButton
                       disableRipple
                       size="large" 
@@ -195,6 +190,9 @@ export default function AppBarHideOnScroll(props) {
                       <span style={{fontSize: '15px'}}>Sort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </IconButton>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
+                  </div>
+                  <div style={{display: 'flex'}}>
+                    <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
                   </div>
                 </div>
               </div>
@@ -302,10 +300,6 @@ export default function AppBarHideOnScroll(props) {
                       <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
-                  </div>
-                  <div>
-                    <FiscalDashboard/>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Fiscal</div>
                   </div>
                   <div>
                     <ShowInstitution/>

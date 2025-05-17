@@ -644,7 +644,6 @@ export default function Inventory() {
         }
     }
 
-
     function InventoryDetailContent(props){
         if(!updateInventory){
         // Inventory Detail
