@@ -15,7 +15,7 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
 export default function StorToolTip(props) {
   return (
     <div>
-      <BootstrapTooltip title={props.toolTipTitle}>
+      <BootstrapTooltip  title={props.toolTipTitle}>
         {props.toolTipEl}
       </BootstrapTooltip>
     </div>

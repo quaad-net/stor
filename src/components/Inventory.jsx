@@ -20,9 +20,9 @@ import CustomContentFormModal from './CustomContentFormModal';
 import './Inventory.css'
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
-import UsageChart from './UsageChart';
 import StorToolTip from './StorToolTip';
 import Styled from '@emotion/styled';
+import OnClickToolTip from './OnClickToolTip';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -36,9 +36,7 @@ export default function Inventory() {
     const [pagListItems, setPagListItems] = React.useState([]);
     const [pagIdxMax, setPagIdxMax] = React.useState(1);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const [usageChartData, setUsageChartData] = React.useState([]);
-    const [usageQuery, setUsageQuery] = React.useState('');
-    const [suggestedMin, setSuggestedMin] = React.useState(undefined);
+    const [usageData, setUsageData] = React.useState({});
     const [filterOn, setfilterOn] = React.useState(false);
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
@@ -289,7 +287,7 @@ export default function Inventory() {
                     }
                     setIdx(0);
                     if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    else{setUsageChartData([])}
+                    else{setUsageData([])}
                 }
                 else{ // Accesses pagListItems for filter instead of partListItems
                     switch(queryType){
@@ -353,7 +351,7 @@ export default function Inventory() {
                     }
                     setIdx(0);
                     if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    else{setUsageChartData([])}
+                    else{setUsageData([])}
                 }
             }
         }
@@ -373,13 +371,10 @@ export default function Inventory() {
             return res.json()
         })
         .then((res)=>{
-            setUsageQuery(`${partcode}-${warehouseCode}`);
-            setSuggestedMin(res.suggestedMin);
-            setUsageChartData([res.p1Usage, res.p2Usage, res.p3Usage]);
+            setUsageData(res)
         })
         .catch(()=>{
-            setUsageChartData([]);
-            setUsageQuery([])
+            setUsageData({});
         })
     }
 
@@ -694,15 +689,10 @@ max: ${partListItems[idx]?.max}
                         {partListItems[idx]?.description}<br/>
                             <span className='inventory-switch-view'>
                                 <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
-                                    <StorToolTip 
-                                        toolTipEl={
-                                            <div style={{color: 'gray'}}>
-                                                <img  src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
-                                                Update
-                                            </div>
-                                        }
-                                        toolTipTitle='Update Part Details'
-                                    />
+                                    <div style={{color: 'gray'}}>
+                                        <img  src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                                        Update
+                                    </div>
                                 </button>
                             </span>
                             &nbsp;|&nbsp;
@@ -713,32 +703,30 @@ max: ${partListItems[idx]?.max}
                                         copy()         
                                     }}
                                 >
-                                    <StorToolTip 
+                                    <OnClickToolTip
                                         toolTipEl={
                                             <div style={{color: 'gray'}}>
                                                 <img className='inventory-copy-details' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/73387602-3c93-4c49-0848-095e0c232d00/public' width='15px'/>
                                                 Copy
                                             </div>
                                         }
-                                        toolTipTitle='Copy Part Details'
+                                        toolTipTitle='Copied!'
                                     />
                                 </button>
                             </span>
                     </div>
                 </div>
-                <div style={{display: 'flex'}}>
-                    <div style={{marginBottom: '10px'}}>
-                        <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                        <legend style={{color: 'white', fontSize: '13px'}}>active</legend>
-                        <span style={{color: 'gray'}}>{partListItems[idx]?.active}</span>
-                        </fieldset>
-                    </div>
-                    <div style={{marginBottom: '10px'}}>
+                <div style={{marginBottom: '10px'}}>
                         <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>lastPODate</legend>
                         <span style={{color: 'gray'}}>{partListItems[idx]?.lastPODate === '' || undefined ? '-'  : partListItems[idx]?.lastPODate }</span>
                         </fieldset>
-                    </div>
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                    <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
+                    <legend style={{color: 'white', fontSize: '13px'}}>active</legend>
+                    <span style={{color: 'gray'}}>{partListItems[idx]?.active}</span>
+                    </fieldset>
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
@@ -748,7 +736,7 @@ max: ${partListItems[idx]?.max}
                 </div>
                 <div style={{marginBottom: '10px'}}>
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                        <legend style={{color: 'white', fontSize: '13px'}}>Warehouse</legend>
+                        <legend style={{color: 'white', fontSize: '13px'}}>Warehouse - {partListItems[idx]?.warehouseCode}</legend>
                         <span style={{color: 'gray'}}>
                             avail: {partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}&nbsp;
                             | min: {partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min}&nbsp;
@@ -756,18 +744,22 @@ max: ${partListItems[idx]?.max}
                         </span>
                     </fieldset>
                 </div>
-                <div style={{marginBottom: '10px'}}>
-                    <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
-                        {usageChartData.length > 0 ?
-                            <>
-                                <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day</legend>
-                                <span style={{color: 'gray'}}>{usageQuery} {props.mobileView ? <br/> : '|'} suggested min: {suggestedMin}</span>
-                                <UsageChart yData={usageChartData} mobileView={props?.mobileView}/> 
-                            </>
-                            :
-                                <></>
-                        }
-                    </fieldset>
+                <div style={{marginBottom: '10px', marginLeft: '15px', paddingBottom: '10px'}}>
+                {usageData?.avgDailyUsage != undefined ?
+                <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', border: '1px dotted white'}}>
+                        <>
+                            <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
+                                <span style={{color: 'gray'}}>{usageData.avgDailyUsage.toFixed(2)}</span>
+                            </legend>
+                            <span style={{color: 'gray'}}>suggested min: {usageData.suggestedMin.toFixed(2)}</span><br/>
+                            <span style={{color: 'gray'}}>p1: {usageData.p1Usage},</span>&nbsp;
+                            <span style={{color: 'gray'}}>p2: {usageData.p2Usage},</span>&nbsp;
+                            <span style={{color: 'gray'}}>p3: {usageData.p3Usage}</span>
+                        </>
+                </fieldset>
+                :
+                <></>
+                }
                 </div>
             </>
         )
