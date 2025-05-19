@@ -23,7 +23,7 @@ function ErrorBoundary() {
             if(res.status == 200){console.log(res.status)}
             else{ navigate('/lgn') }
         })
-    }, [navigate, token]) // []
+    }, [navigate, token])
 
     return (
     <div id='error-boundary' style={{height: '100vh', width: 'fit-content', margin: 'auto', paddingTop: '200px', color: 'white'}}>
@@ -31,7 +31,7 @@ function ErrorBoundary() {
         <p>
             <i></i>
         </p>
-    </div>
+    </div> 
     )
 }
 
