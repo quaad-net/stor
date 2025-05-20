@@ -7,6 +7,7 @@ import {useState } from "react";
 import useUserData from "../../app/useUserData";
 import useAuth from "../../app/useAuth";
 import BasicMessageModal from './BasicMessageModal';
+import imgMap from "../../app/imgMap";
 
 export default function Lgn(){
 
@@ -15,10 +16,10 @@ export default function Lgn(){
     const { setUserData } = useUserData();
     const [currentUserData, setCurrentUserData] = useOutletContext();
     const [authorizedUser, setAuthorizedUser] = useState(true);
-    const navigate = useNavigate();
     const [basicMessageOpen, setBasicMessageOpen ] = useState(false);
     const [basicMessageContent, setBasicMessageContent] = useState('');
     const [lgnType, setLgnType] = useState('Login');
+    const navigate = useNavigate();
 
     useAuth().then((res)=>{
         if(!res.authorized){
@@ -167,7 +168,7 @@ export default function Lgn(){
                 <br/><br/>
                 <form>
                     <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
-                        <legend><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='25px'/></legend>
+                        <legend><img src={imgMap.get('user-small.svg')} width='25px'/></legend>
                         <div className="header">
                             <div className="user-pass">
                                 <input className="stor-input" id={lgnType == 'Login' ? 'user' : 'email'} type={lgnType == 'Login' ? 'text' : 'email'} placeholder={lgnType == 'Login' ? 'User' : 'Email'} required />
@@ -207,7 +208,7 @@ export default function Lgn(){
                                 else{currentuser()}
                                 clearInvalids();
                             }
-                            }}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;
+                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                             Submit
                         </button>
                         <button 
@@ -218,7 +219,7 @@ export default function Lgn(){
                             document.querySelector('#login-clear-btn').blur();
                             document.querySelector('form').reset();
                             clearInvalids();
-                            }}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;
+                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                             Clear
                         </button>
                         {lgnType != 'Register' ?
@@ -230,14 +231,14 @@ export default function Lgn(){
                                 document.querySelector('#user').value = 'johndoe@quaad.net';
                                 document.querySelector('#password').value = 'quaadnet';
                                 document.querySelector('#login-submit-btn').click();
-                            }}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;
+                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                             Visitor
                         </button>
                         :
                         <></>
                         }
                         <div style={{width: 'fit-content', margin: 'auto', marginTop: '150px'}}>
-                            <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? "https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/659bef95-723d-44fa-ba47-3152f38e6000/public" : "https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f1a9891e-f1e8-4dc3-d085-18d093d99400/public"} width='25px'/>
+                            <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
                             <button 
                                 style={{...(lgnType == 'Register' ? {display: 'none'} : {}), color: 'white', fontSize: 'small ', textAlign: 'center', width: 'fit-content', margin: 'auto'}} 
                                 type="button" 

@@ -7,6 +7,7 @@ import { useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 import PrintJobs from "./PrintJobs";
 const apiUrl = import.meta.env.VITE_API_URL;
+import imgMap from '../../app/imgMap';
 import './Labels.css'
 
 export default function Labels(props){
@@ -26,7 +27,7 @@ export default function Labels(props){
         if(includePagResults){recs = props.pagListItems}
         else{recs = props.queryRes}
         recs.forEach((record)=>{
-            // This prevents errors resulting from numeric types in code and binLoc field and
+            // Prevents errors resulting from numeric types in code and binLoc field and
             // distinguishes loc from min/max.
             let modBinLoc, modCode;
             if(typeof record.binLoc == 'number'){ 
@@ -95,7 +96,7 @@ export default function Labels(props){
         try{
             const modParts = []
             parts.forEach((record)=>{
-            // This prevents errors resulting from numeric types in code and binLoc field and
+            // Prevents errors resulting from numeric types in code and binLoc field and
             // distinguishes loc from min/max.
                 let modBinLoc, modCode;
                 if(typeof record.binLoc == 'number'){ 
@@ -163,7 +164,7 @@ export default function Labels(props){
                             printLabels(undefined, true)
                         }}><span style={{fontSize: '15px'}}>
                             <img 
-                                src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' 
+                                src={imgMap.get('square-outlined-small.svg')} 
                                 width='10px' />&nbsp;All Results
                             </span>
                         </IconButton>
@@ -179,7 +180,7 @@ export default function Labels(props){
                         printLabels();
                     }}><span style={{fontSize: '15px'}}>
                             <img 
-                                src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' 
+                                src={imgMap.get('square-outlined-small.svg')} 
                                 width='10px' 
                             />
                             &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
@@ -192,7 +193,7 @@ export default function Labels(props){
                         setModalOpen(false);
                         setFormModalOpen(true);
                         }}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;New Label </span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New Label </span>
                     </IconButton>
                 </div>
                 <br/>
@@ -282,12 +283,12 @@ export default function Labels(props){
                             max: formMax
                         }
                         printLabels(labelDetails)
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Create</span>
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Create</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{
                         setFormModalOpen(false);
                         }}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel</span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel</span>
                     </IconButton>
                 </div>
             </form>
@@ -297,16 +298,14 @@ export default function Labels(props){
     return(
         <>
             <IconButton 
-                // id="inventory-labels"
                 disableRipple
                 size="large" 
                 aria-label="sort" 
                 color="inherit" 
                 onClick={()=>{
-                    // document.querySelector('#inventory-labels').blur();
                     setModalOpen(true);
                 }}>
-                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/d056b8a6-4f17-4e11-f316-0b0a6781f600/public' width='25px'/>
+                <img src={imgMap.get('pulsar-labels.svg')} width='25px'/>
                 {props?.mobileView ?  <span style={{fontSize: '15px'}}>Label</span> : <></>}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<PrintType/>} noDefaultBtns={true} />

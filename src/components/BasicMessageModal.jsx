@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
+import imgMap from '../../app/imgMap';
 
 // For Box
 const style = {
@@ -52,7 +53,7 @@ export default function BasicMessageModal(props) {
                     <br/>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         handleClose();
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
                     </IconButton>
                 </div>               
                 }

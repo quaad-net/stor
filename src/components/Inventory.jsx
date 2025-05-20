@@ -23,6 +23,7 @@ import Alert from '@mui/material/Alert';
 import StorToolTip from './StorToolTip';
 import Styled from '@emotion/styled';
 import OnClickToolTip from './OnClickToolTip';
+import imgMap from '../../app/imgMap';
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -531,11 +532,11 @@ export default function Inventory() {
     }
 
     function ListItemCompletedCountCheck(){
-        return <img width='15px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/99ff1897-b735-41a9-2b89-86c705ffac00/public' />
+        return <img width='15px' src={imgMap.get('circled-check-red.svg')} />
     }
 
     function ListItemCompletedCommentCheck(){
-        return <img width='15px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/617932f3-e74b-4d6e-5d9c-5c6b326e9e00/public' />
+        return <img width='15px' src={imgMap.get('comment-blue-2.svg')} />
     }
 
     const renderParts = partListItems.map((part, index)=>{
@@ -690,7 +691,7 @@ max: ${partListItems[idx]?.max}
                             <span className='inventory-switch-view'>
                                 <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
                                     <div style={{color: 'gray'}}>
-                                        <img  src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='15px'/>
+                                        <img  src={imgMap.get('database-update.svg')} width='15px'/>
                                         Update
                                     </div>
                                 </button>
@@ -706,7 +707,7 @@ max: ${partListItems[idx]?.max}
                                     <OnClickToolTip
                                         toolTipEl={
                                             <div style={{color: 'gray'}}>
-                                                <img className='inventory-copy-details' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/73387602-3c93-4c49-0848-095e0c232d00/public' width='15px'/>
+                                                <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px'/>
                                                 Copy
                                             </div>
                                         }
@@ -781,12 +782,12 @@ max: ${partListItems[idx]?.max}
 
     function MainContentHeader(props){
         if(updateInventory){
-            if(props.mobileView){return <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' style={{float: 'right'}}/> }
-            else{return(<span>Inventory Update<img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' style={{marginLeft: '10px'}}/></span>)}
+            if(props.mobileView){return <img src={imgMap.get('database-update.svg')} width='25px' style={{float: 'right'}}/> }
+            else{return(<span>Inventory Update<img src={imgMap.get('database-update.svg')} width='25px' style={{marginLeft: '10px'}}/></span>)}
         }
         else{
-            if(props.mobileView){return <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' style={{float: 'right'}}/> }
-            else{return(<><span>Inventory Detail<img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' style={{marginLeft: '10px'}}/></span></>)}
+            if(props.mobileView){return <img src={imgMap.get('info.svg')} width='25px' style={{float: 'right'}}/> }
+            else{return(<><span>Inventory Detail<img src={imgMap.get('info.svg')} width='25px' style={{marginLeft: '10px'}}/></span></>)}
         }
     }
 
@@ -975,7 +976,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Pick
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Pick
                     </li>
                     )
                 }
@@ -1058,12 +1059,12 @@ max: ${partListItems[idx]?.max}
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                 </FormButton>
                                 <FormButton 
                                     type='reset' 
                                     >
-                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                 </FormButton>
                                 </div>
                             </form>
@@ -1098,7 +1099,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Count
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Count
                     </li>
                     )
                 }
@@ -1147,12 +1148,12 @@ max: ${partListItems[idx]?.max}
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                 </FormButton>
                                 <FormButton 
                                     type='reset' 
                                     >
-                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                 </FormButton>
                                 </div>
                             </form>
@@ -1187,7 +1188,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Reord
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Reord
                     </li>
                     )
                 }
@@ -1236,12 +1237,12 @@ max: ${partListItems[idx]?.max}
                                         submitForm();
                                     }}
                                 >
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                 </FormButton>
                                 <FormButton 
                                     type='reset' 
                                     >
-                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                 </FormButton>
                                 </div>
                             </form>
@@ -1276,7 +1277,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Loc
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Loc
                     </li>
                     )
                 }
@@ -1323,12 +1324,12 @@ max: ${partListItems[idx]?.max}
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                 </FormButton>
                                 <FormButton 
                                     type='reset' 
                                     >
-                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                 </FormButton>
                                 </div>
                             </form>
@@ -1363,7 +1364,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Label
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Label
                     </li>
                     )
                 }
@@ -1397,12 +1398,12 @@ max: ${partListItems[idx]?.max}
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                     >
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                     </FormButton>
                                 </div>
                             </form>
@@ -1437,7 +1438,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px'/>&nbsp;Other
+                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Other
                     </li>
                     )
                 }
@@ -1472,12 +1473,12 @@ max: ${partListItems[idx]?.max}
                                             e.preventDefault();
                                             submitForm();
                                         }}>
-                                            <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/234910ca-3ea0-47a5-4d93-4589b5cc8900/public' width='30px'/>
+                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
                                 </FormButton>
                                 <FormButton 
                                     type='reset' 
                                     >
-                                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/b38e1317-a708-42b2-f5ab-656fa2765700/public' width='30px'/>
+                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
                                 </FormButton>
                                 </div>
                             </form>
@@ -1520,11 +1521,11 @@ max: ${partListItems[idx]?.max}
         }
 
         function CompletedCountCheck(){
-            return <img width='20px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/99ff1897-b735-41a9-2b89-86c705ffac00/public'/>
+            return <img width='20px' src={imgMap.get('circled-check-red.svg')}/>
         }
 
         function CompletedCommentCheck(){
-            return <img width='20px' src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/617932f3-e74b-4d6e-5d9c-5c6b326e9e00/public'/> 
+            return <img width='20px' src={imgMap.get('comment-blue-2.svg')}/> 
         }
     
         if(partListItems.length > 0){
@@ -1541,7 +1542,7 @@ max: ${partListItems[idx]?.max}
                     }}>
                         <StorToolTip 
                             toolTipEl={
-                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/704de6cc-f6c5-478e-4dff-95a4447d2b00/public' width='35px'/>
+                                <img src={imgMap.get('left-circled-arrow.svg')} width='35px'/>
                             }
                             toolTipTitle='Previous'
                         />
@@ -1552,7 +1553,7 @@ max: ${partListItems[idx]?.max}
                     > 
                         <StorToolTip 
                             toolTipEl={
-                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public' width='35px'/>
+                                <img src={imgMap.get('pulsar-circled-info.svg')} width='35px'/>
                             }
                             toolTipTitle='Info'
                         />
@@ -1562,7 +1563,7 @@ max: ${partListItems[idx]?.max}
                     }}>
                         <StorToolTip 
                             toolTipEl={
-                                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/37f1140b-a129-45f0-af7b-a207b79e6300/public' width='35px'/>
+                                <img src={imgMap.get('right-circled-arrow.svg')} width='35px'/>
                             }
                             toolTipTitle='Next'
                         />

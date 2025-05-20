@@ -3,6 +3,7 @@ import useToken from "../../app/useToken";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import useUserData from "../../app/useUserData";
 import UserInfoModal from "./UserInfoModal";
+import imgMap from "../../app/imgMap";
 
 import "./Institution.css"
 
@@ -29,7 +30,7 @@ export default function ShowInstitution(props){
     const userData = JSON.parse(currentUserData) 
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
-        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='25px' style={{float: 'left'}}/>
+        <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
         @<span><strong>{userData.institution.toString().toUpperCase()}</strong></span>stor |&nbsp;
         <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
       </div>

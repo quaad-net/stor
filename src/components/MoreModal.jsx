@@ -44,7 +44,6 @@ export default function MoreModal(props) {
         color={btnProps?.color}
       >
           <div style={{fontSize: '15px', float: 'right'}}>+</div>
-        {/* <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/a0bb141e-5952-4119-6843-6a0739ed7800/public' width='20px' /> */}
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}
         open={open}

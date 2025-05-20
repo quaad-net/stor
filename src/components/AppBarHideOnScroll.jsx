@@ -21,11 +21,12 @@ import Pag from './Pag';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
+import imgMap from '../../app/imgMap';
 
 function HideOnScroll(props) {
   const { children, window } = props;
   // Will default to window.
-  // For iframe only.
+  // IFr 
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
   });
@@ -39,7 +40,7 @@ function HideOnScroll(props) {
 
 HideOnScroll.propTypes = {
   children: PropTypes.element,
-    // For iframe only
+    // IFr
   window: PropTypes.func,
 };
 
@@ -79,22 +80,10 @@ export default function AppBarHideOnScroll(props) {
             },
         }));
           
-        // const SearchIconWrapper = styled('div')(({ theme }) => ({
-        //     // padding: theme.spacing(0, 2),
-        //     height: '100%',
-        //     position: 'absolute',
-        //     pointerEvents: 'none',
-        //     display: 'flex',
-        //     alignItems: 'center',
-        //     justifyContent: 'center',
-        // }));
-          
         const StyledInputBase = styled(InputBase)(({ theme }) => ({
             color: 'inherit',
             '& .MuiInputBase-input': {
                 padding: theme.spacing(1, 1, 1, 0),
-                // vertical padding + font size from searchIcon
-                // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
                 paddingLeft: '5px',
                 transition: theme.transitions.create('width'),
                 width: '100%',
@@ -141,7 +130,6 @@ export default function AppBarHideOnScroll(props) {
           ariaControls: {mobileMenuId},
           ariaHasPopUp: 'true',
           color: 'inherit',
-          // onClick: ()=>{}
         }
 
         function ModalMobileMenu(){ 
@@ -161,7 +149,7 @@ export default function AppBarHideOnScroll(props) {
                         props.setUpdateInventory(true);
                       }}
                         >
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
+                      <img src={imgMap.get('database-update.svg')} width='25px' />
                       <span style={{fontSize: '15px'}}>Update</span>
                     </IconButton>
                     <IconButton 
@@ -171,7 +159,7 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit"
                       onClick={()=>{props.setUpdateInventory(false)}}
                     >
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
+                      <img src={imgMap.get('info.svg')} width='25px' />
                       <span style={{fontSize: '15px'}}>Details</span>
                     </IconButton>
                   </div>
@@ -186,7 +174,7 @@ export default function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
+                      <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
                       <span style={{fontSize: '15px'}}>Sort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </IconButton>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
@@ -205,9 +193,6 @@ export default function AppBarHideOnScroll(props) {
             <Toolbar className='inventory-appbar-tools'>
                 <SyntaxHelper />
                 <Search>
-                  {/* <SearchIconWrapper>
-                       <SearchIcon />
-                  </SearchIconWrapper> */}
                   <StyledInputBase
                       className='inventory-list-searchbox'
                       placeholder={props.filterOn? 'Filter...' : 'Query...'}
@@ -265,7 +250,7 @@ export default function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/f88237b4-9f65-49ef-3c13-b9883a21a600/public' width='25px'/>
+                      <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Sort</div>
                   </div>
@@ -285,7 +270,7 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit"
                       onClick={()=>{props.setUpdateInventory(true)}}
                         >
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/47775ac2-80f8-4757-11d0-705155926300/public' width='25px' />
+                        <img src={imgMap.get('database-update.svg')} width='25px' />
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Update</div>
                   </div>
@@ -297,7 +282,7 @@ export default function AppBarHideOnScroll(props) {
                       color="inherit" 
                       onClick={()=>{props.setUpdateInventory(false)}}
                     >
-                      <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7921d4d9-1304-40cb-eff9-791a17c65a00/public' width='25px' />
+                      <img src={imgMap.get('info.svg')} width='25px' />
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
                   </div>

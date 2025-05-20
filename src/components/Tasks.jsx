@@ -21,6 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
+import imgMap from '../../app/imgMap';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -216,10 +217,10 @@ export default function Tasks(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         setModalOpen(false);
                         deleteTask(taskToDelete.id)
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -277,7 +278,7 @@ export default function Tasks(props) {
                             getTasks();
                         }}
                     >
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/02c21f70-0082-4bd8-b5d7-39168aed8100/public' width='25px' />
+                        <img src={imgMap.get('checklist.svg')} width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -313,7 +314,7 @@ export default function Tasks(props) {
                             sx={{ m: 1, width: '150px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}

@@ -10,6 +10,7 @@ import SelectAutoWidth from './SelectAutoWidth';
 import { useEffect, useState } from 'react';
 import useUserData from  '../../app/useUserData';
 const apiUrl = import.meta.env.VITE_API_URL;
+import imgMap from '../../app/imgMap';
 
 const sampleSeries = [
           { data: [20000, 40000, 25000, 35000], label: 'Sample 1', id: 'sample1' }, 
@@ -289,7 +290,7 @@ export default function FiscalDashboard(props){
                     <IconButton sx={{float:'right'}} disableRipple onClick={()=>{
                         setOptionsModalOpen(true)
                     }}>
-                        <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/2e820a51-189e-49b2-20a2-a47bdaaaa200/public' width='20px'/>
+                        <img src={imgMap.get('calendar-circled-date.svg')} width='20px'/>
                     </IconButton>
                     }
                     <div>
@@ -358,7 +359,7 @@ export default function FiscalDashboard(props){
                     setModalOpen(true);
                 }}
             >
-                <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/c96d1729-7a0e-4d94-b8eb-6d228b0fb700/public' width='25px'/>
+                <img src={imgMap.get('stor-fiscal-icon-white.svg')} width='25px'/>
                 {props?.btnDescription}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen} {...(pieChartData.length == 0 ? {width:'fit-content', bgcolor: 'transparent', border: 'none', overflow: 'hidden'} : {})}

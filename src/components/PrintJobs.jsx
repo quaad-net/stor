@@ -19,6 +19,8 @@ import BasicMessageModal from './BasicMessageModal'
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import useUserData from '../../app/useUserData';
+import imgMap from '../../app/imgMap';
+// import InputAdornment from '@mui/material/InputAdornment';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -202,10 +204,10 @@ export default function PrintJobs(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         setModalOpen(false);
                         deleteTask(taskToDelete.id);
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -225,10 +227,10 @@ export default function PrintJobs(props) {
                         setDeleteAllModalOpen(false);
                         deleteAllTasks();
                         getTasks();
-                    }}><span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -272,7 +274,7 @@ export default function PrintJobs(props) {
                                 min: props?.task.min,
                                 max: props?.task.max
                             }])
-                        }}><span style={{fontSize: '12px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/2c23b09c-dc25-43bc-aa6a-af7d7c06c900/public' width='20px'/></span></IconButton>
+                        }}><span style={{fontSize: '12px'}}><img src={imgMap.get('pulsar-print.svg')} width='20px'/></span></IconButton>
                     </Collapse>
                 </ListItemButton>
                 <Divider />
@@ -290,7 +292,7 @@ export default function PrintJobs(props) {
                             handleClickOpen();
                             getTasks();
                         }}>
-                        <span style={{fontSize: '15px'}}><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/cdc0be6e-b57b-4bc7-ddff-9c659aaad700/public' width='10px' />&nbsp;Print Jobs </span>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Print Jobs </span>
                     </IconButton>
                     <Dialog
                     sx={{'& .MuiAppBar-root': {backgroundColor: {}}, '& .MuiPaper-root': {backgroundColor: 'black'}}}
@@ -325,7 +327,7 @@ export default function PrintJobs(props) {
                             sx={{ m: 1, width: '150px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39d7b9ca-c1ca-4627-d614-e43c07db3a00/public' width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg)} width='20px'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{
@@ -350,7 +352,7 @@ export default function PrintJobs(props) {
                                         props.printPrintJobs(tasksListItems)
                                     }}
                                 >
-                                    <img src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/2c23b09c-dc25-43bc-aa6a-af7d7c06c900/public' width='20px' style={{marginRight: '5px'}}/>
+                                    <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
                                     <span style={{color: 'gray', fontSize: '12px'}}></span>
                                 </IconButton> |
                                 <IconButton 

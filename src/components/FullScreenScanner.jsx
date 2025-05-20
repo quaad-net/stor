@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { ThemeProvider, createTheme } from '@mui/material';
+import imgMap from '../../app/imgMap';
 
 import './FullScreenScanner.css'
 
@@ -71,7 +72,7 @@ export default function FullScreenScanner(props) {
         color="inherit" 
         onClick={handleClickOpen}>
         <img 
-          src= 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/bd236486-e7c9-4bfb-df9d-05ae43c63300/public' 
+          src= {imgMap.get('pulsar-qr.svg')} 
           width={props?.qrImgWidth  || '25px'}
         />
         {props?.btnDescription || <></>}

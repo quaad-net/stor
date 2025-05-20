@@ -1,6 +1,7 @@
 import BasicMessageModal from "./BasicMessageModal";
 import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
+import imgMap from "../../app/imgMap";
 
 export default function SyntaxHelper(props){
     const [modalOpen, setModalOpen] = useState(false);
@@ -41,7 +42,7 @@ export default function SyntaxHelper(props){
                 onClick={()=>{setModalOpen(true)}}
                 size="small">
                 <img 
-                    src='https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/39fbd164-df89-4855-0924-be78ea37f100/public' 
+                    src={imgMap.get('stor-logo.svg')} 
                     width='25px' 
                     style={props.mobileMenu  ? {float: 'right'}: {marginRight: '0'}}
                 />
