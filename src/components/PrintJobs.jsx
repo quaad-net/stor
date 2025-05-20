@@ -17,9 +17,7 @@ import useToken from '../../app/useToken';
 import BasicDialogModal from './BasicDialogModal';
 import BasicMessageModal from './BasicMessageModal'
 import TextField from '@mui/material/TextField';
-// import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
-// import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -74,7 +72,7 @@ export default function PrintJobs(props) {
 
     async function getTasks(){
 
-        fetch(`${apiUrl}/inventory_tasks_print/get-all`, 
+        fetch(`${apiUrl}/${user.institution}/inventory_tasks_print/get-all`, 
             {
                 method: 'POST', 
                 headers: 
@@ -82,7 +80,6 @@ export default function PrintJobs(props) {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
-                body: JSON.stringify({user: user.email})
             }   
         )
         .then((res)=>{
@@ -107,7 +104,7 @@ export default function PrintJobs(props) {
 
     async function deleteTask(taskId){
      
-            fetch(`${apiUrl}/inventory_tasks_print/delete/${taskId}`,
+            fetch(`${apiUrl}/${user.institution}/inventory_tasks_print/delete/${taskId}`,
                 {
                     method: 'POST',
                     headers: {Authorization: `Bearer ${token}`}
@@ -149,7 +146,7 @@ export default function PrintJobs(props) {
         tasksListItems.forEach((task)=>{
             ids.push(task._id)
         })
-        await fetch(`${apiUrl}/inventory_tasks_print/delete-all`,
+        await fetch(`${apiUrl}/${user.institution}/inventory_tasks_print/delete-all`,
             {
                 method: 'POST',
                 headers: {

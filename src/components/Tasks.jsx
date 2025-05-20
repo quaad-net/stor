@@ -94,7 +94,7 @@ export default function Tasks(props) {
     async function getTasks(){
 
         if(user.email != 'johndoe@quaad.net'){
-            fetch(`${apiUrl}/inventory_tasks/get-all`, 
+            fetch(`${apiUrl}/${user.institution}/inventory_tasks/get-all`, 
                 {
                     method: 'POST', 
                     headers: 
@@ -102,7 +102,6 @@ export default function Tasks(props) {
                             Authorization: `Bearer ${token}`,
                             "Content-Type": "application/json",
                         },
-                    body: JSON.stringify({user: user.email})
                 }   
             )
             .then((res)=>{
@@ -132,7 +131,7 @@ export default function Tasks(props) {
 
     async function deleteTask(taskId){
         if(user.email != 'johndoe@quaad.net'){
-            fetch(`${apiUrl}/inventory_tasks/delete/${taskId}`,
+            fetch(`${apiUrl}/${user.institution}/inventory_tasks/delete/${taskId}`,
                 {
                     method: 'POST',
                     headers: {Authorization: `Bearer ${token}`}

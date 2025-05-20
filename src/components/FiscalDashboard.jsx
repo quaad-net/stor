@@ -54,7 +54,7 @@ export default function FiscalDashboard(props){
 
         function getExpenditures(){
 
-            fetch(`${apiUrl}/proxy/fiscal/uwm-fs-expend/monthly-totals-with-prev-yr`
+            fetch(`${apiUrl}/proxy/fiscal/${user.institution}-fs-expend/monthly-totals-with-prev-yr`
             )
             .then((res)=>{
                 if(res.status != 200){ throw new Error()}
@@ -154,13 +154,13 @@ export default function FiscalDashboard(props){
 
         setPieChartData([]);
         setOptionsModalOpen(false);
-        fetch(`${apiUrl}/proxy/fiscal/uwm-fs-expend/range=${range}`)
+        fetch(`${apiUrl}/proxy/fiscal/${user.institution}-fs-expend/range=${range}`)
         .then((res)=>{
             if(res.status != 200){throw new Error()}
             return res.json()
         })
         .then((res)=>{
-            const deptData = []
+            const deptData = [];
             res.data.forEach((dataset)=>{
                 const data = JSON.parse(dataset);
                 for(const idx in data){

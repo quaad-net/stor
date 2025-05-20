@@ -94,10 +94,10 @@ export default function Inventory() {
     })
 
     function inventoryQuery({query, queryType, noDialog}){
-
         try{
             if(!filterOn){
-                fetch(`${apiUrl}/inventory/${queryType}/`, {
+                fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+                    'uwm' : user.institution}/inventory/${queryType}/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`, 
@@ -363,7 +363,8 @@ export default function Inventory() {
 
     function getUsageData(partcode, warehouseCode){
 
-        fetch(`${apiUrl}/inventory/usage_analysis/${user.email == 'johndoe@quaad.net' ? 'uwm' : user.institution}/${partcode}-${warehouseCode}`)
+        fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+            'uwm' : user.institution}/inventory/usage_analysis/${partcode}-${warehouseCode}`)
         .then((res)=>{
             if(res.status !== 200){
                 throw new Error()
@@ -750,7 +751,10 @@ max: ${partListItems[idx]?.max}
                             <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
                                 <span style={{color: 'gray'}}>{usageData.avgDailyUsage.toFixed(2)}</span>
                             </legend>
-                            <span style={{color: 'gray'}}>suggested min: {usageData.suggestedMin.toFixed(2)}</span><br/>
+                            <span style={{color: 'gray'}}>suggested min: {
+                                usageData.suggestedMin % 1 == 0 ? usageData.suggestedMin  : 
+                                (usageData.suggestedMin + 1).toFixed(0)
+                                }</span><br/>
                             <span style={{color: 'gray'}}>p1: {usageData.p1Usage},</span>&nbsp;
                             <span style={{color: 'gray'}}>p2: {usageData.p2Usage},</span>&nbsp;
                             <span style={{color: 'gray'}}>p3: {usageData.p3Usage}</span>
@@ -822,7 +826,8 @@ max: ${partListItems[idx]?.max}
                         user: user.email,
                         date: now
                     } 
-                    fetch(`${apiUrl}/inventory_count`, {
+                    fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+                        'uwm' : user.institution}/inventory_count`, {
                         method: 'POST', 
                         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
                         body: JSON.stringify(partDetails)
@@ -856,7 +861,8 @@ max: ${partListItems[idx]?.max}
                         completed: false
                     }
                     
-                    await fetch(`${apiUrl}/inventory_tasks`, {
+                    await fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+                        'uwm' : user.institution}/inventory_tasks`, {
                         method: 'POST', 
                         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
                         body: JSON.stringify(
@@ -894,7 +900,8 @@ max: ${partListItems[idx]?.max}
                         date: now,
                         completed: false
                     }
-                    await fetch(`${apiUrl}/inventory_tasks_print`, {
+                    await fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+                        'uwm' : user.institution}/inventory_tasks_print`, {
                         method: 'POST', 
                         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
                         body: JSON.stringify(
