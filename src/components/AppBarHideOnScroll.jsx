@@ -124,7 +124,7 @@ export default function AppBarHideOnScroll(props) {
     
         const mobileMenuId = 'primary-search-account-menu-mobile';
 
-        // Used for mobile menu modal.
+        // For mobile menu modal.
         const modalBtnProps = {
           ariaLabel: 'show more',
           ariaControls: {mobileMenuId},
@@ -135,54 +135,51 @@ export default function AppBarHideOnScroll(props) {
         function ModalMobileMenu(){ 
           return(
             <>
-              <div style={{width: '250px', margin: 'auto'}}>
-                <SyntaxHelper mobileMenu />
-                <div>
-                  <br/>
-                  <div style={{display: 'flex'}}>
-                    <IconButton
-                      disableRipple
-                      size="large"
-                      aria-label="update inventory"
-                      color="inherit"
-                      onClick={()=>{
-                        props.setUpdateInventory(true);
-                      }}
-                        >
-                      <img src={imgMap.get('database-update.svg')} width='25px' />
-                      <span style={{fontSize: '15px'}}>Update</span>
-                    </IconButton>
-                    <IconButton 
-                      disableRipple
-                      size="large" 
-                      aria-label="inventory details" 
-                      color="inherit"
-                      onClick={()=>{props.setUpdateInventory(false)}}
-                    >
-                      <img src={imgMap.get('info.svg')} width='25px' />
-                      <span style={{fontSize: '15px'}}>Details</span>
-                    </IconButton>
-                  </div>
-                  <div style={{display: 'flex'}}>
-                    <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks&nbsp;&nbsp;&nbsp;</span>}/>
-                    <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
-                  </div>
-                  <div style={{display: 'flex'}}>
-                    <IconButton
-                      disableRipple
-                      size="large" 
-                      aria-label="sort" 
-                      color="inherit" 
-                      onClick={props.sort}>
-                      <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
-                      <span style={{fontSize: '15px'}}>Sort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </IconButton>
-                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} btnDescription={<span style={{fontSize: '15px'}}>Page</span>} />
-                  </div>
-                  <div style={{display: 'flex'}}>
-                    <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
-                  </div>
+              <div style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin'}}>
+                <div style={{width: 'fit-content', margin: 'auto'}}>
+                  <SyntaxHelper mobileMenu />
+                  <span style={{color: 'gray'}}>QryHelp</span>
                 </div>
+                <div style={{width: 'fit-content', margin:'auto'}}>-----</div>
+                <IconButton
+                  disableRipple
+                  size="large" 
+                  aria-label="sort" 
+                  color="inherit" 
+                  onClick={props.sort}>
+                  <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                  <span style={{fontSize: '15px'}}>Sort</span>
+                </IconButton><br/>
+                <Pag pagIdxMax={props?.pagIdxMax} 
+                  displayPage={props?.displayPage} 
+                  currentPage={props?.currentPage} 
+                  btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
+                />
+                <IconButton
+                  disableRipple
+                  size="large"
+                  aria-label="update inventory"
+                  color="inherit"
+                  onClick={()=>{
+                    props.setUpdateInventory(true);
+                  }}
+                    >
+                  <img src={imgMap.get('database-update.svg')} width='25px' />
+                  <span style={{fontSize: '15px'}}>Update</span>
+                </IconButton><br/>
+                <IconButton 
+                  disableRipple
+                  size="large" 
+                  aria-label="inventory details" 
+                  color="inherit"
+                  onClick={()=>{props.setUpdateInventory(false)}}
+                >
+                  <img src={imgMap.get('info.svg')} width='25px' />
+                  <span style={{fontSize: '15px'}}>Details</span>
+                </IconButton><br/>
+                <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
+                <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
+                <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
           )

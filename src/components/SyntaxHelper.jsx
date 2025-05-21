@@ -30,7 +30,6 @@ export default function SyntaxHelper(props){
                     <div>- Allows aggregated filtering.</div>
                 </div>
             </>
-
         )
     }
 
