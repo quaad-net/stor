@@ -26,6 +26,7 @@ imgMap.set('square-outlined-small.svg', `${imgServer}cdc0be6e-b57b-4bc7-ddff-9c6
 imgMap.set('stor-fiscal-icon-white.svg', `${imgServer}c96d1729-7a0e-4d94-b8eb-6d228b0fb700/public`); 
 imgMap.set('stor-logo.svg', `${imgServer}39fbd164-df89-4855-0924-be78ea37f100/public`); 
 imgMap.set('stor-tab-icon.svg', `${imgServer}b03c3ce2-c616-41da-aa04-fe081eb84a00/public`);
+imgMap.set('tool-box.svg', `${imgServer}86ba29d5-0c6c-48c1-b7f4-192986ccee00/public`);
 imgMap.set('user-small.svg', `${imgServer}39d7b9ca-c1ca-4627-d614-e43c07db3a00/public`); 
 export default imgMap
 

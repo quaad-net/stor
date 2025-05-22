@@ -67,8 +67,8 @@ export default function Inventory() {
         const verts = document.querySelectorAll('.list-vert');
         const partList = document.querySelectorAll('.inventory-list-item');
 
-        // To index : partListItems[Number(vertIdx)].<property>
-        /// Or add function on jsx element "renderParts"
+        // To index use partListItems[Number(vertIdx)].<property>
+        // or edit "renderParts" function.
         verts.forEach((vert)=>{
             const vertIdx = vert.getAttribute('id').replace('list-vert-', '');
             vert.addEventListener('click', ()=>{
@@ -600,50 +600,59 @@ export default function Inventory() {
 
     function GetAvatar(props){
 
-        const uni = /^3.*$/;
-        const mech = /^7.*$/;
-        const plumb = /^5.*$/;
-        const elec = /^2.*$/;
+        // Uncomment to return different avatars for various types of parts.
+        // const uni = /^3.*$/;
+        // const mech = /^7.*$/;
+        // const plumb = /^5.*$/;
+        // const elec = /^2.*$/;
         const storGold = 'linear-gradient(to right, #bf953f, #b38728, #aa771c)';
 
         const bg = props.avaBgIndx % 2 === 0;
 
-        if(uni.test(props.partCode)){
-            return(
-                <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                    <MiscellaneousServicesIcon/>
-                </Avatar>
-            )
-        }
-        else if(mech.test(props.partCode)){
-            return(
-                <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                    <PrecisionManufacturingIcon/>
-                </Avatar>
-            )
+        // Remove return statement and uncomment conditions below to return different avatars for various
+        // types of parts.
+        return(
+            <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+                <img src={imgMap.get('tool-box.svg')}/>
+            </Avatar>
+        )
 
-        }
-        else if(plumb.test(props.partCode)){
-            return(
-                <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                    <PlumbingIcon/>
-                </Avatar>
-            )
-        }
-        else if(elec.test(props.partCode)){
-            return(
-                <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                    <ElectricBoltIcon/>
-                </Avatar>
-            )
-        }
-        else{
-            return(
-                <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                    <MiscellaneousServicesIcon/>
-                </Avatar>
-            )
-        }
+        // if(uni.test(props.partCode)){
+            // return(
+            //     <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+            //         <MiscellaneousServicesIcon/>
+            //     </Avatar>
+        //     )
+        // }
+        // else if(mech.test(props.partCode)){
+        //     return(
+        //         <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+        //             <PrecisionManufacturingIcon/>
+        //         </Avatar>
+        //     )
+
+        // }
+        // else if(plumb.test(props.partCode)){
+        //     return(
+        //         <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+        //             <PlumbingIcon/>
+        //         </Avatar>
+        //     )
+        // }
+        // else if(elec.test(props.partCode)){
+        //     return(
+        //         <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+        //             <ElectricBoltIcon/>
+        //         </Avatar>
+        //     )
+        // }
+        // else{
+        //     return(
+        //         <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
+        //             <MiscellaneousServicesIcon/>
+        //         </Avatar>
+        //     )
+        // }
     }
 
     function InventoryDetailContent(props){
@@ -1072,7 +1081,7 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-pick-modal' exposedEl={[<PickExposedEL/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-pick-modal' exposedEl={[<PickExposedEL key=''/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
         }
 
         function CountModalContent(){
@@ -1450,7 +1459,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpComment != undefined && tmpComment?.trim() != ''){}
+                        if(tmpComment.trim() != ''){}
                         else{throw new Error('Please enter details in Comment!')};
                         submitUserInput({taskValues: JSON.stringify('Other'), comment: tmpComment, updateType: 'Other'})
                     }
@@ -1488,6 +1497,85 @@ max: ${partListItems[idx]?.max}
             }
             return(<CustomContentFormModal key='inventory-other-modal' exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
+
+        // function ZeroStockModalContent(){
+        //     const [displayAlert, setDisplayAlert] = React.useState(false);
+        //     const [alertContent, setAlertContent] = React.useState('');
+
+        //     function ErrorAlert(){
+        //         return(
+        //             <Alert 
+        //                 sx={{
+        //                     display: displayAlert ? 'block' : 'none', 
+        //                     backgroundColor: 'transparent', 
+        //                     color: 'whitesmoke'
+        //                 }} 
+        //                 variant='standard' 
+        //                 severity="error">{alertContent}
+        //             </Alert>
+        //         )
+        //     }
+
+        //     function ZeroStockExposedEL(){
+        //         function ListItem(){
+        //             return(
+        //             <li 
+        //                 className='inventory-update-type'
+        //                 style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
+        //             ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Zero-stock
+        //             </li>
+        //             )
+        //         }
+        //         return<ListItem/>
+        //     }
+
+        //     function ZeroStockForm(){
+        //         const [tmpComment, setTmpComment]  = React.useState('');
+
+        //         function submitForm(){
+        //             try{
+        //                 submitUserInput({taskValues: JSON.stringify('ZeroStock'), comment: tmpComment, updateType: 'ZeroStock'})
+        //             }
+        //             catch(err){
+        //                 setAlertContent(err.message);
+        //                 setDisplayAlert(true);
+        //             }
+        //         }
+                
+        //         return(
+        //             <>  
+        //                 <ErrorAlert/>
+        //                 <div style={{width: '100%', margin: 'auto'}}>
+        //                     <form>
+        //                         <CommentBox setTmpComment={setTmpComment}/>
+        //                         <div style={{width: 'fit-content',margin: 'auto'}}>
+        //                         <FormButton 
+        //                             type='button' 
+        //                                 onClick={(e)=>{
+        //                                     e.preventDefault();
+        //                                     submitForm();
+        //                                 }}>
+        //                                     <img src={imgMap.get('circled-check.svg')} width='30px'/>
+        //                         </FormButton>
+        //                         <FormButton 
+        //                             type='reset' 
+        //                             >
+        //                                 <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+        //                         </FormButton>
+        //                         </div>
+        //                     </form>
+        //                 </div>
+        //             </>
+        //         )
+        //     }
+        //     return(<CustomContentFormModal 
+        //         key='inventory-zero-stock-modal' 
+        //         exposedEl={[<ZeroStockExposedEL/>]} 
+        //         modalContent={<ZeroStockForm/>} 
+        //         setAlertContent={setAlertContent} 
+        //         setDisplayAlert={setDisplayAlert} 
+        //     />)
+        // }
 
         function CommentBox(props){
             return(
