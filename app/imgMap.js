@@ -12,8 +12,10 @@ imgMap.set('left-circled-arrow.svg', `${imgServer}704de6cc-f6c5-478e-4dff-95a444
 imgMap.set('info.svg', `${imgServer}7921d4d9-1304-40cb-eff9-791a17c65a00/public`); 
 imgMap.set('info-circled.svg', `${imgServer}21ef9ed7-0535-45d7-184b-acff41217200/public`); 
 imgMap.set('login.svg', `${imgServer}582cfde1-bf59-4f5a-c3b1-35e6f0941b00/public`); 
+imgMap.set('pulsar-cart.svg', `${imgServer}2a2d4d4b-511f-457d-e4b4-39703938ec00/public`)
 imgMap.set('pulsar-clear.svg', `${imgServer}b38e1317-a708-42b2-f5ab-656fa2765700/public`); 
 imgMap.set('pulsar-circled-info.svg', `${imgServer}35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public`); 
+imgMap.set('pulsar-download.svg', `${imgServer}42c48a4f-5062-4e77-0c69-6b610c86cb00/public`)
 imgMap.set('pulsar-labels.svg', `${imgServer}d056b8a6-4f17-4e11-f316-0b0a6781f600/public`); 
 imgMap.set('pulsar-login.svg', `${imgServer}f1a9891e-f1e8-4dc3-d085-18d093d99400/public`); 
 imgMap.set('pulsar-print.svg', `${imgServer}2c23b09c-dc25-43bc-aa6a-af7d7c06c900/public`); 

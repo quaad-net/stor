@@ -75,6 +75,7 @@ export default function Labels(props){
             // Add QRCode to Each Label
             labelData.forEach((label)=>{ 
                 const partCode = label.querySelector('#label-part-code');
+                // xl size: 100
                 ReactDOM.render(<QRCode value={partCode.textContent} size={50} />, label.querySelector('.qr'));
             });
 

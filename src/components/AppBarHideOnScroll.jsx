@@ -21,6 +21,7 @@ import Pag from './Pag';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
+import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
 
 function HideOnScroll(props) {
@@ -179,6 +180,15 @@ export default function AppBarHideOnScroll(props) {
                 </IconButton><br/>
                 <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                 <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
+                {props.sessionOrds.length > 0 ?
+                <>
+                <SessionReorder sessionOrds={props.sessionOrds} setSessionOrds={props.setSessionOrds}
+                  btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
+                />
+                </>
+                :
+                <></>
+                }
                 <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
@@ -283,12 +293,20 @@ export default function AppBarHideOnScroll(props) {
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
                   </div>
+                  {props.sessionOrds.length > 0 ?
+                  <div>
+                    <SessionReorder sessionOrds={props.sessionOrds} setSessionOrds={props.setSessionOrds}/>
+                    <div style={{fontSize: '10px', textAlign: 'center'}}>Orders</div>
+                  </div>
+                  :
+                  <></>
+                  }
                   <div>
                     <ShowInstitution/>
                     <div style={{fontSize: '10px', textAlign: 'center'}}>User</div>
                   </div>
                 </Box>
-                {/*Mobile menubar */}
+                {/*Mobile Menu */}
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                   <MoreModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
                 </Box>  

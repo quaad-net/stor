@@ -5,10 +5,6 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
-import PlumbingIcon from '@mui/icons-material/Plumbing';
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
-import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton } from '@mui/material';
 import AppBarHideOnScroll from './AppBarHideOnScroll';
@@ -39,6 +35,7 @@ export default function Inventory() {
     const [currentPage, setCurrentPage] = React.useState(1);
     const [usageData, setUsageData] = React.useState({});
     const [filterOn, setfilterOn] = React.useState(false);
+    const [sessionOrds, setSessionOrds] = React.useState([]);
     const apiUrl = import.meta.env.VITE_API_URL;
     const { token } = useToken();
     const navigate = useNavigate();
@@ -823,7 +820,6 @@ max: ${partListItems[idx]?.max}
                 if(input.updateType === 'Count'){
                     userCompletedCount = true;
                     if(input?.userComment != undefined && input.userComment?.trim() != '' ){
-                        console.log(input.userComment)
                         userCompletedComment = true;
                     }
                     const partDetails = {
@@ -1208,11 +1204,27 @@ max: ${partListItems[idx]?.max}
                 const [tmpReord, setTmpReord] = React.useState(0);
                 const [tmpComment, setTmpComment]  = React.useState('');
 
+                function addToSessionOrd({reorderAmt, comment}){
+                    const ords = [...sessionOrds];
+                    const currentPart = partListItems[idx];
+                    const now = new Date();
+                    const partDetails = {
+                        ...currentPart, 
+                        reorderAmt: reorderAmt,
+                        comment: comment?.trim() || '',      
+                        date: now,
+                        _id: currentPart.code + '-' + currentPart.binLoc + currentPart.warehouseCode
+                    }
+                    ords.push(partDetails)
+                    setSessionOrds(ords);
+                }
+
                 function submitForm(){
                     try{
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')};
-                        submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})
+                        if(document.querySelector('#session-ord').checked){addToSessionOrd({reorderAmt: tmpReord, comment: tmpComment})}
+                        else{submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})}
                     }
                     catch(err){
                         setAlertContent(err.message);
@@ -1238,7 +1250,14 @@ max: ${partListItems[idx]?.max}
                                     }}
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
-                                <div style={{width: 'fit-content',margin: 'auto'}}>
+                                <div style={{marginLeft: '20px'}}>
+                                    <input 
+                                        type='checkbox'
+                                        id='session-ord'
+                                    />
+                                        Add to session?
+                                </div>
+                                <div style={{width: 'fit-content', margin: 'auto'}}>
                                 <FormButton 
                                     type='button' 
                                     onClick={(e)=>{
@@ -1498,85 +1517,6 @@ max: ${partListItems[idx]?.max}
             return(<CustomContentFormModal key='inventory-other-modal' exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
         }
 
-        // function ZeroStockModalContent(){
-        //     const [displayAlert, setDisplayAlert] = React.useState(false);
-        //     const [alertContent, setAlertContent] = React.useState('');
-
-        //     function ErrorAlert(){
-        //         return(
-        //             <Alert 
-        //                 sx={{
-        //                     display: displayAlert ? 'block' : 'none', 
-        //                     backgroundColor: 'transparent', 
-        //                     color: 'whitesmoke'
-        //                 }} 
-        //                 variant='standard' 
-        //                 severity="error">{alertContent}
-        //             </Alert>
-        //         )
-        //     }
-
-        //     function ZeroStockExposedEL(){
-        //         function ListItem(){
-        //             return(
-        //             <li 
-        //                 className='inventory-update-type'
-        //                 style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-        //             ><img src={imgMap.get('square-outlined-small.svg')} width='10px'/>&nbsp;Zero-stock
-        //             </li>
-        //             )
-        //         }
-        //         return<ListItem/>
-        //     }
-
-        //     function ZeroStockForm(){
-        //         const [tmpComment, setTmpComment]  = React.useState('');
-
-        //         function submitForm(){
-        //             try{
-        //                 submitUserInput({taskValues: JSON.stringify('ZeroStock'), comment: tmpComment, updateType: 'ZeroStock'})
-        //             }
-        //             catch(err){
-        //                 setAlertContent(err.message);
-        //                 setDisplayAlert(true);
-        //             }
-        //         }
-                
-        //         return(
-        //             <>  
-        //                 <ErrorAlert/>
-        //                 <div style={{width: '100%', margin: 'auto'}}>
-        //                     <form>
-        //                         <CommentBox setTmpComment={setTmpComment}/>
-        //                         <div style={{width: 'fit-content',margin: 'auto'}}>
-        //                         <FormButton 
-        //                             type='button' 
-        //                                 onClick={(e)=>{
-        //                                     e.preventDefault();
-        //                                     submitForm();
-        //                                 }}>
-        //                                     <img src={imgMap.get('circled-check.svg')} width='30px'/>
-        //                         </FormButton>
-        //                         <FormButton 
-        //                             type='reset' 
-        //                             >
-        //                                 <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-        //                         </FormButton>
-        //                         </div>
-        //                     </form>
-        //                 </div>
-        //             </>
-        //         )
-        //     }
-        //     return(<CustomContentFormModal 
-        //         key='inventory-zero-stock-modal' 
-        //         exposedEl={[<ZeroStockExposedEL/>]} 
-        //         modalContent={<ZeroStockForm/>} 
-        //         setAlertContent={setAlertContent} 
-        //         setDisplayAlert={setDisplayAlert} 
-        //     />)
-        // }
-
         function CommentBox(props){
             return(
                 <textarea 
@@ -1623,7 +1563,7 @@ max: ${partListItems[idx]?.max}
                     style={{...(props?.mobileView ? 
                         {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '45px'})}}
                 > 
-                    <IconButton className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
+                    <IconButton disableRipple className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
                     }} 
                     onClick={()=>{
                         setIdxPrev();
@@ -1635,7 +1575,9 @@ max: ${partListItems[idx]?.max}
                             toolTipTitle='Previous'
                         />
                     </IconButton>
-                    <IconButton sx={{color: 'white', marginRight: '25px', 
+                    <IconButton 
+                        disableRipple
+                        sx={{color: 'white', marginRight: '25px', 
                         }} 
                         onClick={()=>{setUpdateInventory(false)}}
                     > 
@@ -1646,7 +1588,7 @@ max: ${partListItems[idx]?.max}
                             toolTipTitle='Info'
                         />
                     </IconButton>
-                    <IconButton className='inventory-next' sx={{color: 'white'}} onClick={()=>{
+                    <IconButton disableRipple className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                         setIdxNext();
                     }}>
                         <StorToolTip 
@@ -1728,6 +1670,8 @@ max: ${partListItems[idx]?.max}
                         paginate={paginate}
                         setIdx={setIdx}
                         getUsageData={getUsageData}
+                        sessionOrds={sessionOrds}
+                        setSessionOrds={setSessionOrds}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
