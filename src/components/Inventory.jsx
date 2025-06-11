@@ -1205,7 +1205,7 @@ max: ${partListItems[idx]?.max}
                 const [tmpComment, setTmpComment]  = React.useState('');
 
                 function addToSessionOrd({reorderAmt, comment}){
-                    const ords = [...sessionOrds];
+                    const ords = [];
                     const currentPart = partListItems[idx];
                     const now = new Date();
                     const partDetails = {
@@ -1215,7 +1215,10 @@ max: ${partListItems[idx]?.max}
                         date: now,
                         _id: currentPart.code + '-' + currentPart.binLoc + currentPart.warehouseCode
                     }
-                    ords.push(partDetails)
+                    sessionOrds.forEach((ord)=>{
+                        if(ord._id != partDetails._id){ords.push(ord)}
+                    })
+                    ords.push(partDetails);
                     setSessionOrds(ords);
                 }
 

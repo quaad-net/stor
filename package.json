@@ -24,6 +24,7 @@
     "@mui/x-data-grid": "^7.23.3",
     "@yudiel/react-qr-scanner": "^2.2.1",
     "dotenv": "^16.4.7",
+    "papaparse": "^5.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-error-boundary": "^5.0.0",

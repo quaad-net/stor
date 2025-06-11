@@ -21,6 +21,7 @@ import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import imgMap from '../../app/imgMap';
+import {unparse} from 'papaparse';
 
 const download = (data, filename) => {
     const blob = new Blob([data], { type: 'text/csv' });
@@ -31,10 +32,9 @@ const download = (data, filename) => {
     a.click();
 }
 
-function jsonToCsv(jsonArray) {
-    const headers = Object.keys(jsonArray[0]).join(',');
-    const rows = jsonArray.map(obj => Object.values(obj).join(',')).join('\n');
-    return `${headers}\n${rows}`;
+function jsonToCsv(objArray) {
+    const csv = unparse(objArray);
+    return csv
 }
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -156,12 +156,9 @@ export default function SessionReorder(props) {
                     return 0;
                 }
             });
-            for(const idx in items){
-                const newline = /\n/
-                if(newline.test(items[idx].description)){items[idx].description=items[idx].description.replace('\n', ' ')}
-            }
-            const toCsv = jsonToCsv(items);
-            download(toCsv, 'stor-orders');
+
+            const csv = jsonToCsv(items);
+            download(csv, 'stor-orders');
         }
         catch(err){
             console.log(err)
