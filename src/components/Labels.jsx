@@ -13,14 +13,19 @@ import './Labels.css'
 export default function Labels(props){
     const [modalOpen, setModalOpen] = useState(false);
     const [formModalOpen, setFormModalOpen] = useState(false);
+    const [largeLbl, setLargeLbl] = useState(false);
     const { token } = useToken();
 
-    const codeMaxChar = 30;
-    const descriptionMaxChar = 186; 
-    const binLocMaxChar = 20; 
+    const codeMaxChar = largeLbl? 12 : 30;
+    const descriptionMaxChar = largeLbl? 25: 186; 
+    const binLocMaxChar = largeLbl? 12: 20; 
     const minMaxChar = 6;
     const maxMaxChar = 6;
     const modQueryRes = [];
+
+    function toggleLabelSize(){
+        setLargeLbl(!largeLbl)
+    }
 
     function validateQueryRes(includePagResults){
         let recs;
@@ -61,7 +66,7 @@ export default function Labels(props){
             }
             const req =  await fetch(`${apiUrl}/print/labels`, {
                 method: "POST",
-                body: labelDetails ? JSON.stringify([labelDetails]) : JSON.stringify(recs),
+                body: labelDetails ? JSON.stringify([[labelDetails], largeLbl ? '32pt' : '11pt'] ) : JSON.stringify([recs, largeLbl ? '32pt' : '11pt']),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -75,8 +80,7 @@ export default function Labels(props){
             // Add QRCode to Each Label
             labelData.forEach((label)=>{ 
                 const partCode = label.querySelector('#label-part-code');
-                // xl size: 100
-                ReactDOM.render(<QRCode value={partCode.textContent} size={50} />, label.querySelector('.qr'));
+                ReactDOM.render(<QRCode value={partCode.textContent} size={largeLbl? 100 : 50} />, label.querySelector('.qr'));
             });
 
             // Open new window for labels doc.
@@ -110,8 +114,7 @@ export default function Labels(props){
                 else{modCode = record.code};
     
                 const modRecord = {
-                    // code: modCode?.substring(0, codeMaxChar),
-                    code: modCode,
+                    code: modCode?.substring(0, codeMaxChar),
                     description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
                         record.description,
                     binLoc: modBinLoc?.substring(0, binLocMaxChar),
@@ -123,7 +126,7 @@ export default function Labels(props){
 
             const req =  await fetch(`${apiUrl}/print/labels`, {
                 method: "POST",
-                body: JSON.stringify(modParts),
+                body: JSON.stringify([modParts, largeLbl ? '32pt' : '11pt']),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -137,7 +140,7 @@ export default function Labels(props){
             // Add QRCode to Each Label
             labelData.forEach((label)=>{ 
                 const partCode = label.querySelector('#label-part-code');
-                ReactDOM.render(<QRCode value={partCode.textContent} size={50} />, label.querySelector('.qr'));
+                ReactDOM.render(<QRCode value={partCode.textContent} size={largeLbl? 100: 50} />, label.querySelector('.qr'));
             });
 
             // Open new window for labels doc.
@@ -155,53 +158,60 @@ export default function Labels(props){
     }
 
     function PrintType(){
+
         return(
-            <div style={{width: 'fit-content', margin: 'auto'}}>
-                {props?.pagListItems.length > 0 ?
-                <>
+            <>
+                <div style={{width: 'fit-content', margin: 'auto'}}>
+                    {props?.pagListItems.length > 0 ?
+                    <>
+                        <div>
+                            <IconButton disableRipple onClick={()=>{
+                                setModalOpen(false);
+                                printLabels(undefined, true)
+                            }}><span style={{fontSize: '15px'}}>
+                                <img 
+                                    src={imgMap.get('square-outlined-small.svg')} 
+                                    width='10px' />&nbsp;All Results
+                                </span>
+                            </IconButton>
+                        </div>
+                        <br/>
+                    </>
+                    :
+                        <></>
+                    }
                     <div>
                         <IconButton disableRipple onClick={()=>{
                             setModalOpen(false);
-                            printLabels(undefined, true)
+                            printLabels();
                         }}><span style={{fontSize: '15px'}}>
-                            <img 
-                                src={imgMap.get('square-outlined-small.svg')} 
-                                width='10px' />&nbsp;All Results
+                                <img 
+                                    src={imgMap.get('square-outlined-small.svg')} 
+                                    width='10px' 
+                                />
+                                &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
                             </span>
                         </IconButton>
                     </div>
                     <br/>
-                </>
-                :
-                    <></>
-                }
-                <div>
-                    <IconButton disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        printLabels();
-                    }}><span style={{fontSize: '15px'}}>
-                            <img 
-                                src={imgMap.get('square-outlined-small.svg')} 
-                                width='10px' 
-                            />
-                            &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
-                        </span>
-                    </IconButton>
+                    <div>
+                        <IconButton disableRipple onClick={()=>{
+                            setModalOpen(false);
+                            setFormModalOpen(true);
+                            }}>
+                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New Label </span>
+                        </IconButton>
+                    </div>
+                    <br/>
+                    <div>
+                        <PrintJobs printPrintJobs={printPrintJobs}/>
+                    </div>
+                    <br/>
+                    <div>
+                        <input type="checkbox" id='toggle-label-size' checked={largeLbl} onChange={toggleLabelSize}/><span style={{color: 'gray'}}> Large Labels</span>
+                    </div>
                 </div>
-                <br/>
-                <div>
-                    <IconButton disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        setFormModalOpen(true);
-                        }}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New Label </span>
-                    </IconButton>
-                </div>
-                <br/>
-                <div>
-                    <PrintJobs printPrintJobs={printPrintJobs}/>
-                </div>
-            </div>
+            </>
         )
     }
 

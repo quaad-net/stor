@@ -263,7 +263,6 @@ export default function PrintJobs(props) {
                     <Collapse in={itemOpen} timeout="auto" unmountOnExit>
                         <div><strong>binLoc:</strong><span style={{color: 'gray'}}> {props?.task.binLoc}</span></div>
                         <div><strong>description:</strong><span style={{color: 'gray'}}> {props?.task.description}</span></div>
-                        {/* <div style={{lineBreak: 'anywhere'}}><strong>details:</strong><span style={{color: 'gray'}}> {props?.task.taskValues}</span></div> */}
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
                         <IconButton disableRipple size='small' onClick={()=>{
