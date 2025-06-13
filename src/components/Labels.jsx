@@ -199,7 +199,7 @@ export default function Labels(props){
                             setModalOpen(false);
                             setFormModalOpen(true);
                             }}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New Label </span>
+                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New</span>
                         </IconButton>
                     </div>
                     <br/>
@@ -207,8 +207,8 @@ export default function Labels(props){
                         <PrintJobs printPrintJobs={printPrintJobs}/>
                     </div>
                     <br/>
-                    <div>
-                        <input type="checkbox" id='toggle-label-size' checked={largeLbl} onChange={toggleLabelSize}/><span style={{color: 'gray'}}> Large Labels</span>
+                    <div style={{marginLeft: '10px'}}>
+                        <input type="checkbox" id='toggle-label-size' checked={largeLbl} onChange={toggleLabelSize}/><span style={{color: 'gray'}}>Large</span>
                     </div>
                 </div>
             </>
