@@ -13,13 +13,14 @@ import useToken from '../../app/useToken';
 import { useNavigate } from 'react-router-dom';
 import useUserData from '../../app/useUserData';
 import CustomContentFormModal from './CustomContentFormModal';
-import './Inventory.css'
 import BasicMessageModal from './BasicMessageModal';
 import Alert from '@mui/material/Alert';
 import StorToolTip from './StorToolTip';
 import Styled from '@emotion/styled';
 import OnClickToolTip from './OnClickToolTip';
+import useStoredOrds from '../../app/useStoredOrds';
 import imgMap from '../../app/imgMap';
+import './Inventory.css'
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
@@ -41,6 +42,7 @@ export default function Inventory() {
     const navigate = useNavigate();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
+    const { storedOrds, setStoredOrds } = useStoredOrds();
 
     const FormButton = Styled.button`
         all: unset;
@@ -53,6 +55,10 @@ export default function Inventory() {
         marginBottom: 5px;
         &:hover {cursor: pointer}
     `
+
+    React.useEffect(()=>{
+        if(storedOrds != ''){setSessionOrds(JSON.parse(storedOrds))}
+    }, [])
 
     React.useEffect(()=>{
         inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true});
@@ -90,6 +96,11 @@ export default function Inventory() {
             });
         })
     })
+
+    function updateSessionOrds(orders){
+        setStoredOrds(orders);
+        setSessionOrds(orders)
+    }
 
     function inventoryQuery({query, queryType, noDialog}){
         try{
@@ -853,7 +864,7 @@ max: ${partListItems[idx]?.max}
 
                 }
                 else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
-                    
+                
                     const partDetails = {
                         code: currentPart.code,
                         binLoc: currentPart.binLoc,
@@ -1219,7 +1230,9 @@ max: ${partListItems[idx]?.max}
                         if(ord._id != partDetails._id){ords.push(ord)}
                     })
                     ords.push(partDetails);
-                    setSessionOrds(ords);
+                    updateSessionOrds(ords);
+                    setBasicMessageModalContent('Item Added.');
+                    setBasicMessageModalOpen(true);
                 }
 
                 function submitForm(){

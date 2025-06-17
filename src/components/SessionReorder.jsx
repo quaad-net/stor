@@ -7,7 +7,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
+import PlaylistAddCheckRoundedIcon from '@mui/icons-material/PlaylistAddCheckRounded';
 import Slide from '@mui/material/Slide';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -20,8 +20,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import imgMap from '../../app/imgMap';
 import {unparse} from 'papaparse';
+import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
+import useStoredOrds from '../../app/useStoredOrds';
+import imgMap from '../../app/imgMap';
 
 const download = (data, filename) => {
     const blob = new Blob([data], { type: 'text/csv' });
@@ -49,8 +51,10 @@ export default function SessionReorder(props) {
     const [modalOpen, setModalOpen] = React.useState(false);
     const [orderToDelete, setOrderToDelete] = React.useState({})
     const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
-    const [basicMessageContent, setBasicMessageContent] = React.useState('')
-    const [orderFilter, setOrderFilter] = React.useState('')
+    const [basicMessageContent, setBasicMessageContent] = React.useState('');
+    const [orderFilter, setOrderFilter] = React.useState('');
+    const [deleteAllModalOpen, setDeleteAllModalOpen] = React.useState(false);
+    const { storedOrds, setStoredOrds } = useStoredOrds();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -58,6 +62,7 @@ export default function SessionReorder(props) {
 
     const handleClose = () => {
         props.setSessionOrds(unfilteredOrders);
+        setStoredOrds(unfilteredOrders);
         setOpen(false);
     };
 
@@ -91,24 +96,44 @@ export default function SessionReorder(props) {
 
     async function deleteOrder(orderId){
         try{
-            const updatedOrderslist = [];
-            ordersListItems.map((order)=>{
-                if(order._id != orderId){
-                    updatedOrderslist.push(order)
-                }
-            })
-            setOrdersListItems(updatedOrderslist);
+            if(orderId){
+                const updatedOrderslist = [];
+                ordersListItems.map((order)=>{
+                    if(order._id != orderId){
+                        updatedOrderslist.push(order)
+                    }
+                })
+                setOrdersListItems(updatedOrderslist);
 
-            const updatedUnfilteredOrders = [];
-            unfilteredOrders.map((order)=>{
-                if(order._id != orderId){
-                    updatedUnfilteredOrders.push(order)
-                }
-            })
-            setUnfilteredOrders(updatedUnfilteredOrders);
-            setOrderToDelete({});
+                const updatedUnfilteredOrders = [];
+                unfilteredOrders.map((order)=>{
+                    if(order._id != orderId){
+                        updatedUnfilteredOrders.push(order)
+                    }
+                })
+                setUnfilteredOrders(updatedUnfilteredOrders);
+                setOrderToDelete({});
+            }
+            else{
+                // Will account for filtered items by only removing items that are still present in list.
+                const updatedOrderslist = [];
+                const updatedOrdersMap = new Map();
+                const updatedUnfilteredOrders = [];
+                ordersListItems.map((order)=>{
+                    updatedOrdersMap.set(order._id, order._id)
+
+                })
+                // If true, item in not present in UI list.
+                unfilteredOrders.map((order)=>{
+                    if(updatedOrdersMap.get(order._id) == undefined){updatedUnfilteredOrders.push(order)}
+                })
+                setOrdersListItems(updatedUnfilteredOrders);
+                setUnfilteredOrders(updatedUnfilteredOrders);
+                setOrderFilter('');
+            }
         }
         catch(err){
+            console.log(err);
             setBasicMessageContent('Could not complete operation!');
             setBasicMessageOpen(true);
         }
@@ -197,6 +222,27 @@ export default function SessionReorder(props) {
                     }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
+                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                    </IconButton>
+                </div>
+            </>
+        )
+    }
+
+    function DeleteAllModalContent(){
+        return(
+            <>
+                <span>
+                    All items displayed will be removed...this cannot be undone.
+                    Continue?
+                </span>
+                <div style={{width: 'fit-content', margin: 'auto'}}>
+                    <IconButton autoFocus disableRipple onClick={()=>{
+                        deleteOrder();
+                        setDeleteAllModalOpen(false);
+                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                    </IconButton>
+                    <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
                         <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
@@ -302,14 +348,21 @@ export default function SessionReorder(props) {
                             onClick={handleClose}
                             aria-label="close"
                         >
-                            <CloseIcon />
+                            <PlaylistAddCheckRoundedIcon />
                         </IconButton>
-                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            Orders<span>&nbsp;&#40;{ordersListItems?.length}&#41;</span>
-                        </Typography>
+                        {ordersListItems.length > 0 ?
+                        <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(true)}}>
+                            <DeleteSweepOutlinedIcon  fontSize='20px'/>
+                        </IconButton>
+                        :
+                        <></>
+                        }
                         <IconButton disableRipple onClick={downloadOrds}>
                             <SaveAltIcon fontSize='20px'/>
                         </IconButton>
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                        </Typography>
+                        <span style={{color:'gray'}}>&#40;{ordersListItems?.length}&#41;</span>
                         {orderFilter != '' ? 
                         <IconButton disableRipple onClick={unfilter}>
                             <FilterListOffIcon fontSize='20px'/>
@@ -341,6 +394,7 @@ export default function SessionReorder(props) {
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
             <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
+            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>
         </>
     );
 }

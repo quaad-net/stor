@@ -182,7 +182,9 @@ export default function AppBarHideOnScroll(props) {
                 <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                 {props.sessionOrds.length > 0 ?
                 <>
-                <SessionReorder sessionOrds={props.sessionOrds} setSessionOrds={props.setSessionOrds}
+                <SessionReorder 
+                  sessionOrds={props.sessionOrds} 
+                  setSessionOrds={props.setSessionOrds}
                   btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
                 />
                 </>
@@ -295,7 +297,10 @@ export default function AppBarHideOnScroll(props) {
                   </div>
                   {props.sessionOrds.length > 0 ?
                   <div>
-                    <SessionReorder sessionOrds={props.sessionOrds} setSessionOrds={props.setSessionOrds}/>
+                    <SessionReorder 
+                      sessionOrds={props.sessionOrds} 
+                      setSessionOrds={props.setSessionOrds}
+                    />
                     <div style={{fontSize: '10px', textAlign: 'center'}}>Orders</div>
                   </div>
                   :
