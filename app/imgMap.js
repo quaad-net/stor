@@ -1,6 +1,8 @@
 
 const imgServer = 'https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/';
 const imgMap = new Map();
+imgMap.set('ai-generated-image.svg', `${imgServer}ef8dcbae-8822-4bb6-2871-30194de20400/public`)
+imgMap.set('ai-generated-text.svg', `${imgServer}8137c0e0-8d8c-4b7c-85fa-b7b6b0025000/public`)
 imgMap.set('calendar-circled-date.svg', `${imgServer}2e820a51-189e-49b2-20a2-a47bdaaaa200/public`);
 imgMap.set('checklist.svg', `${imgServer}02c21f70-0082-4bd8-b5d7-39168aed8100/public`); 
 imgMap.set('circled-check.svg', `${imgServer}234910ca-3ea0-47a5-4d93-4589b5cc8900/public`); 

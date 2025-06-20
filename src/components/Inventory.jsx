@@ -20,12 +20,14 @@ import Styled from '@emotion/styled';
 import OnClickToolTip from './OnClickToolTip';
 import useStoredOrds from '../../app/useStoredOrds';
 import imgMap from '../../app/imgMap';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
 import './Inventory.css'
 
 export default function Inventory() {
     const [partListItems, setPartListItems] = React.useState([]);
     const [unfilteredPartListItems, setUnfilteredPartListItems] = React.useState([])
-    const [idx, setIdx] = React.useState(0) // Use to maintain detailed view of query record in various components.
+    const [idx, setIdx] = React.useState(0) // Used to maintain view of query record in various components.
     const [ascending, setAscending] = React.useState(false);
     const [updateInventory, setUpdateInventory] = React.useState(false);
     const [authorizedUser, setAuthorizedUser] = React.useState(false);
@@ -663,6 +665,92 @@ export default function Inventory() {
         // }
     }
 
+    function AIPartDetails(props){
+        // Descriptions generated using gemini on Vertex AI.
+        // Images generated using Imagen on Vertex AI.
+
+        const [aiDescr, setAiDescr] = React.useState('');
+        const [aiImg, setAiImg] = React.useState(null);
+
+        React.useEffect(()=>{
+            getAIdescr(props.description)
+        },[])
+
+        function getAIdescr(description){
+            
+            fetch(`https://ai.quaad.net/stor-part-ai-details`, 
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({descr: description})
+                }
+            )
+            .then((res)=>{
+                return res.json()
+            })
+            .then((res)=>{
+                const data = JSON.parse(res.data);
+                setAiDescr(data.about);
+                fetch(`https://ai.quaad.net/stor-part-ai-image`, 
+                    {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({descr: data.description})
+                    }
+                )
+                .then((res)=>{
+                    return res.json()
+                })
+                .then((res)=>{
+                    const b64img = res.data;
+                    const Img = 
+                        <img 
+                            src={'data:image/png;base64,' + b64img} 
+                            width={210} 
+                            height={118}/> 
+                    setAiImg(Img);
+                })
+                .catch(()=>{
+                    setAiImg(<img src='' width={210} height={118}/>);
+                })
+            })
+            .catch(()=>{
+                setAiDescr('No info available.');
+                setAiImg(<img src='' width={210} height={118}/>)
+            })
+        }
+        
+        return (
+            <>
+                <div style={{marginLeft: '20px'}}>
+                    <div style={{width: 210}}>
+                        <i style={{fontSize: '10px'}}>
+                            *AI generated depictions of items are only intended
+                            as stand-ins and should be replaced with actual product image.
+                        </i>
+                    </div><br/>
+                    {aiImg == null?
+                    <Skeleton variant="rectangular" width={210} height={118} />
+                    :
+                    aiImg
+                    }
+                    <Box sx={{ pt: 0.5 }}>
+                        {aiDescr == '' ?
+                        <> 
+                        <Skeleton width={210} animation='wave'/>
+                        <Skeleton width={210} animation='wave'/>
+                        </>
+                        :
+                        <div style={{maxWidth: 210}}>
+                            <div>{aiDescr}</div>
+                        </div>
+                        }
+                    </Box>
+                </div>
+            </>
+        );
+    }
+    
     function InventoryDetailContent(props){
         if(!updateInventory){
         // Inventory Detail
@@ -704,34 +792,49 @@ max: ${partListItems[idx]?.max}
                         </div>
                     </div>
                     <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
-                        {partListItems[idx]?.description}<br/>
-                            <span className='inventory-switch-view'>
-                                <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
-                                    <div style={{color: 'gray'}}>
-                                        <img  src={imgMap.get('database-update.svg')} width='15px'/>
-                                        Update
-                                    </div>
-                                </button>
-                            </span>
-                            &nbsp;|&nbsp;
-                            <span className='inventory-copy-details'>
-                                <button 
-                                    style={{all: 'unset'}}
-                                    onClick={()=>{
-                                        copy()         
-                                    }}
-                                >
-                                    <OnClickToolTip
-                                        toolTipEl={
-                                            <div style={{color: 'gray'}}>
-                                                <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px'/>
-                                                Copy
-                                            </div>
-                                        }
-                                        toolTipTitle='Copied!'
-                                    />
-                                </button>
-                            </span>
+                        {partListItems[idx]?.description}
+                        <br/>
+                        <span className='inventory-switch-view'>
+                            <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
+                                <div style={{color: 'gray'}}>
+                                    <img  src={imgMap.get('database-update.svg')} width='15px'/>
+                                    Update
+                                </div>
+                            </button>
+                        </span>
+                        &nbsp;|&nbsp;
+                        <span className='inventory-copy-details'>
+                            <button 
+                                style={{all: 'unset'}}
+                                onClick={()=>{
+                                    copy()         
+                                }}
+                            >
+                                <OnClickToolTip
+                                    toolTipEl={
+                                        <div style={{color: 'gray'}}>
+                                            <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px'/>
+                                            Copy
+                                        </div>
+                                    }
+                                    toolTipTitle='Copied!'
+                                />
+                            </button>
+                        </span>
+                        &nbsp;|&nbsp;
+                        <span className='inventory-ai-content'>
+                            <button onClick={()=>{
+                                setBasicMessageModalContent(<AIPartDetails description={partListItems[idx].description} partCode={partListItems[idx].code}/>);
+                                setBasicMessageModalOpen(true);
+                            }} 
+                                style={{all: 'unset'}}
+                            >
+                                <div style={{color: 'gray'}}>
+                                    <img  src={imgMap.get('ai-generated-text.svg')} width='15px'/>
+                                    More
+                                </div>
+                            </button>
+                        </span>
                     </div>
                 </div>
                 <div style={{marginBottom: '10px'}}>
@@ -762,25 +865,26 @@ max: ${partListItems[idx]?.max}
                         </span>
                     </fieldset>
                 </div>
-                <div style={{marginBottom: '10px', marginLeft: '15px', paddingBottom: '10px'}}>
-                {usageData?.avgDailyUsage != undefined ?
-                <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', border: '1px dotted white'}}>
-                        <>
-                            <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
-                                <span style={{color: 'gray'}}>{usageData.avgDailyUsage.toFixed(2)}</span>
-                            </legend>
-                            <span style={{color: 'gray'}}>suggested min: {
-                                usageData.suggestedMin % 1 == 0 ? usageData.suggestedMin  : 
-                                (usageData.suggestedMin + 1).toFixed(0)
-                                }</span><br/>
-                            <span style={{color: 'gray'}}>p1: {usageData.p1Usage},</span>&nbsp;
-                            <span style={{color: 'gray'}}>p2: {usageData.p2Usage},</span>&nbsp;
-                            <span style={{color: 'gray'}}>p3: {usageData.p3Usage}</span>
-                        </>
-                </fieldset>
-                :
-                <></>
-                }
+                <div style={{marginBottom: '10px', paddingBottom: '10px'}}>
+                    {usageData?.avgDailyUsage != undefined ?
+                    <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', border: 'transparent'}}>
+                            <>
+                                <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
+                                    <span style={{color: 'gray'}}>{usageData.avgDailyUsage.toFixed(2)}</span>
+                                </legend>
+                                <span style={{color: 'gray'}}>p1: {usageData.p1Usage} -&gt;</span>&nbsp;
+                                <span style={{color: 'gray'}}>p2: {usageData.p2Usage} -&gt;</span>&nbsp;
+                                <span style={{color: 'gray'}}>p3: {usageData.p3Usage}</span><br/>
+                                <span style={{color: 'gray'}}>suggested min: {
+                                    usageData.suggestedMin % 1 == 0 ? usageData.suggestedMin  : 
+                                    (usageData.suggestedMin + 1).toFixed(0)
+                                    }
+                                </span>
+                            </>
+                    </fieldset>
+                    :
+                    <></>
+                    }
                 </div>
             </>
         )

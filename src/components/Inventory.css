@@ -32,7 +32,8 @@ input{
 }
 
 .inventory-copy-details:hover,
-.inventory-switch-view:hover{
+.inventory-switch-view:hover, 
+.inventory-ai-content:hover{
     cursor: pointer;
 }
 
