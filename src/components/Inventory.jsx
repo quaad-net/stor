@@ -40,6 +40,7 @@ export default function Inventory() {
     const [filterOn, setfilterOn] = React.useState(false);
     const [sessionOrds, setSessionOrds] = React.useState([]);
     const apiUrl = import.meta.env.VITE_API_URL;
+    const aiUrl = import.meta.env.VITE_AI_URL;
     const { token } = useToken();
     const navigate = useNavigate();
     const { userData } = useUserData();
@@ -677,8 +678,7 @@ export default function Inventory() {
         },[])
 
         function getAIdescr(description){
-            
-            fetch(`https://ai.quaad.net/stor-part-ai-details`, 
+            fetch(`${aiUrl}/stor-part-ai-details`, 
                 {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -691,7 +691,7 @@ export default function Inventory() {
             .then((res)=>{
                 const data = JSON.parse(res.data);
                 setAiDescr(data.about);
-                fetch(`https://ai.quaad.net/stor-part-ai-image`, 
+                fetch(`${aiUrl}/stor-part-ai-image`, 
                     {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
@@ -715,7 +715,7 @@ export default function Inventory() {
                 })
             })
             .catch(()=>{
-                setAiDescr('No info available.');
+                setAiDescr('Unavailable.');
                 setAiImg(<img src='' width={210} height={118}/>)
             })
         }
@@ -725,8 +725,8 @@ export default function Inventory() {
                 <div style={{marginLeft: '20px'}}>
                     <div style={{width: 210}}>
                         <i style={{fontSize: '10px'}}>
-                            *AI generated depictions of items are only intended
-                            as stand-ins and should be replaced with actual product image.
+                            *AI generated depictions of items are intended
+                            as stand-ins and may not be accurate. 
                         </i>
                     </div><br/>
                     {aiImg == null?
@@ -872,14 +872,15 @@ max: ${partListItems[idx]?.max}
                                 <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
                                     <span style={{color: 'gray'}}>{usageData.avgDailyUsage.toFixed(2)}</span>
                                 </legend>
-                                <span style={{color: 'gray'}}>p1: {usageData.p1Usage} -&gt;</span>&nbsp;
-                                <span style={{color: 'gray'}}>p2: {usageData.p2Usage} -&gt;</span>&nbsp;
+                                <span style={{color: 'gray'}}>p1: {usageData.p1Usage} =&gt;</span>&nbsp;
+                                <span style={{color: 'gray'}}>p2: {usageData.p2Usage} =&gt;</span>&nbsp;
                                 <span style={{color: 'gray'}}>p3: {usageData.p3Usage}</span><br/>
                                 <span style={{color: 'gray'}}>suggested min: {
                                     usageData.suggestedMin % 1 == 0 ? usageData.suggestedMin  : 
                                     (usageData.suggestedMin + 1).toFixed(0)
                                     }
-                                </span>
+                                </span><br/><br/>
+                                <span style={{fontSize: '13px'}}>*Suggested min is based on a 2-week order cycle.</span>
                             </>
                     </fieldset>
                     :
