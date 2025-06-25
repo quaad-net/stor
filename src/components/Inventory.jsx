@@ -671,7 +671,7 @@ export default function Inventory() {
         // Images generated using Imagen on Vertex AI.
 
         const [aiDescr, setAiDescr] = React.useState('');
-        const [aiImg, setAiImg] = React.useState(null);
+        // const [aiImg, setAiImg] = React.useState(null);
 
         React.useEffect(()=>{
             getAIdescr(props.description)
@@ -691,49 +691,51 @@ export default function Inventory() {
             .then((res)=>{
                 const data = JSON.parse(res.data);
                 setAiDescr(data.about);
-                fetch(`${aiUrl}/stor-part-ai-image`, 
-                    {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({descr: data.description})
-                    }
-                )
-                .then((res)=>{
-                    return res.json()
-                })
-                .then((res)=>{
-                    const b64img = res.data;
-                    const Img = 
-                        <img 
-                            src={'data:image/png;base64,' + b64img} 
-                            width={210} 
-                            height={118}/> 
-                    setAiImg(Img);
-                })
-                .catch(()=>{
-                    setAiImg(<img src='' width={210} height={118}/>);
-                })
+                // Uncomment section to get AI mech design of part.
+                // fetch(`${aiUrl}/stor-part-ai-image`, 
+                //     {
+                //         method: "POST",
+                //         headers: {"Content-Type": "application/json"},
+                //         body: JSON.stringify({descr: data.description})
+                //     }
+                // )
+                // .then((res)=>{
+                //     return res.json()
+                // })
+                // .then((res)=>{
+                //     const b64img = res.data;
+                //     const Img = 
+                //         <img 
+                //             src={'data:image/png;base64,' + b64img} 
+                //             width={210} 
+                //             height={118}/> 
+                //     setAiImg(Img);
+                // })
+                // .catch(()=>{
+                //     setAiImg(<img src='' width={210} height={118}/>);
+                // })
             })
             .catch(()=>{
                 setAiDescr('Unavailable.');
-                setAiImg(<img src='' width={210} height={118}/>)
+                // setAiImg(<img src='' width={210} height={118}/>)
             })
         }
         
         return (
             <>
                 <div style={{marginLeft: '20px'}}>
-                    <div style={{width: 210}}>
+                    {/* <div style={{width: 210}}>
                         <i style={{fontSize: '10px'}}>
                             *AI generated depictions of items are intended
                             as stand-ins and may not be accurate. 
                         </i>
-                    </div><br/>
-                    {aiImg == null?
+                    </div><br/> */}
+                    {/* {aiImg == null?
                     <Skeleton variant="rectangular" width={210} height={118} />
                     :
                     aiImg
-                    }
+                    } */}
+                    <img src={imgMap.get('machine-learning.svg')} width={210} height={118}/>
                     <Box sx={{ pt: 0.5 }}>
                         {aiDescr == '' ?
                         <> 

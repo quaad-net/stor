@@ -14,6 +14,7 @@ imgMap.set('left-circled-arrow.svg', `${imgServer}704de6cc-f6c5-478e-4dff-95a444
 imgMap.set('info.svg', `${imgServer}7921d4d9-1304-40cb-eff9-791a17c65a00/public`); 
 imgMap.set('info-circled.svg', `${imgServer}21ef9ed7-0535-45d7-184b-acff41217200/public`); 
 imgMap.set('login.svg', `${imgServer}582cfde1-bf59-4f5a-c3b1-35e6f0941b00/public`); 
+imgMap.set('machine-learning.svg', `${imgServer}2a8d7a0a-0819-4b36-8828-d430c1aa6700/public`)
 imgMap.set('pulsar-cart.svg', `${imgServer}2a2d4d4b-511f-457d-e4b4-39703938ec00/public`)
 imgMap.set('pulsar-clear.svg', `${imgServer}b38e1317-a708-42b2-f5ab-656fa2765700/public`); 
 imgMap.set('pulsar-circled-info.svg', `${imgServer}35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public`); 
