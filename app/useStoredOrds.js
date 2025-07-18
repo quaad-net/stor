@@ -5,7 +5,7 @@ const useStoredOrds = () => {
     const getStoredOrds =() =>{
      
         try{
-            const storedOrds = sessionStorage.getItem('storedOrds');
+            const storedOrds = localStorage.getItem('storedOrds');
             if(storedOrds === null || storedOrds === undefined){return ''}
             else{return storedOrds}
         }
@@ -16,7 +16,7 @@ const useStoredOrds = () => {
 
     const [storedOrds, setStoredOrds] = useState(getStoredOrds());
     const saveStoredOrds = storedOrds => {
-        sessionStorage.setItem('storedOrds', JSON.stringify(storedOrds));
+        localStorage.setItem('storedOrds', JSON.stringify(storedOrds));
         setStoredOrds(JSON.stringify(storedOrds));
       }
       return {

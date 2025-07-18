@@ -5,7 +5,7 @@ const useUser = () => {
     const getUser =() =>{
      
         try{
-            const user = sessionStorage.getItem('user');
+            const user = localStorage.getItem('user');
             if(user === null || user === undefined){return ''}
             else{return user}
         }
@@ -16,7 +16,7 @@ const useUser = () => {
 
     const [user, setUser] = useState(getUser());
     const saveUser = user => {
-        sessionStorage.setItem('user', user);
+        localStorage.setItem('user', user);
         setUser(user);
       }
       return {

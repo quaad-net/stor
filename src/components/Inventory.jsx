@@ -726,8 +726,7 @@ export default function Inventory() {
                 <div style={{marginLeft: '20px'}}>
                     {/* <div style={{width: 210}}>
                         <i style={{fontSize: '10px'}}>
-                            *AI generated depictions of items are intended
-                            as stand-ins and may not be accurate. 
+                            *AI generated depictions.
                         </i>
                     </div><br/> */}
                     {/* {aiImg == null?
@@ -882,7 +881,7 @@ max: ${partListItems[idx]?.max}
                                     (usageData.suggestedMin + 1).toFixed(0)
                                     }
                                 </span><br/><br/>
-                                <span style={{fontSize: '13px'}}>*Suggested min is based on a 2-week order cycle.</span>
+                                <span style={{fontSize: '13px'}}>*Suggested min is based on a 30-day order cycle.</span>
                             </>
                     </fieldset>
                     :
@@ -998,7 +997,6 @@ max: ${partListItems[idx]?.max}
                             setBasicMessageModalContent('Submitted');
                             setBasicMessageModalOpen(true);
                             setPartListItems(parts);
-                            sendConfirmation(partDetails)
                         }
                         else{
                             if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}

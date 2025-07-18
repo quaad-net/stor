@@ -5,7 +5,7 @@ const useUserData = () => {
     const getUserData =() =>{
      
         try{
-            const userData = sessionStorage.getItem('userData');
+            const userData = localStorage.getItem('userData');
             if(userData === null || userData === undefined){return ''}
             else{return userData}
         }
@@ -16,7 +16,7 @@ const useUserData = () => {
 
     const [userData, setUserData] = useState(getUserData());
     const saveUserData = userData => {
-        sessionStorage.setItem('userData', userData);
+        localStorage.setItem('userData', userData);
         setUserData(userData);
       }
       return {

@@ -163,7 +163,7 @@ export default function Lgn(){
         }
     
         return(
-            <div style={{height: '100vh', width: '95%', margin: 'auto', color: 'white', overflow: 'auto'}}>
+            <div id='lgn-main' style={{height: '100vh', width: '95%', margin: 'auto', color: 'white', overflow: 'auto'}}>
                 <h1>&nbsp;</h1>
                 <br/><br/>
                 <form>
@@ -238,7 +238,6 @@ export default function Lgn(){
                         <></>
                         }
                         <div style={{width: 'fit-content', margin: 'auto', marginTop: '150px'}}>
-                            <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
                             <button 
                                 style={{...(lgnType == 'Register' ? {display: 'none'} : {}), color: 'white', fontSize: 'small ', textAlign: 'center', width: 'fit-content', margin: 'auto'}} 
                                 type="button" 
@@ -247,7 +246,9 @@ export default function Lgn(){
                                     document.querySelector('#login-register-btn').blur();
                                     document.querySelector('form').reset();
                                     setLgnType('Register');
-                                }}>Register
+                                }}>
+                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
+                                Register
                             </button>
                             <button 
                                 style={{...(lgnType == 'Login' ? {display: 'none'} : {}), color: 'white', fontSize: 'small ', textAlign: 'center', width: 'fit-content', margin: 'auto'}} 
@@ -257,7 +258,9 @@ export default function Lgn(){
                                     document.querySelector('#login-login-btn').blur();
                                     document.querySelector('form').reset();
                                     setLgnType('Login');
-                                }}>Log-in
+                                }}>
+                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
+                                Log-in
                             </button>
                         </div>
                     </div>

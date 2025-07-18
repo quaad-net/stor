@@ -1,25 +1,15 @@
-import useUser from "../../app/useUser";
-import useToken from "../../app/useToken";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import useUserData from "../../app/useUserData";
 import UserInfoModal from "./UserInfoModal";
 import imgMap from "../../app/imgMap";
-
 import "./Institution.css"
 
 export default function ShowInstitution(props){ 
 
-  const {setToken} = useToken();
-  const {setUser} = useUser();
   const navigate = useNavigate();
-  const {setUserData} = useUserData();
   const [currentUserData, setCurrentUserData] = useOutletContext();
 
   function logout(){
-    setToken({});
-    setUser('')
-    setUserData('');
-    setCurrentUserData('');
+    localStorage.clear();
     navigate("/lgn")
   }
 
