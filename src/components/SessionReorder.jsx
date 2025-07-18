@@ -340,7 +340,7 @@ export default function SessionReorder(props) {
                     slots={{transition: Transition}}
                     >
                     <AppBar 
-                        sx={{ position: 'relative' }}>
+                        sx={{ position: 'fixed' }}>
                         <Toolbar>
                         <IconButton
                             edge="start"
@@ -382,6 +382,7 @@ export default function SessionReorder(props) {
                         />
                         </Toolbar>
                     </AppBar>
+                    <br/><br/>
                     <List>
                         {ordersListItems?.map((order, index)=>{
                             return (

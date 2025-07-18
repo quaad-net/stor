@@ -289,7 +289,7 @@ export default function Tasks(props) {
                     slots={{transition: Transition}}
                     >
                     <AppBar 
-                        sx={{ position: 'relative' }}>
+                        sx={{ position: 'fixed'}}>
                         <Toolbar>
                         <IconButton
                             edge="start"
@@ -321,6 +321,7 @@ export default function Tasks(props) {
                         />
                         </Toolbar>
                     </AppBar>
+                    <br/><br/>
                     <List>
                         {tasksListItems?.map((task, index)=>{
                             return (

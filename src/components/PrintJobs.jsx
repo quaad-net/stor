@@ -301,7 +301,7 @@ export default function PrintJobs(props) {
                     slots={{transition: Transition}}
                     >
                     <AppBar 
-                        sx={{ position: 'relative' }}>
+                        sx={{ position: 'fixed' }}>
                         <Toolbar>
                         <IconButton
                             edge="start"
@@ -340,7 +340,8 @@ export default function PrintJobs(props) {
                     </AppBar>
                     <List>
                         {tasksListItems.length > 1 ?
-                        <>
+                        <>  
+                            <br/><br/>
                             <ListItemButton 
                             >
                                 <IconButton 
@@ -366,6 +367,7 @@ export default function PrintJobs(props) {
                         </>
                         : <></>
                         }
+                        {tasksListItems.length < 2 ? <><br/><br/></> : <></>}
                         {tasksListItems?.map((task, index)=>{
                             return (
                                 <TaskItem task={task} key={index} index={index} printPrintJobs={props.printPrintJobs}/>

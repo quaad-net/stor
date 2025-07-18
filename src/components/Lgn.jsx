@@ -166,7 +166,7 @@ export default function Lgn(){
             <div id='lgn-main' style={{height: '100vh', width: '95%', margin: 'auto', color: 'white', overflow: 'auto'}}>
                 <h1>&nbsp;</h1>
                 <br/><br/>
-                <form>
+                <form style={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
                     <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
                         <legend><img src={imgMap.get('user-small.svg')} width='25px'/></legend>
                         <div className="header">
