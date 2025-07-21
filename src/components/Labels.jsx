@@ -17,7 +17,7 @@ export default function Labels(props){
     const { token } = useToken();
 
     const codeMaxChar = largeLbl? 12 : 30;
-    const descriptionMaxChar = largeLbl? 25: 186; 
+    const descriptionMaxChar = largeLbl? 40 : 186; //alt 25: 186
     const binLocMaxChar = largeLbl? 12: 20; 
     const minMaxChar = 6;
     const maxMaxChar = 6;
@@ -224,7 +224,7 @@ export default function Labels(props){
         return(
             <form className="stor-new-label-form">
                 <input
-                    maxLength={codeMaxChar}
+                    {...(largeLbl ? {} : {maxLength: codeMaxChar})}
                     className='stor-input'
                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -236,7 +236,7 @@ export default function Labels(props){
                     }}
                 />
                 <input 
-                    maxLength={binLocMaxChar}
+                    {...(largeLbl ? {} : {maxLength: binLocMaxChar})}
                     className='stor-input'
                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -248,7 +248,7 @@ export default function Labels(props){
                     }}
                 />
                 <input 
-                    maxLength={descriptionMaxChar}
+                    {...(largeLbl ? {} : {maxLength: descriptionMaxChar})}
                     className='stor-input'
                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -259,30 +259,36 @@ export default function Labels(props){
                         setFormDesc(e.target.value)
                     }}
                 />
-                <input 
-                    maxLength={minMaxChar}
-                    className='stor-input'
-                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
-                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
-                    }}
-                    type='text' 
-                    placeholder='Min' 
-                    onChange={(e)=>{
-                        setFormMin(e.target.value)
-                    }}
-                />
-                <input
-                    maxLength={maxMaxChar}
-                    className='stor-input'
-                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
-                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
-                    }}
-                    type='text' 
-                    placeholder='Max' 
-                    onChange={(e)=>{
-                        setFormMax(e.target.value)
-                    }}
-                />
+                {!largeLbl ?
+                <>
+                    <input 
+                        maxLength={minMaxChar}
+                        className='stor-input'
+                        style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                        }}
+                        type='text' 
+                        placeholder='Min' 
+                        onChange={(e)=>{
+                            setFormMin(e.target.value)
+                        }}
+                    />
+                    <input
+                        maxLength={maxMaxChar}
+                        className='stor-input'
+                        style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                        }}
+                        type='text' 
+                        placeholder='Max' 
+                        onChange={(e)=>{
+                            setFormMax(e.target.value)
+                        }}
+                    />
+                </>
+                :
+                <></>
+                }
                 <div style={{width: 'fit-content', margin: 'auto', marginTop: '10px', marginBottom: '10px'}}>
                     <IconButton disableRipple onClick={()=>{
                         setFormModalOpen(false);
