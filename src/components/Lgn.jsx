@@ -53,7 +53,7 @@ export default function Lgn(){
 
                     setToken(data.token);
                     setUser(data.email);
-                    setUserData(data.userData); // updates session storage
+                    setUserData(data.userData); // updates local storage
                     setCurrentUserData(data.userData); // updates current state
                     navigate("/inventory")
                 }

@@ -14,7 +14,8 @@ const App = () => {
   
   useEffect(()=>{
     if(location.pathname == '/'){ // If false, route is not valid and will render <ErrorPage/>
-    navigate("/lgn")
+      if(userData == ''){navigate("/lgn")}
+      else{navigate("/inventory")}   
     }
   },[navigate, location.pathname])
 
