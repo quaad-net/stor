@@ -925,8 +925,9 @@ max: ${partListItems[idx]?.max}
         // ]
 
         async function submitUserInput(input){
-            //takes input obj
+            
             try{
+                setBasicMessageModalOpen(false);
                 const parts = [...partListItems];
                 const currentPart = parts[idx];
                 const now = new Date();
@@ -1056,6 +1057,7 @@ max: ${partListItems[idx]?.max}
             }
         }
 
+        // Sends email confirmation of action.
         async function sendConfirmation(partDetails){
             fetch(`${apiUrl}/${user.institution}/notif`, 
                 {

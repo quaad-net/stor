@@ -65,6 +65,9 @@ legend{
     background-color: rgba(255, 255, 255, 0.055);
 }
 
+#lgn-main ::placeholder{
+    color: gray
+}
 
 /*------ Background Image ------*/
 
@@ -83,8 +86,4 @@ legend{
     background: url('https://imagedelivery.net/hvBzZjzDepIfNAvBsmlTgA/7c5b40aa-3cc7-4c8e-ade7-da69dd06e000/public') no-repeat center/contain;
     opacity: 0.15;
     z-index: -1;
-}
-
-#lgn-main ::placeholder{
-    color: white
 }
