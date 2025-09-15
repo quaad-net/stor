@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment } from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
@@ -20,10 +20,10 @@ export default function InformativeToolTip(props) {
 return (
         <InfoToolTip
             title={
-            <React.Fragment>
+            <Fragment>
                 <Typography color="inherit">{props.toolTipHeader}</Typography>
                 {props.toolTipContent}
-            </React.Fragment>
+            </Fragment>
             }
         >
             <Button>?</Button>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, Fragment} from 'react'
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -47,13 +47,13 @@ HideOnScroll.propTypes = {
 
 export default function AppBarHideOnScroll(props) {
 
-  const [queryType, setQueryType] = React.useState('binLoc');
+  const [queryType, setQueryType] = useState('binLoc');
 
 
     function AppBarTools(){
-        const [query, setQuery] = React.useState('');
-        const [anchorEl, setAnchorEl] = React.useState(null);
-        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);    
+        const [query, setQuery] = useState('');
+        const [anchorEl, setAnchorEl] = useState(null);
+        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);    
         const isMenuOpen = Boolean(anchorEl);
     
         const handleMobileMenuClose = () => {
@@ -323,7 +323,7 @@ export default function AppBarHideOnScroll(props) {
     }
     
   return (
-    <React.Fragment >
+    <Fragment >
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar sx={{backgroundColor: 'rgb(22, 22, 22)'}}>
@@ -337,6 +337,6 @@ export default function AppBarHideOnScroll(props) {
         </Box>
       </Container>
       {/* End utility */}
-    </React.Fragment>
+    </Fragment>
   );
 }

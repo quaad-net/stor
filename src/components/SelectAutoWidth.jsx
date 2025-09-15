@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export default function SelectAutoWidth(props) {
-  const [selection, setSelection] = React.useState(props.defaultSelection);
+  const [selection, setSelection] = useState(props.defaultSelection);
 
   //props.menuItems = [{value: 'actual value', name: 'as seen by user'}, {}, {}, ...]
 

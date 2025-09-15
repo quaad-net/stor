@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -17,13 +17,13 @@ import imgMap from '../../app/imgMap';
 
 import './FullScreenScanner.css'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function FullScreenScanner(props) {
-  const [open, setOpen] = React.useState(false);
-  const [scanResult, setScanResult] = React.useState('00-00000');
+  const [open, setOpen] = useState(false);
+  const [scanResult, setScanResult] = useState('00-00000');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,7 +64,7 @@ export default function FullScreenScanner(props) {
 
   return (
     <ThemeProvider theme={darkTheme}>
-    <React.Fragment>
+    <Fragment>
       <IconButton
         disableRipple
         size="large" 
@@ -116,7 +116,7 @@ export default function FullScreenScanner(props) {
         <NewScan displayCam={true}/>
         </div>
       </Dialog>
-    </React.Fragment>
+    </Fragment>
     </ThemeProvider>
   );
 }

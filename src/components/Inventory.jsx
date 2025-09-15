@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -25,20 +25,20 @@ import Box from '@mui/material/Box';
 import './Inventory.css'
 
 export default function Inventory() {
-    const [partListItems, setPartListItems] = React.useState([]);
-    const [unfilteredPartListItems, setUnfilteredPartListItems] = React.useState([])
-    const [idx, setIdx] = React.useState(0) // Used to maintain view of query record in various components.
-    const [ascending, setAscending] = React.useState(false);
-    const [updateInventory, setUpdateInventory] = React.useState(false);
-    const [authorizedUser, setAuthorizedUser] = React.useState(false);
-    const [basicMessageModalOpen, setBasicMessageModalOpen] = React.useState(false);
-    const [basicMessageModalContent, setBasicMessageModalContent] = React.useState('');
-    const [pagListItems, setPagListItems] = React.useState([]);
-    const [pagIdxMax, setPagIdxMax] = React.useState(1);
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [usageData, setUsageData] = React.useState({});
-    const [filterOn, setfilterOn] = React.useState(false);
-    const [sessionOrds, setSessionOrds] = React.useState([]);
+    const [partListItems, setPartListItems] = useState([]);
+    const [unfilteredPartListItems, setUnfilteredPartListItems] = useState([])
+    const [idx, setIdx] = useState(0) // Used to maintain view of query record in various components.
+    const [ascending, setAscending] = useState(false);
+    const [updateInventory, setUpdateInventory] = useState(false);
+    const [authorizedUser, setAuthorizedUser] = useState(false);
+    const [basicMessageModalOpen, setBasicMessageModalOpen] = useState(false);
+    const [basicMessageModalContent, setBasicMessageModalContent] = useState('');
+    const [pagListItems, setPagListItems] = useState([]);
+    const [pagIdxMax, setPagIdxMax] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usageData, setUsageData] = useState({});
+    const [filterOn, setfilterOn] = useState(false);
+    const [sessionOrds, setSessionOrds] = useState([]);
     const apiUrl = import.meta.env.VITE_API_URL;
     const aiUrl = import.meta.env.VITE_AI_URL;
     const { token } = useToken();
@@ -59,15 +59,15 @@ export default function Inventory() {
         &:hover {cursor: pointer}
     `
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         if(storedOrds != ''){setSessionOrds(JSON.parse(storedOrds))}
     }, [])
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true});
     },[])
     
-    React.useEffect(()=>{
+    useEffect(()=>{
 
         // onClick, vert will update content in drawer.
         const verts = document.querySelectorAll('.list-vert');
@@ -584,7 +584,7 @@ export default function Inventory() {
                         </Typography>
                     }
                     secondary={
-                        <React.Fragment>
+                        <Fragment>
                         <Typography
                             component="span"
                             variant="body2"
@@ -593,7 +593,7 @@ export default function Inventory() {
                             <span className='inventory-list-binloc'>{modBinLoc}</span>
                             <span className='inventory-list-description' style={{color: 'gray'}}><br/>{modDescription}</span>
                         </Typography>
-                        </React.Fragment>
+                        </Fragment>
                     }
                     />
                     <IconButton disableRipple className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}
@@ -670,10 +670,10 @@ export default function Inventory() {
         // Descriptions generated using gemini on Vertex AI.
         // Images generated using Imagen on Vertex AI.
 
-        const [aiDescr, setAiDescr] = React.useState('');
-        // const [aiImg, setAiImg] = React.useState(null);
+        const [aiDescr, setAiDescr] = useState('');
+        // const [aiImg, setAiImg] = useState(null);
 
-        React.useEffect(()=>{
+        useEffect(()=>{
             getAIdescr(props.description)
         },[])
 
@@ -1076,8 +1076,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function PickModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1107,10 +1107,10 @@ max: ${partListItems[idx]?.max}
             }
 
             function PickForm(){
-                const [tmpWorkOrder, setTmpWorkOrder] = React.useState(0);
-                const [tmpReorderAmt, setTmpReorderAmt] = React.useState(0);
-                const [tmpComment, setTmpComment]  = React.useState('');
-                const [tmpQtyUsed, setTmpQtyUsed]  = React.useState(0);
+                const [tmpWorkOrder, setTmpWorkOrder] = useState(0);
+                const [tmpReorderAmt, setTmpReorderAmt] = useState(0);
+                const [tmpComment, setTmpComment]  = useState('');
+                const [tmpQtyUsed, setTmpQtyUsed]  = useState(0);
 
                 function submitForm(){
                     try{
@@ -1199,8 +1199,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function CountModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1230,8 +1230,8 @@ max: ${partListItems[idx]?.max}
             }
 
             function CountForm(){
-                const [tmpCount, setTmpCount] = React.useState(0);
-                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpCount, setTmpCount] = useState(0);
+                const [tmpComment, setTmpComment]  = useState('');
 
                 function submitForm(){
                     try{
@@ -1288,8 +1288,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function ReorderModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1319,8 +1319,8 @@ max: ${partListItems[idx]?.max}
             }
 
             function ReordForm(){
-                const [tmpReord, setTmpReord] = React.useState(0);
-                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpReord, setTmpReord] = useState(0);
+                const [tmpComment, setTmpComment]  = useState('');
 
                 function addToSessionOrd({reorderAmt, comment}){
                     const ords = [];
@@ -1405,8 +1405,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function LocationModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1436,8 +1436,8 @@ max: ${partListItems[idx]?.max}
             }
 
             function LocationForm(){
-                const [tmpLoc, setTmpLoc] = React.useState('');
-                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpLoc, setTmpLoc] = useState('');
+                const [tmpComment, setTmpComment]  = useState('');
 
                 function submitForm(){
                     try{
@@ -1492,8 +1492,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function LabelModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1523,7 +1523,7 @@ max: ${partListItems[idx]?.max}
             }
 
             function LabelForm(){
-                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpComment, setTmpComment]  = useState('');
 
                 function submitForm(){
                     try{
@@ -1566,8 +1566,8 @@ max: ${partListItems[idx]?.max}
         }
 
         function OtherModalContent(){
-            const [displayAlert, setDisplayAlert] = React.useState(false);
-            const [alertContent, setAlertContent] = React.useState('');
+            const [displayAlert, setDisplayAlert] = useState(false);
+            const [alertContent, setAlertContent] = useState('');
 
             function ErrorAlert(){
                 return(
@@ -1597,7 +1597,7 @@ max: ${partListItems[idx]?.max}
             }
 
             function OtherForm(){
-                const [tmpComment, setTmpComment]  = React.useState('');
+                const [tmpComment, setTmpComment]  = useState('');
 
                 function submitForm(){
                     try{

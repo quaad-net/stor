@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -22,20 +22,20 @@ import useUserData from '../../app/useUserData';
 import imgMap from '../../app/imgMap';
 // import InputAdornment from '@mui/material/InputAdornment';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function PrintJobs(props) {
-    const [open, setOpen] = React.useState(false);
-    const [tasksListItems, setTasksListItems] = React.useState([]);
-    const [unfilteredTasks, setUnfilteredTasks] = React.useState([]);
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const [taskToDelete, setTaskToDelete] = React.useState({})
-    const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
-    const [basicMessageContent, setBasicMessageContent] = React.useState('')
-    const [userFilter, setUserFilter] = React.useState('')
-    const [deleteAllModalOpen, setDeleteAllModalOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [tasksListItems, setTasksListItems] = useState([]);
+    const [unfilteredTasks, setUnfilteredTasks] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState({})
+    const [basicMessageOpen, setBasicMessageOpen] = useState(false);
+    const [basicMessageContent, setBasicMessageContent] = useState('')
+    const [userFilter, setUserFilter] = useState('')
+    const [deleteAllModalOpen, setDeleteAllModalOpen] = useState(false);
     const { token } = useToken();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
@@ -238,7 +238,7 @@ export default function PrintJobs(props) {
     }
 
     function TaskItem(props){
-        const [itemOpen, setItemOpen] = React.useState(false);
+        const [itemOpen, setItemOpen] = useState(false);
         return(
             <>
                 <ListItemButton sx={{display: 'block'}} onClick={()=>{setItemOpen(!itemOpen)}}>
@@ -284,7 +284,7 @@ export default function PrintJobs(props) {
     return (
         <>
             <ThemeProvider theme={darkTheme}>
-                <React.Fragment>
+                <Fragment>
                     <IconButton 
                         disableRipple 
                         onClick={()=>{
@@ -375,7 +375,7 @@ export default function PrintJobs(props) {
                         })}
                     </List>
                     </Dialog>
-                </React.Fragment>
+                </Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
             <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -23,7 +23,7 @@ import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
 import imgMap from '../../app/imgMap';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -48,14 +48,14 @@ const sampleTasks = [
 ]
 
 export default function Tasks(props) {
-    const [open, setOpen] = React.useState(false);
-    const [tasksListItems, setTasksListItems] = React.useState([]);
-    const [unfilteredTasks, setUnfilteredTasks] = React.useState([]);
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const [taskToDelete, setTaskToDelete] = React.useState({})
-    const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
-    const [basicMessageContent, setBasicMessageContent] = React.useState('')
-    const [userFilter, setUserFilter] = React.useState('')
+    const [open, setOpen] = useState(false);
+    const [tasksListItems, setTasksListItems] = useState([]);
+    const [unfilteredTasks, setUnfilteredTasks] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState({})
+    const [basicMessageOpen, setBasicMessageOpen] = useState(false);
+    const [basicMessageContent, setBasicMessageContent] = useState('')
+    const [userFilter, setUserFilter] = useState('')
     const { token } = useToken();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
@@ -228,7 +228,7 @@ export default function Tasks(props) {
     }
 
     function TaskItem(props){
-        const [itemOpen, setItemOpen] = React.useState(false);
+        const [itemOpen, setItemOpen] = useState(false);
         
         return(
             <>
@@ -267,7 +267,7 @@ export default function Tasks(props) {
     return (
         <>
             <ThemeProvider theme={darkTheme}>
-                <React.Fragment>
+                <Fragment>
                     <IconButton
                         disableRipple
                         size="large"
@@ -330,7 +330,7 @@ export default function Tasks(props) {
                         })}
                     </List>
                     </Dialog>
-                </React.Fragment>
+                </Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
             <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>

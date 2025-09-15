@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -46,13 +46,13 @@ const Puller = styled('div')(({ theme }) => ({
 
 function SwipeableEdgeDrawer(props) {
   
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     
     const verts = document.querySelectorAll('.list-vert'); 
     verts.forEach((vert)=>{

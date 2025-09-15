@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -39,21 +39,21 @@ function jsonToCsv(objArray) {
     return csv
 }
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
 export default function SessionReorder(props) {
-    const [open, setOpen] = React.useState(false);
-    const [ordersListItems, setOrdersListItems] = React.useState([]);
-    const [unfilteredOrders, setUnfilteredOrders] = React.useState([]);
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const [orderToDelete, setOrderToDelete] = React.useState({})
-    const [basicMessageOpen, setBasicMessageOpen] = React.useState(false);
-    const [basicMessageContent, setBasicMessageContent] = React.useState('');
-    const [orderFilter, setOrderFilter] = React.useState('');
-    const [deleteAllModalOpen, setDeleteAllModalOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [ordersListItems, setOrdersListItems] = useState([]);
+    const [unfilteredOrders, setUnfilteredOrders] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [orderToDelete, setOrderToDelete] = useState({})
+    const [basicMessageOpen, setBasicMessageOpen] = useState(false);
+    const [basicMessageContent, setBasicMessageContent] = useState('');
+    const [orderFilter, setOrderFilter] = useState('');
+    const [deleteAllModalOpen, setDeleteAllModalOpen] = useState(false);
     const { storedOrds, setStoredOrds } = useStoredOrds();
 
     const handleClickOpen = () => {
@@ -251,8 +251,8 @@ export default function SessionReorder(props) {
     }
 
     function OrderItem(props){
-        const [itemOpen, setItemOpen] = React.useState(false);
-        const [newReorderAmt, setNewReorderAmt] = React.useState(0);
+        const [itemOpen, setItemOpen] = useState(false);
+        const [newReorderAmt, setNewReorderAmt] = useState(0);
         
         return(
             <>
@@ -318,7 +318,7 @@ export default function SessionReorder(props) {
     return (
         <>
             <ThemeProvider theme={darkTheme}>
-                <React.Fragment>
+                <Fragment>
                     <IconButton
                         disableRipple
                         size="large"
@@ -391,7 +391,7 @@ export default function SessionReorder(props) {
                         })}
                     </List>
                     </Dialog>
-                </React.Fragment>
+                </Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
             <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>

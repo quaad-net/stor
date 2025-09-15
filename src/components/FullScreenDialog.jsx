@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,12 +12,12 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function FullScreenDialog() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,7 +28,7 @@ export default function FullScreenDialog() {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <IconButton variant="outlined" onClick={handleClickOpen}>
         Open full-screen dialog
       </IconButton>
@@ -70,6 +70,6 @@ export default function FullScreenDialog() {
           </ListItemButton>
         </List>
       </Dialog>
-    </React.Fragment>
+    </Fragment>
   );
 }

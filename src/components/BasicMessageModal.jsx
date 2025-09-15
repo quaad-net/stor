@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -23,7 +23,7 @@ export default function BasicMessageModal(props) {
 
     const handleClose = () => props.setModalOpen(false);
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         document.addEventListener('keydown',(e)=>{
             if(e.key === "Enter"){props.setModalOpen(false)}
         })
