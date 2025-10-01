@@ -1,4 +1,5 @@
 import BasicMessageModal from "./BasicMessageModal";
+import CircularIndeterminate from "./Progress";
 import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
 import imgMap from "../../app/imgMap";
@@ -43,18 +44,23 @@ export default function SyntaxHelper(props){
     return(
         <>
             <div {...(props.mobileMenu ? {} : {className: 'not-shown-on-mobile'})}>
-            <IconButton 
-                disableRipple
-                onClick={()=>{setModalOpen(true)}}
-                size="small">
-                <img 
-                    src={imgMap.get('stor-logo.svg')} 
-                    width='25px' 
-                    style={props.mobileMenu  ? {float: 'right'}: {marginRight: '0'}}
-                />
-                
-            </IconButton>
-            <span>?</span>
+            {props.loading ? 
+            <CircularIndeterminate size={25}/>:
+            <>
+                <IconButton 
+                    disableRipple
+                    onClick={()=>{setModalOpen(true)}}
+                    size="small">
+                    <img 
+                        src={imgMap.get('stor-logo.svg')} 
+                        width='25px' 
+                        style={props.mobileMenu  ? {float: 'right'}: {marginRight: '0'}}
+                    />
+                    
+                </IconButton>
+                <span>?</span>
+            </>
+            }
             <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={<ModalContent/>} />
             </div>
         </>

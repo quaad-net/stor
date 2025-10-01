@@ -108,8 +108,10 @@ export default function Inventory() {
     function inventoryQuery({query, queryType, noDialog}){
         try{
             if(!filterOn){
-                fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
-                    'uwm' : user.institution}/inventory/${queryType}/`, {
+                fetch(queryType=='semantic'? 
+                    `${aiUrl}/stor-part-ai-keywords/` : 
+                    `${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+                        'uwm' : user.institution}/inventory/${queryType}/`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`, 
@@ -121,17 +123,46 @@ export default function Inventory() {
                     if(res.status == 401){throw new Error('Unauthorized user')}
                     else if(res.status == 404){throw new Error('No match')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
-                    else if(res.status == 500){throw new Error('Something went wrong')}
+                    // Specific semantic search error messagges will be partially shown in modal.
+                    else if(res.status == 500 && !queryType=='semantic'){throw new Error('Something went wrong')}
                     else{
                         setAuthorizedUser(true)
                         return res.json()
                     }
                 })
                 .then((res)=>{
-                    if(res.message == 'Invalid query format'){throw new Error('Invalid syntax')}
+                    const ECONNREFUSED = new RegExp('ECONNREFUSED', 'i');
+                    if(res?.message == 'Invalid query format'){throw new Error('Invalid syntax')}
+                    else if(res?.message == 'Too many keyword records returned'){ // Only applies to semantic search.
+                        setBasicMessageModalContent(
+                            <span>
+                                Could not complete query due to constraints.<br/>
+                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <br/><br/>
+                                Try using different keywords or a different query type.
+                            </span>
+                        );
+                        setBasicMessageModalOpen(true);
+                    }
+                    else if(ECONNREFUSED.test(res?.message) && queryType=='semantic'){
+                        setBasicMessageModalContent(
+                            <span>
+                                Could not complete query due to constraints.<br/>
+                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <br/><br/>
+                                Try using different keywords or a different query type.
+                            </span>
+                        );
+                        setBasicMessageModalOpen(true);
+                    }
                     else{
                         if(res.length == 0){
-                            setBasicMessageModalContent('No match found.')
+                            setBasicMessageModalContent(
+                                <span>
+                                    No match found for<br/>
+                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                </span>
+                            )
                             if(!noDialog){setBasicMessageModalOpen(true)}
                         }else{
                             if(res.length > 30){  // Needs to be paginated.
@@ -148,13 +179,19 @@ export default function Inventory() {
                             }
                             setIdx(0);
                             getUsageData(res[0].code, res[0].warehouseCode);
-                            setBasicMessageModalContent(`Returned ${res.length} record${res.length > 1 ? 's' : ''}.`);
+                            setBasicMessageModalContent(
+                                <span>
+                                    Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
+                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                </span>
+                            );
                             if(!noDialog){setBasicMessageModalOpen(true)};
                         }
                     };
                 })
                 .catch((err)=>{
-                    if (err.message=='Invalid syntax'){
+                    console.log(err)
+                    if(err.message=='Invalid syntax'){
                         setBasicMessageModalContent(err.message);
                         setBasicMessageModalOpen(true);
                     }
@@ -166,13 +203,30 @@ export default function Inventory() {
                         setBasicMessageModalOpen(true);
                     }
                     else if(err.message == 'No match'){
-                        setBasicMessageModalContent('No match found!');
+                        setBasicMessageModalContent(
+                            <span>
+                                No match found for<br/>
+                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                            </span>
+                        );
                         setBasicMessageModalOpen(true);
                     }
                     else{
-                        setBasicMessageModalContent('Could not complete query!');
-                        setBasicMessageModalOpen(true);
-                        console.log(err)
+                        if(queryType=='semantic'){
+                            setBasicMessageModalContent(
+                                <span>
+                                    Server Error<br/>
+                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>
+                                        {err.message.length > 100 ? `${err.message.slice(0, 75)}...` : `${err.message}`}
+                                    </span>
+                                </span>
+                            );
+                            setBasicMessageModalOpen(true);
+                        }
+                        else{
+                            setBasicMessageModalContent('Could not complete query!');
+                            setBasicMessageModalOpen(true);
+                        }
                     }
                 })
             }
@@ -368,8 +422,7 @@ export default function Inventory() {
             }
         }
         catch(err){
-            if(err.message == 'No input'){}
-            else{console.log(err)}
+            console.log(err)
         }
     }
 
@@ -566,6 +619,7 @@ export default function Inventory() {
                     className={`inventory-list-item ${index == partListItems.length -1 ? 'last-list-item' : ''}
                     ${index === idx ? 'inventory-list-active' : ''} inventory-li-${index}`} 
                     sx={{marginTop: '0', 
+                        borderBottom: '1px solid rgb(15, 15, 15)',
                         // ':hover': {backgroundColor: 'rgba(255, 255, 255, 0.027) !important'},
                     }} 
                     >

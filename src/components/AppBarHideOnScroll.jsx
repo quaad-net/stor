@@ -1,4 +1,4 @@
-import { useState, Fragment} from 'react'
+import { useState, Fragment, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,6 +23,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
 import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
+import CircularIndeterminate from './Progress';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -48,13 +49,13 @@ HideOnScroll.propTypes = {
 export default function AppBarHideOnScroll(props) {
 
   const [queryType, setQueryType] = useState('binLoc');
-
-
+  
     function AppBarTools(){
         const [query, setQuery] = useState('');
         const [anchorEl, setAnchorEl] = useState(null);
         const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);    
         const isMenuOpen = Boolean(anchorEl);
+        const [loading, setLoading] = useState(false);
     
         const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -97,12 +98,14 @@ export default function AppBarHideOnScroll(props) {
         const menuId = 'primary-search-account-menu';
 
         const queryTypeSelections = [
-          //Name : as it appears to user
+          // name: as it appears to user
           {value: 'binLoc', name: 'Loc'},
           {value: 'partCode', name: 'Code'},
-          {value: 'descr', name: 'Descr'},
-          props.filterOn ? {value: 'ware', name: 'Ware'} : {}
+          {value: 'descr', name: 'Descr'}
         ]
+
+        if(props.filterOn){queryTypeSelections.push({value: 'ware', name: 'Ware'})}
+        if(!props.filterOn){queryTypeSelections.push({value: 'semantic', name: 'Sem'})}
 
         const renderMenu = (
           <Menu
@@ -138,7 +141,7 @@ export default function AppBarHideOnScroll(props) {
             <>
               <div style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin'}}>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                  <SyntaxHelper mobileMenu />
+                  <SyntaxHelper mobileMenu/>
                   <span style={{color: 'gray'}}>QryHelp</span>
                 </div>
                 <div style={{width: 'fit-content', margin:'auto'}}>-----</div>
@@ -200,17 +203,17 @@ export default function AppBarHideOnScroll(props) {
         return(
             <Box sx={{flexGrow: 1}}>
             <Toolbar className='inventory-appbar-tools'>
-                <SyntaxHelper />
+                <SyntaxHelper loading={loading}/>
                 <Search>
                   <StyledInputBase
                       className='inventory-list-searchbox'
-                      placeholder={props.filterOn? 'Filter...' : 'Query...'}
+                      placeholder={loading ? 'Loading...' : props.filterOn? 'Filter...' : 'Query...'}
                       inputProps={{ 'aria-label': 'search' }}
-                      
                       onKeyDown={(e)=>{
                         if(e.key === "Enter"){
-                          setQuery(e.target.value.trim())
-                          props.inventoryQuery({query: e.target.value?.trim(), queryType: queryType});
+                          setLoading(true);
+                          setQuery(e.target.value.trim());
+                          props.inventoryQuery({query: e.target.value?.trim(), queryType});
                         }
                       }}
                   />
@@ -313,7 +316,11 @@ export default function AppBarHideOnScroll(props) {
                 </Box>
                 {/*Mobile Menu */}
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                  {loading ? 
+                  <CircularIndeterminate size={15}/>
+                  :
                   <MoreModal modalBtnProps={modalBtnProps} modalContent={<ModalMobileMenu/>}/>
+                  }
                 </Box>  
             </Toolbar>
               {/* {renderMobileMenu} */}
