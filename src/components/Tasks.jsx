@@ -21,6 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
+import CircularIndeterminate from './Progress';
 import imgMap from '../../app/imgMap';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -54,7 +55,8 @@ export default function Tasks(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState({})
     const [basicMessageOpen, setBasicMessageOpen] = useState(false);
-    const [basicMessageContent, setBasicMessageContent] = useState('')
+    const [basicMessageContent, setBasicMessageContent] = useState('');
+    const [loading, setLoading] = useState(false);
     const [userFilter, setUserFilter] = useState('')
     const { token } = useToken();
     const { userData } = useUserData();
@@ -207,6 +209,8 @@ export default function Tasks(props) {
     }
 
     function ModalContent(){
+        const [loading, setLoading] = useState(false);
+
         return(
             <>
                 <span>
@@ -214,14 +218,31 @@ export default function Tasks(props) {
                     Continue?
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                    <IconButton autoFocus disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        deleteTask(taskToDelete.id)
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
-                    </IconButton>
-                    <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
-                    </IconButton>
+                    {!loading ?
+                    <>
+                        <IconButton autoFocus disableRipple onClick={()=>{
+                            setLoading(true);
+                            deleteTask(taskToDelete.id)
+                            .then(()=>{
+                                setLoading(false);
+                                setModalOpen(false);
+                            })
+                            .catch(()=>{
+                                setLoading(false);
+                                setModalOpen(false);
+                            })
+                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        </IconButton>
+                        <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
+                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                        </IconButton>
+                    </>
+                    :
+                    <>
+                        <br/>
+                        <CircularIndeterminate size={30}/>
+                    </>
+                    }
                 </div>
             </>
         )
@@ -275,7 +296,10 @@ export default function Tasks(props) {
                         color="inherit"
                         onClick={()=>{
                             handleClickOpen();
-                            getTasks();
+                            setLoading(true);
+                            getTasks()
+                            .then(()=>{setLoading(false)})
+                            .catch(()=>{setLoading(false)})
                         }}
                     >
                         <img src={imgMap.get('checklist.svg')} width='25px' />
@@ -291,14 +315,20 @@ export default function Tasks(props) {
                     <AppBar 
                         sx={{ position: 'fixed'}}>
                         <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
-                            <CloseIcon />
-                        </IconButton>
+                        {!loading ?
+                        <>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </>
+                        :
+                        <CircularIndeterminate size={30}/>
+                        }
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                             TASKS<span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
                         </Typography>

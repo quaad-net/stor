@@ -22,6 +22,7 @@ import useStoredOrds from '../../app/useStoredOrds';
 import imgMap from '../../app/imgMap';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import CircularIndeterminate from './Progress';
 import './Inventory.css'
 
 export default function Inventory() {
@@ -1165,6 +1166,7 @@ max: ${partListItems[idx]?.max}
                 const [tmpReorderAmt, setTmpReorderAmt] = useState(0);
                 const [tmpComment, setTmpComment]  = useState('');
                 const [tmpQtyUsed, setTmpQtyUsed]  = useState(0);
+                const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
@@ -1177,9 +1179,11 @@ max: ${partListItems[idx]?.max}
                         submitUserInput({taskValues: JSON.stringify({
                             workorder: tmpWorkOrder, qtyUsed: tmpQtyUsed, reorderAmt:  tmpReorderAmt}), 
                             comment: tmpComment, updateType: 'Pick'}
-                        );
+                        )
+                        .then(()=>{setLoading(false)})
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1230,19 +1234,26 @@ max: ${partListItems[idx]?.max}
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <FormButton
-                                    type='button' 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                </FormButton>
-                                <FormButton 
-                                    type='reset' 
-                                    >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                </FormButton>
+                                {!loading ? 
+                                <>
+                                    <FormButton
+                                        type='button' 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                setLoading(true);
+                                                submitForm();
+                                            }}>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                    </FormButton>
+                                </>
+                                :
+                                <CircularIndeterminate size={30}/>
+                                }
                                 </div>
                             </form>
                         </div>
@@ -1285,16 +1296,18 @@ max: ${partListItems[idx]?.max}
 
             function CountForm(){
                 const [tmpCount, setTmpCount] = useState(0);
-                const [tmpComment, setTmpComment]  = useState('');
+                const [tmpComment, setTmpComment] = useState('');
+                const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
                         if(Number(tmpCount) * 0  === 0 && tmpCount != ''){}
                         else{throw new Error('Please enter a numeric value for Count!')};
-                        submitUserInput({count: tmpCount, comment: tmpComment, updateType: 'Count'}
-                        );
+                        submitUserInput({count: tmpCount, comment: tmpComment, updateType: 'Count'})
+                        .then(()=>{setLoading(false)})
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1319,19 +1332,26 @@ max: ${partListItems[idx]?.max}
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <FormButton 
-                                    type='button' 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                </FormButton>
-                                <FormButton 
-                                    type='reset' 
-                                    >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                </FormButton>
+                                {!loading ?
+                                <>
+                                    <FormButton 
+                                        type='button' 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                setLoading(true);
+                                                submitForm();
+                                            }}>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                    </FormButton>
+                                </>
+                                :
+                                 <CircularIndeterminate size={30} />
+                                }
                                 </div>
                             </form>
                         </div>
@@ -1375,6 +1395,7 @@ max: ${partListItems[idx]?.max}
             function ReordForm(){
                 const [tmpReord, setTmpReord] = useState(0);
                 const [tmpComment, setTmpComment]  = useState('');
+                const [loading, setLoading] = useState(false);
 
                 function addToSessionOrd({reorderAmt, comment}){
                     const ords = [];
@@ -1401,9 +1422,14 @@ max: ${partListItems[idx]?.max}
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')};
                         if(document.querySelector('#session-ord').checked){addToSessionOrd({reorderAmt: tmpReord, comment: tmpComment})}
-                        else{submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})}
+                        else{
+                            submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})
+                            .then(()=>{setLoading(false)})
+                        }
+                        
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1435,20 +1461,27 @@ max: ${partListItems[idx]?.max}
                                         Add to session?
                                 </div>
                                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                                <FormButton 
-                                    type='button' 
-                                    onClick={(e)=>{
-                                        e.preventDefault();
-                                        submitForm();
-                                    }}
-                                >
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                </FormButton>
-                                <FormButton 
-                                    type='reset' 
+                                {!loading ?
+                                <>
+                                    <FormButton 
+                                        type='button' 
+                                        onClick={(e)=>{
+                                            e.preventDefault();
+                                            setLoading(true);
+                                            submitForm();
+                                        }}
                                     >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                </FormButton>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                    </FormButton>
+                                </>
+                                :
+                                <CircularIndeterminate size={30}/>
+                                }
                                 </div>
                             </form>
                         </div>
@@ -1492,14 +1525,17 @@ max: ${partListItems[idx]?.max}
             function LocationForm(){
                 const [tmpLoc, setTmpLoc] = useState('');
                 const [tmpComment, setTmpComment]  = useState('');
+                const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
                         if(tmpLoc != ''){}
                         else{throw new Error('Please enter a new BinLoc!')};
                         submitUserInput({taskValues: JSON.stringify({binLoc: tmpLoc}), comment: tmpComment, updateType: 'Loc'})
+                        .then(()=>{setLoading(false)})
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1523,19 +1559,26 @@ max: ${partListItems[idx]?.max}
                                 />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <FormButton 
-                                    type='button' 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                </FormButton>
-                                <FormButton 
-                                    type='reset' 
-                                    >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                </FormButton>
+                                {!loading ?
+                                <>
+                                    <FormButton 
+                                        type='button' 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                setLoading(true);
+                                                submitForm();
+                                            }}>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                    </FormButton>
+                                </>
+                                :
+                                <CircularIndeterminate size={30}/>
+                                }
                                 </div>
                             </form>
                         </div>
@@ -1578,12 +1621,15 @@ max: ${partListItems[idx]?.max}
 
             function LabelForm(){
                 const [tmpComment, setTmpComment]  = useState('');
+                const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
-                        submitUserInput({updateType: 'Label', comment: tmpComment});
+                        submitUserInput({updateType: 'Label', comment: tmpComment})
+                        .then(()=>{setLoading(false)})
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1596,20 +1642,27 @@ max: ${partListItems[idx]?.max}
                             <form>
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                    <div>Add to print jobs.</div>
-                                    <FormButton
-                                        type='button' 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                    </FormButton>
-                                    <FormButton 
-                                        type='reset' 
-                                    >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                    </FormButton>
+                                    {!loading ? 
+                                    <>
+                                        <div>Add to print jobs.</div>
+                                        <FormButton
+                                            type='button' 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                setLoading(true);
+                                                submitForm();
+                                            }}>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                        </FormButton>
+                                        <FormButton 
+                                            type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                        </FormButton>
+                                    </>
+                                    :
+                                    <CircularIndeterminate size={30} />
+                                    }
                                 </div>
                             </form>
                         </div>
@@ -1652,14 +1705,17 @@ max: ${partListItems[idx]?.max}
 
             function OtherForm(){
                 const [tmpComment, setTmpComment]  = useState('');
+                const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
                         if(tmpComment.trim() != ''){}
                         else{throw new Error('Please enter details in Comment!')};
                         submitUserInput({taskValues: JSON.stringify('Other'), comment: tmpComment, updateType: 'Other'})
+                        .then(()=>{setLoading(false)})
                     }
                     catch(err){
+                        setLoading(false);
                         setAlertContent(err.message);
                         setDisplayAlert(true);
                     }
@@ -1672,19 +1728,26 @@ max: ${partListItems[idx]?.max}
                             <form>
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
-                                <FormButton 
-                                    type='button' 
-                                        onClick={(e)=>{
-                                            e.preventDefault();
-                                            submitForm();
-                                        }}>
-                                            <img src={imgMap.get('circled-check.svg')} width='30px'/>
-                                </FormButton>
-                                <FormButton 
-                                    type='reset' 
-                                    >
-                                        <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
-                                </FormButton>
+                                {!loading ?
+                                <>
+                                    <FormButton 
+                                        type='button' 
+                                            onClick={(e)=>{
+                                                e.preventDefault();
+                                                setLoading(true);
+                                                submitForm();
+                                            }}>
+                                                <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                                    </FormButton>
+                                    <FormButton 
+                                        type='reset' 
+                                        >
+                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                                    </FormButton>
+                                </>
+                                :
+                                <CircularIndeterminate size={30}/>
+                                }
                                 </div>
                             </form>
                         </div>

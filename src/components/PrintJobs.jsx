@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useState } from 'react';
+import { Fragment, forwardRef, useState} from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -19,6 +19,7 @@ import BasicMessageModal from './BasicMessageModal'
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import useUserData from '../../app/useUserData';
+import CircularIndeterminate from './Progress';
 import imgMap from '../../app/imgMap';
 // import InputAdornment from '@mui/material/InputAdornment';
 
@@ -36,6 +37,7 @@ export default function PrintJobs(props) {
     const [basicMessageContent, setBasicMessageContent] = useState('')
     const [userFilter, setUserFilter] = useState('')
     const [deleteAllModalOpen, setDeleteAllModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { token } = useToken();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
@@ -193,6 +195,7 @@ export default function PrintJobs(props) {
     }
 
     function ModalContent(){
+        const [loading, setLoading] = useState(false);
 
         return(
             <>
@@ -201,20 +204,38 @@ export default function PrintJobs(props) {
                     Continue?
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                    <IconButton autoFocus disableRipple onClick={()=>{
-                        setModalOpen(false);
-                        deleteTask(taskToDelete.id);
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
-                    </IconButton>
-                    <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
-                    </IconButton>
+                    {!loading ?
+                    <>
+                        <IconButton autoFocus disableRipple onClick={()=>{
+                            setLoading(true)
+                            deleteTask(taskToDelete.id)
+                            .then(()=>{
+                                setLoading(false);
+                                setModalOpen(false);
+                            })
+                            .catch(()=>{
+                                setLoading(false);
+                                setModalOpen(false);
+                            })
+                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        </IconButton>
+                        <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
+                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                        </IconButton>
+                    </>
+                    :
+                    <>
+                        <br/>
+                        <CircularIndeterminate size={30}/>
+                    </>
+                    }
                 </div>
             </>
         )
     }
 
     function DeleteAllModalContent(){
+        const [loading, setLoading]  = useState(false);
 
         return(
             <>
@@ -223,15 +244,33 @@ export default function PrintJobs(props) {
                     Continue?
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
-                    <IconButton autoFocus disableRipple onClick={()=>{
-                        setDeleteAllModalOpen(false);
-                        deleteAllTasks();
-                        getTasks();
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
-                    </IconButton>
-                    <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
-                    </IconButton>
+                    {!loading ? 
+                    <>
+                        <IconButton autoFocus disableRipple onClick={()=>{
+                            setLoading(true);
+                            deleteAllTasks()
+                            .then(()=>{getTasks()})
+                            .then(()=>{
+                                setLoading(false);
+                                setDeleteAllModalOpen(false);
+                            })
+                            .catch(()=>{
+                                setLoading(false);
+                                setDeleteAllModalOpen(false);
+                            })
+                            ;
+                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        </IconButton>
+                        <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
+                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                        </IconButton>
+                    </>
+                    :
+                    <>
+                        <br/>
+                        <CircularIndeterminate size={30}/>
+                    </>
+                    }
                 </div>
             </>
         )
@@ -289,7 +328,10 @@ export default function PrintJobs(props) {
                         disableRipple 
                         onClick={()=>{
                             handleClickOpen();
-                            getTasks();
+                            setLoading(true);
+                            getTasks()
+                            .then(()=>{setLoading(false)})
+                            .catch(()=>{setLoading(false)})
                         }}>
                         <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Print Jobs </span>
                     </IconButton>
@@ -303,14 +345,20 @@ export default function PrintJobs(props) {
                     <AppBar 
                         sx={{ position: 'fixed' }}>
                         <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
-                            <CloseIcon />
-                        </IconButton>
+                        {!loading ?
+                        <>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </>
+                        :
+                        <CircularIndeterminate size={30} />
+                        }
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                             PRINT <span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
                         </Typography>

@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
+import CircularIndeterminate from './Progress';
 import imgMap from '../../app/imgMap';
 
 // For Box
