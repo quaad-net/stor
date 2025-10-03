@@ -250,10 +250,10 @@ export default function Tasks(props) {
 
     function TaskItem(props){
         const [itemOpen, setItemOpen] = useState(false);
-        
+
         return(
             <>
-                <ListItemButton sx={{display: 'block'}} onClick={()=>{setItemOpen(!itemOpen)}}>
+                <ListItemButton disableRipple sx={{display: 'block', '&:hover':{cursor: 'default'}}}>
                     <IconButton
                         aria-label="expand row"
                         size="small"
