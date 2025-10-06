@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useUserData from "../app/useUserData";
+import imgMap from "../app/imgMap";
 
 import "./App.css"
 
@@ -20,9 +21,16 @@ const App = () => {
   },[navigate, location.pathname])
 
   return (
-    <>
+    <div
+      style={{
+        background: `url(${imgMap.get('open-hex-2-dark-gray.svg')}) no-repeat right`,
+        backgroundSize: '500px',
+        backgroundAttachment: 'fixed',
+        width: '100%'
+      }}
+    >
       <Outlet context={[currentUserData, setCurrentUserData]}/> 
-    </>
+    </div>
   );
 };
 

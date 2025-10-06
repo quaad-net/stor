@@ -531,29 +531,37 @@ export default function Inventory() {
             // "70-11235-7032" => partCode-warehouseCode
             // "71-00170" = partCode
 
-        let newResult = result.replace(`"`, ``);
-        const hasComma = /,/;
-        if(hasComma.test(newResult)){
-            newResult = newResult.split(',')[0].trim();
-        };
+        // locQR format: locQR/warehouseCode/row-extention
+        const locQR = /locQR/;
 
-        const resultArr = newResult.split('');
-        let hyphenCount = 0;
-        resultArr.forEach((char)=>{
-            if(char == '-'){hyphenCount++};
-        })
-        switch(hyphenCount){
-            case 1:
-                inventoryQuery({query: newResult, queryType: 'partCode' })
-                break;
-            case 2:
-                {
-                const modResult = newResult.split('-')[0] + '-' + newResult.split('-')[1];
-                inventoryQuery({query: modResult, queryType: 'partCode' })
-                break;
-                }
-            default:
-                inventoryQuery({query: newResult, queryType: 'descr' })
+        if(!locQR.test(result)){
+            let newResult = result.replace(`"`, ``);
+            const hasComma = /,/;
+            if(hasComma.test(newResult)){
+                newResult = newResult.split(',')[0].trim();
+            };
+
+            const resultArr = newResult.split('');
+            let hyphenCount = 0;
+            resultArr.forEach((char)=>{
+                if(char == '-'){hyphenCount++};
+            })
+            switch(hyphenCount){
+                case 1:
+                    inventoryQuery({query: newResult, queryType: 'partCode' })
+                    break;
+                case 2:
+                    {
+                    const modResult = newResult.split('-')[0] + '-' + newResult.split('-')[1];
+                    inventoryQuery({query: modResult, queryType: 'partCode' })
+                    break;
+                    }
+                default:
+                    inventoryQuery({query: newResult, queryType: 'descr' })
+            }
+        }
+        else{
+            inventoryQuery({query: result.replace('locQR/', ''), queryType: 'locQR' })
         }
     }
 
@@ -624,7 +632,7 @@ export default function Inventory() {
                         // ':hover': {backgroundColor: 'rgba(255, 255, 255, 0.027) !important'},
                     }} 
                     >
-                    <GetAvatar partCode={part.code} avaBgIndx={index}/>
+                    <GetAvatar partCode={part.code} avaBgIndx={index} {...(index===idx ? {active: true}:{})} />
                     <ListItemText
                     primary={
                         <Typography
@@ -673,13 +681,14 @@ export default function Inventory() {
         // const elec = /^2.*$/;
         const storGold = 'linear-gradient(to right, #bf953f, #b38728, #aa771c)';
 
-        const bg = props.avaBgIndx % 2 === 0;
+        // Adds a different background color to every other avatar in list items.
+        const bg = props.avaBgIndx % 2 === 0; 
 
         // Remove return statement and uncomment conditions below to return different avatars for various
         // types of parts.
         return(
             <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                <img src={imgMap.get('tool-box.svg')}/>
+                <img src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')} className='list-item-avatar' width={40}/>
             </Avatar>
         )
 
@@ -847,7 +856,16 @@ max: ${partListItems[idx]?.max}
                             </span>
                         </div>
                     </div>
-                    <div style={{height: '100%', width: '75%', padding: '5px', paddingRight: '10px', borderLeft: props.mobileView ? 'none' : '5px solid black'}}>
+                    <div 
+                        style=
+                            {{
+                            height: '100%', 
+                            width: '75%', 
+                            padding: '5px', 
+                            paddingRight: '10px', 
+                            borderLeft: props.mobileView ? 'none' : '5px solid black',
+                            }}
+                        >
                         {partListItems[idx]?.description}
                         <br/>
                         <span className='inventory-switch-view'>
@@ -1922,7 +1940,10 @@ max: ${partListItems[idx]?.max}
                         updateInventory={updateInventory}
                     />
                 </List>
-                <div className='inventory-desktop-tablet-content' style={{position: 'absolute', marginLeft: '400px', top: '100px', color: 'white'}}>
+                <div className='inventory-desktop-tablet-content' 
+                    style={{
+                        position: 'absolute', marginLeft: '400px', top: '100px', color: 'white',
+                    }}>
                     <h1 style={{margin: '0', padding: '0'}}><MainContentHeader/>
                     </h1>
                     <InventoryDetailContent/>

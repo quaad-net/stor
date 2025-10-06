@@ -23,7 +23,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function FullScreenScanner(props) {
   const [open, setOpen] = useState(false);
-  const [scanResult, setScanResult] = useState('00-00000');
+  const [scanResult, setScanResult] = useState('0000000');
 
   const handleClickOpen = () => {
     setOpen(true);

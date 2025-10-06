@@ -6,6 +6,7 @@ import { grey } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import imgMap from '../../app/imgMap';
 import './Drawer.css';
 
 const drawerBleeding = 56;
@@ -123,7 +124,16 @@ function SwipeableEdgeDrawer(props) {
           <Typography sx={{ p: 2, color: 'text.secondary' }}> <ReturnedResults/></Typography>
         </StyledBox>
         <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
-          <div style={{backgroundColor: 'rgba(255, 255, 255, 0.044)'}}>
+          <div 
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.044)',
+              background: `url(${imgMap.get('open-hex-2.svg')}) no-repeat`,
+              backgroundPosition: '75px 75px',
+              backgroundSize: '300px',
+              backgroundAttachment: 'scroll',
+            }}
+  
+          >
             {props.resultCount > 0 ? props.InventoryDetailContent : <></>}
           </div>
         </StyledBox>

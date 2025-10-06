@@ -152,12 +152,12 @@ export default function AppBarHideOnScroll(props) {
                   color="inherit" 
                   onClick={props.sort}>
                   <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
-                  <span style={{fontSize: '15px'}}>Sort</span>
+                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Sort</span>
                 </IconButton><br/>
                 <Pag pagIdxMax={props?.pagIdxMax} 
                   displayPage={props?.displayPage} 
                   currentPage={props?.currentPage} 
-                  btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
+                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Page</span>} 
                 />
                 <IconButton
                   disableRipple
@@ -169,7 +169,7 @@ export default function AppBarHideOnScroll(props) {
                   }}
                     >
                   <img src={imgMap.get('database-update.svg')} width='25px' />
-                  <span style={{fontSize: '15px'}}>Update</span>
+                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Update</span>
                 </IconButton><br/>
                 <IconButton 
                   disableRipple
@@ -179,22 +179,25 @@ export default function AppBarHideOnScroll(props) {
                   onClick={()=>{props.setUpdateInventory(false)}}
                 >
                   <img src={imgMap.get('info.svg')} width='25px' />
-                  <span style={{fontSize: '15px'}}>Details</span>
+                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Details</span>
                 </IconButton><br/>
-                <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
-                <Labels mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
+                <Tasks btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Tasks</span>}/>
+                <Labels 
+                  mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}
+                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Label</span>}
+                />
                 {props.sessionOrds.length > 0 ?
                 <>
                 <SessionReorder 
                   sessionOrds={props.sessionOrds} 
                   setSessionOrds={props.setSessionOrds}
-                  btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
+                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Orders</span>}
                 />
                 </>
                 :
                 <></>
                 }
-                <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
+                <ShowInstitution btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>User</span>} mobileView={true}/>
               </div>
             </>
           )
@@ -248,14 +251,14 @@ export default function AppBarHideOnScroll(props) {
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   {props?.pagIdxMax > 1 ?
-                  <div>
+                  <div style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Page</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Page</div>
                   </div>
                   :
                   <></>
                   }
-                  <div>
+                  <div style={{borderRight: '3px solid black', ...(props?.pagIdxMax == 1 ? {borderLeft: '3px solid black'}: {})}}>
                     <IconButton 
                       disableRipple
                       size="large" 
@@ -264,17 +267,17 @@ export default function AppBarHideOnScroll(props) {
                       onClick={props.sort}>
                       <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
                     </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Sort</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Sort</div>
                   </div>
-                  <div>
+                  <div style={{borderRight: '3px solid black'}}>
                     <Tasks/>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Tasks</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Tasks</div>
                   </div>
-                  <div>
+                  <div style={{borderRight: '3px solid black'}}>
                     <Labels queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Label</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Label</div>
                   </div>
-                  <div>
+                  <div style={{borderRight: '3px solid black'}}>
                     <IconButton
                       disableRipple
                       size="large"
@@ -284,9 +287,9 @@ export default function AppBarHideOnScroll(props) {
                         >
                         <img src={imgMap.get('database-update.svg')} width='25px' />
                     </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Update</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Update</div>
                   </div>
-                  <div>
+                  <div style={{borderRight: '3px solid black'}}>
                     <IconButton 
                       disableRipple
                       size="large" 
@@ -296,22 +299,25 @@ export default function AppBarHideOnScroll(props) {
                     >
                       <img src={imgMap.get('info.svg')} width='25px' />
                     </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Info</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Info</div>
                   </div>
                   {props.sessionOrds.length > 0 ?
-                  <div>
+                  <div style={{borderRight: '3px solid black'}}>
                     <SessionReorder 
                       sessionOrds={props.sessionOrds} 
                       setSessionOrds={props.setSessionOrds}
                     />
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>Orders</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Orders</div>
                   </div>
                   :
                   <></>
                   }
                   <div>
                     <ShowInstitution/>
-                    <div style={{fontSize: '10px', textAlign: 'center'}}>User</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', }}
+                    >
+                      User
+                    </div>
                   </div>
                 </Box>
                 {/*Mobile Menu */}

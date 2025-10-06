@@ -7,6 +7,7 @@ imgMap.set('calendar-circled-date.svg', `${imgServer}2e820a51-189e-49b2-20a2-a47
 imgMap.set('checklist.svg', `${imgServer}02c21f70-0082-4bd8-b5d7-39168aed8100/public`); 
 imgMap.set('circled-check.svg', `${imgServer}234910ca-3ea0-47a5-4d93-4589b5cc8900/public`); 
 imgMap.set('circled-check-red.svg', `${imgServer}99ff1897-b735-41a9-2b89-86c705ffac00/public`); 
+imgMap.set('closed-hex.png', `${imgServer}b5ff861e-466d-40f6-5adb-f04f0a9bca00/public`)
 imgMap.set('comment-blue-2.svg', `${imgServer}617932f3-e74b-4d6e-5d9c-5c6b326e9e00/public`); 
 imgMap.set('copy.svg', `${imgServer}73387602-3c93-4c49-0848-095e0c232d00/public`); 
 imgMap.set('database-update.svg', `${imgServer}47775ac2-80f8-4757-11d0-705155926300/public`); 
@@ -14,8 +15,12 @@ imgMap.set('left-circled-arrow.svg', `${imgServer}704de6cc-f6c5-478e-4dff-95a444
 imgMap.set('info.svg', `${imgServer}7921d4d9-1304-40cb-eff9-791a17c65a00/public`); 
 imgMap.set('info-circled.svg', `${imgServer}21ef9ed7-0535-45d7-184b-acff41217200/public`); 
 imgMap.set('login.svg', `${imgServer}582cfde1-bf59-4f5a-c3b1-35e6f0941b00/public`); 
-imgMap.set('machine-learning.svg', `${imgServer}2a8d7a0a-0819-4b36-8828-d430c1aa6700/public`)
-imgMap.set('pulsar-cart.svg', `${imgServer}2a2d4d4b-511f-457d-e4b4-39703938ec00/public`)
+imgMap.set('machine-learning.svg', `${imgServer}2a8d7a0a-0819-4b36-8828-d430c1aa6700/public`);
+imgMap.set('open-hex.png', `${imgServer}b91f7547-78f5-4fe8-1aa8-9d095beb7000/public`);
+imgMap.set('open-hex-2.svg', `${imgServer}2352f7c8-28a7-4012-efdc-60bd4b187400/public`);
+imgMap.set('open-hex-2-dark-gray.svg', `${imgServer}f1a264b9-4c7c-46f3-9e57-41b83b699400/public`);
+imgMap.set('open-hex-2-gray.svg', `${imgServer}b54df333-6e24-4903-2c84-b32ee0f7b800/public`);
+imgMap.set('pulsar-cart.svg', `${imgServer}2a2d4d4b-511f-457d-e4b4-39703938ec00/public`);
 imgMap.set('pulsar-clear.svg', `${imgServer}b38e1317-a708-42b2-f5ab-656fa2765700/public`); 
 imgMap.set('pulsar-circled-info.svg', `${imgServer}35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/public`); 
 imgMap.set('pulsar-download.svg', `${imgServer}42c48a4f-5062-4e77-0c69-6b610c86cb00/public`)

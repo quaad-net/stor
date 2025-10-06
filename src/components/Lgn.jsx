@@ -7,6 +7,7 @@ import {useState } from "react";
 import useUserData from "../../app/useUserData";
 import useAuth from "../../app/useAuth";
 import BasicMessageModal from './BasicMessageModal';
+import FullScreenScanner from "./FullScreenScanner";
 import imgMap from "../../app/imgMap";
 
 export default function Lgn(){
@@ -28,7 +29,7 @@ export default function Lgn(){
         else{
             navigate("/inventory")
         }
-    })   
+    })
 
     function UserLogin(){
 
@@ -156,6 +157,17 @@ export default function Lgn(){
             })
         }
 
+        function getScanResult(result){
+            const [user, pass] = result.split('-');
+
+            const form = document.querySelector('form');
+            document.querySelector('#user').value = user;
+            document.querySelector('#password').value = pass;
+            loginRequest();
+            document.querySelector('form').reset();
+            clearInvalids();
+        }
+
         function Dialog(){
             return(
                 <span style={{color: 'white'}}>{basicMessageContent}</span>
@@ -195,19 +207,19 @@ export default function Lgn(){
                                 e.preventDefault();
                                 document.querySelector('#login-submit-btn').blur();
                                 const form = document.querySelector('form')
-                            if(!form.checkValidity()){
-                                showInValids();
-                                setBasicMessageContent('Incorrect or missing field(s)')
-                                setBasicMessageOpen(true);
-                            }
-                            else{
-                                if(lgnType == 'Login'){
-                                    loginRequest();
-                                    document.querySelector('form').reset();
+                                if(!form.checkValidity()){
+                                    showInValids();
+                                    setBasicMessageContent('Incorrect or missing field(s)')
+                                    setBasicMessageOpen(true);
                                 }
-                                else{currentuser()}
-                                clearInvalids();
-                            }
+                                else{
+                                    if(lgnType == 'Login'){
+                                        loginRequest();
+                                        document.querySelector('form').reset();
+                                    }
+                                    else{currentuser()}
+                                    clearInvalids();
+                                }
                             }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                             Submit
                         </button>
@@ -234,6 +246,18 @@ export default function Lgn(){
                             }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                             Visitor
                         </button>
+                        :
+                        <></>
+                        }
+                        {lgnType == 'Login' ?
+                        <>
+                            <br/><br/>
+                            <div style={{width: 'fit-content', margin: 'auto'}}>
+                                <span style={{color: 'gray', fontSize: '10px'}}>QR Login</span>
+                                <FullScreenScanner getScanResult={getScanResult}/>
+                                <br/>
+                            </div>
+                        </>
                         :
                         <></>
                         }

@@ -288,7 +288,7 @@ export default function PrintJobs(props) {
                     >
                         {itemOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
-                    <div style={{fontSize: '13px', color: 'gray'}}><span style={{color: 'goldenrod'}}>{props?.task.code}</span> | {props?.task.date}</div>
+                    <div style={{fontSize: '13px', color: 'gray'}}><span style={{color: 'goldenrod', fontSize: 15}}>{props?.task.code}</span> | {props?.task.date}</div>
                     <div style={{fontSize: '13px', color: 'gray'}}>@{props?.task.user.split('@')[0]}</div>
                     <IconButton disableRipple  onClick={()=>{
                             setTaskToDelete({id: props?.task._id, index: props?.index})
@@ -361,6 +361,30 @@ export default function PrintJobs(props) {
                         }
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                             PRINT <span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
+                            <IconButton 
+                                size='small'
+                                disableRipple
+                                sx={{marginLeft: '10px', marginRight: '0'}}
+                                onClick={()=>{
+                                    props.printPrintJobs(tasksListItems)
+                                }}
+                            >   
+                                {tasksListItems.length > 1 ?
+                                <>
+                                    <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
+                                    <span style={{color: 'gray', fontSize: '12px'}}></span>&nbsp;&nbsp;|
+                                </>
+                                :
+                                <></>
+                                }
+                            </IconButton>
+                            <IconButton 
+                                disableRipple
+                                onClick={()=>{
+                                setDeleteAllModalOpen(true);
+                                }}>
+                                    <span style={{fontSize: '15px'}}>{tasksListItems.length > 1 ? 'Remove All?' : ''}</span>
+                            </IconButton>
                         </Typography>
                         {/* {userFilter != '' ? 
                         <IconButton disableRipple onClick={unfilter}>
@@ -389,8 +413,9 @@ export default function PrintJobs(props) {
                     <List>
                         {tasksListItems.length > 1 ?
                         <>  
-                            <br/><br/>
-                            <ListItemButton 
+                            {/* To position options below app bar */}
+                            {/* <br/><br/>
+                            <ListItemButton
                             >
                                 <IconButton 
                                     size='small'
@@ -411,11 +436,12 @@ export default function PrintJobs(props) {
                                         <span style={{fontSize: '15px'}}>Remove All?</span>
                                 </IconButton>
                             </ListItemButton>
-                            <Divider/>
+                            <Divider/> */}
                         </>
                         : <></>
                         }
-                        {tasksListItems.length < 2 ? <><br/><br/></> : <></>}
+                        {/* {tasksListItems.length < 2 ? <><br/><br/></> : <></>} */}
+                        <br/><br/>
                         {tasksListItems?.map((task, index)=>{
                             return (
                                 <TaskItem task={task} key={index} index={index} printPrintJobs={props.printPrintJobs}/>
