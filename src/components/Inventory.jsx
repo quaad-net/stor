@@ -539,7 +539,7 @@ export default function Inventory() {
             // "70-11235-7032" => partCode-warehouseCode
             // "71-00170" = partCode
 
-        // locQR format: locQR/warehouseCode/row-extention
+        // locQR format: locQR/warehouseCode/row-section
         const locQR = /locQR/;
 
         if(!locQR.test(result)){
@@ -569,7 +569,7 @@ export default function Inventory() {
             }
         }
         else{
-            inventoryQuery({query: result.replace('locQR/', ''), queryType: 'locQR' })
+            inventoryQuery({query: result.replace('locQR/', '') + '-', queryType: 'locQR' })
         }
     }
 

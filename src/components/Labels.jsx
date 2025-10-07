@@ -97,6 +97,36 @@ export default function Labels(props){
         }
     }
 
+    async function printLocLabels(){
+        try{
+            const req =  await fetch(`${apiUrl}/print/locLabels`, {
+                method: "GET",
+            })
+            const res = await req.text();
+            const parser = new DOMParser()
+            const plainLabels = parser.parseFromString(res, 'text/html');
+            const labelData  = plainLabels.querySelectorAll('.label-labeldata');
+
+            // Add QRCode to Each Label
+            labelData.forEach((label)=>{ 
+                const qrData = label.querySelector('#label-qr-data');
+                ReactDOM.render(<QRCode value={qrData.textContent} size={75} />, label.querySelector('.qr'));
+            });
+
+            // Open new window for labels doc.
+            const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
+            const newWindow = window.open('', '_blank');
+            newWindow.document.open(); 
+            newWindow.document.write(plainLabelsTxt); 
+            newWindow.print(); 
+            newWindow.document.close(); 
+        }
+        catch(err){
+            alert('!');
+            console.log(err);
+        }
+    }
+
     async function printPrintJobs(parts){
         try{
             const modParts = []
@@ -158,61 +188,91 @@ export default function Labels(props){
     }
 
     function PrintType(){
-
-        return(
-            <>
-                <div style={{width: 'fit-content', margin: 'auto'}}>
-                    {props?.pagListItems.length > 0 ?
-                    <>
+        const [printParts, setPrintParts] = useState(false);
+        if(printParts){
+            return(
+                <>
+                    <div style={{width: 'fit-content', margin: 'auto'}}>
+                        {props?.pagListItems.length > 0 ?
+                        <>
+                            <div>
+                                <IconButton disableRipple onClick={()=>{
+                                    setModalOpen(false);
+                                    printLabels(undefined, true)
+                                }}><span style={{fontSize: '15px'}}>
+                                    <img 
+                                        src={imgMap.get('square-outlined-small.svg')} 
+                                        width='10px' />&nbsp;All Results
+                                    </span>
+                                </IconButton>
+                            </div>
+                            <br/>
+                        </>
+                        :
+                            <></>
+                        }
                         <div>
                             <IconButton disableRipple onClick={()=>{
                                 setModalOpen(false);
-                                printLabels(undefined, true)
+                                printLabels();
                             }}><span style={{fontSize: '15px'}}>
-                                <img 
-                                    src={imgMap.get('square-outlined-small.svg')} 
-                                    width='10px' />&nbsp;All Results
+                                    <img 
+                                        src={imgMap.get('square-outlined-small.svg')} 
+                                        width='10px' 
+                                    />
+                                    &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
                                 </span>
                             </IconButton>
                         </div>
                         <br/>
-                    </>
-                    :
-                        <></>
-                    }
+                        <div>
+                            <IconButton disableRipple onClick={()=>{
+                                setModalOpen(false);
+                                setFormModalOpen(true);
+                                }}>
+                                <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New</span>
+                            </IconButton>
+                        </div>
+                        <br/>
+                        <div>
+                            <PrintJobs printPrintJobs={printPrintJobs}/>
+                        </div>
+                        <br/>
+                        <div style={{marginLeft: '10px'}}>
+                            <input type="checkbox" id='toggle-label-size' checked={largeLbl} onChange={toggleLabelSize}/><span style={{color: 'gray'}}>Large</span>
+                        </div>
+                    </div>
+                </>
+            )
+        }
+        else{
+            return(
+                <div style={{width: 'fit-content', margin: 'auto'}}>
                     <div>
                         <IconButton disableRipple onClick={()=>{
-                            setModalOpen(false);
-                            printLabels();
-                        }}><span style={{fontSize: '15px'}}>
-                                <img 
-                                    src={imgMap.get('square-outlined-small.svg')} 
-                                    width='10px' 
-                                />
-                                &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
+                            setPrintParts(true)
+                        }}>
+                            <span style={{fontSize: '15px'}}>
+                                <img src={imgMap.get('square-outlined-small.svg')} width='10px' />
+                                &nbsp; Part Labels
                             </span>
                         </IconButton>
                     </div>
                     <br/>
                     <div>
                         <IconButton disableRipple onClick={()=>{
-                            setModalOpen(false);
-                            setFormModalOpen(true);
-                            }}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New</span>
+                            printLocLabels()
+                        }}>
+                            <span style={{fontSize: '15px'}}>
+                                <img src={imgMap.get('square-outlined-small.svg')} width='10px' />
+                                &nbsp; Loc Labels
+                            </span>
                         </IconButton>
                     </div>
                     <br/>
-                    <div>
-                        <PrintJobs printPrintJobs={printPrintJobs}/>
-                    </div>
-                    <br/>
-                    <div style={{marginLeft: '10px'}}>
-                        <input type="checkbox" id='toggle-label-size' checked={largeLbl} onChange={toggleLabelSize}/><span style={{color: 'gray'}}>Large</span>
-                    </div>
                 </div>
-            </>
-        )
+            )
+        }
     }
 
     function Form(){
