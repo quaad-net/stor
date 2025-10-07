@@ -3,7 +3,7 @@ import useToken from "../../app/useToken";
 import { useNavigate, useOutletContext} from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL; 
 import useUser from "../../app/useUser";
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import useUserData from "../../app/useUserData";
 import useAuth from "../../app/useAuth";
 import BasicMessageModal from './BasicMessageModal';
@@ -21,6 +21,10 @@ export default function Lgn(){
     const [basicMessageContent, setBasicMessageContent] = useState('');
     const [lgnType, setLgnType] = useState('Login');
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        document.querySelector('#app-hex-background').style.background = 'none'
+    }, [])
 
     useAuth().then((res)=>{
         if(!res.authorized){

@@ -9,9 +9,8 @@ const App = () => {
 
   const { userData } = useUserData();
   const [currentUserData, setCurrentUserData] = useState(userData);
-
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   
   useEffect(()=>{
     if(location.pathname == '/'){ // If false, route is not valid and will render <ErrorPage/>
@@ -21,13 +20,14 @@ const App = () => {
   },[navigate, location.pathname])
 
   return (
-    <div
-      style={{
-        background: `url(${imgMap.get('open-hex-2-dark-gray.svg')}) no-repeat right`,
-        backgroundSize: '500px',
-        backgroundAttachment: 'fixed',
-        width: '100%'
-      }}
+    <div id="app-hex-background"
+      // Is set upon /inventory access.
+      // style={{
+      //   background: `url(${imgMap.get('open-hex-2-dark-gray.svg')}) no-repeat right`,
+      //   backgroundSize: '500px',
+      //   backgroundAttachment: 'fixed',
+      //   width: '100%'
+      // }}
     >
       <Outlet context={[currentUserData, setCurrentUserData]}/> 
     </div>

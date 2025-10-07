@@ -61,6 +61,14 @@ export default function Inventory() {
     `
 
     useEffect(()=>{
+        const hexStyle = document.querySelector('#app-hex-background').style;
+        hexStyle.background = `url(${imgMap.get('open-hex-2-dark-gray.svg')}) no-repeat right`;
+        hexStyle.backgroundSize = '500px';
+        hexStyle.backgroundAttachment = 'fixed';
+        hexStyle.width = '100%';
+    })
+
+    useEffect(()=>{
         if(storedOrds != ''){setSessionOrds(JSON.parse(storedOrds))}
     }, [])
 
