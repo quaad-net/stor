@@ -69,6 +69,7 @@ function SwipeableEdgeDrawer(props) {
   })
 
   function ReturnedResults(){
+    //Modify to show number of returned results in drawer.
     if(open && props.updateInventory){
       return (
         <>
@@ -125,14 +126,15 @@ function SwipeableEdgeDrawer(props) {
         </StyledBox>
         <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
           <div 
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.044)',
-              background: `url(${imgMap.get('open-hex-2.svg')}) no-repeat`,
-              backgroundPosition: '75px 75px',
-              backgroundSize: '300px',
-              backgroundAttachment: 'scroll',
-            }}
-  
+            {...!props.updateInventory ? {
+              style: {
+                backgroundColor: 'rgba(255, 255, 255, 0.044)',
+                background: `url(${imgMap.get('open-hex-2.svg')}) no-repeat`,
+                backgroundPosition: '75px 75px',
+                backgroundSize: '300px',
+                backgroundAttachment: 'scroll',
+              }
+            }: {}}
           >
             {props.resultCount > 0 ? props.InventoryDetailContent : <></>}
           </div>
