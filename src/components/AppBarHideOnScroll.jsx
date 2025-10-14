@@ -265,7 +265,7 @@ export default function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                      <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                        <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Sort</div>
                   </div>

@@ -117,6 +117,12 @@ export default function Inventory() {
     function inventoryQuery({query, queryType, noDialog}){
         try{
             if(!filterOn){
+                const locQR = /locQR/;
+                //Manual entry Of location QR.
+                if(locQR.test(query.toString().trim())){
+                    query = query.replace('locQR/', '') + '-';
+                    queryType = 'locQR';
+                }
                 fetch(queryType=='semantic'? 
                     `${aiUrl}/stor-part-ai-keywords/` : 
                     `${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
@@ -146,7 +152,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 Could not complete query due to constraints.<br/>
-                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 <br/><br/>
                                 Try using different keywords or a different query type.
                             </span>
@@ -157,9 +163,20 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 Could not complete query due to constraints.<br/>
-                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 <br/><br/>
                                 Try using different keywords or a different query type.
+                            </span>
+                        );
+                        setBasicMessageModalOpen(true);
+                    }
+                    else if(!res[0]?.code && queryType =='semantic'){ // Might indicate a partially completed embedding.
+                        setBasicMessageModalContent(
+                            <span>
+                                Could not complete query.<br/>
+                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <br/><br/>
+                                Please try again.
                             </span>
                         );
                         setBasicMessageModalOpen(true);
@@ -169,7 +186,7 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     No match found for<br/>
-                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 </span>
                             )
                             if(!noDialog){setBasicMessageModalOpen(true)}
@@ -191,7 +208,7 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
-                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 </span>
                             );
                             if(!noDialog){setBasicMessageModalOpen(true)};
@@ -215,7 +232,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 No match found for<br/>
-                                <span style={{color: 'gray', borderTop: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                             </span>
                         );
                         setBasicMessageModalOpen(true);
@@ -225,7 +242,7 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     Server Error<br/>
-                                    <span style={{color: 'gray', borderTop: '1px dotted gray'}}>
+                                    <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>
                                         {err.message.length > 100 ? `${err.message.slice(0, 75)}...` : `${err.message}`}
                                     </span>
                                 </span>
@@ -1906,7 +1923,7 @@ max: ${partListItems[idx]?.max}
                 </div>
                 <br/>
             </div>
-            
+
         )
         }
         else{return <></>}
