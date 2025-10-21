@@ -1,0 +1,11 @@
+#vid-container{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media(max-width: 750px ){
+    #vid-container{
+        width: 100%;
+    }
+}

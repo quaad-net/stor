@@ -24,6 +24,7 @@ import SyntaxHelper from './SyntaxHelper';
 import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
+// import PL2Labels from './PL2Labels';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -250,6 +251,10 @@ export default function AppBarHideOnScroll(props) {
                 {/* Tablet and desktop menu items. */}
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                  {/* <div style={{borderRight: '3px solid black'}}>
+                    <PL2Labels/>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
+                  </div> */}
                   {props?.pagIdxMax > 1 ?
                   <div style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />

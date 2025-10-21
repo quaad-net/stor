@@ -278,7 +278,7 @@ export default function Labels(props){
                                 </div><br/>
                                 <div style={{marginLeft: '10px'}}>
                                     <input type="checkbox" onChange={()=>{setItemLabelType('itemCodeQR'); setReadyToPrint(true)}}/>
-                                    <span style={{color: 'gray'}}>Item Code QR</span>
+                                    <span style={{color: 'gray'}}>ItemCode</span>
                                 </div><br/>
                             </>
                             }
