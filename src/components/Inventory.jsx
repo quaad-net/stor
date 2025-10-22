@@ -1096,6 +1096,7 @@ max: ${partListItems[idx]?.max}
                             setBasicMessageModalContent('Submitted');
                             setBasicMessageModalOpen(true);
                             setPartListItems(parts);
+                            sendConfirmation(partDetails);
                         }
                         else{
                             if(res.status == 401){setBasicMessageModalContent(`Unauthorized`)}

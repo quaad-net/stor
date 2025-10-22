@@ -21,7 +21,7 @@ export default function ShowInstitution(props){
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
         <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
-        @<span><strong>{userData.institution.toString() == 'sample' ? 'VISIT' : userData.institution.toString().toUpperCase()}</strong></span> |&nbsp;
+        @<span><strong>{userData.institution.toString() == 'sample' ? 'VISIT' : userData.email.split('@')[0] + " | " + userData.institution.toString().toUpperCase()}</strong></span> |&nbsp;
         <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
       </div>
     )
