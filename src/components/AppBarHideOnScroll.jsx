@@ -24,7 +24,7 @@ import SyntaxHelper from './SyntaxHelper';
 import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
-// import PL2Labels from './PL2Labels';
+import PL2Labels from './PL2Labels';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -153,12 +153,12 @@ export default function AppBarHideOnScroll(props) {
                   color="inherit" 
                   onClick={props.sort}>
                   <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
-                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Sort</span>
+                  <span style={{fontSize: '15px'}}>Sort</span>
                 </IconButton><br/>
                 <Pag pagIdxMax={props?.pagIdxMax} 
                   displayPage={props?.displayPage} 
                   currentPage={props?.currentPage} 
-                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Page</span>} 
+                  btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
                 />
                 <IconButton
                   disableRipple
@@ -170,7 +170,7 @@ export default function AppBarHideOnScroll(props) {
                   }}
                     >
                   <img src={imgMap.get('database-update.svg')} width='25px' />
-                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Update</span>
+                  <span style={{fontSize: '15px'}}>Update</span>
                 </IconButton><br/>
                 <IconButton 
                   disableRipple
@@ -180,25 +180,29 @@ export default function AppBarHideOnScroll(props) {
                   onClick={()=>{props.setUpdateInventory(false)}}
                 >
                   <img src={imgMap.get('info.svg')} width='25px' />
-                  <span style={{fontSize: '15px', backgroundColor: 'black'}}>Details</span>
+                  <span style={{fontSize: '15px'}}>Details</span>
                 </IconButton><br/>
-                <Tasks btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Tasks</span>}/>
+                <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                 <Labels 
                   mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}
-                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Label</span>}
+                  btnDescription={<span style={{fontSize: '15px'}}>Label</span>}
+                />
+                <PL2Labels 
+                  user={props.user} token={props.token} mobileView={true}
+                  btnDescription={<span style={{fontSize: '15px'}}>PL</span>}
                 />
                 {props.sessionOrds.length > 0 ?
                 <>
                 <SessionReorder 
                   sessionOrds={props.sessionOrds} 
                   setSessionOrds={props.setSessionOrds}
-                  btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>Orders</span>}
+                  btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
                 />
                 </>
                 :
                 <></>
                 }
-                <ShowInstitution btnDescription={<span style={{fontSize: '15px', backgroundColor: 'black'}}>User</span>} mobileView={true}/>
+                <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
             </>
           )
@@ -251,10 +255,6 @@ export default function AppBarHideOnScroll(props) {
                 {/* Tablet and desktop menu items. */}
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  {/* <div style={{borderRight: '3px solid black'}}>
-                    <PL2Labels/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
-                  </div> */}
                   {props?.pagIdxMax > 1 ?
                   <div style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
@@ -281,6 +281,10 @@ export default function AppBarHideOnScroll(props) {
                   <div style={{borderRight: '3px solid black'}}>
                     <Labels queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Label</div>
+                  </div>
+                  <div style={{borderRight: '3px solid black'}}>
+                    <PL2Labels user={props.user} token={props.token}/>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
                   </div>
                   <div style={{borderRight: '3px solid black'}}>
                     <IconButton

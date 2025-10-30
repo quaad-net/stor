@@ -20,8 +20,9 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import useUserData from '../../app/useUserData';
 import CircularIndeterminate from './Progress';
+import InputAdornment from '@mui/material/InputAdornment';
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import imgMap from '../../app/imgMap';
-// import InputAdornment from '@mui/material/InputAdornment';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -345,69 +346,64 @@ export default function PrintJobs(props) {
                     <AppBar 
                         sx={{ position: 'fixed' }}>
                         <Toolbar>
-                        {!loading ?
-                        <>
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                onClick={handleClose}
-                                aria-label="close"
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </>
-                        :
-                        <CircularIndeterminate size={30} />
-                        }
-                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            PRINT <span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
-                            <IconButton 
-                                size='small'
-                                disableRipple
-                                sx={{marginLeft: '10px', marginRight: '0'}}
-                                onClick={()=>{
-                                    props.printPrintJobs(tasksListItems)
-                                }}
-                            >   
-                                {tasksListItems.length > 1 ?
-                                <>
-                                    <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
-                                    <span style={{color: 'gray', fontSize: '12px'}}></span>&nbsp;&nbsp;|
-                                </>
-                                :
-                                <></>
-                                }
-                            </IconButton>
-                            <IconButton 
-                                disableRipple
-                                onClick={()=>{
-                                setDeleteAllModalOpen(true);
-                                }}>
-                                    <span style={{fontSize: '15px'}}>{tasksListItems.length > 1 ? 'Remove All?' : ''}</span>
-                            </IconButton>
-                        </Typography>
-                        {/* {userFilter != '' ? 
-                        <IconButton disableRipple onClick={unfilter}>
-                            <FilterListOffIcon fontSize='20px'/>
-                        </IconButton> : <></>}
-                        <StyledTextfield
-                            variant='outlined'
-                            label="Filter by User"
-                            id="outlined-start-adornment"
-                            size='small'
-                            sx={{ m: 1, width: '150px', marginTop: '15px'}}
-                            slotProps={{
-                                input: {
-                                startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg)} width='20px'/></InputAdornment>,
-                                },
-                            }}
-                            onKeyDown={(e)=>{
-                                // e.preventDefault();
-                                document.querySelector('#outlined-start-adornment').focus();
-                                if (e.key === 'Enter'){filterByUser(e.target.value)
-
-                                }}}
-                        /> */}
+                            {!loading ?
+                            <>
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    onClick={handleClose}
+                                    aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </>
+                            :
+                            <CircularIndeterminate size={30} />
+                            }
+                            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                PRINT <span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
+                                <IconButton 
+                                    size='small'
+                                    disableRipple
+                                    sx={{marginLeft: '10px', marginRight: '0'}}
+                                    onClick={()=>{
+                                        props.printPrintJobs(tasksListItems)
+                                    }}
+                                >   
+                                    {tasksListItems.length > 1 ?
+                                    <>
+                                        <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
+                                        <span style={{color: 'gray', fontSize: '12px'}}></span>&nbsp;&nbsp;|
+                                    </>
+                                    :
+                                    <></>
+                                    }
+                                </IconButton>
+                                <IconButton 
+                                    disableRipple
+                                    onClick={()=>{
+                                    setDeleteAllModalOpen(true);
+                                    }}>
+                                        <span style={{fontSize: '15px'}}>{tasksListItems.length > 1 ? 'Remove All?' : ''}</span>
+                                </IconButton>
+                            </Typography>
+                                {/* {userFilter != '' ? 
+                                <IconButton disableRipple onClick={unfilter}>
+                                    <FilterListOffIcon fontSize='20px'/>
+                                </IconButton> : <></>}
+                                <StyledTextfield
+                                    variant='outlined'
+                                    label="Filter by User"
+                                    id="outlined-start-adornment"
+                                    size='small'
+                                    sx={{ m: 1, width: '150px', marginTop: '15px'}}
+                                    slotProps={{
+                                        input: {
+                                        startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
+                                        },
+                                    }}
+                                    onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
+                                /> */}
                         </Toolbar>
                     </AppBar>
                     <List>

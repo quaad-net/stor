@@ -315,40 +315,40 @@ export default function Tasks(props) {
                     <AppBar 
                         sx={{ position: 'fixed'}}>
                         <Toolbar>
-                        {!loading ?
-                        <>
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                onClick={handleClose}
-                                aria-label="close"
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </>
-                        :
-                        <CircularIndeterminate size={30}/>
-                        }
-                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            TASKS<span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
-                        </Typography>
-                        {userFilter != '' ? 
-                        <IconButton disableRipple onClick={unfilter}>
-                            <FilterListOffIcon fontSize='20px'/>
-                        </IconButton> : <></>}
-                        <StyledTextfield
-                            variant='outlined'
-                            label="Filter by User"
-                            id="outlined-start-adornment"
-                            size='small'
-                            sx={{ m: 1, width: '150px', marginTop: '15px'}}
-                            slotProps={{
-                                input: {
-                                startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
-                                },
-                            }}
-                            onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
-                        />
+                            {!loading ?
+                            <>
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    onClick={handleClose}
+                                    aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </>
+                            :
+                            <CircularIndeterminate size={30}/>
+                            }
+                            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                TASKS<span>&nbsp;&#40;{tasksListItems?.length}&#41;</span>
+                            </Typography>
+                            {userFilter != '' ? 
+                            <IconButton disableRipple onClick={unfilter}>
+                                <FilterListOffIcon fontSize='20px'/>
+                            </IconButton> : <></>}
+                            <StyledTextfield
+                                variant='outlined'
+                                label="Filter by User"
+                                id="outlined-start-adornment"
+                                size='small'
+                                sx={{ m: 1, width: '150px', marginTop: '15px'}}
+                                slotProps={{
+                                    input: {
+                                    startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
+                                    },
+                                }}
+                                onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}
+                            />
                         </Toolbar>
                     </AppBar>
                     <br/><br/>

@@ -1956,6 +1956,8 @@ max: ${partListItems[idx]?.max}
                         getUsageData={getUsageData}
                         sessionOrds={sessionOrds}
                         setSessionOrds={setSessionOrds}
+                        user={user}
+                        token={token}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 
