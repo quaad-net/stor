@@ -65,8 +65,7 @@ export default function PL2Labels(props) {
   function getPackingListImg(){
     const video = document.querySelector('#video');
     const constraints = {
-      video: true,
-      facingMode: { exact: "environment" },
+      video: {facingMode: { ideal: 'environment' }}
     };
     
     navigator.mediaDevices.getUserMedia(constraints)
