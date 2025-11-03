@@ -118,7 +118,10 @@ export default function PL2Labels(props) {
         else if(res.message == 'Complete'){
           setModalContent(<span>Items have been added to print jobs.</span>)
         }
-        else{setModalContent(<span>{res.message}</span>)};
+        else{
+          setModalContent(<span>{res.message}</span>);
+          console.log(res);
+        };
         setModalOpen(true);
       })
 
@@ -129,10 +132,19 @@ export default function PL2Labels(props) {
       setImgSent(true);
     }
     catch(err){
+      console.log(err)
       setUseCam(false);
       setImgCaptured(false);
       setLoading(false);
       setImgSent(true);
+      if(err.message.length > 50){
+        const content = err.message.substring(0, 50) + '...';
+        setModalContent(<span>{content}</span>);
+      }
+      else{
+        setModalContent(<span>{err.message}</span>)
+      }
+      setModalOpen(true)
     }
 
   }
