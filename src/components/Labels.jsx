@@ -16,6 +16,11 @@ const itemLabelTypes = {
         qrSize: 50,
         dataSource: 'all'
     },
+    reg16pt: {
+        fontSize: '16pt', 
+        qrSize: 75,
+        dataSource: 'all'
+    },
     large: {
         fontSize: '32pt',
         qrSize: 100,
@@ -25,8 +30,40 @@ const itemLabelTypes = {
     itemCodeQR:{
         fontSize: 'mono', 
         qrSize: 75,
-        dataSource: 'code' // Specifies what data should be displayed.
+        dataSource: 'code'
     }
+}
+
+const maxChars = {
+    reg: {
+        codeMaxChar : 30,
+        descriptionMaxChar: 170,
+        binLocMaxChar: 20,
+        minMaxChar: 6,
+        maxMaxChar: 6,
+    },
+    reg16pt:{
+        codeMaxChar : 10,
+        descriptionMaxChar: 70,
+        binLocMaxChar: 12,
+        minMaxChar: 6,
+        maxMaxChar: 6,
+    },
+    large: {
+        codeMaxChar : 12,
+        descriptionMaxChar: 40,
+        binLocMaxChar: 12,
+        minMaxChar: 6,
+        maxMaxChar: 6,
+    },
+    itemCodeQR: {
+        codeMaxChar : 20,
+        descriptionMaxChar: 0,
+        binLocMaxChar: 0,
+        minMaxChar: 0,
+        maxMaxChar: 0,
+    },
+
 }
 
 export default function Labels(props){
@@ -40,12 +77,6 @@ export default function Labels(props){
 
     function PrintType(){
         const [printParts, setPrintParts] = useState(false);
-        const codeMaxChar = itemLabelType == 'large'? 12 : 30;
-        const descriptionMaxChar = itemLabelType == 'large'? 40 : 186;
-        const binLocMaxChar = itemLabelType == 'large'? 12: 20; 
-        const minMaxChar = 6;
-        const maxMaxChar = 6;
-
         async function printLabels(labelDetails, includePagResults){
             try{
                 let recs; 
@@ -135,12 +166,12 @@ export default function Labels(props){
                     else{modCode = record.code};
         
                     const modRecord = {
-                        code: modCode?.substring(0, codeMaxChar),
-                        description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
+                        code: modCode?.substring(0, maxChars[itemLabelType].codeMaxChar),
+                        description: record.description?.length > maxChars[itemLabelType].descriptionMaxChar ? record.description?.substring(0, maxChars[itemLabelType].descriptionMaxChar).trim() + '...' : 
                             record.description,
-                        binLoc: modBinLoc?.substring(0, binLocMaxChar),
-                        min: record.min === '' ? '- ': record.min.toString()?.substring(0, minMaxChar),
-                        max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxMaxChar),
+                        binLoc: modBinLoc?.substring(0, maxChars[itemLabelType].binLocMaxChar),
+                        min: record.min === '' ? '- ': record.min.toString()?.substring(0, maxChars[itemLabelType].minMaxChar),
+                        max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxChars[itemLabelType].maxMaxChar),
                     }
                     modParts.push(modRecord)
                 })
@@ -198,12 +229,12 @@ export default function Labels(props){
                 else{modCode = record.code};
 
                 const modRecord = {
-                    code: modCode?.substring(0, codeMaxChar),
-                    description: record.description?.length > descriptionMaxChar ? record.description?.substring(0, descriptionMaxChar) + '...' : 
+                    code: modCode?.substring(0, maxChars[itemLabelType].codeMaxChar),
+                    description: record.description?.length > maxChars[itemLabelType].descriptionMaxChar ? record.description?.substring(0, maxChars[itemLabelType].descriptionMaxChar).trim() + '...' : 
                         record.description,
-                    binLoc: modBinLoc?.substring(0, binLocMaxChar),
-                    min: record.min === '' ? '-': record.min.toString()?.substring(0, minMaxChar),
-                    max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxMaxChar),
+                    binLoc: modBinLoc?.substring(0, maxChars[itemLabelType].binLocMaxChar),
+                    min: record.min === '' ? '-': record.min.toString()?.substring(0, maxChars[itemLabelType].minMaxChar),
+                    max: record.max === '' ? '-' : record.max.toString()?.substring(0, maxChars[itemLabelType].maxMaxChar),
                 }
                 modQueryRes.push(modRecord)
             })
@@ -268,16 +299,20 @@ export default function Labels(props){
                             </>
                             :
                             <>
-                                <div style={{marginLeft: '10px'}}>
-                                    <input type="checkbox" onChange={()=>{setItemLabelType('reg'); setReadyToPrint(true);}}/>
-                                    <span style={{color: 'gray'}}>Regular</span>
+                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('reg'); setReadyToPrint(true);}}>
+                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}}/>
+                                    <span style={{color: 'gray'}}>12pt(1x4)</span>
                                 </div><br/>
-                                <div style={{marginLeft: '10px'}}>
-                                    <input type="checkbox" onChange={()=>{setItemLabelType('large'); setReadyToPrint(true)}}/>
-                                    <span style={{color: 'gray'}}>Large</span>
+                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('reg16pt'); setReadyToPrint(true);}}>
+                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}} />
+                                    <span style={{color: 'gray'}}>16pt(1x4)</span>
                                 </div><br/>
-                                <div style={{marginLeft: '10px'}}>
-                                    <input type="checkbox" onChange={()=>{setItemLabelType('itemCodeQR'); setReadyToPrint(true)}}/>
+                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('large'); setReadyToPrint(true);}}>
+                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}} />
+                                    <span style={{color: 'gray'}}>32pt(2x4)</span>
+                                </div><br/>
+                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('itemCodeQR'); setReadyToPrint(true);}}>
+                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}}/>
                                     <span style={{color: 'gray'}}>ItemCode</span>
                                 </div><br/>
                             </>
@@ -322,13 +357,7 @@ export default function Labels(props){
             const [formBinLoc, setFormBinLoc] = useState('');
             const [formMin, setFormMin] = useState('');
             const [formMax, setFormMax] = useState('');
-
-            const codeMaxChar = itemLabelType == 'large'? 12 : 30;
-            const descriptionMaxChar = itemLabelType == 'large'? 40 : 186;
-            const binLocMaxChar = itemLabelType == 'large'? 12: 20; 
-            const minMaxChar = 6;
-            const maxMaxChar = 6;
-
+            
             async function printLabels(labelDetails, includePagResults){
                 try{
                     let recs; 
@@ -338,7 +367,7 @@ export default function Labels(props){
                     }
                     const req =  await fetch(`${apiUrl}/print/labels`, {
                         method: "POST",
-                        // labelDetials: array of optional label objects. recs: array of query results.
+                        // labelDetials: array of optional label objects. recs: query results.
                         body: JSON.stringify([labelDetails? [labelDetails] : recs, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource]),
                         headers: {
                             "Content-Type": "application/json",
@@ -357,7 +386,7 @@ export default function Labels(props){
                         ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
                     });
 
-                    // Open new window for labels doc.
+                    // Open new window for labels doc
                     const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
                     const newWindow = window.open('', '_blank');
                     newWindow.document.open(); 
@@ -374,7 +403,7 @@ export default function Labels(props){
             return(
                 <form className="stor-new-label-form">
                     <input
-                        {...(itemLabelType=='large' ? {} : {maxLength: codeMaxChar})}
+                        {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].codeMaxChar})}
                         className='stor-input'
                         style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                             fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -388,7 +417,7 @@ export default function Labels(props){
                     {itemLabelType !='itemCodeQR' ?
                         <>
                             <input 
-                                {...(itemLabelType=='large' ? {} : {maxLength: binLocMaxChar})}
+                                {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].binLocMaxChar})}
                                 className='stor-input'
                                 style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                     fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -400,7 +429,7 @@ export default function Labels(props){
                                 }}
                             />
                             <input 
-                                {...(itemLabelType=='large' ? {} : {maxLength: descriptionMaxChar})}
+                                {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].descriptionMaxChar})}
                                 className='stor-input'
                                 style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                     fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -414,7 +443,7 @@ export default function Labels(props){
                             {itemLabelType != 'large' ?
                             <>
                                 <input 
-                                    maxLength={minMaxChar}
+                                    maxLength={maxChars[itemLabelType].minMaxChar}
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -426,7 +455,7 @@ export default function Labels(props){
                                     }}
                                 />
                                 <input
-                                    maxLength={maxMaxChar}
+                                    maxLength={maxChars[itemLabelType].maxMaxChar}
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -469,7 +498,6 @@ export default function Labels(props){
                 </form>
             )
         }
-
 
     return(
         <>

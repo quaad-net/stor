@@ -83,9 +83,9 @@ export default function PL2Labels(props) {
     const video = document.querySelector('#video');
     const canvas = document.querySelector('#canvas');
     const context = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    
+    canvas.width = window.innerWidth > 500 ? video.videoWidth : window.innerWidth;
+    canvas.height = window.innerHeight > 700 ? video.videoHeight : window.innerHeight;
 
     context.drawImage(video, 0, 0, canvas.width, canvas.height); 
     setImgCaptured(true);
@@ -111,18 +111,15 @@ export default function PL2Labels(props) {
         return res.json()
       })
       .then((res)=>{
-        if(res.message.length > 50){
-          const content = res.message.substring(0, 50) + '...';
-          setModalContent(<span>{content}</span>);
+        if(res.message == 'Complete'){
+          setModalContent(<span>Items have been added to print jobs.</span>);
+          setModalOpen(true);
         }
-        else if(res.message == 'Complete'){
-          setModalContent(<span>Items have been added to print jobs.</span>)
+        else if(res.message == 'Could not find matching items'){
+          setModalContent(<span>{res.message}.</span>);
+          setModalOpen(true);
         }
-        else{
-          setModalContent(<span>{res.message}</span>);
-          console.log(res);
-        };
-        setModalOpen(true);
+        else{console.log(res); throw new Error()}
       })
 
       stopStream();
@@ -133,17 +130,12 @@ export default function PL2Labels(props) {
     }
     catch(err){
       console.log(err)
+      stopStream();
       setUseCam(false);
       setImgCaptured(false);
       setLoading(false);
       setImgSent(true);
-      if(err.message.length > 50){
-        const content = err.message.substring(0, 50) + '...';
-        setModalContent(<span>{content}</span>);
-      }
-      else{
-        setModalContent(<span>{err.message}</span>)
-      }
+      setModalContent(<span>Could not complete operation.</span>)
       setModalOpen(true)
     }
 
@@ -190,14 +182,20 @@ export default function PL2Labels(props) {
         >
           <AppBar sx={{ position: 'relative'}}>
             <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={handleClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconButton>
+              {!loading ?
+              <>
+                  <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={handleClose}
+                      aria-label="close"
+                  >
+                      <CloseIcon />
+                  </IconButton>
+              </>
+              :
+              <CircularIndeterminate size={30} />
+              }
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {imgCaptured && !imgSent ? '' : 'PL'} 
               </Typography>

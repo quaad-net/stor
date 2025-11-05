@@ -32,3 +32,7 @@
 .stor-input:focus{
   border-color: gold;
 }
+
+.action:hover{
+  cursor: pointer;
+}
