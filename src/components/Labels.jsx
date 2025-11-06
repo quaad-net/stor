@@ -44,7 +44,7 @@ const maxChars = {
     },
     reg16pt:{
         codeMaxChar : 10,
-        descriptionMaxChar: 70,
+        descriptionMaxChar: 65,
         binLocMaxChar: 12,
         minMaxChar: 6,
         maxMaxChar: 6,
