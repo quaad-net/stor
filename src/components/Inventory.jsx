@@ -1170,9 +1170,16 @@ max: ${partListItems[idx]?.max}
             .then((res)=>{
                 return res.json()
             })
-            .then((res)=>{console.log(res)})
+            .then((res)=>{
+                console.log(res);
+                if(res?.message != 'Success'){throw new Error(res.message)}
+            })
             .catch((err)=>{
                 console.log(err);
+                setTimeout(() => {
+                    setBasicMessageModalContent('Email notifcation failed.');
+                    setBasicMessageModalOpen(true);        
+                }, 3000);
             })
         }
 

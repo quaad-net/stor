@@ -102,10 +102,10 @@ export default function AppBarHideOnScroll(props) {
           // name: as it appears to user
           {value: 'binLoc', name: '{L}'},
           {value: 'partCode', name: '{C}'},
-          {value: 'descr', name: '{D}'}
+          {value: 'descr', name: '{D}'},
+          {value: 'warehouseCode', name: '{W}'}
         ]
 
-        if(props.filterOn){queryTypeSelections.push({value: 'ware', name: '{W}'})}
         if(!props.filterOn){queryTypeSelections.push({value: 'semantic', name: '{S}'})}
 
         const renderMenu = (

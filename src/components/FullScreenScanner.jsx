@@ -99,8 +99,8 @@ export default function FullScreenScanner(props) {
               QR Scanner
             </Typography>
             <Button autoFocus color="inherit" onClick={()=>{
-              props.setLoading(true);
-              props.getScanResult(scanResult)
+              if(props?.setLoading != undefined){props.setLoading(true)};
+              props.getScanResult(scanResult);
               setScanResult("00-00000");
               handleClose();
             }}>
