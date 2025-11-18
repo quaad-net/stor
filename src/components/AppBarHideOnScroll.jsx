@@ -251,7 +251,7 @@ export default function AppBarHideOnScroll(props) {
                 }}>
                   {props.filterOn ? <FilterListOffIcon sx={{color: 'white'}}/> : <FilterListIcon sx={{color: 'white'}}/>}
                 </IconButton>
-                <FullScreenScanner getScanResult={props.getScanResult} qrImgWidth='20px'/>
+                <FullScreenScanner getScanResult={props.getScanResult} qrImgWidth='20px' setLoading={setLoading}/>
                 {/* Tablet and desktop menu items. */}
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

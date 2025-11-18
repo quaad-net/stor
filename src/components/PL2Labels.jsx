@@ -43,14 +43,18 @@ export default function PL2Labels(props) {
 
   const warehouseSelections = [
     // name: as it appears to user
+    {value: 1548, name: 'Carp USR'},
+    {value: 3048, name: 'Cust USR'},
+    {value: 2032, name: 'Elec NWQ'},
     {value: 7032, name: 'Mech NWQ'},
-    {value: 5032, name: 'Plumb NWQ'},
-    {value: 2032, name: 'Elect NWQ'}
+    {value: 4448, name: 'Pain USR'},
+    {value: 5032, name: 'Plum NWQ'},
+    {value: 3532, name: 'Stor NWQ'}, 
+    {value: 3548, name: 'Stor USR'},
   ]
 
   const handleClickOpen = () => {
     setOpen(true);
-    
   };
 
   const handleClose = () => {
@@ -116,7 +120,7 @@ export default function PL2Labels(props) {
           setModalOpen(true);
         }
         else if(res.message == 'Could not find matching items'){
-          setModalContent(<span>{res.message}.</span>);
+          setModalContent(<div style={{textAlign: 'center'}}>{res.message}.</div>);
           setModalOpen(true);
         }
         else{console.log(res); throw new Error()}
@@ -135,7 +139,7 @@ export default function PL2Labels(props) {
       setImgCaptured(false);
       setLoading(false);
       setImgSent(true);
-      setModalContent(<span>Could not complete operation.</span>)
+      setModalContent(<div style={{textAlign: 'center'}}>Could not complete operation.</div>)
       setModalOpen(true)
     }
 
@@ -199,7 +203,7 @@ export default function PL2Labels(props) {
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {imgCaptured && !imgSent ? '' : 'PL'} 
               </Typography>
-              {imgCaptured && !imgSent ?
+              {imgCaptured && !imgSent && !loading ?
                 <div style={{marginRight: 20}}>
                   <SelectAutoWidth 
                     onSelectChange={setWarehouse} 
@@ -253,7 +257,7 @@ export default function PL2Labels(props) {
                 }
                 </>
               :
-                <CircularIndeterminate size={15}/>
+                <></>
               }
             </Toolbar>
           </AppBar>

@@ -73,7 +73,7 @@ export default function Inventory() {
     }, [])
 
     useEffect(()=>{
-        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true});
+        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true})
     },[])
     
     useEffect(()=>{
@@ -965,7 +965,9 @@ max: ${partListItems[idx]?.max}
                     </fieldset>
                 </div>
                 <div style={{marginBottom: '10px', paddingBottom: '10px'}}>
-                    {usageData?.avgDailyUsage != undefined ?
+                    <></>
+                    {/* Uncomment below to show usage data if available.*/}
+                    {/* {usageData?.avgDailyUsage != undefined ?
                     <fieldset style={{boxSizing: 'border-box', height: 'fit-content', width: 'fit-content', borderRadius: '5px', border: 'transparent'}}>
                             <>
                                 <legend style={{color: 'white', fontSize: '13px'}}>Usage - 90 Day Avg:&nbsp; 
@@ -984,7 +986,7 @@ max: ${partListItems[idx]?.max}
                     </fieldset>
                     :
                     <></>
-                    }
+                    } */}
                 </div>
             </>
         )

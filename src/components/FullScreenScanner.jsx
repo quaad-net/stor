@@ -22,6 +22,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 export default function FullScreenScanner(props) {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [scanResult, setScanResult] = useState('0000000');
 
@@ -98,6 +99,7 @@ export default function FullScreenScanner(props) {
               QR Scanner
             </Typography>
             <Button autoFocus color="inherit" onClick={()=>{
+              props.setLoading(true);
               props.getScanResult(scanResult)
               setScanResult("00-00000");
               handleClose();
