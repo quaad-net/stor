@@ -103,7 +103,7 @@ export default function AppBarHideOnScroll(props) {
           {value: 'binLoc', name: '{L}'},
           {value: 'partCode', name: '{C}'},
           {value: 'descr', name: '{D}'},
-          {value: 'warehouseCode', name: '{W}'}
+          {value: 'ware', name: '{W}'}
         ]
 
         if(!props.filterOn){queryTypeSelections.push({value: 'semantic', name: '{S}'})}
