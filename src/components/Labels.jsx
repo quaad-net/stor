@@ -288,7 +288,9 @@ export default function Labels(props){
                                         setFormModalOpen(true);
                                         setReadyToPrint(false);
                                         }}>
-                                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New</span>
+                                        <span style={{fontSize: '15px'}}>
+                                            <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New
+                                        </span>
                                     </IconButton>
                                 </div>
                                 <br/>
@@ -299,22 +301,38 @@ export default function Labels(props){
                             </>
                             :
                             <>
-                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('reg'); setReadyToPrint(true);}}>
-                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}}/>
-                                    <span style={{color: 'gray'}}>12pt(1x4)</span>
-                                </div><br/>
-                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('reg16pt'); setReadyToPrint(true);}}>
-                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}} />
-                                    <span style={{color: 'gray'}}>16pt(1x4)</span>
-                                </div><br/>
-                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('large'); setReadyToPrint(true);}}>
-                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}} />
-                                    <span style={{color: 'gray'}}>32pt(2x4)</span>
-                                </div><br/>
-                                <div className="action" style={{marginLeft: '10px'}} onClick={()=>{setItemLabelType('itemCodeQR'); setReadyToPrint(true);}}>
-                                    <input type="checkbox" onChange={(e)=>{e.preventDefault()}}/>
-                                    <span style={{color: 'gray'}}>ItemCode</span>
-                                </div><br/>
+                                <IconButton disableRipple onClick={()=>{
+                                    setItemLabelType('reg'); setReadyToPrint(true);
+                                    }}>
+                                    <span style={{fontSize: '15px'}}>
+                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                                        12pt(1x4)
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={()=>{
+                                    setItemLabelType('reg16pt'); setReadyToPrint(true);
+                                    }}>
+                                    <span style={{fontSize: '15px'}}>
+                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                                        16pt(1x4)
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={()=>{
+                                    setItemLabelType('large'); setReadyToPrint(true);
+                                    }}>
+                                    <span style={{fontSize: '15px'}}>
+                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                                        32pt(2x4)
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={()=>{
+                                    setItemLabelType('itemCodeQR'); setReadyToPrint(true)
+                                    }}>
+                                    <span style={{fontSize: '15px'}}>
+                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                                        ItemCode
+                                    </span>
+                                </IconButton><br/><br/>
                             </>
                             }
                         </div>
