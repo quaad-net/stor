@@ -958,8 +958,8 @@ max: ${partListItems[idx]?.max}
                     <fieldset style={{boxSizing: 'border-box', height: '60px', width: 'fit-content', borderRadius: '5px', borderColor: 'transparent'}}>
                         <legend style={{color: 'white', fontSize: '13px'}}>Warehouse - {partListItems[idx]?.warehouseCode}</legend>
                         <span style={{color: 'gray'}}>
-                            avail: {partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}&nbsp;
-                            | min: {partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min}&nbsp;
+                            {/* avail: {partListItems[idx]?.invtAvail === '' || undefined ? '-'  : partListItems[idx]?.invtAvail}&nbsp; */}
+                            min: {partListItems[idx]?.min === '' || undefined ? '-'  : partListItems[idx]?.min}&nbsp;
                             | max: {partListItems[idx]?.max === '' || undefined ? '-'  : partListItems[idx]?.max }&nbsp;
                         </span>
                     </fieldset>
