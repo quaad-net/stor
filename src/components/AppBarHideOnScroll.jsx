@@ -25,6 +25,7 @@ import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
 import PL2Labels from './PL2Labels';
+import QuickCount from './QuickCount';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -143,9 +144,8 @@ export default function AppBarHideOnScroll(props) {
               <div style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin'}}>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                   <SyntaxHelper mobileMenu/>
-                  <span style={{color: 'gray'}}>QryHelp</span>
+                  <div style={{textAlign: 'center'}}>-----</div>
                 </div>
-                <div style={{width: 'fit-content', margin:'auto'}}>-----</div>
                 <IconButton
                   disableRipple
                   size="large" 
@@ -160,7 +160,7 @@ export default function AppBarHideOnScroll(props) {
                   currentPage={props?.currentPage} 
                   btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
                 />
-                <IconButton
+                {/* <IconButton
                   disableRipple
                   size="large"
                   aria-label="update inventory"
@@ -181,7 +181,10 @@ export default function AppBarHideOnScroll(props) {
                 >
                   <img src={imgMap.get('info.svg')} width='25px' />
                   <span style={{fontSize: '15px'}}>Details</span>
-                </IconButton><br/>
+                </IconButton><br/> */}
+                <QuickCount
+                  btnDescription={<span style={{fontSize: '15px'}}>Count</span>}
+                /><br/>
                 <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                 <Labels 
                   mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}
@@ -286,7 +289,7 @@ export default function AppBarHideOnScroll(props) {
                     <PL2Labels user={props.user} token={props.token}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
                   </div>
-                  <div style={{borderRight: '3px solid black'}}>
+                  {/* <div style={{borderRight: '3px solid black'}}>
                     <IconButton
                       disableRipple
                       size="large"
@@ -308,7 +311,11 @@ export default function AppBarHideOnScroll(props) {
                     >
                       <img src={imgMap.get('info.svg')} width='25px' />
                     </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Info</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Details</div>
+                  </div> */}
+                  <div style={{borderRight: '3px solid black'}}>
+                    <QuickCount/>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Count</div>
                   </div>
                   {props.sessionOrds.length > 0 ?
                   <div style={{borderRight: '3px solid black'}}>

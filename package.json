@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite --open --port 3000",
+    "dev": "vite --open --port 3000 --host",
     "heroku-postbuild": "npm run build",
     "lint": "eslint .",
     "postinstall": "npm run build",
