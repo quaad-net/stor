@@ -115,11 +115,13 @@ export default function Inventory() {
     }
 
     function inventoryQuery({query, queryType, noDialog}){
+        let isLocQR = false;
         try{
             if(!filterOn){
                 const locQR = /locQR/;
                 //Manual entry Of location QR.
                 if(locQR.test(query.toString().trim())){
+                    isLocQR = true;
                     query = query.replace('locQR/', '') + '-';
                     queryType = 'locQR';
                 }
@@ -135,6 +137,7 @@ export default function Inventory() {
                     body: JSON.stringify({query: query})
                 })
                 .then((res)=>{
+                    if(isLocQR){query = query.substring(0, query.length -1)} // Removes trailing '-'
                     if(res.status == 401){throw new Error('Unauthorized user')}
                     else if(res.status == 404){throw new Error('No match')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
@@ -152,7 +155,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 Could not complete query due to constraints.<br/>
-                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 <br/><br/>
                                 Try using different keywords or a different query type.
                             </span>
@@ -163,7 +166,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 Could not complete query due to constraints.<br/>
-                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 <br/><br/>
                                 Try using different keywords or a different query type.
                             </span>
@@ -174,7 +177,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 Could not complete query.<br/>
-                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 <br/><br/>
                                 Please try again.
                             </span>
@@ -186,7 +189,7 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     No match found for<br/>
-                                    <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 </span>
                             )
                             if(!noDialog){setBasicMessageModalOpen(true)}
@@ -208,7 +211,7 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
-                                    <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                                 </span>
                             );
                             if(!noDialog){setBasicMessageModalOpen(true)};
@@ -217,6 +220,7 @@ export default function Inventory() {
                 })
                 .catch((err)=>{
                     console.log(err)
+                    if(isLocQR){query = query.substring(0, query.length -1)} // Removes trailing '-'
                     if(err.message=='Invalid syntax'){
                         setBasicMessageModalContent(err.message);
                         setBasicMessageModalOpen(true);
@@ -232,7 +236,7 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 No match found for<br/>
-                                <span style={{color: 'gray', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
                             </span>
                         );
                         setBasicMessageModalOpen(true);
@@ -551,16 +555,16 @@ export default function Inventory() {
 
     function getScanResult(result){
         //Function accounts for the following variety of scan results:
-            // "22-11147,1"  => partCode,min  || vendorPartCode,min
-            // "49735,2,1" => partCode,max,min || vendorPartCode,max,min
-            // "70-11235-7032" => partCode-warehouseCode
-            // "71-00170" = partCode
+            // 22-11147,1  => partCode,min  || vendorPartCode,min
+            // 49735,2,1 => partCode,max,min || vendorPartCode,max,min
+            // 70-11235-7032 => partCode-warehouseCode
+            // "71-00170" => partCode with quotations
 
         // locQR format: locQR/warehouseCode/row-section
         const locQR = /locQR/;
 
         if(!locQR.test(result)){
-            let newResult = result.replace(`"`, ``);
+            let newResult = result.replaceAll(`"`, ``);
             const hasComma = /,/;
             if(hasComma.test(newResult)){
                 newResult = newResult.split(',')[0].trim();

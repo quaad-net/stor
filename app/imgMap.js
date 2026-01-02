@@ -26,6 +26,7 @@ imgMap.set('pulsar-clear.svg', `${imgServer}b38e1317-a708-42b2-f5ab-656fa2765700
 imgMap.set('pulsar-circled-info.svg', `${imgServer}35cda7b7-f34e-4bb9-7fb7-d07f0dd7e000/icon`); 
 imgMap.set('pulsar-download.svg', `${imgServer}42c48a4f-5062-4e77-0c69-6b610c86cb00/icon`)
 imgMap.set('pulsar-labels.svg', `${imgServer}d056b8a6-4f17-4e11-f316-0b0a6781f600/icon`); 
+imgMap.set('pulsar-layers.svg', `${imgServer}21322a88-4845-45a0-638c-259370693c00/icon`);
 imgMap.set('pulsar-login.svg', `${imgServer}f1a9891e-f1e8-4dc3-d085-18d093d99400/icon`); 
 imgMap.set('pulsar-print.svg', `${imgServer}2c23b09c-dc25-43bc-aa6a-af7d7c06c900/icon`); 
 imgMap.set('pulsar-purchase-order.svg', `${imgServer}952f7835-61f7-4402-2786-e0196aca9b00/icon`);

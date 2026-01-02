@@ -48,7 +48,7 @@ export default function QuickCount(props) {
   const { userData } = useUserData();
   const user = JSON.parse(userData);
 
-  // // Temp
+  // // For Scan Emulation
   // const locQR = 'locQR/32/100'
   // const tmpDescription = 'Zurn AquaVantage Closet Repair Kit P6000-ECA-WS First Supply#: ZURP6000ECAWS'
 
@@ -75,13 +75,28 @@ export default function QuickCount(props) {
     // Note: Location scanned should have only unique part codes.
 
     // Function should account for the following variety of scan results:
-        // "22-11147,1"  => partCode,min  || vendorPartCode,min
-        // "49735,2,1" => partCode,max,min || vendorPartCode,max,min
-        // "70-11235-7032" => partCode-warehouseCode
-        // "71-00170" = partCode
+        // 22-11147,1  => partCode,min  || vendorPartCode,min
+        // 70-11235-7032 => partCode-warehouseCode
+        // "71-00170" => partCode with quotations
+
+    let matched = false;
+    let newResult = code.replaceAll(`"`, ``);  
+    const hasComma = /,/;
+    if(hasComma.test(newResult)){
+        newResult = newResult.split(',')[0].trim();
+    };
+
+    const resultArr = newResult.split('');
+    let hyphenCount = 0;
+    resultArr.forEach((char)=>{
+        if(char == '-'){hyphenCount++};
+    })
+    
+    if(hyphenCount == 2){newResult = newResult.split('-')[0] + '-' + newResult.split('-')[1]}
 
     parts.map((p)=>{
-      if (p.code == code){
+      if (p.code == newResult){
+        matched = true;
         setScanResult(p.code);
         setPartDescr(p.description);
         setBinLoc(p.binLoc);
@@ -90,6 +105,16 @@ export default function QuickCount(props) {
         return
       }
     })
+
+    if(!matched){
+      setBasicMessageModalContent(
+        <span>
+            No matching record for<br/>
+            <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{code}</span>
+        </span>
+      );
+      setBasicMessageModalOpen(true);
+    }
   }
 
   function getScanResult(result){
@@ -223,24 +248,24 @@ export default function QuickCount(props) {
           &:hover {cursor: pointer}
       `
       function submitForm(){
-          try{
-            if(Number(tmpCount) * 0  === 0 && tmpCount != ''){}
-            else{throw new Error('Please enter a numeric value for Count!')};
-            submitUserInput({count: tmpCount})
-            .then(()=>{setLoading(false)})
-          }
-          catch(err){
-              setLoading(false);
-              setAlertContent(err.message);
-              setDisplayAlert(true);
-          }
+        try{
+          if(Number(tmpCount) * 0  === 0 && tmpCount != ''){}
+          else{throw new Error('Please enter a numeric value for Count!')};
+          submitUserInput({count: tmpCount})
+          .then(()=>{setLoading(false)})
+        }
+        catch(err){
+            setLoading(false);
+            setAlertContent(err.message);
+            setDisplayAlert(true);
+        }
       }
       
       return(
         <>  
           <ErrorAlert/>
           <div style={{width: '100%', margin: 'auto'}}>
-              <form id='quick-count-form'>
+              <form id='quick-count-form' onSubmit={(e)=>{e.preventDefault()}}>
                   <input 
                       inputMode='numeric'
                       maxLength={4}
@@ -252,12 +277,15 @@ export default function QuickCount(props) {
                       type='text' 
                       placeholder='(#) Count' 
                       onChange={(e)=>{
-                          setTmpCount(e.target.value);
-                            if(e.key === 'Enter'){
-                              e.preventDefault();
-                              setLoading(true);
-                              submitForm();
-                            }
+                        setTmpCount(e.target.value);
+                      }}
+                      onKeyDown={(e)=>{
+                        console.log(e.key)
+                        if(e.key==='Enter'){
+                          if(completedCount){setCompletedCount(false)}
+                          setLoading(true);
+                          submitForm();
+                        }
                       }}
                   />
                   <div style={{width: 'fit-content',margin: 'auto'}}>
@@ -267,6 +295,7 @@ export default function QuickCount(props) {
                         type='button' 
                         onClick={(e)=>{
                             e.preventDefault();
+                            if(completedCount){setCompletedCount(false)}
                             setLoading(true);
                             submitForm();
                         }}
@@ -308,7 +337,7 @@ export default function QuickCount(props) {
                 }}
                 onError={(error)=>{console.log(error)}}
                 styles={{ width: '100%'}}
-                constraints={{facingMode: {ideal: 'environment' }}}
+                constraints={{audio: true, facingMode: {ideal: 'environment' }}}
                 formats={['any']}
               />
             </>
@@ -330,7 +359,7 @@ export default function QuickCount(props) {
           color="inherit" 
           onClick={handleClickOpen}>
           <img 
-            src= {imgMap.get('1-2-3.svg')} 
+            src= {imgMap.get('pulsar-layers.svg')} 
             width={props?.iconWidth  || '25px'}
           />
           {props?.btnDescription || <></>}
@@ -360,17 +389,18 @@ export default function QuickCount(props) {
                 <>
                 {scanResult == '- - - -' || location == ""? 
                   <>
+                    {/* Scan Emulation */}
                     {/* <Button color="inherit" onClick={()=>{
-                      getPart('70-19202')
+                      getPart('70-11111') //19202
                     }}>
                       SCANPART
                     </Button>
                     <Button color="inherit" onClick={()=>{
-                      // setLocation(locQR.split("/")[1] + "/" + locQR.split("/")[2]);
                       getScanResult(locQR);
                     }}>
                       SCANLOC
                     </Button> */}
+                    {/* End Scan Emulation */}
                   </>
                 : 
                   <CountModalContent/>

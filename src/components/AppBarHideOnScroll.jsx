@@ -160,31 +160,9 @@ export default function AppBarHideOnScroll(props) {
                   currentPage={props?.currentPage} 
                   btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
                 />
-                {/* <IconButton
-                  disableRipple
-                  size="large"
-                  aria-label="update inventory"
-                  color="inherit"
-                  onClick={()=>{
-                    props.setUpdateInventory(true);
-                  }}
-                    >
-                  <img src={imgMap.get('database-update.svg')} width='25px' />
-                  <span style={{fontSize: '15px'}}>Update</span>
-                </IconButton><br/>
-                <IconButton 
-                  disableRipple
-                  size="large" 
-                  aria-label="inventory details" 
-                  color="inherit"
-                  onClick={()=>{props.setUpdateInventory(false)}}
-                >
-                  <img src={imgMap.get('info.svg')} width='25px' />
-                  <span style={{fontSize: '15px'}}>Details</span>
-                </IconButton><br/> */}
                 <QuickCount
                   btnDescription={<span style={{fontSize: '15px'}}>Count</span>}
-                /><br/>
+                />
                 <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
                 <Labels 
                   mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}
@@ -289,30 +267,6 @@ export default function AppBarHideOnScroll(props) {
                     <PL2Labels user={props.user} token={props.token}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
                   </div>
-                  {/* <div style={{borderRight: '3px solid black'}}>
-                    <IconButton
-                      disableRipple
-                      size="large"
-                      aria-label="update inventory"
-                      color="inherit"
-                      onClick={()=>{props.setUpdateInventory(true)}}
-                        >
-                        <img src={imgMap.get('database-update.svg')} width='25px' />
-                    </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Update</div>
-                  </div>
-                  <div style={{borderRight: '3px solid black'}}>
-                    <IconButton 
-                      disableRipple
-                      size="large" 
-                      aria-label="inventory details" 
-                      color="inherit" 
-                      onClick={()=>{props.setUpdateInventory(false)}}
-                    >
-                      <img src={imgMap.get('info.svg')} width='25px' />
-                    </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Details</div>
-                  </div> */}
                   <div style={{borderRight: '3px solid black'}}>
                     <QuickCount/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Count</div>
