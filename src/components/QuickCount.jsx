@@ -61,8 +61,8 @@ export default function QuickCount(props) {
   const { userData } = useUserData();
   const user = JSON.parse(userData);
 
-  // // For Scan Emulation Only
-  // const locQR = 'locQR/32/100'
+  // For Scan Emulation Only
+  const locQR = 'locQR/32/100'
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -257,8 +257,9 @@ export default function QuickCount(props) {
     function CountExposedEL(){
         return(
           <Button color="inherit">
-            COUNT
+            <img src={imgMap.get('1-2-3.svg')} width='30px'/>
           </Button>
+          
         )
     }
 
@@ -425,8 +426,8 @@ export default function QuickCount(props) {
                 {scanResult == '- - - -' || location == ""? 
                   <>
                     {/* Scan Emulation */}
-                    {/* <Button color="inherit" onClick={()=>{
-                      getPart('70-11111') 
+                    <Button color="inherit" onClick={()=>{
+                      getPart('70-19170') 
                     }}>
                       SCANPART
                     </Button>
@@ -434,7 +435,7 @@ export default function QuickCount(props) {
                       getScanResult(locQR);
                     }}>
                       SCANLOC
-                    </Button> */}
+                    </Button>
                     {/* End Scan Emulation */}
                   </>
                 : 
@@ -446,7 +447,10 @@ export default function QuickCount(props) {
           </AppBar>
           <List>
             <ListItemButton>
-              <ListItemText primary={completedCount ? scanResult + ' ✓' : scanResult} secondary= {location == "" ? prompt : (binLoc != ''? location + " | " + binLoc : location) } />
+              <ListItemText 
+                primary={completedCount ? scanResult + ' ✓' : scanResult} 
+                secondary= {location == "" ? prompt : (binLoc != ''? location + " | " + binLoc : location) } 
+              />
             </ListItemButton>
             <Divider />
           </List>

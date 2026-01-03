@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useState } from 'react';
+import { Fragment, forwardRef, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -40,27 +40,39 @@ export default function FullScreenScanner(props) {
     },
   });
 
-    function NewScan(props){
+  useEffect(()=>{console.log('test')},[])
 
-      function Cam(){
-          return (
-              <>
-                <Scanner 
-                  onScan={(result)=>{
-                      setScanResult(result[0].rawValue);
-                  }}
-                  onError={(error)=>{console.log(error)}}
-                  styles={{ width: '100%'}}
-                  constraints={{facingMode: {ideal: 'environment' }}}
-                  formats={['any']}
-                />
-              </>
-            )
-      }
+  function NewScan(props){
 
-      return(
-          <>{props.displayCam ? <Cam/> : <></>}</>
-      )
+    function Cam(){
+        return (
+            <>
+              <Scanner 
+                onScan={(result)=>{
+                  // Will automatically use scan result if a location or login QR has been scanned.
+                  // Else scanned result is shown to user to take action.
+                  const locQR = /locQR/
+                  const login = /@/
+                  if(locQR.test(result[0].rawValue) || login.test(result[0].rawValue) ){
+                    if(props?.setLoading != undefined){props.setLoading(true)}
+                    props.getScanResult(result[0].rawValue)
+                    setScanResult("0000000");
+                    handleClose();
+                  }
+                  else{setScanResult(result[0].rawValue)};
+                }}
+                onError={(error)=>{console.log(error)}}
+                styles={{ width: '100%'}}
+                constraints={{facingMode: {ideal: 'environment' }}}
+                formats={['any']}
+              />
+            </>
+          )
+    }
+
+    return(
+        <>{props.displayCam ? <Cam/> : <></>}</>
+    )
   }
 
   return (
@@ -101,7 +113,7 @@ export default function FullScreenScanner(props) {
             <Button autoFocus color="inherit" onClick={()=>{
               if(props?.setLoading != undefined){props.setLoading(true)};
               props.getScanResult(scanResult);
-              setScanResult("00-00000");
+              setScanResult("0000000");
               handleClose();
             }}>
               USE RESULT
