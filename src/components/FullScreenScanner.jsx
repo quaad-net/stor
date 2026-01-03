@@ -40,7 +40,18 @@ export default function FullScreenScanner(props) {
     },
   });
 
-  useEffect(()=>{console.log('test')},[])
+  useEffect(()=>{
+    // Will automatically use scan result if a location or login QR has been scanned.
+    // Else scanned result is shown to user to take action.
+    const locQR = /locQR/
+    const login = /@/
+    if(locQR.test(scanResult) || login.test(scanResult) ){
+      if(props?.setLoading != undefined){props.setLoading(true)}
+      props.getScanResult(scanResult)
+      setScanResult("0000000");
+      handleClose();
+    }
+  },[scanResult])
 
   function NewScan(props){
 
@@ -49,17 +60,7 @@ export default function FullScreenScanner(props) {
             <>
               <Scanner 
                 onScan={(result)=>{
-                  // Will automatically use scan result if a location or login QR has been scanned.
-                  // Else scanned result is shown to user to take action.
-                  const locQR = /locQR/
-                  const login = /@/
-                  if(locQR.test(result[0].rawValue) || login.test(result[0].rawValue) ){
-                    if(props?.setLoading != undefined){props.setLoading(true)}
-                    props.getScanResult(result[0].rawValue)
-                    setScanResult("0000000");
-                    handleClose();
-                  }
-                  else{setScanResult(result[0].rawValue)};
+                  setScanResult(result[0].rawValue)
                 }}
                 onError={(error)=>{console.log(error)}}
                 styles={{ width: '100%'}}

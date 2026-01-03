@@ -61,8 +61,8 @@ export default function QuickCount(props) {
   const { userData } = useUserData();
   const user = JSON.parse(userData);
 
-  // For Scan Emulation Only
-  const locQR = 'locQR/32/100'
+  // // For Scan Emulation Only
+  // const locQR = 'locQR/32/100'
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -426,7 +426,7 @@ export default function QuickCount(props) {
                 {scanResult == '- - - -' || location == ""? 
                   <>
                     {/* Scan Emulation */}
-                    <Button color="inherit" onClick={()=>{
+                    {/* <Button color="inherit" onClick={()=>{
                       getPart('70-19170') 
                     }}>
                       SCANPART
@@ -435,7 +435,7 @@ export default function QuickCount(props) {
                       getScanResult(locQR);
                     }}>
                       SCANLOC
-                    </Button>
+                    </Button> */}
                     {/* End Scan Emulation */}
                   </>
                 : 
