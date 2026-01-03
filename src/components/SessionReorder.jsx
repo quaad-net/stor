@@ -123,7 +123,7 @@ export default function SessionReorder(props) {
                     updatedOrdersMap.set(order._id, order._id)
 
                 })
-                // If true, item in not present in UI list.
+                // If true, item is not present in UI list.
                 unfilteredOrders.map((order)=>{
                     if(updatedOrdersMap.get(order._id) == undefined){updatedUnfilteredOrders.push(order)}
                 })

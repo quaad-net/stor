@@ -1,56 +1,68 @@
-import { Fragment, forwardRef, useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import { Scanner } from '@yudiel/react-qr-scanner';
-import { ThemeProvider, createTheme } from '@mui/material';
-import imgMap from '../../app/imgMap';
-import Alert from '@mui/material/Alert';
-import BasicMessageModal from './BasicMessageModal';
-import CustomContentFormModal from './CustomContentFormModal';
-import useUserData from '../../app/useUserData';
-import Styled from '@emotion/styled';
-import useToken from '../../app/useToken';
-
 import './FullScreenScanner.css'
+import Alert from '@mui/material/Alert';
+import AppBar from '@mui/material/AppBar';
+import BasicMessageModal from './BasicMessageModal';
+import Button from '@mui/material/Button';
 import CircularIndeterminate from './Progress';
+import CloseIcon from '@mui/icons-material/Close';
+import { createTheme, ThemeProvider} from '@mui/material';
+import CustomContentFormModal from './CustomContentFormModal';
+import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import { Fragment, forwardRef, useEffect, useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import imgMap from '../../app/imgMap';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import { Scanner } from '@yudiel/react-qr-scanner';
+import Slide from '@mui/material/Slide';
+import Styled from '@emotion/styled';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import {unparse} from 'papaparse';
+import useToken from '../../app/useToken';
+import useUserData from '../../app/useUserData';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const download = (data, filename) => {
+    const blob = new Blob([data], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.csv`;
+    a.click();
+}
+
+function jsonToCsv(objArray) {
+    const csv = unparse(objArray);
+    return csv
+}
 
 export default function QuickCount(props) {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [scanResult, setScanResult] = useState('- - - -');
-  const [prompt, setPrompt] = useState("Scan a location QR.");
-  const [location, setLocation] = useState("");
-  const [partDescr, setPartDescr] = useState("");
-  const [binLoc, setBinLoc] = useState("");
-  const [basicMessageModalOpen, setBasicMessageModalOpen] = useState(false);
-  const [basicMessageModalContent, setBasicMessageModalContent] = useState("");
-  const { token } = useToken();
-  const [parts, setParts] = useState([]);
   const [activePart, setActivePart] = useState({});
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const [basicMessageModalContent, setBasicMessageModalContent] = useState("");
+  const [basicMessageModalOpen, setBasicMessageModalOpen] = useState(false);
+  const [binLoc, setBinLoc] = useState("");
   const [completedCount, setCompletedCount] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState("");
+  const [open, setOpen] = useState(false);
+  const [partDescr, setPartDescr] = useState("");
+  const [parts, setParts] = useState([]);
+  const [prompt, setPrompt] = useState("Scan a location QR.");
+  const [scanResult, setScanResult] = useState('- - - -');
+  const { token } = useToken();
   const { userData } = useUserData();
   const user = JSON.parse(userData);
 
-  // // For Scan Emulation
+  // // For Scan Emulation Only
   // const locQR = 'locQR/32/100'
-  // const tmpDescription = 'Zurn AquaVantage Closet Repair Kit P6000-ECA-WS First Supply#: ZURP6000ECAWS'
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -70,6 +82,26 @@ export default function QuickCount(props) {
       mode: 'dark',
     },
   });
+
+  async function getCounts(){
+    fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+        'uwm' : user.institution}/inventory_count_records`, {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+    })
+    .then((res)=>{
+      if(res.status != 200){throw new Error(res.status)}
+      return res.json()
+    })
+    .then((res)=>{
+      const csv = jsonToCsv(res);
+      download(csv, 'inventory_count_records')
+    })
+    .catch((err)=>{
+      setBasicMessageModalContent(<span>{err.message} Error</span>);
+      setBasicMessageModalOpen(true);
+    })
+  }
 
   function getPart(code){
     // Note: Location scanned should have only unique part codes.
@@ -382,8 +414,11 @@ export default function QuickCount(props) {
                 <CloseIcon />
               </IconButton>
               <Typography sx={{ ml: 2, flex: 1}} variant="h6" component="div">
-                QuickCount
+                QUICKCOUNT
               </Typography>
+              <IconButton disableRipple onClick={getCounts}>
+                  <SaveAltIcon fontSize='20px'/>
+              </IconButton>
               {loading? <CircularIndeterminate size={30}/>
               :
                 <>
@@ -391,7 +426,7 @@ export default function QuickCount(props) {
                   <>
                     {/* Scan Emulation */}
                     {/* <Button color="inherit" onClick={()=>{
-                      getPart('70-11111') //19202
+                      getPart('70-11111') 
                     }}>
                       SCANPART
                     </Button>

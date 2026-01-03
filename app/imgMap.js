@@ -41,5 +41,6 @@ imgMap.set('stor-logo.svg', `${imgServer}39fbd164-df89-4855-0924-be78ea37f100/ic
 imgMap.set('stor-tab-icon.svg', `${imgServer}b03c3ce2-c616-41da-aa04-fe081eb84a00/icon`);
 imgMap.set('tool-box.svg', `${imgServer}86ba29d5-0c6c-48c1-b7f4-192986ccee00/icon`);
 imgMap.set('user-small.svg', `${imgServer}39d7b9ca-c1ca-4627-d614-e43c07db3a00/icon`); 
+
 export default imgMap
 

@@ -115,13 +115,11 @@ export default function Inventory() {
     }
 
     function inventoryQuery({query, queryType, noDialog}){
-        let isLocQR = false;
         try{
             if(!filterOn){
                 const locQR = /locQR/;
                 //Manual entry Of location QR.
                 if(locQR.test(query.toString().trim())){
-                    isLocQR = true;
                     query = query.replace('locQR/', '') + '-';
                     queryType = 'locQR';
                 }
@@ -137,7 +135,7 @@ export default function Inventory() {
                     body: JSON.stringify({query: query})
                 })
                 .then((res)=>{
-                    if(isLocQR){query = query.substring(0, query.length -1)} // Removes trailing '-'
+                    if(queryType == 'locQR'){query = query.substring(0, query.length -1)} // Removes trailing '-'
                     if(res.status == 401){throw new Error('Unauthorized user')}
                     else if(res.status == 404){throw new Error('No match')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
@@ -220,7 +218,7 @@ export default function Inventory() {
                 })
                 .catch((err)=>{
                     console.log(err)
-                    if(isLocQR){query = query.substring(0, query.length -1)} // Removes trailing '-'
+                    if(queryType == 'locQR'){query = query.substring(0, query.length -1)} // Removes trailing '-'
                     if(err.message=='Invalid syntax'){
                         setBasicMessageModalContent(err.message);
                         setBasicMessageModalOpen(true);

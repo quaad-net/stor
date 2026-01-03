@@ -284,7 +284,7 @@ export default function AppBarHideOnScroll(props) {
                   }
                   <div>
                     <ShowInstitution/>
-                    <div style={{fontSize: '10px', textAlign: 'center', }}
+                    <div style={{fontSize: '10px', textAlign: 'center'}}
                     >
                       User
                     </div>
