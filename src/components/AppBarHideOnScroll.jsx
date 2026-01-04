@@ -144,8 +144,9 @@ export default function AppBarHideOnScroll(props) {
               <div style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin'}}>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                   <SyntaxHelper mobileMenu/>
-                  <div style={{textAlign: 'center'}}>-----</div>
+                  {/* <div style={{textAlign: 'center'}}>-----</div> */}
                 </div>
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 40, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <IconButton
                   disableRipple
                   size="large" 
@@ -155,23 +156,29 @@ export default function AppBarHideOnScroll(props) {
                   <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
                   <span style={{fontSize: '15px'}}>Sort</span>
                 </IconButton><br/>
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <Pag pagIdxMax={props?.pagIdxMax} 
                   displayPage={props?.displayPage} 
                   currentPage={props?.currentPage} 
                   btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
                 />
+                {props?.displayPage ? <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div> : <></>}
                 <QuickCount
                   btnDescription={<span style={{fontSize: '15px'}}>Count</span>}
                 />
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <Tasks btnDescription={<span style={{fontSize: '15px'}}>Tasks</span>}/>
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <Labels 
                   mobileView={true} queryRes={props?.partListItems} pagListItems={props?.pagListItems}
                   btnDescription={<span style={{fontSize: '15px'}}>Label</span>}
                 />
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <PL2Labels 
                   user={props.user} token={props.token} mobileView={true}
                   btnDescription={<span style={{fontSize: '15px'}}>PL</span>}
                 />
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 {props.sessionOrds.length > 0 ?
                 <>
                 <SessionReorder 
@@ -179,6 +186,7 @@ export default function AppBarHideOnScroll(props) {
                   setSessionOrds={props.setSessionOrds}
                   btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
                 />
+                <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 </>
                 :
                 <></>
