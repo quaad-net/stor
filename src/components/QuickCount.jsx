@@ -64,6 +64,12 @@ export default function QuickCount(props) {
   // // For Scan Emulation Only
   // const locQR = 'locQR/32/100'
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -76,12 +82,6 @@ export default function QuickCount(props) {
     setCompletedCount(false);
     setOpen(false);
   };
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
 
   async function getCounts(){
     fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
@@ -448,7 +448,7 @@ export default function QuickCount(props) {
           <List>
             <ListItemButton>
               <ListItemText 
-                primary={completedCount ? scanResult + ' ✓' : scanResult} 
+                primary={completedCount ? scanResult + ' ✓' : scanResult}
                 secondary= {location == "" ? prompt : (binLoc != ''? location + " | " + binLoc : location) } 
               />
             </ListItemButton>

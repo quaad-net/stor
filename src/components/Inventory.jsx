@@ -1008,11 +1008,11 @@ max: ${partListItems[idx]?.max}
     function MainContentHeader(props){
         if(updateInventory){
             if(props.mobileView){return <img src={imgMap.get('database-update.svg')} width='25px' style={{float: 'right'}}/> }
-            else{return(<span>Inventory Update<img src={imgMap.get('database-update.svg')} width='25px' style={{marginLeft: '10px'}}/></span>)}
+            else{return(<span>Inventory Update</span>)}
         }
         else{
             if(props.mobileView){return <img src={imgMap.get('info.svg')} width='25px' style={{float: 'right'}}/> }
-            else{return(<><span>Inventory Detail<img src={imgMap.get('info.svg')} width='25px' style={{marginLeft: '10px'}}/></span></>)}
+            else{return(<><span>Inventory Detail</span></>)}
         }
     }
 
