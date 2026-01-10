@@ -3,7 +3,7 @@ import BasicMessageModal from './BasicMessageModal';
 import useToken from "../../app/useToken";
 import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 import PrintJobs from "./PrintJobs";
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -528,7 +528,9 @@ export default function Labels(props){
                     setModalOpen(true);
                     setReadyToPrint(false);
                 }}>
-                <img src={imgMap.get('pulsar-labels.svg')} width='25px'/>
+                  {useMemo(()=>{
+                    return <img src={imgMap.get('pulsar-labels.svg')} width='25px'/>
+                  })}
                 {props?.btnDescription}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen}  modalContent={<PrintType/>} noDefaultBtns={true}/>

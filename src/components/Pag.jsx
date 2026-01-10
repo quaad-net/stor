@@ -1,7 +1,7 @@
 import PaginationRounded from "./PaginationRounded";
 import IconButton from '@mui/material/IconButton';
 import BasicDialogModal from "./BasicDialogModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import imgMap from "../../app/imgMap";
 
 export default function Pag(props){
@@ -15,8 +15,10 @@ export default function Pag(props){
                     size="large" 
                     aria-label="quick  update" 
                     color="inherit" 
-                    onClick={()=>{setModalOpen(true)}}>
-                    <img src={imgMap.get('skip.svg')} width='25px'/>
+                    onClick={()=>{setModalOpen(true)}}>           
+                    {useMemo(()=>{
+                        return <img src={imgMap.get('skip.svg')} width='25px'/>
+                    })}
                     {props?.btnDescription || <></>}
                 </IconButton>
                 <BasicDialogModal 

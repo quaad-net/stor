@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -43,7 +43,9 @@ export default function UserInfoModal(props) {
         aria-label="user" 
         color="inherit"     
       >
-        <img src={imgMap.get('user-small.svg')} width={props.iconSize}/>
+        {useMemo(()=>{
+          return <img src={imgMap.get('user-small.svg')} width={props.iconSize}/>
+        }, [props.iconSize])}
         {props?.btnDescription || <></>}
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}

@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useEffect, useState } from 'react';
+import { Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -171,10 +171,14 @@ export default function PL2Labels(props) {
           aria-label="PL" 
           color="inherit" 
           onClick={handleClickOpen}>
-          <img 
-            src= {imgMap.get('pulsar-purchase-order.svg')} 
-            width={'25px'}
-          />
+          {useMemo(()=>{
+            return (
+              <img 
+                src= {imgMap.get('pulsar-purchase-order.svg')} 
+                width={'25px'}
+              />
+            )
+          })}
           {props?.btnDescription || <></>}
         </IconButton>
         <Dialog

@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider} from '@mui/material';
 import CustomContentFormModal from './CustomContentFormModal';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
-import { Fragment, forwardRef, useEffect, useState } from 'react';
+import { Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import imgMap from '../../app/imgMap';
 import List from '@mui/material/List';
@@ -391,10 +391,14 @@ export default function QuickCount(props) {
           aria-label="quick count" 
           color="inherit" 
           onClick={handleClickOpen}>
-          <img 
-            src= {imgMap.get('pulsar-layers.svg')} 
-            width={props?.iconWidth  || '25px'}
-          />
+          {useMemo(()=>{
+            return (
+              <img 
+                src= {imgMap.get('pulsar-layers.svg')} 
+                width={props?.iconWidth  || '25px'}
+              />
+            )
+          }, [props?.iconWidth])}
           {props?.btnDescription || <></>}
         </IconButton>
         <Dialog

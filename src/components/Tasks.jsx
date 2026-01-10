@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useState } from 'react';
+import { Fragment, forwardRef, useMemo, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -302,7 +302,9 @@ export default function Tasks(props) {
                             .catch(()=>{setLoading(false)})
                         }}
                     >
-                        <img src={imgMap.get('checklist.svg')} width='25px' />
+                        {useMemo(()=>{
+                            return <img src={imgMap.get('checklist.svg')} width='25px' />
+                        })}
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog

@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useState } from 'react';
+import { Fragment, forwardRef, useMemo, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -329,7 +329,9 @@ export default function SessionReorder(props) {
                             setOrders();
                         }}
                     >
-                        <img src={imgMap.get('pulsar-cart.svg')} width='25px' />
+                        {useMemo(()=>{
+                            return <img src={imgMap.get('pulsar-cart.svg')} width='25px' />
+                        })}
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog

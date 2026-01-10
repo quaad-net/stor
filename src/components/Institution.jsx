@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserInfoModal from "./UserInfoModal";
 import imgMap from "../../app/imgMap";
@@ -20,7 +21,9 @@ export default function ShowInstitution(props){
     const userData = JSON.parse(currentUserData) 
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
-        <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
+        {useMemo(()=>{
+          return <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
+        })}
         @<span><strong>{userData.institution.toString() == 'sample' ? 'VISIT' : userData.email.split('@')[0] + " | " + userData.institution.toString().toUpperCase()}</strong></span> |&nbsp;
         <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
       </div>

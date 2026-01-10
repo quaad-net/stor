@@ -14,7 +14,7 @@ const App = () => {
 
   for (let [key, val] of imgMap){
     const img = new Image();
-    img.src  = val
+    img.src  = val;
   }
 
   useEffect(()=>{

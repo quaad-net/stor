@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect} from 'react'
+import { useState, Fragment, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -153,7 +153,9 @@ export default function AppBarHideOnScroll(props) {
                   aria-label="sort" 
                   color="inherit" 
                   onClick={props.sort}>
-                  <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                  {useMemo(()=>{
+                    return <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                  })}
                   <span style={{fontSize: '15px'}}>Sort</span>
                 </IconButton><br/>
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
@@ -259,7 +261,9 @@ export default function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                        <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                        {useMemo(()=>{
+                          return <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                        })}
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Sort</div>
                   </div>
