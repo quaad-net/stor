@@ -236,7 +236,7 @@ export default function AppBarHideOnScroll(props) {
                         props.setPagListItems([]);
                     }
                     props.setIdx(0);
-                    props.getUsageData(props.unfilteredPartListItems[0].code, props.unfilteredPartListItems[0].warehouseCode);
+                    // props.getUsageData(props.unfilteredPartListItems[0].code, props.unfilteredPartListItems[0].warehouseCode);
                   };
                   props.setfilterOn(!props.filterOn);
                 }}>

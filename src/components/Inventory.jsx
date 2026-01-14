@@ -37,7 +37,7 @@ export default function Inventory() {
     const [pagListItems, setPagListItems] = useState([]);
     const [pagIdxMax, setPagIdxMax] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-    const [usageData, setUsageData] = useState({});
+    // const [usageData, setUsageData] = useState({});
     const [filterOn, setfilterOn] = useState(false);
     const [sessionOrds, setSessionOrds] = useState([]);
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -205,7 +205,7 @@ export default function Inventory() {
                                 setPagListItems([]);
                             }
                             setIdx(0);
-                            getUsageData(res[0].code, res[0].warehouseCode);
+                            // getUsageData(res[0].code, res[0].warehouseCode);
                             setBasicMessageModalContent(
                                 <span>
                                     Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
@@ -380,8 +380,8 @@ export default function Inventory() {
                         setPagListItems([]);
                     }
                     setIdx(0);
-                    if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    else{setUsageData([])}
+                    // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                    // else{setUsageData([])}
                 }
                 else{ // Accesses pagListItems for filter instead of partListItems
                     switch(queryType){
@@ -444,8 +444,8 @@ export default function Inventory() {
                         setPagListItems([]);
                     }
                     setIdx(0);
-                    if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    else{setUsageData([])}
+                    // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                    // else{setUsageData([])}
                 }
             }
         }
@@ -454,23 +454,23 @@ export default function Inventory() {
         }
     }
 
-    function getUsageData(partcode, warehouseCode){
+    // function getUsageData(partcode, warehouseCode){
 
-        fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
-            'uwm' : user.institution}/inventory/usage_analysis/${partcode}-${warehouseCode}`)
-        .then((res)=>{
-            if(res.status !== 200){
-                throw new Error()
-            }
-            return res.json()
-        })
-        .then((res)=>{
-            setUsageData(res)
-        })
-        .catch(()=>{
-            setUsageData({});
-        })
-    }
+    //     fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
+    //         'uwm' : user.institution}/inventory/usage_analysis/${partcode}-${warehouseCode}`)
+    //     .then((res)=>{
+    //         if(res.status !== 200){
+    //             throw new Error()
+    //         }
+    //         return res.json()
+    //     })
+    //     .then((res)=>{
+    //         setUsageData(res)
+    //     })
+    //     .catch(()=>{
+    //         setUsageData({});
+    //     })
+    // }
 
     const itemsPerPage = 30;
     function paginate(items, page) {
@@ -480,7 +480,7 @@ export default function Inventory() {
         setPartListItems(items.slice(start, end));
         setIdx(0);
         const firstItem = items.slice(start, end)[0]
-        getUsageData(firstItem.code, firstItem.warehouseCode);
+        // getUsageData(firstItem.code, firstItem.warehouseCode);
     }
     
     function displayPage(page) {
@@ -548,7 +548,7 @@ export default function Inventory() {
         setPartListItems(items);
         setIdx(0);
         removeActiveSelection();
-        getUsageData(items[0].code, items[0].warehouseCode)
+        // getUsageData(items[0].code, items[0].warehouseCode)
     }
 
     function getScanResult(result){
@@ -688,7 +688,7 @@ export default function Inventory() {
                     />
                     <IconButton disableRipple className='list-vert' id={`list-vert-${index}`} sx={{float: 'right', color: 'white'}}
                         //vert click function
-                        onClick={()=>{getUsageData(part.code, part.warehouseCode)}}
+                        // onClick={()=>{getUsageData(part.code, part.warehouseCode)}}
                     >
                         <MoreVertIcon sx={{marginTop: '15px', fontSize: 30}}
                         />
@@ -1990,7 +1990,7 @@ max: ${partListItems[idx]?.max}
                         unfilteredPartListItems={unfilteredPartListItems}
                         paginate={paginate}
                         setIdx={setIdx}
-                        getUsageData={getUsageData}
+                        // getUsageData={getUsageData}
                         sessionOrds={sessionOrds}
                         setSessionOrds={setSessionOrds}
                         user={user}
