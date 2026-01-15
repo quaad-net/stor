@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect, useMemo} from 'react'
+import { useState, Fragment, useEffect, useMemo, memo} from 'react'
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -48,8 +48,7 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-export default function AppBarHideOnScroll(props) {
-
+const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
   const [queryType, setQueryType] = useState('binLoc');
   
     function AppBarTools(){
@@ -335,3 +334,5 @@ export default function AppBarHideOnScroll(props) {
     </Fragment>
   );
 }
+)
+export default AppBarHideOnScroll

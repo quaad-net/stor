@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState} from 'react';
+import { Fragment, memo, useEffect, useMemo, useState} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -78,33 +78,33 @@ export default function Inventory() {
     
     useEffect(()=>{
 
-        // onClick, vert will update content in drawer.
+        // On click, vert will update content in view.
         const verts = document.querySelectorAll('.list-vert');
         const partList = document.querySelectorAll('.inventory-list-item');
+
+        function highlightActive(vertIdx){
+            setIdx(Number(vertIdx));
+            partList.forEach((item)=>{
+                item.style.backgroundColor = 'rgb(22, 22, 22)';
+            })
+            const li = document.querySelector(`.inventory-li-${vertIdx}`);
+            // li.style.backgroundColor = 'rgba(255, 255, 255, 0.027)'; // Darker option
+            li.style.backgroundColor = 'rgba(255, 255, 255, 0.08)'; // Lighter option
+        }
 
         // To index use partListItems[Number(vertIdx)].<property>
         // or edit "renderParts" function.
         verts.forEach((vert)=>{
             const vertIdx = vert.getAttribute('id').replace('list-vert-', '');
             vert.addEventListener('click', ()=>{
-                setIdx(Number(vertIdx));
-                partList.forEach((item)=>{
-                    item.style.backgroundColor = 'rgb(22, 22, 22)';
-                })
-                const li = document.querySelector(`.inventory-li-${vertIdx}`);
-                li.style.backgroundColor = 'rgba(255, 255, 255, 0.027)';    
+                highlightActive(vertIdx)
             });
         })
 
         return verts.forEach((vert)=>{
             const vertIdx = vert.getAttribute('id').replace('list-vert-', '');
             vert.removeEventListener('click', ()=>{
-                setIdx(Number(vertIdx));
-                partList.forEach((item)=>{
-                    item.style.backgroundColor = 'rgb(22, 22, 22)';
-                })
-                const li = document.querySelector(`.inventory-li-${vertIdx}`);
-                li.style.backgroundColor = 'rgba(255, 255, 255, 0.027)';
+                highlightActive(vertIdx)
             });
         })
     })
@@ -718,12 +718,13 @@ export default function Inventory() {
                 {useMemo(()=>{
                     return (
                         <img 
-                            src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')} 
+                            // src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')} 
+                            src={imgMap.get('closed-hex.png')} 
                             className='list-item-avatar' 
                             width={40}
                         />
                     )
-                },[props.active])}
+                })}
             </Avatar>
         )
 
@@ -1029,6 +1030,60 @@ max: ${partListItems[idx]?.max}
             else{return(<><span>Inventory Detail</span></>)}
         }
     }
+
+    const TogglePrevNext = memo(function TogglePrevNext(){
+        return(
+            <>
+                <IconButton disableRipple className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
+                }} 
+                onClick={()=>{
+                    setIdxPrev();
+                }}>
+                    {useMemo(()=>{
+                        return (
+                            <StorToolTip 
+                                toolTipEl={
+                                    <img src={imgMap.get('left-circled-arrow.svg')} width='35px'/>
+                                }
+                                toolTipTitle='Previous'
+                            />
+                        )
+                    })}
+                </IconButton>
+                <IconButton 
+                    disableRipple
+                    sx={{color: 'white', marginRight: '25px', 
+                    }} 
+                    onClick={()=>{setUpdateInventory(false)}}
+                > 
+                    {useMemo(()=>{
+                        return (
+                            <StorToolTip 
+                                toolTipEl={
+                                    <img src={imgMap.get('pulsar-circled-info.svg')} width='35px'/>
+                                }
+                                toolTipTitle='Info'
+                            />
+                        )
+                    })}
+                </IconButton>
+                <IconButton disableRipple className='inventory-next' sx={{color: 'white'}} onClick={()=>{
+                    setIdxNext();
+                }}>
+                    {useMemo(()=>{
+                        return (
+                            <StorToolTip 
+                                toolTipEl={
+                                    <img src={imgMap.get('right-circled-arrow.svg')} width='35px'/>
+                                }
+                                toolTipTitle='Next'
+                            />
+                        )
+                    })}
+                </IconButton>
+            </>
+        )
+    })
 
     function UpdateInventoryDetails(props){
 
@@ -1872,53 +1927,7 @@ max: ${partListItems[idx]?.max}
                     style={{...(props?.mobileView ? 
                         {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '45px'})}}
                 > 
-                    <IconButton disableRipple className='inventory-prev' sx={{color: 'white', marginRight: '25px', 
-                    }} 
-                    onClick={()=>{
-                        setIdxPrev();
-                    }}>
-                        {useMemo(()=>{
-                            return (
-                                <StorToolTip 
-                                    toolTipEl={
-                                        <img src={imgMap.get('left-circled-arrow.svg')} width='35px'/>
-                                    }
-                                    toolTipTitle='Previous'
-                                />
-                            )
-                        })}
-                    </IconButton>
-                    <IconButton 
-                        disableRipple
-                        sx={{color: 'white', marginRight: '25px', 
-                        }} 
-                        onClick={()=>{setUpdateInventory(false)}}
-                    > 
-                        {useMemo(()=>{
-                            return (
-                                <StorToolTip 
-                                    toolTipEl={
-                                        <img src={imgMap.get('pulsar-circled-info.svg')} width='35px'/>
-                                    }
-                                    toolTipTitle='Info'
-                                />
-                            )
-                        })}
-                    </IconButton>
-                    <IconButton disableRipple className='inventory-next' sx={{color: 'white'}} onClick={()=>{
-                        setIdxNext();
-                    }}>
-                        {useMemo(()=>{
-                            return (
-                                <StorToolTip 
-                                    toolTipEl={
-                                        <img src={imgMap.get('right-circled-arrow.svg')} width='35px'/>
-                                    }
-                                    toolTipTitle='Next'
-                                />
-                            )
-                        })}
-                    </IconButton>
+                    <TogglePrevNext/>
                 </div>  
                 <br/>
                 <div style={{ ...(props.mobileView ? {margin: 'auto', width: 'fit-content'} : {})}}>
