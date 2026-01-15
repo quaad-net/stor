@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useEffect, useState, useMemo} from 'react';
+import { Fragment, forwardRef, memo, useEffect, useState, useMemo} from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -21,7 +21,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenScanner(props) {
+const FullScreenScanner = memo(function FullScreenScanner(props) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [scanResult, setScanResult] = useState('0000000');
@@ -138,4 +138,6 @@ export default function FullScreenScanner(props) {
     </Fragment>
     </ThemeProvider>
   );
-}
+})
+
+export default FullScreenScanner
