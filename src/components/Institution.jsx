@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { memo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserInfoModal from "./UserInfoModal";
 import imgMap from "../../app/imgMap";
 import "./Institution.css"
 
-export default function ShowInstitution(props){ 
+const ShowInstitution = memo(function ShowInstitution(props){ 
 
   const navigate = useNavigate();
   const [currentUserData, setCurrentUserData] = useOutletContext();
@@ -21,9 +21,7 @@ export default function ShowInstitution(props){
     const userData = JSON.parse(currentUserData) 
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
-        {useMemo(()=>{
-          return <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
-        })}
+        <img src={imgMap.get('user-small.svg')} width='25px' style={{float: 'left'}}/>
         @<span><strong>{userData.institution.toString() == 'sample' ? 'VISIT' : userData.email.split('@')[0] + " | " + userData.institution.toString().toUpperCase()}</strong></span> |&nbsp;
         <span style={{color: 'gold'}} id="logout" onClick={logout}>Logout</span>
       </div>
@@ -40,4 +38,6 @@ export default function ShowInstitution(props){
     return(<UserInfoModal {...(props?.btnDescription ? {btnDescription: props.btnDescription} : {})} modalContent={<OutPut/>} iconSize='25px'/>)
     
 
-  }
+  })
+
+  export default ShowInstitution

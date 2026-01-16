@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useMemo, useState } from 'react';
+import { Fragment, forwardRef, memo, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -48,7 +48,7 @@ const sampleTasks = [
     }
 ]
 
-export default function Tasks(props) {
+const Tasks =  memo(function Tasks(props) {
     const [open, setOpen] = useState(false);
     const [tasksListItems, setTasksListItems] = useState([]);
     const [unfilteredTasks, setUnfilteredTasks] = useState([]);
@@ -302,9 +302,7 @@ export default function Tasks(props) {
                             .catch(()=>{setLoading(false)})
                         }}
                     >
-                        {useMemo(()=>{
-                            return <img src={imgMap.get('checklist.svg')} width='25px' />
-                        })}
+                        <img src={imgMap.get('checklist.svg')} width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -368,4 +366,6 @@ export default function Tasks(props) {
             <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
         </>
     );
-}
+})
+
+export default Tasks

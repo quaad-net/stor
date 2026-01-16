@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
+import { Fragment, forwardRef, memo, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,7 +25,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function PL2Labels(props) {
+const PL2Labels = memo(function PL2Labels(props) {
   const [loading, setLoading] = useState(false);
   const [imgCaptured, setImgCaptured] = useState(false);
   const [imgSent, setImgSent] = useState(false);
@@ -171,14 +171,10 @@ export default function PL2Labels(props) {
           aria-label="PL" 
           color="inherit" 
           onClick={handleClickOpen}>
-          {useMemo(()=>{
-            return (
-              <img 
-                src= {imgMap.get('pulsar-purchase-order.svg')} 
-                width={'25px'}
-              />
-            )
-          })}
+            <img 
+              src= {imgMap.get('pulsar-purchase-order.svg')} 
+              width={'25px'}
+            />
           {props?.btnDescription || <></>}
         </IconButton>
         <Dialog
@@ -286,4 +282,6 @@ export default function PL2Labels(props) {
       <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={modalContent} />
     </ThemeProvider>
   );
-}
+})
+
+export default PL2Labels

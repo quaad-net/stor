@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider} from '@mui/material';
 import CustomContentFormModal from './CustomContentFormModal';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
-import { Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
+import { Fragment, forwardRef, memo, useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import imgMap from '../../app/imgMap';
 import List from '@mui/material/List';
@@ -43,7 +43,7 @@ function jsonToCsv(objArray) {
     return csv
 }
 
-export default function QuickCount(props) {
+const QuickCount = memo(function QuickCount(props) {
   const [activePart, setActivePart] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
   const [basicMessageModalContent, setBasicMessageModalContent] = useState("");
@@ -391,14 +391,10 @@ export default function QuickCount(props) {
           aria-label="quick count" 
           color="inherit" 
           onClick={handleClickOpen}>
-          {useMemo(()=>{
-            return (
-              <img 
-                src= {imgMap.get('pulsar-layers.svg')} 
-                width={props?.iconWidth  || '25px'}
-              />
-            )
-          }, [props?.iconWidth])}
+            <img 
+              src= {imgMap.get('pulsar-layers.svg')} 
+              width={props?.iconWidth  || '25px'}
+            />
           {props?.btnDescription || <></>}
         </IconButton>
         <Dialog
@@ -474,4 +470,6 @@ export default function QuickCount(props) {
       <BasicMessageModal setModalOpen={setBasicMessageModalOpen} modalOpen={basicMessageModalOpen} modalContent={basicMessageModalContent} />
     </ThemeProvider>
   );
-}
+})
+
+export default QuickCount

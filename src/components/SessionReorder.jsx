@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useMemo, useState } from 'react';
+import { Fragment, forwardRef, memo, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
@@ -44,7 +44,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 
-export default function SessionReorder(props) {
+const SessionReorder = memo(function SessionReorder(props) {
     const [open, setOpen] = useState(false);
     const [ordersListItems, setOrdersListItems] = useState([]);
     const [unfilteredOrders, setUnfilteredOrders] = useState([]);
@@ -329,9 +329,7 @@ export default function SessionReorder(props) {
                             setOrders();
                         }}
                     >
-                        {useMemo(()=>{
-                            return <img src={imgMap.get('pulsar-cart.svg')} width='25px' />
-                        })}
+                        <img src={imgMap.get('pulsar-cart.svg')} width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -400,4 +398,6 @@ export default function SessionReorder(props) {
             <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>
         </>
     );
-}
+})
+
+export default SessionReorder
