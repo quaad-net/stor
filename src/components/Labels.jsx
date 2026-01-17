@@ -114,8 +114,8 @@ const Labels = memo(function Labels(props){
                 newWindow.document.close(); 
             }
             catch(err){
-                alert('!');
                 console.log(err);
+                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
             }
         }
 
@@ -144,8 +144,8 @@ const Labels = memo(function Labels(props){
                 newWindow.document.close(); 
             }
             catch(err){
-                alert('!');
                 console.log(err);
+                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
             }
         }
 
@@ -205,8 +205,8 @@ const Labels = memo(function Labels(props){
                 newWindow.document.close(); 
             }
             catch(err){
-                alert('!');
                 console.log(err);
+                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
             }
         }
 
@@ -413,8 +413,8 @@ const Labels = memo(function Labels(props){
                     newWindow.document.close(); 
                 }
                 catch(err){
-                    alert('!');
                     console.log(err);
+                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
                 }
             }
 
