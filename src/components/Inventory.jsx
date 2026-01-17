@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useMemo, useState} from 'react';
+import { Fragment, memo, useEffect, useState} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -715,16 +715,11 @@ export default function Inventory() {
         // types of parts.
         return(
             <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
-                {useMemo(()=>{
-                    return (
-                        <img 
-                            // src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')} 
-                            src={imgMap.get('closed-hex.png')} 
-                            className='list-item-avatar' 
-                            width={40}
-                        />
-                    )
-                })}
+                <img 
+                    src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')}  
+                    className='list-item-avatar' 
+                    width={40}
+                />
             </Avatar>
         )
 
@@ -907,9 +902,7 @@ max: ${partListItems[idx]?.max}
                         <span className='inventory-switch-view'>
                             <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
                                 <div style={{color: 'gray'}}>
-                                    {useMemo(()=>{
-                                        return <img src={imgMap.get('database-update.svg')} width='15px'/>
-                                    })}
+                                    <img src={imgMap.get('database-update.svg')} width='15px'/>
                                     Update
                                 </div>
                             </button>
@@ -925,9 +918,7 @@ max: ${partListItems[idx]?.max}
                                 <OnClickToolTip
                                     toolTipEl={
                                         <div style={{color: 'gray'}}>
-                                            {useMemo(()=>{
-                                                return <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px'/>
-                                            })}
+                                            <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px'/>
                                             Copy
                                         </div>
                                     }
@@ -944,9 +935,7 @@ max: ${partListItems[idx]?.max}
                                 style={{all: 'unset'}}
                             >
                                 <div style={{color: 'gray'}}>
-                                    {useMemo(()=>{
-                                        return <img src={imgMap.get('ai-generated-text.svg')} width='15px'/>
-                                    })}
+                                    <img src={imgMap.get('ai-generated-text.svg')} width='15px'/>
                                     More
                                 </div>
                             </button>
@@ -1023,7 +1012,7 @@ max: ${partListItems[idx]?.max}
     function MainContentHeader(props){
         if(updateInventory){
             if(props.mobileView){return <></> }
-            else{return(<span>Inventory Update</span>)}
+            else{return(<span style={{borderBottom: '1px solid gold'}}>Inventory Update</span>)}
         }
         else{
             if(props.mobileView){return <></> }
@@ -1039,16 +1028,12 @@ max: ${partListItems[idx]?.max}
                 onClick={()=>{
                     setIdxPrev();
                 }}>
-                    {useMemo(()=>{
-                        return (
-                            <StorToolTip 
-                                toolTipEl={
-                                    <img src={imgMap.get('left-circled-arrow.svg')} width='35px'/>
-                                }
-                                toolTipTitle='Previous'
-                            />
-                        )
-                    })}
+                    <StorToolTip 
+                        toolTipEl={
+                            <img src={imgMap.get('left-circled-arrow.svg')} width='35px'/>
+                        }
+                        toolTipTitle='Previous'
+                    />
                 </IconButton>
                 <IconButton 
                     disableRipple
@@ -1056,30 +1041,22 @@ max: ${partListItems[idx]?.max}
                     }} 
                     onClick={()=>{setUpdateInventory(false)}}
                 > 
-                    {useMemo(()=>{
-                        return (
-                            <StorToolTip 
-                                toolTipEl={
-                                    <img src={imgMap.get('pulsar-circled-info.svg')} width='35px'/>
-                                }
-                                toolTipTitle='Info'
-                            />
-                        )
-                    })}
+                    <StorToolTip 
+                        toolTipEl={
+                            <img src={imgMap.get('pulsar-circled-info.svg')} width='35px'/>
+                        }
+                        toolTipTitle='Info'
+                    />
                 </IconButton>
                 <IconButton disableRipple className='inventory-next' sx={{color: 'white'}} onClick={()=>{
                     setIdxNext();
                 }}>
-                    {useMemo(()=>{
-                        return (
-                            <StorToolTip 
-                                toolTipEl={
-                                    <img src={imgMap.get('right-circled-arrow.svg')} width='35px'/>
-                                }
-                                toolTipTitle='Next'
-                            />
-                        )
-                    })}
+                    <StorToolTip 
+                        toolTipEl={
+                            <img src={imgMap.get('right-circled-arrow.svg')} width='35px'/>
+                        }
+                        toolTipTitle='Next'
+                    />
                 </IconButton>
             </>
         )

@@ -50,14 +50,14 @@ HideOnScroll.propTypes = {
 
 const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
   const [queryType, setQueryType] = useState('binLoc');
-  
+
     const AppBarTools = memo(function AppBarTools(){
         const [query, setQuery] = useState('');
         const [anchorEl, setAnchorEl] = useState(null);
         const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);    
         const isMenuOpen = Boolean(anchorEl);
         const [loading, setLoading] = useState(false);
-    
+  
         const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
         };
@@ -245,7 +245,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   {props?.pagIdxMax > 1 ?
                   <div style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
-                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage} />
+                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Page</div>
                   </div>
                   :

@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, memo, useEffect, useState, useMemo} from 'react';
+import { Fragment, forwardRef, memo, useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -85,14 +85,10 @@ const FullScreenScanner = memo(function FullScreenScanner(props) {
         aria-label="query by qr-scan" 
         color="inherit" 
         onClick={handleClickOpen}>
-        {useMemo(()=>{
-          return (
-            <img 
-              src={imgMap.get('pulsar-qr.svg')} 
-              width={props?.qrImgWidth  || '25px'}
-            />
-          )
-        })}
+          <img 
+            src={imgMap.get('pulsar-qr.svg')} 
+            width={props?.qrImgWidth  || '25px'}
+          />
         {props?.btnDescription || <></>}
       </IconButton>
       <Dialog

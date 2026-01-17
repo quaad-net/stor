@@ -6,10 +6,10 @@ import imgMap from "../../app/imgMap";
 
 const Pag =  memo(function Pag(props){
     const [modalOpen, setModalOpen] = useState(false);
-    
+
     if(props?.pagIdxMax > 1){
         return(
-            <>
+            <>  
                 <IconButton
                     disableRipple
                     size="large" 

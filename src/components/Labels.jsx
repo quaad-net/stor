@@ -3,7 +3,7 @@ import BasicMessageModal from './BasicMessageModal';
 import useToken from "../../app/useToken";
 import ReactDOM from "react-dom";
 import QRCode from "react-qr-code";
-import {memo, useEffect, useMemo, useState } from "react";
+import {memo, useEffect, useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 import PrintJobs from "./PrintJobs";
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -110,7 +110,7 @@ const Labels = memo(function Labels(props){
                 const newWindow = window.open('', '_blank');
                 newWindow.document.open(); 
                 newWindow.document.write(plainLabelsTxt); 
-                newWindow.print(); 
+                // newWindow.print(); 
                 newWindow.document.close(); 
             }
             catch(err){
@@ -140,7 +140,7 @@ const Labels = memo(function Labels(props){
                 const newWindow = window.open('', '_blank');
                 newWindow.document.open(); 
                 newWindow.document.write(plainLabelsTxt); 
-                newWindow.print(); 
+                // newWindow.print(); 
                 newWindow.document.close(); 
             }
             catch(err){
@@ -201,7 +201,7 @@ const Labels = memo(function Labels(props){
                 const newWindow = window.open('', '_blank');
                 newWindow.document.open(); 
                 newWindow.document.write(plainLabelsTxt); 
-                newWindow.print(); 
+                // newWindow.print(); 
                 newWindow.document.close(); 
             }
             catch(err){
@@ -409,7 +409,7 @@ const Labels = memo(function Labels(props){
                     const newWindow = window.open('', '_blank');
                     newWindow.document.open(); 
                     newWindow.document.write(plainLabelsTxt); 
-                    newWindow.print(); 
+                    // newWindow.print(); 
                     newWindow.document.close(); 
                 }
                 catch(err){
