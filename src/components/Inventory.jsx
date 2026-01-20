@@ -73,7 +73,7 @@ export default function Inventory() {
     }, [])
 
     useEffect(()=>{
-        inventoryQuery({query: '113-a:113-b', queryType: 'binLoc', noDialog: true})
+        inventoryQuery({query: '100:101', queryType: 'binLoc', noDialog: true})
     },[])
     
     useEffect(()=>{
