@@ -716,7 +716,8 @@ export default function Inventory() {
         return(
             <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
                 <img 
-                    src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')}  
+                    // src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')}  
+                    src={imgMap.get('closed-hex.png')}
                     className='list-item-avatar' 
                     width={40}
                 />
