@@ -68,7 +68,6 @@ const PL2Labels = memo(function PL2Labels(props) {
 
   function getPackingListImg(){
     const video = document.querySelector('#video');
-    video.disablePictureInPicture = true;
     const constraints = {
       audio: false,
       video: {facingMode: { ideal: 'environment'}},
