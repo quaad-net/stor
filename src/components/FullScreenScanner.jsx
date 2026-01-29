@@ -65,7 +65,7 @@ const FullScreenScanner = memo(function FullScreenScanner(props) {
                 onError={(error)=>{console.log(error)}}
                 styles={{ width: '100%'}}
                 constraints={{facingMode: {ideal: 'environment' }}}
-                formats={['any']}
+                formats={['qr_code']}
               />
             </>
           )

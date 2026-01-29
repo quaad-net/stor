@@ -371,7 +371,7 @@ const QuickCount = memo(function QuickCount(props) {
                 onError={(error)=>{console.log(error)}}
                 styles={{ width: '100%'}}
                 constraints={{audio: true, facingMode: {ideal: 'environment' }}}
-                formats={['any']}
+                formats={['qr_code']}
               />
             </>
           )
