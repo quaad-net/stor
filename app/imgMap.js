@@ -25,12 +25,13 @@ imgMap.set('stor-tab-icon.svg', `${imgServer}b03c3ce2-c616-41da-aa04-fe081eb84a0
 imgMap.set('tool-box.svg', `${imgServer}86ba29d5-0c6c-48c1-b7f4-192986ccee00/icon`);
 
 // App Provided Images
-imgMap.set('ai-generated-text.svg', `ai-generated-text.svg`);
+imgMap.set('1-2-3.svg', `/1-2-3.svg`)
+imgMap.set('ai-generated-text.svg', `/ai-generated-text.svg`);
 imgMap.set('checklist.svg', `/checklist.svg`); 
 imgMap.set('closed-hex.png', `/closed-hex.png`);
 imgMap.set('copy.svg', `/copy.svg`); 
 imgMap.set('database-update.svg', `/database-update.svg`); 
-imgMap.set('left-circled-arrow.svg', `left-circled-arrow.svg`);
+imgMap.set('left-circled-arrow.svg', `/left-circled-arrow.svg`);
 imgMap.set('info-circled.svg', `/info-circled.svg`); 
 imgMap.set('open-hex.png', `/open-hex.png`);
 imgMap.set('pulsar-cart.svg', `/pulsar-cart.svg`);

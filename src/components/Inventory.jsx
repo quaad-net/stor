@@ -1205,6 +1205,7 @@ max: ${partListItems[idx]?.max}
                 const [tmpReorderAmt, setTmpReorderAmt] = useState(0);
                 const [tmpComment, setTmpComment]  = useState('');
                 const [tmpQtyUsed, setTmpQtyUsed]  = useState(0);
+                const [tmpPartUser, setTmpPartUser] = useState('');
                 const [loading, setLoading] = useState(false);
 
                 function submitForm(){
