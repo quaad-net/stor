@@ -14,11 +14,9 @@ imgMap.set('machine-learning.svg', `${imgServer}2a8d7a0a-0819-4b36-8828-d430c1aa
 imgMap.set('open-hex-2.svg', `${imgServer}2352f7c8-28a7-4012-efdc-60bd4b187400/icon`);
 imgMap.set('open-hex-2-dark-gray.svg', `${imgServer}f1a264b9-4c7c-46f3-9e57-41b83b699400/icon`);
 imgMap.set('open-hex-2-gray.svg', `${imgServer}b54df333-6e24-4903-2c84-b32ee0f7b800/icon`);
-imgMap.set('pulsar-clear.svg', `${imgServer}b38e1317-a708-42b2-f5ab-656fa2765700/icon`); 
 imgMap.set('pulsar-download.svg', `${imgServer}42c48a4f-5062-4e77-0c69-6b610c86cb00/icon`)
 imgMap.set('pulsar-login.svg', `${imgServer}f1a9891e-f1e8-4dc3-d085-18d093d99400/icon`); 
 imgMap.set('pulsar-print.svg', `${imgServer}2c23b09c-dc25-43bc-aa6a-af7d7c06c900/icon`); 
-imgMap.set('square-outlined-small.svg', `${imgServer}cdc0be6e-b57b-4bc7-ddff-9c659aaad700/icon`); 
 imgMap.set('stor-fiscal-icon-white.svg', `${imgServer}c96d1729-7a0e-4d94-b8eb-6d228b0fb700/icon`); 
 imgMap.set('stor-logo.svg', `${imgServer}39fbd164-df89-4855-0924-be78ea37f100/icon`); 
 imgMap.set('stor-tab-icon.svg', `${imgServer}b03c3ce2-c616-41da-aa04-fe081eb84a00/icon`);
@@ -36,6 +34,7 @@ imgMap.set('info-circled.svg', `/info-circled.svg`);
 imgMap.set('open-hex.png', `/open-hex.png`);
 imgMap.set('pulsar-cart.svg', `/pulsar-cart.svg`);
 imgMap.set('pulsar-circled-info.svg', `/pulsar-circled-info.svg`); 
+imgMap.set('pulsar-clear.svg', `/pulsar-clear.svg`); 
 imgMap.set('pulsar-labels.svg', `/pulsar-labels.svg`); 
 imgMap.set('pulsar-layers.svg', `/pulsar-layers.svg`);
 imgMap.set('pulsar-purchase-order.svg', `/pulsar-purchase-order.svg`);
@@ -43,7 +42,8 @@ imgMap.set('pulsar-qr.svg', `/pulsar-qr.svg`);
 imgMap.set('pulsar-register.svg', `/pulsar-register.svg`); 
 imgMap.set('pulsar-sort.svg', `/pulsar-sort.svg`); 
 imgMap.set('right-circled-arrow.svg', `/right-circled-arrow.svg`);
-imgMap.set('skip.svg', `/skip.svg`); 
+imgMap.set('skip.svg', `/skip.svg`);
+imgMap.set('square-outlined-small.svg', `/square-outlined-small.svg`); 
 imgMap.set('user-small.svg', `/user-small.svg`); 
 
 export default imgMap
