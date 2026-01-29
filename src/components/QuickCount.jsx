@@ -237,22 +237,6 @@ const QuickCount = memo(function QuickCount(props) {
   }
 
   function CountModalContent(){
-    const [displayAlert, setDisplayAlert] = useState(false);
-    const [alertContent, setAlertContent] = useState('');
-
-    function ErrorAlert(){
-        return(
-            <Alert 
-                sx={{
-                    display: displayAlert ? 'block' : 'none', 
-                    backgroundColor: 'transparent', 
-                    color: 'whitesmoke'
-                }} 
-                variant='standard' 
-                severity="error">{alertContent}
-            </Alert>
-        )
-    }
 
     function CountExposedEL(){
         return(
@@ -264,6 +248,8 @@ const QuickCount = memo(function QuickCount(props) {
     }
 
     function CountForm(){
+      const [displayAlert, setDisplayAlert] = useState(false);
+      const [alertContent, setAlertContent] = useState('');
       const [tmpCount, setTmpCount] = useState(0);
       const [loading, setLoading] = useState(false);
 
@@ -296,7 +282,15 @@ const QuickCount = memo(function QuickCount(props) {
       
       return(
         <>  
-          <ErrorAlert/>
+          <Alert 
+              sx={{
+                  display: displayAlert ? 'block' : 'none', 
+                  backgroundColor: 'transparent', 
+                  color: 'whitesmoke'
+              }} 
+              variant='standard' 
+              severity="error">{alertContent}
+          </Alert>
           <div style={{width: '100%', margin: 'auto'}}>
               <form id='quick-count-form' onSubmit={(e)=>{e.preventDefault()}}>
                   <input 
@@ -350,12 +344,12 @@ const QuickCount = memo(function QuickCount(props) {
         </>
       )
     }
-    return(<CustomContentFormModal 
-      key='quick-count-modal' 
-      exposedEl={[<CountExposedEL/>]} 
-      modalContent={<CountForm/>} 
-      setAlertContent={setAlertContent} 
-      setDisplayAlert={setDisplayAlert}/>
+    return(
+      <CustomContentFormModal 
+        key='quick-count-modal' 
+        exposedEl={[<CountExposedEL/>]} 
+        modalContent={<CountForm/>} 
+      />
     )
   }
 

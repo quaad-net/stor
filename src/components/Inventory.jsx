@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useState} from 'react';
+import { Fragment, memo, useEffect, useState, useRef} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -47,6 +47,8 @@ export default function Inventory() {
     const { userData } = useUserData();
     const user = JSON.parse(userData);
     const { storedOrds, setStoredOrds } = useStoredOrds();
+    const partUserRef = useRef('');
+    const workorderRef = useRef('');
 
     const FormButton = Styled.button`
         all: unset;
@@ -1058,6 +1060,13 @@ max: ${partListItems[idx]?.max}
                 }
                 else if(input.updateType === 'Pick' || input.updateType === 'Reord' || input.updateType === 'Loc' || input.updateType === 'Other' ){
                 
+                    // Sets refs to updated values between user(s) actions.
+                    const getTaskValues = JSON.parse(input.taskValues);
+                    partUserRef.current = getTaskValues?.partUser || '';
+                    workorderRef.current = getTaskValues?.workorder || '';
+                    console.log(workorderRef.current);
+                    console.log(partUserRef.current);
+
                     const partDetails = {
                         code: currentPart.code,
                         binLoc: currentPart.binLoc,
@@ -1170,22 +1179,6 @@ max: ${partListItems[idx]?.max}
         }
 
         function PickModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function PickExposedEL(){
                 function ListItem(){
@@ -1201,23 +1194,26 @@ max: ${partListItems[idx]?.max}
             }
 
             function PickForm(){
-                const [tmpWorkOrder, setTmpWorkOrder] = useState(0);
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
+                const [tmpWorkOrder, setTmpWorkOrder] = useState(workorderRef.current != '' ? workorderRef.current : 0);
                 const [tmpReorderAmt, setTmpReorderAmt] = useState(0);
                 const [tmpComment, setTmpComment]  = useState('');
                 const [tmpQtyUsed, setTmpQtyUsed]  = useState(0);
-                const [tmpPartUser, setTmpPartUser] = useState('');
+                const [tmpPartUser, setTmpPartUser] = useState(partUserRef.current != '' ? partUserRef.current : '');
                 const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
                         if(Number(tmpWorkOrder) * 0  === 0 && tmpWorkOrder != ''){}
                         else{throw new Error('Please enter a numeric value for Workorder!')};
                         if(Number(tmpQtyUsed) * 0  === 0 && tmpQtyUsed != ''){}
                         else{throw new Error('Please enter a numeric value for Qty Used!')};
                         if(Number(tmpReorderAmt) * 0 == 0){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')}
-                        submitUserInput({taskValues: JSON.stringify({
-                            workorder: tmpWorkOrder, qtyUsed: tmpQtyUsed, reorderAmt:  tmpReorderAmt}), 
+                        submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim(),
+                            workorder: Number(tmpWorkOrder), qtyUsed: Number(tmpQtyUsed), reorderAmt:  Number(tmpReorderAmt)}), 
                             comment: tmpComment, updateType: 'Pick'}
                         )
                         .then(()=>{setLoading(false)})
@@ -1231,9 +1227,32 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
+                                <input 
+                                    inputMode='text'
+                                    className='stor-input'
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(☺) User'
+                                    {...(partUserRef.current != '' ? { defaultValue: partUserRef.current } : {})} 
+                                    maxLength={20}
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpPartUser(e.target.value);
+                                    }}
+                                />
                                 <input 
                                     inputMode='numeric'
                                     className='stor-input'
@@ -1242,7 +1261,9 @@ max: ${partListItems[idx]?.max}
                                     }}
                                     type='text' 
                                     placeholder='(#) Workorder' 
+                                    {...(workorderRef.current != '' ? { defaultValue: workorderRef.current } : {})} 
                                     required
+                                    maxLength={7}
                                     onChange={(e)=>{
                                         setTmpWorkOrder(e.target.value);
                                     }}
@@ -1256,6 +1277,7 @@ max: ${partListItems[idx]?.max}
                                     type='text' 
                                     placeholder='(#) Qty Used' 
                                     required
+                                    maxLength={5}
                                     onChange={(e)=>{
                                         setTmpQtyUsed(e.target.value);
                                     }}
@@ -1267,7 +1289,8 @@ max: ${partListItems[idx]?.max}
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
-                                    placeholder='(#) Reorder Amount' 
+                                    placeholder='(#) Reorder Amount'
+                                    maxLength={5} 
                                     onChange={(e)=>{
                                         setTmpReorderAmt(e.target.value);
                                     }}
@@ -1300,26 +1323,10 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-pick-modal' exposedEl={[<PickExposedEL key=''/>]} modalContent={<PickForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-pick-modal' exposedEl={[<PickExposedEL key=''/>]} modalContent={<PickForm/>}/>)
         }
 
         function CountModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function CountExposedEL(){
                 function ListItem(){
@@ -1335,6 +1342,8 @@ max: ${partListItems[idx]?.max}
             }
 
             function CountForm(){
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
                 const [tmpCount, setTmpCount] = useState(0);
                 const [tmpComment, setTmpComment] = useState('');
                 const [loading, setLoading] = useState(false);
@@ -1343,7 +1352,7 @@ max: ${partListItems[idx]?.max}
                     try{
                         if(Number(tmpCount) * 0  === 0 && tmpCount != ''){}
                         else{throw new Error('Please enter a numeric value for Count!')};
-                        submitUserInput({count: tmpCount, comment: tmpComment, updateType: 'Count'})
+                        submitUserInput({count: Number(tmpCount), comment: tmpComment, updateType: 'Count'})
                         .then(()=>{setLoading(false)})
                     }
                     catch(err){
@@ -1355,7 +1364,15 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <input 
@@ -1366,6 +1383,7 @@ max: ${partListItems[idx]?.max}
                                     }}
                                     type='text' 
                                     placeholder='(#) Count' 
+                                    maxLength={5}
                                     onChange={(e)=>{
                                         setTmpCount(e.target.value);
                                     }}
@@ -1398,26 +1416,10 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-count-modal' exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-count-modal' exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>}/>)
         }
 
         function ReorderModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function ReordExposedEL(){
                 function ListItem(){
@@ -1433,8 +1435,11 @@ max: ${partListItems[idx]?.max}
             }
 
             function ReordForm(){
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
                 const [tmpReord, setTmpReord] = useState(0);
                 const [tmpComment, setTmpComment]  = useState('');
+                const [tmpPartUser, setTmpPartUser] = useState(partUserRef.current != '' ? partUserRef.current : '');
                 const [loading, setLoading] = useState(false);
 
                 function addToSessionOrd({reorderAmt, comment}){
@@ -1459,11 +1464,12 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')};
                         if(document.querySelector('#session-ord').checked){addToSessionOrd({reorderAmt: tmpReord, comment: tmpComment})}
                         else{
-                            submitUserInput({taskValues: JSON.stringify({reorderAmt: tmpReord}), comment: tmpComment, updateType: 'Reord'})
+                            submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim(), reorderAmt: Number(tmpReord)}), comment: tmpComment, updateType: 'Reord'})
                             .then(()=>{setLoading(false)})
                         }
                         
@@ -1477,9 +1483,32 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
+                                <input 
+                                    inputMode='text'
+                                    className='stor-input'
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(☺) User' 
+                                    {...(partUserRef.current != '' ? { defaultValue: partUserRef.current } : {})} 
+                                    maxLength={20}
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpPartUser(e.target.value);
+                                    }}
+                                />
                                 <input 
                                     inputMode='numeric'
                                     className='stor-input'
@@ -1487,7 +1516,8 @@ max: ${partListItems[idx]?.max}
                                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
                                     }}
                                     type='text' 
-                                    placeholder='(#) Reorder Amount' 
+                                    placeholder='(#) Reorder Amount'
+                                    maxLength={5} 
                                     onChange={(e)=>{
                                         setTmpReord(e.target.value);
                                     }}
@@ -1528,26 +1558,10 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-reord-modal' exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-reord-modal' exposedEl={[<ReordExposedEL/>]} modalContent={<ReordForm/>}/>)
         }
 
         function LocationModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function LocExposedEL(){
                 function ListItem(){
@@ -1563,15 +1577,19 @@ max: ${partListItems[idx]?.max}
             }
 
             function LocationForm(){
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
                 const [tmpLoc, setTmpLoc] = useState('');
                 const [tmpComment, setTmpComment]  = useState('');
+                const [tmpPartUser, setTmpPartUser] = useState(partUserRef.current != '' ? partUserRef.current : '');
                 const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
                         if(tmpLoc != ''){}
                         else{throw new Error('Please enter a new BinLoc!')};
-                        submitUserInput({taskValues: JSON.stringify({binLoc: tmpLoc}), comment: tmpComment, updateType: 'Loc'})
+                        submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim(), binLoc: tmpLoc.trim()}), comment: tmpComment, updateType: 'Loc'})
                         .then(()=>{setLoading(false)})
                     }
                     catch(err){
@@ -1583,9 +1601,32 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
+                                <input 
+                                    inputMode='text'
+                                    className='stor-input'
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(☺) User'
+                                    {...(partUserRef.current != '' ? { defaultValue: partUserRef.current } : {})}  
+                                    maxLength={20}
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpPartUser(e.target.value);
+                                    }}
+                                />
                                 <input 
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
@@ -1593,6 +1634,7 @@ max: ${partListItems[idx]?.max}
                                     }}
                                     type='text' 
                                     placeholder={`("") BinLoc`} 
+                                    maxLength={20}
                                     onChange={(e)=>{
                                         setTmpLoc(e.target.value);
                                     }}
@@ -1625,26 +1667,10 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-location-modal' exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
+            return(<CustomContentFormModal key='inventory-location-modal' exposedEl={[<LocExposedEL/>]} modalContent={<LocationForm/>} />)
         }
 
         function LabelModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function LabelExposedEL(){
                 function ListItem(){
@@ -1660,6 +1686,8 @@ max: ${partListItems[idx]?.max}
             }
 
             function LabelForm(){
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
                 const [tmpComment, setTmpComment]  = useState('');
                 const [loading, setLoading] = useState(false);
 
@@ -1677,7 +1705,15 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
                                 <CommentBox setTmpComment={setTmpComment}/>
@@ -1709,26 +1745,10 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-label-modal' exposedEl={[<LabelExposedEL/>]} modalContent={<LabelForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert}/>)
+            return(<CustomContentFormModal key='inventory-label-modal' exposedEl={[<LabelExposedEL/>]} modalContent={<LabelForm/>}/>)
         }
 
         function OtherModalContent(){
-            const [displayAlert, setDisplayAlert] = useState(false);
-            const [alertContent, setAlertContent] = useState('');
-
-            function ErrorAlert(){
-                return(
-                    <Alert 
-                        sx={{
-                            display: displayAlert ? 'block' : 'none', 
-                            backgroundColor: 'transparent', 
-                            color: 'whitesmoke'
-                        }} 
-                        variant='standard' 
-                        severity="error">{alertContent}
-                    </Alert>
-                )
-            }
 
             function OtherExposedEL(){
                 function ListItem(){
@@ -1744,14 +1764,18 @@ max: ${partListItems[idx]?.max}
             }
 
             function OtherForm(){
+                const [displayAlert, setDisplayAlert] = useState(false);
+                const [alertContent, setAlertContent] = useState('');
                 const [tmpComment, setTmpComment]  = useState('');
+                const [tmpPartUser, setTmpPartUser] = useState(partUserRef.current != '' ? partUserRef.current : '');
                 const [loading, setLoading] = useState(false);
 
                 function submitForm(){
                     try{
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
                         if(tmpComment.trim() != ''){}
                         else{throw new Error('Please enter details in Comment!')};
-                        submitUserInput({taskValues: JSON.stringify('Other'), comment: tmpComment, updateType: 'Other'})
+                        submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim()}), comment: tmpComment, updateType: 'Other'})
                         .then(()=>{setLoading(false)})
                     }
                     catch(err){
@@ -1763,9 +1787,32 @@ max: ${partListItems[idx]?.max}
                 
                 return(
                     <>  
-                        <ErrorAlert/>
+                        <Alert 
+                            sx={{
+                                display: displayAlert ? 'block' : 'none', 
+                                backgroundColor: 'transparent', 
+                                color: 'whitesmoke'
+                            }} 
+                            variant='standard' 
+                            severity="error">{alertContent}
+                        </Alert>
                         <div style={{width: '100%', margin: 'auto'}}>
                             <form>
+                                <input 
+                                    inputMode='text'
+                                    className='stor-input'
+                                    style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                    }}
+                                    type='text' 
+                                    placeholder='(☺) User' 
+                                    {...(partUserRef.current != '' ? { defaultValue: partUserRef.current } : {})} 
+                                    maxLength={20}
+                                    required
+                                    onChange={(e)=>{
+                                        setTmpPartUser(e.target.value);
+                                    }}
+                                />
                                 <CommentBox setTmpComment={setTmpComment}/>
                                 <div style={{width: 'fit-content',margin: 'auto'}}>
                                 {!loading ?
@@ -1794,7 +1841,7 @@ max: ${partListItems[idx]?.max}
                     </>
                 )
             }
-            return(<CustomContentFormModal key='inventory-other-modal' exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} setAlertContent={setAlertContent} setDisplayAlert={setDisplayAlert} />)
+            return(<CustomContentFormModal key='inventory-other-modal' exposedEl={[<OtherExposedEL/>]} modalContent={<OtherForm/>} />)
         }
 
         function CommentBox(props){
