@@ -1136,12 +1136,8 @@ max: ${partListItems[idx]?.max}
                         setBasicMessageModalOpen(true);
                     })
                 }
-                const headerTitle = document?.querySelector('#inventory-update-header');
-                if(headerTitle){headerTitle.scrollIntoView()}
             }
             catch(err){
-                const headerTitle = document?.querySelector('#inventory-update-header');
-                if(headerTitle){headerTitle.scrollIntoView()}
                 console.log(err);
                 setBasicMessageModalContent('Could not complete request!');
                 setBasicMessageModalOpen(true);
