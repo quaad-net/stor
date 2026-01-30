@@ -787,7 +787,7 @@ export default function Inventory() {
         );
     }
     
-    function InventoryDetailContent(props){
+    const InventoryDetailContent = memo(function InventoryDetailContent(props){
         if(!updateInventory){
         // Inventory Detail
 
@@ -947,7 +947,7 @@ max: ${partListItems[idx]?.max}
                     </div>
                 </>)
         }
-    }
+    })
 
     function MainContentHeader(props){
         if(updateInventory){
@@ -1003,14 +1003,6 @@ max: ${partListItems[idx]?.max}
     })
 
     function UpdateInventoryDetails(props){
-
-        //  updateTypes = [
-        //     {name: 'Count'}, 
-        //     {name: 'Loc'},
-        //     {name: 'Pick'},
-        //     {name: 'Reord'},
-
-        // ]
 
         async function submitUserInput(input){
             
