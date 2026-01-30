@@ -126,7 +126,8 @@ export default function Inventory() {
                     queryType = 'locQR';
                 }
                 fetch(queryType=='semantic'? 
-                    `${aiUrl}/stor-part-ai-keywords/` : 
+                    // `${aiUrl}/stor-part-ai-keywords/` : 
+                    `${aiUrl}/stor-vectorquery/` : 
                     `${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
                         'uwm' : user.institution}/inventory/${queryType}/`, {
                     method: 'POST',
@@ -134,7 +135,7 @@ export default function Inventory() {
                         Authorization: `Bearer ${token}`, 
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({query: query})
+                    body: JSON.stringify({query: query, institution: user.institution})
                 })
                 .then((res)=>{
                     if(queryType == 'locQR'){query = query.substring(0, query.length -1)} // Removes trailing '-'
@@ -952,7 +953,7 @@ max: ${partListItems[idx]?.max}
     function MainContentHeader(props){
         if(updateInventory){
             if(props.mobileView){return <></> }
-            else{return(<span style={{borderBottom: '1px solid gold'}}>Inventory Update</span>)}
+            else{return(<span id='inventory-update-header' style={{borderBottom: '1px solid gold'}}>Inventory Update</span>)}
         }
         else{
             if(props.mobileView){return <></> }
@@ -1056,8 +1057,6 @@ max: ${partListItems[idx]?.max}
                     const getTaskValues = JSON.parse(input.taskValues);
                     partUserRef.current = getTaskValues?.partUser || '';
                     workorderRef.current = getTaskValues?.workorder || '';
-                    console.log(workorderRef.current);
-                    console.log(partUserRef.current);
 
                     const partDetails = {
                         code: currentPart.code,
@@ -1137,8 +1136,12 @@ max: ${partListItems[idx]?.max}
                         setBasicMessageModalOpen(true);
                     })
                 }
+                const headerTitle = document?.querySelector('#inventory-update-header');
+                if(headerTitle){headerTitle.scrollIntoView()}
             }
             catch(err){
+                const headerTitle = document?.querySelector('#inventory-update-header');
+                if(headerTitle){headerTitle.scrollIntoView()}
                 console.log(err);
                 setBasicMessageModalContent('Could not complete request!');
                 setBasicMessageModalOpen(true);

@@ -42,11 +42,11 @@ export default function SyntaxHelper(props){
                     </div>
                     <div>▫ Returns all records for the specified warehouse code.</div>
 
-                    {/* <h3>{'{S}'} Semantic</h3>
+                    <h3>{'{S}'} Semantic</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Any&nbsp;
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>3/4" brass ball valve</span>
                     </div>
-                    <div>▫ Returns the closest matching records based on their description and keywords.</div> */}
+                    <div>▫ Returns the closest matching records(limit of 50) based on their description.</div>
 
                     <h3>Using Filter</h3>
                     <div>▫ Narrows results based on filter input and type selection.</div>
