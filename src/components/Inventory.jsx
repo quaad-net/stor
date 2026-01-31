@@ -1196,7 +1196,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter User!')};
                         if(Number(tmpWorkOrder) * 0  === 0 && tmpWorkOrder != ''){}
                         else{throw new Error('Please enter a numeric value for Workorder!')};
                         if(Number(tmpQtyUsed) * 0  === 0 && tmpQtyUsed != ''){}
@@ -1410,8 +1410,8 @@ max: ${partListItems[idx]?.max}
             return(<CustomContentFormModal key='inventory-count-modal' exposedEl={[<CountExposedEL/>]} modalContent={<CountForm/>}/>)
         }
 
-        function ReorderModalContent(){
-
+        function ReorderModalContent(){  
+            
             function ReordExposedEL(){
                 function ListItem(){
                     return(
@@ -1455,7 +1455,9 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
+                        if(!document.querySelector('#session-ord').checked){
+                            if(tmpPartUser.trim() == ''){throw new Error('Please enter User!')};
+                        }
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')};
                         if(document.querySelector('#session-ord').checked){addToSessionOrd({reorderAmt: tmpReord, comment: tmpComment})}
@@ -1489,7 +1491,7 @@ max: ${partListItems[idx]?.max}
                                     inputMode='text'
                                     className='stor-input'
                                     style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
-                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
+                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
                                     }}
                                     type='text' 
                                     placeholder='(☺) User' 
@@ -1577,7 +1579,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter User!')};
                         if(tmpLoc != ''){}
                         else{throw new Error('Please enter a new BinLoc!')};
                         submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim(), binLoc: tmpLoc.trim()}), comment: tmpComment, updateType: 'Loc'})
@@ -1763,7 +1765,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter User!')};
                         if(tmpComment.trim() != ''){}
                         else{throw new Error('Please enter details in Comment!')};
                         submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim()}), comment: tmpComment, updateType: 'Other'})
