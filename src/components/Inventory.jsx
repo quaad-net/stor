@@ -135,7 +135,7 @@ export default function Inventory() {
                         Authorization: `Bearer ${token}`, 
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({query: query, institution: user.institution})
+                    body: JSON.stringify({query: query, institution: user.email == 'johndoe@quaad.net' ? 'uwm' : user.institution})
                 })
                 .then((res)=>{
                     if(queryType == 'locQR'){query = query.substring(0, query.length -1)} // Removes trailing '-'
@@ -1196,7 +1196,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
                         if(Number(tmpWorkOrder) * 0  === 0 && tmpWorkOrder != ''){}
                         else{throw new Error('Please enter a numeric value for Workorder!')};
                         if(Number(tmpQtyUsed) * 0  === 0 && tmpQtyUsed != ''){}
@@ -1455,7 +1455,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
                         if(Number(tmpReord) * 0  == 0 && tmpReord != ''){}
                         else{throw new Error('Please enter a numeric value for Reorder Amount!')};
                         if(document.querySelector('#session-ord').checked){addToSessionOrd({reorderAmt: tmpReord, comment: tmpComment})}
@@ -1577,7 +1577,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
                         if(tmpLoc != ''){}
                         else{throw new Error('Please enter a new BinLoc!')};
                         submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim(), binLoc: tmpLoc.trim()}), comment: tmpComment, updateType: 'Loc'})
@@ -1763,7 +1763,7 @@ max: ${partListItems[idx]?.max}
 
                 function submitForm(){
                     try{
-                        if(tmpPartUser.trim() == ''){throw new Error('Please enter item user!')};
+                        if(tmpPartUser.trim() == ''){throw new Error('Please enter user!')};
                         if(tmpComment.trim() != ''){}
                         else{throw new Error('Please enter details in Comment!')};
                         submitUserInput({taskValues: JSON.stringify({partUser: tmpPartUser.trim()}), comment: tmpComment, updateType: 'Other'})
