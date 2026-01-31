@@ -268,7 +268,7 @@ const PL2Labels = memo(function PL2Labels(props) {
             <Divider />
           </List>
           <div id='vid-container'{...(imgCaptured ? {style: {display: 'none'}}: {})}>
-              <video id="video" width='100%' height='100%' autoPlay={useCam}></video>
+              <video id="video" width='100%' height='100%' autoPlay={useCam} playsinline></video>
           </div>
           {!imgSent ?
             <div id='canvas-container' {...(useCam ? {style: {display: 'none'}}: {style: {width: 'fit-content'}})}>
