@@ -1215,7 +1215,7 @@ max: ${partListItems[idx]?.max}
                         setDisplayAlert(true);
                     }
                 }
-                
+
                 return(
                     <>  
                         <Alert 

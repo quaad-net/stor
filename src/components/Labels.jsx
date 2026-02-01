@@ -339,6 +339,7 @@ const Labels = memo(function Labels(props){
                     </>
                     :
                     <>
+                        <span style={{textAlign: 'center', color: 'gray'}}><i>*Laptop/desktop <br/>compatible.</i></span><br/><br/>
                         <div style={{width: 'fit-content', margin: 'auto'}}>
                             <div>
                                 <IconButton disableRipple onClick={()=>{
