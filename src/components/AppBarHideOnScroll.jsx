@@ -24,7 +24,7 @@ import SyntaxHelper from './SyntaxHelper';
 import SessionReorder from './SessionReorder';
 import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
-import PL2Labels from './PL2Labels';
+import PL2Query from './PL2Query';
 import QuickCount from './QuickCount';
 
 function HideOnScroll(props) {
@@ -173,8 +173,8 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                   btnDescription={<span style={{fontSize: '15px'}}>Label</span>}
                 />
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
-                <PL2Labels 
-                  user={props.user} token={props.token} mobileView={true}
+                <PL2Query 
+                  user={props.user} token={props.token} mobileView={true} inventoryQuery={props.inventoryQuery}
                   btnDescription={<span style={{fontSize: '15px'}}>PL</span>}
                 />
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
@@ -271,7 +271,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Label</div>
                   </div>
                   <div style={{borderRight: '3px solid black'}}>
-                    <PL2Labels user={props.user} token={props.token}/>
+                    <PL2Query user={props.user} token={props.token} inventoryQuery={props.inventoryQuery}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
                   </div>
                   <div style={{borderRight: '3px solid black'}}>

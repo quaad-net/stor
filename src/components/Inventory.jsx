@@ -116,7 +116,7 @@ export default function Inventory() {
         setSessionOrds(orders)
     }
 
-    function inventoryQuery({query, queryType, noDialog}){
+    function inventoryQuery({query, queryType, noDialog, noFilter}){
         try{
             if(!filterOn){
                 const locQR = /locQR/;
@@ -143,7 +143,7 @@ export default function Inventory() {
                     else if(res.status == 404){throw new Error('No match')}
                     else if(res.status == 400){throw new Error('Invalid syntax')}
                     // Specific semantic search error messagges will be partially shown in modal.
-                    else if(res.status == 500 && !queryType=='semantic'){throw new Error('Something went wrong')}
+                    else if(res.status == 500){throw new Error('Something went wrong')}
                     else{
                         setAuthorizedUser(true)
                         return res.json()
@@ -190,7 +190,10 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     No match found for<br/>
-                                    <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span 
+                                        style={{color: 'gold', borderBottom: '1px dotted gray'}}>
+                                            {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
+                                    </span>
                                 </span>
                             )
                             if(!noDialog){setBasicMessageModalOpen(true)}
@@ -212,7 +215,9 @@ export default function Inventory() {
                             setBasicMessageModalContent(
                                 <span>
                                     Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
-                                    <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                    <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>
+                                        {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
+                                    </span>
                                 </span>
                             );
                             if(!noDialog){setBasicMessageModalOpen(true)};
@@ -237,7 +242,10 @@ export default function Inventory() {
                         setBasicMessageModalContent(
                             <span>
                                 No match found for<br/>
-                                <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>{query.toString().trim()}</span>
+                                <span 
+                                    style={{color: 'gold', borderBottom: '1px dotted gray'}}>
+                                        {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
+                                </span>
                             </span>
                         );
                         setBasicMessageModalOpen(true);
@@ -262,197 +270,201 @@ export default function Inventory() {
                 })
             }
             else{ // Filter results.
-                const modQry = String(query).trim();
-                if(modQry == ''){throw new Error('No input')}
-                const filteredParts = [];
-                const reDescrStr = '.*' + modQry + '.*';
-                const reDesc = new RegExp(reDescrStr, 'i');
+                if(!noFilter){
+                    const modQry = String(query).trim();
+                    if(modQry == ''){throw new Error('No input')}
+                    const filteredParts = [];
+                    const reDescrStr = '.*' + modQry + '.*';
+                    const reDesc = new RegExp(reDescrStr, 'i');
 
-                function assessFilter(filter, type){
-                    // type: code || warehouseCode
-                    const fltr = filter.toString().trim();
-                    const fltrArr = fltr.split(' ');
-                    if(fltrArr.length > 1){
-                        const RegExFilterArr =[];
-                        fltrArr.forEach((f)=>{
+                    function assessFilter(filter, type){
+                        // type: code || warehouseCode
+                        const fltr = filter.toString().trim();
+                        const fltrArr = fltr.split(' ');
+                        if(fltrArr.length > 1){
+                            const RegExFilterArr =[];
+                            fltrArr.forEach((f)=>{
+                                if(type == 'partCode'){
+                                    const reStr =  '^' + f;
+                                    const re = new RegExp(reStr, 'i');
+                                    RegExFilterArr.push(re);
+                                }
+                                else if(type == 'warehouseCode'){
+                                    const reStr =  '.*' + f + '$';
+                                    const re = new RegExp(reStr, 'i');
+                                    RegExFilterArr.push(re);
+                                }
+                            })
+                            return RegExFilterArr
+                        }
+                        else{
                             if(type == 'partCode'){
-                                const reStr =  '^' + f;
+                                const reStr = '^' + fltr;
                                 const re = new RegExp(reStr, 'i');
-                                RegExFilterArr.push(re);
+                                return [re]
                             }
                             else if(type == 'warehouseCode'){
-                                const reStr =  '.*' + f + '$';
+                                const reStr =  '.*' + fltr;
                                 const re = new RegExp(reStr, 'i');
-                                RegExFilterArr.push(re);
+                                return [re]
+                            }
+                        }
+                    }
+
+                    function assessBinLoc(binLoc){
+                        let colonCount = 0;
+                        const binLocArr = binLoc.split("")
+                        binLocArr.map((str)=>{
+                            if(str==':'){
+                                colonCount += 1;
                             }
                         })
-                        return RegExFilterArr
-                    }
-                    else{
-                        if(type == 'partCode'){
-                            const reStr = '^' + fltr;
-                            const re = new RegExp(reStr, 'i');
-                            return [re]
+                        if(colonCount == 1){ // Indicates a range of bin locations.
+                            const binLocSplit = binLoc.split(":");
+                            const binLocStartAt = binLocSplit[0].trim();
+                            const binLocEndAt = binLocSplit[1].trim();
+                            return {locCount: 2, gte: binLocStartAt?.toUpperCase(), lte: binLocEndAt?.toUpperCase()}
                         }
-                        else if(type == 'warehouseCode'){
-                            const reStr =  '.*' + fltr;
-                            const re = new RegExp(reStr, 'i');
-                            return [re]
+                        else{
+                            return { locCount: 1, binLoc: binLoc?.toUpperCase()}
                         }
                     }
-                }
 
-                function assessBinLoc(binLoc){
-                    let colonCount = 0;
-                    const binLocArr = binLoc.split("")
-                    binLocArr.map((str)=>{
-                        if(str==':'){
-                            colonCount += 1;
+                    // Determines if partListItems or pagListItems need to be accessed for filtering results
+                    if(!pagListItems.length > 0){ 
+                        switch(queryType){
+                            case 'binLoc':
+                                {
+                                const locs = assessBinLoc(modQry)
+                                partListItems.forEach((part)=>{
+                                    if(locs.locCount == 2){
+                                        if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
+                                            filteredParts.push(part)
+                                        }
+                                    }
+                                    else{
+                                        const reLoc = new RegExp(locs.binLoc, 'i');
+                                        if(reLoc.test(part.binLoc)){
+                                            filteredParts.push(part)
+                                        }
+                                    }
+                                })
+                                break;
+                                }
+                            case 'partCode':
+                                {
+                                const fltr = assessFilter(modQry, 'partCode');
+                                partListItems.forEach((part)=>{
+                                    fltr.forEach((f)=>{if(f.test(part.code)){
+                                        filteredParts.push(part)
+                                    }})
+                                })
+                                break;
+                                }
+                            case 'descr':
+                                {
+                                partListItems.forEach((part)=>{
+                                    if(reDesc.test(part.description)){
+                                        filteredParts.push(part)
+                                    }
+                                })
+                                break;
+                                }
+                            case 'ware':
+                                {
+                                const warehouseFilter = assessFilter(modQry, 'warehouseCode');
+                                partListItems.forEach((part)=>{
+                                    warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
+                                        filteredParts.push(part)
+                                    }})
+                                })
+                                break;
+                                }
                         }
-                    })
-                    if(colonCount == 1){ // Indicates a range of bin locations.
-                        const binLocSplit = binLoc.split(":");
-                        const binLocStartAt = binLocSplit[0].trim();
-                        const binLocEndAt = binLocSplit[1].trim();
-                        return {locCount: 2, gte: binLocStartAt?.toUpperCase(), lte: binLocEndAt?.toUpperCase()}
+                        if(filteredParts.length > 30){  // Needs to be paginated.
+                            setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                            setPagListItems(filteredParts);
+                            paginate(filteredParts, 1); // Function will setPartListItems
+                        }
+                        else{
+                            setPartListItems(filteredParts);
+                            setPagIdxMax(1);
+                            setPagListItems([]);
+                        }
+                        setIdx(0);
+                        // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                        // else{setUsageData([])}
                     }
-                    else{
-                        return { locCount: 1, binLoc: binLoc?.toUpperCase()}
-                    }
-                }
-
-                // Determines if partListItems or pagListItems need to be accessed for filtering results
-                if(!pagListItems.length > 0){ 
-                    switch(queryType){
-                        case 'binLoc':
-                            {
-                            const locs = assessBinLoc(modQry)
-                            partListItems.forEach((part)=>{
-                                if(locs.locCount == 2){
-                                    if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
+                    else{ // Accesses pagListItems for filter instead of partListItems
+                        switch(queryType){
+                            case 'binLoc':
+                                {
+                                const locs = assessBinLoc(modQry);
+                                pagListItems.forEach((part)=>{
+                                    if(locs.locCount == 2){
+                                        if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
+                                            filteredParts.push(part)
+                                        }
+                                    }
+                                    else{
+                                        const reLoc = new RegExp(locs.binLoc, 'i');
+                                        if(reLoc.test(part.binLoc)){
+                                            filteredParts.push(part)
+                                        }
+                                    }
+                                })
+                                break;
+                                }
+                            case 'partCode':
+                                {  
+                                const fltr = assessFilter(modQry,'partCode');
+                                pagListItems.forEach((part)=>{
+                                    fltr.forEach((f)=>{if(f.test(part.code)){
+                                        filteredParts.push(part)
+                                    }})
+                                })
+                                break
+                                }
+                            case 'descr':
+                                {
+                                pagListItems.forEach((part)=>{
+                                    if(reDesc.test(part.description)){
                                         filteredParts.push(part)
                                     }
+                                })
+                                break;
                                 }
-                                else{
-                                    const reLoc = new RegExp(locs.binLoc, 'i');
-                                    if(reLoc.test(part.binLoc)){
+                            case 'ware':
+                                {
+                                const warehouseFilter = assessFilter(modQry, 'warehouseCode');
+                                pagListItems.forEach((part)=>{
+                                    warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
                                         filteredParts.push(part)
-                                    }
+                                    }})
+                                })
+                                break;
                                 }
-                            })
-                            break;
-                            }
-                        case 'partCode':
-                            {
-                            const fltr = assessFilter(modQry, 'partCode');
-                            partListItems.forEach((part)=>{
-                                fltr.forEach((f)=>{if(f.test(part.code)){
-                                    filteredParts.push(part)
-                                }})
-                            })
-                            break;
-                            }
-                        case 'descr':
-                            {
-                            partListItems.forEach((part)=>{
-                                if(reDesc.test(part.description)){
-                                    filteredParts.push(part)
-                                }
-                            })
-                            break;
-                            }
-                        case 'ware':
-                            {
-                            const warehouseFilter = assessFilter(modQry, 'warehouseCode');
-                            partListItems.forEach((part)=>{
-                                warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
-                                    filteredParts.push(part)
-                                }})
-                            })
-                            break;
-                            }
+                        }
+                        if(filteredParts.length > 30){  // Needs to be paginated.
+                            setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                            setPagListItems(filteredParts);
+                            paginate(filteredParts, 1); // Function will setPartListItems
+                        }
+                        else{
+                            setPartListItems(filteredParts);
+                            setPagIdxMax(1);
+                            setPagListItems([]);
+                        }
+                        setIdx(0);
+                        // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
+                        // else{setUsageData([])}
                     }
-                    if(filteredParts.length > 30){  // Needs to be paginated.
-                        setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
-                        setPagListItems(filteredParts);
-                        paginate(filteredParts, 1); // Function will setPartListItems
-                    }
-                    else{
-                        setPartListItems(filteredParts);
-                        setPagIdxMax(1);
-                        setPagListItems([]);
-                    }
-                    setIdx(0);
-                    // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    // else{setUsageData([])}
-                }
-                else{ // Accesses pagListItems for filter instead of partListItems
-                    switch(queryType){
-                        case 'binLoc':
-                            {
-                            const locs = assessBinLoc(modQry);
-                            pagListItems.forEach((part)=>{
-                                if(locs.locCount == 2){
-                                    if( locs.gte <= part.binLoc && part.binLoc <= locs.lte ){
-                                        filteredParts.push(part)
-                                    }
-                                }
-                                else{
-                                    const reLoc = new RegExp(locs.binLoc, 'i');
-                                    if(reLoc.test(part.binLoc)){
-                                        filteredParts.push(part)
-                                    }
-                                }
-                            })
-                            break;
-                            }
-                        case 'partCode':
-                            {  
-                            const fltr = assessFilter(modQry,'partCode');
-                            pagListItems.forEach((part)=>{
-                                fltr.forEach((f)=>{if(f.test(part.code)){
-                                    filteredParts.push(part)
-                                }})
-                            })
-                            break
-                            }
-                        case 'descr':
-                            {
-                            pagListItems.forEach((part)=>{
-                                if(reDesc.test(part.description)){
-                                    filteredParts.push(part)
-                                }
-                            })
-                            break;
-                            }
-                        case 'ware':
-                            {
-                            const warehouseFilter = assessFilter(modQry, 'warehouseCode');
-                            pagListItems.forEach((part)=>{
-                                warehouseFilter.forEach((f)=>{if(f.test(part.warehouseCode)){
-                                    filteredParts.push(part)
-                                }})
-                            })
-                            break;
-                            }
-                    }
-                    if(filteredParts.length > 30){  // Needs to be paginated.
-                        setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
-                        setPagListItems(filteredParts);
-                        paginate(filteredParts, 1); // Function will setPartListItems
-                    }
-                    else{
-                        setPartListItems(filteredParts);
-                        setPagIdxMax(1);
-                        setPagListItems([]);
-                    }
-                    setIdx(0);
-                    // if(filteredParts.length > 0 ){getUsageData(filteredParts[0].code, filteredParts[0].warehouseCode)}
-                    // else{setUsageData([])}
                 }
             }
         }
         catch(err){
+            setBasicMessageModalContent('Something went wrong!');
+            setBasicMessageModalOpen(true);
             console.log(err)
         }
     }
