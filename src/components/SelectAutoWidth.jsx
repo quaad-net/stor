@@ -46,7 +46,7 @@ export default function SelectAutoWidth(props) {
                     <MenuItem 
                         key={index} 
                         value={item.value} 
-                        sx={{backgroundColor: 'rgb(22, 22, 22)', border: '1px solid white', borderRadius: '5px', marginTop: '5px'}}
+                        // sx={{}}
                     >
                         <span 
                             style={{color: 'whitesmoke'}}>{item.name}
