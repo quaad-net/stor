@@ -26,6 +26,7 @@ import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
 import PL2Query from './PL2Query';
 import QuickCount from './QuickCount';
+import'./AppBarHideOnScroll.css';
 
 function HideOnScroll(props) {
   const { children, window } = props;

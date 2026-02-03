@@ -13,6 +13,21 @@
     color: rgba(128, 128, 128, 0.155)
 }
 
+@supports (scrollbar-color: auto) {
+  .inventory-list {
+    scrollbar-color: rgb(22, 22, 22) black
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  .inventory-list::-webkit-scrollbar {
+    background: rgb(22, 22, 22);
+  }
+  .inventory-list::-webkit-scrollbar-thumb {
+    background: black;
+  }
+}
+
 textarea{
     outline: none;
 }

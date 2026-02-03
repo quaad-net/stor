@@ -14,7 +14,6 @@ import Slide from '@mui/material/Slide';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CircularIndeterminate from './Progress';
 import BasicMessageModal from './BasicMessageModal';
-import SelectAutoWidth from './SelectAutoWidth';
 import imgMap from '../../app/imgMap';
 const aiUrl = import.meta.env.VITE_AI_URL;
 const apiUrl = import.meta.env.VITE_API_URL;

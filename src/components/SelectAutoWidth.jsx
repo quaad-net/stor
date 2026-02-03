@@ -32,7 +32,7 @@ export default function SelectAutoWidth(props) {
             },
             },
         }} size='small'>
-        <InputLabel id="select-autowidth-label"><span style={{color: 'gray'}}>{props.selectionLabel}</span></InputLabel>
+            <InputLabel id="select-autowidth-label"><span style={{color: 'gray'}}>{props.selectionLabel}</span></InputLabel>
             <Select
             labelId="select-autowidth-label"
             id="select-autowidth"
@@ -43,7 +43,15 @@ export default function SelectAutoWidth(props) {
             >
             {props.menuItems.map((item, index)=>{
                 return(
-                    <MenuItem key={index} value={item.value}><span style={{color: 'whitesmoke'}}>{item.name}</span></MenuItem>
+                    <MenuItem 
+                        key={index} 
+                        value={item.value} 
+                        sx={{backgroundColor: 'rgb(22, 22, 22)', border: '1px solid white', borderRadius: '5px', marginTop: '5px'}}
+                    >
+                        <span 
+                            style={{color: 'whitesmoke'}}>{item.name}
+                        </span>
+                    </MenuItem>
                 )
             })}
             </Select>
