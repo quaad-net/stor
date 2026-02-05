@@ -965,11 +965,18 @@ max: ${partListItems[idx]?.max}
     function MainContentHeader(props){
         if(updateInventory){
             if(props.mobileView){return <></> }
-            else{return(<span id='inventory-update-header' style={{borderBottom: '1px solid gold'}}>Inventory Update</span>)}
+            else{
+                return(
+                    <span 
+                        id='inventory-update-header' 
+                        style={{borderBottom: '1px solid gold', color: 'whitesmoke'}}>Inventory Update
+                    </span>
+                )
+            }
         }
         else{
             if(props.mobileView){return <></> }
-            else{return(<><span>Inventory Detail</span></>)}
+            else{return(<><span style={{color: 'whitesmoke'}}>Inventory Detail</span></>)}
         }
     }
 
