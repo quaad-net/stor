@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 import CircularIndeterminate from './Progress';
 import imgMap from '../../app/imgMap';
+import './BasicMessageModal.css'
 
 // For Box
 const style = {
@@ -42,7 +43,7 @@ export default function BasicMessageModal(props) {
     function ModalContent(){
         return(
             <>
-                <div style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px',
+                <div className='basic-message-modal-content' style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px',
                     scrollbarWidth:'thin', scrollbarColor: 'black',  overflow: props?.overflow || 'auto'
                 }}>
                     {props?.modalContent}

@@ -1,0 +1,19 @@
+.basic-message-modal-content{
+    scrollbar-width: thin;
+    scrollbar-color: 'black',
+}
+
+@supports (scrollbar-color: auto) {
+  .basic-message-modal-content {
+    scrollbar-color: rgb(43, 43, 43) black;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  .basic-message-modal-content::-webkit-scrollbar-track {
+    background: black;
+  }
+  .basic-message-modal-content::-webkit-scrollbar-thumb {
+    background: rgb(43, 43, 43)
+  }
+}
