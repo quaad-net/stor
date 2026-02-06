@@ -4,6 +4,22 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --stor-gold: linear-gradient(to right, #bf953f, #b38728, #aa771c);  
   --stor-link: #747bff;
+  scrollbar-width: thin;
+}
+
+@supports (scrollbar-color: auto) {
+  :root {
+    scrollbar-color: rgb(43, 43, 43) black;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  :root::-webkit-scrollbar-track {
+    background: black;
+  }
+  :root::-webkit-scrollbar-thumb {
+    background: rgb(43, 43, 43)
+  }
 }
 
 .stor-link{
