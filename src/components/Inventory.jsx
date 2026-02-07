@@ -1461,7 +1461,7 @@ max: ${partListItems[idx]?.max}
                         reorderAmt: reorderAmt,
                         comment: comment?.trim() || '',      
                         date: now,
-                        _id: currentPart.code + '-' + currentPart.binLoc + currentPart.warehouseCode
+                        _id: currentPart.code + '-' + currentPart.binLoc + '-' + currentPart.warehouseCode
                     }
                     sessionOrds.forEach((ord)=>{
                         if(ord._id != partDetails._id){ords.push(ord)}
