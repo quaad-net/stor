@@ -109,6 +109,7 @@ const PL2Query = memo(function PL2Query(props) {
                 }
                 else{itemsToString += item}
             })
+            console.log(itemsToString);
             props.inventoryQuery({query: itemsToString, queryType: 'descrList', noFilter: true})
         }
         else if(res.message == 'Could not find matching items'){
