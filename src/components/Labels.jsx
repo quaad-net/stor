@@ -31,7 +31,12 @@ const itemLabelTypes = {
         fontSize: 'mono', 
         qrSize: 75,
         dataSource: 'code'
-    }
+    },
+    oneByThree: {
+        fontSize: '11pt-1x3', 
+        qrSize: 50,
+        dataSource: 'all'
+    },
 }
 
 const maxChars = {
@@ -62,6 +67,13 @@ const maxChars = {
         binLocMaxChar: 0,
         minMaxChar: 0,
         maxMaxChar: 0,
+    },
+    oneByThree: {
+        codeMaxChar : 22,
+        descriptionMaxChar: 80,
+        binLocMaxChar: 15,
+        minMaxChar: 4,
+        maxMaxChar: 4,
     },
 
 }
@@ -306,7 +318,7 @@ const Labels = memo(function Labels(props){
                                     }}>
                                     <span style={{fontSize: '15px'}}>
                                         <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        12pt(1x4)
+                                        11pt(1x4)
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
@@ -331,6 +343,14 @@ const Labels = memo(function Labels(props){
                                     <span style={{fontSize: '15px'}}>
                                         <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
                                         ItemCode
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={()=>{ 
+                                    setItemLabelType('oneByThree'); setReadyToPrint(true)
+                                    }}>
+                                    <span style={{fontSize: '15px'}}>
+                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                                        11pt(1x3)
                                     </span>
                                 </IconButton><br/><br/>
                             </>
