@@ -34,7 +34,7 @@ const itemLabelTypes = {
     },
     oneByThree: {
         fontSize: '11pt-1x3', 
-        qrSize: 50,
+        qrSize: 37, //50
         dataSource: 'all'
     },
 }
