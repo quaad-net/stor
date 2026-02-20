@@ -16,7 +16,7 @@ export default function SyntaxHelper(props){
                     <div style={{color: 'gold'}}>[Qry]&nbsp;LocationStart&nbsp;<span style={{color:'white', fontWeight: 'bold'}}>:</span>&nbsp;LocationEnd
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>110-a-b:110-c</span>
                     </div>
-                    <div>▫ Add location start and location end separted by a colon. 
+                    <div>▫ Add location start and location end separated by a colon. 
                         <br/>To match only one location, enter the exact location without a colon.
                     </div>
                     <div>▫ Do not include any spaces.</div>
