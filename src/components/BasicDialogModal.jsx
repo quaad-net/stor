@@ -8,8 +8,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 300,
-  bgcolor:    'background.paper', 
-  border: '1px solid gray',
+  bgcolor:   '#0000007e', // 'background.paper',
+  border: '1px solid transparent', // gray
   boxShadow: 24,
   p: 4,
   borderRadius: '10px'

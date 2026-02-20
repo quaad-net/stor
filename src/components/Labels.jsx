@@ -262,7 +262,7 @@ const Labels = memo(function Labels(props){
                             <>
                                 {props?.pagListItems.length > 0 ?
                                 <>
-                                    <div>
+                                    <div> 
                                         <IconButton disableRipple onClick={()=>{
                                             setModalOpen(false);
                                             printLabels(undefined, true);

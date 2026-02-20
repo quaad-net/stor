@@ -162,7 +162,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                   currentPage={props?.currentPage} 
                   btnDescription={<span style={{fontSize: '15px'}}>Page</span>} 
                 />
-                {props?.displayPage ? <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div> : <></>}
+                {props?.pagIdxMax > 1 ? <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div> : <></>}
                 <QuickCount
                   btnDescription={<span style={{fontSize: '15px'}}>Count</span>}
                 />

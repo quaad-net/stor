@@ -1193,7 +1193,7 @@ max: ${partListItems[idx]?.max}
             function PickExposedEL(){
                 function ListItem(){
                     return(
-                    <li 
+                    <li
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
                     ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Pick
@@ -1898,7 +1898,7 @@ max: ${partListItems[idx]?.max}
         if(partListItems.length > 0){
         return(
             <div style={{width: props?.mobileView ? '100%' : 400, margin: 'auto'}}>
-                <div 
+                <div
                     style={{...(props?.mobileView ? 
                         {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '45px'})}}
                 > 

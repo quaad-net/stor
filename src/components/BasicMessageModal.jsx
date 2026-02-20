@@ -14,8 +14,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
     width: 'fit-content',
-  bgcolor:    'background.paper', 
-  border: '1px solid gray',
+  bgcolor:   '#0000007e', // 'background.paper',
+  border: '1px solid transparent', // gray
   boxShadow: 24,
   p: 4,
   borderRadius: '10px',
@@ -71,8 +71,9 @@ export default function BasicMessageModal(props) {
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
-                        <Box sx={{...style, width: props?.width || 'fit-content', bgcolor: props?.bgcolor || 'background.paper',
-                            border: props.border || '1px solid gray'
+                        <Box sx={{...style, width: props?.width || 'fit-content', ...props?.bgcolor ? {bgcolor: props.bgcolor} : {},
+                            // bgcolor: props?.bgcolor || 'background.paper',
+                            // border: props.border || '1px solid gray'
                         }}>
                             <ModalContent/>
                         </Box>
