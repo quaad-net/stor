@@ -268,7 +268,7 @@ const Labels = memo(function Labels(props){
                                             printLabels(undefined, true);
                                             setReadyToPrint(false);
                                         }}><span style={{fontSize: '15px'}}>
-                                                ▫ Results
+                                                ¤ Results
                                             </span>
                                         </IconButton>
                                     </div>
@@ -283,7 +283,7 @@ const Labels = memo(function Labels(props){
                                         printLabels();
                                         setReadyToPrint(false);
                                     }}><span style={{fontSize: '15px'}}>
-                                            {props?.pagListItems.length > 0 ? '▫ Page' : '▫ Results'}
+                                            {props?.pagListItems.length > 0 ? '¤ Page' : '¤ Results'}
                                         </span>
                                     </IconButton>
                                 </div>
@@ -295,7 +295,7 @@ const Labels = memo(function Labels(props){
                                         setReadyToPrint(false);
                                         }}>
                                         <span style={{fontSize: '15px'}}>
-                                            ▫ New
+                                            ¤ New
                                         </span>
                                     </IconButton>
                                 </div>
@@ -311,35 +311,35 @@ const Labels = memo(function Labels(props){
                                     setItemLabelType('reg'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|11pt</span>
+                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|11pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('reg16pt'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|16pt</span>
+                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|16pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('large'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ 2x4<span style={{color:'whitesmoke'}}>|30pt</span>
+                                        ¤ 2x4<span style={{color:'whitesmoke'}}>|30pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('itemCodeQR'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|code</span>
+                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|code</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{ 
                                     setItemLabelType('oneByThree'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ 1x3<span style={{color:'whitesmoke'}}>|11pt</span>
+                                        ¤ 1x3<span style={{color:'whitesmoke'}}>|11pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                             </>
@@ -355,7 +355,7 @@ const Labels = memo(function Labels(props){
                                     setPrintParts(true)
                                 }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ Part Labels
+                                        ¤ Part Labels
                                     </span>
                                 </IconButton>
                             </div>
@@ -365,7 +365,7 @@ const Labels = memo(function Labels(props){
                                     printLocLabels()
                                 }}>
                                     <span style={{fontSize: '15px'}}>
-                                        ▫ Loc Labels
+                                        ¤ Loc Labels
                                     </span>
                                 </IconButton>
                             </div>

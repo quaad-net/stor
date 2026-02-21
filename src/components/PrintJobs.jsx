@@ -335,8 +335,7 @@ export default function PrintJobs(props) {
                             .catch(()=>{setLoading(false)})
                         }}>
                         <span style={{fontSize: '15px'}}>
-                            {/* <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Print Jobs  */}
-                            ▫ Print Jobs
+                            ¤ Jobs
                         </span>
                     </IconButton>
                     <Dialog
