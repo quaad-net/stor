@@ -334,7 +334,10 @@ export default function PrintJobs(props) {
                             .then(()=>{setLoading(false)})
                             .catch(()=>{setLoading(false)})
                         }}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Print Jobs </span>
+                        <span style={{fontSize: '15px'}}>
+                            {/* <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Print Jobs  */}
+                            ▫ Print Jobs
+                        </span>
                     </IconButton>
                     <Dialog
                     sx={{'& .MuiAppBar-root': {backgroundColor: {}}, '& .MuiPaper-root': {backgroundColor: 'black'}}}

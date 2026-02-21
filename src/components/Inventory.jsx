@@ -75,7 +75,7 @@ export default function Inventory() {
     }, [])
 
     useEffect(()=>{
-        inventoryQuery({query: '100:101', queryType: 'binLoc', noDialog: true})
+        inventoryQuery({query: '100:101', queryType: 'binLoc', noDialog: true});
     },[])
     
     useEffect(()=>{
@@ -494,7 +494,8 @@ export default function Inventory() {
         setCurrentPage(page);
         setPartListItems(items.slice(start, end));
         setIdx(0);
-        const firstItem = items.slice(start, end)[0]
+        
+        // const firstItem = items.slice(start, end)[0];
         // getUsageData(firstItem.code, firstItem.warehouseCode);
     }
     
@@ -1979,6 +1980,8 @@ max: ${partListItems[idx]?.max}
                         setSessionOrds={setSessionOrds}
                         user={user}
                         token={token}
+                        highlightActiveSelection={highlightActiveSelection}
+                        removeActiveSelection={removeActiveSelection}
                     />
                     {renderParts}
                     <SwipeableEdgeDrawer 

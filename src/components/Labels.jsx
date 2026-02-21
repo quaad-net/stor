@@ -22,7 +22,7 @@ const itemLabelTypes = {
         dataSource: 'all'
     },
     large: {
-        fontSize: '32pt',
+        fontSize: '30pt',
         qrSize: 100,
         dataSource: 'all' //Template will exclude min/max for large labels.
     },
@@ -268,9 +268,7 @@ const Labels = memo(function Labels(props){
                                             printLabels(undefined, true);
                                             setReadyToPrint(false);
                                         }}><span style={{fontSize: '15px'}}>
-                                            <img 
-                                                src={imgMap.get('square-outlined-small.svg')} 
-                                                width='10px' />&nbsp;All Results
+                                                ▫ Results
                                             </span>
                                         </IconButton>
                                     </div>
@@ -285,11 +283,7 @@ const Labels = memo(function Labels(props){
                                         printLabels();
                                         setReadyToPrint(false);
                                     }}><span style={{fontSize: '15px'}}>
-                                            <img 
-                                                src={imgMap.get('square-outlined-small.svg')} 
-                                                width='10px' 
-                                            />
-                                            &nbsp;{props?.pagListItems.length > 0 ? 'Page' : 'Results'}
+                                            {props?.pagListItems.length > 0 ? '▫ Page' : '▫ Results'}
                                         </span>
                                     </IconButton>
                                 </div>
@@ -301,7 +295,7 @@ const Labels = memo(function Labels(props){
                                         setReadyToPrint(false);
                                         }}>
                                         <span style={{fontSize: '15px'}}>
-                                            <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;New
+                                            ▫ New
                                         </span>
                                     </IconButton>
                                 </div>
@@ -317,40 +311,35 @@ const Labels = memo(function Labels(props){
                                     setItemLabelType('reg'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        11pt(1x4)
+                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|11pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('reg16pt'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        16pt(1x4)
+                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|16pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('large'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        32pt(2x4)
+                                        ▫ 2x4<span style={{color:'whitesmoke'}}>|30pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
-                                    setItemLabelType('itemCodeQR'); setReadyToPrint(true)
+                                    setItemLabelType('itemCodeQR'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        ItemCode
+                                        ▫ 1x4<span style={{color:'whitesmoke'}}>|code</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{ 
-                                    setItemLabelType('oneByThree'); setReadyToPrint(true)
+                                    setItemLabelType('oneByThree'); setReadyToPrint(true);
                                     }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
-                                        11pt(1x3)
+                                        ▫ 1x3<span style={{color:'whitesmoke'}}>|11pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                             </>
@@ -366,8 +355,7 @@ const Labels = memo(function Labels(props){
                                     setPrintParts(true)
                                 }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />
-                                        &nbsp; Part Labels
+                                        ▫ Part Labels
                                     </span>
                                 </IconButton>
                             </div>
@@ -377,8 +365,7 @@ const Labels = memo(function Labels(props){
                                     printLocLabels()
                                 }}>
                                     <span style={{fontSize: '15px'}}>
-                                        <img src={imgMap.get('square-outlined-small.svg')} width='10px' />
-                                        &nbsp; Loc Labels
+                                        ▫ Loc Labels
                                     </span>
                                 </IconButton>
                             </div>
@@ -442,7 +429,7 @@ const Labels = memo(function Labels(props){
             return(
                 <form className="stor-new-label-form">
                     <input
-                        {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].codeMaxChar})}
+                        maxLength={maxChars[itemLabelType].codeMaxChar}
                         className='stor-input'
                         style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                             fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -456,7 +443,7 @@ const Labels = memo(function Labels(props){
                     {itemLabelType !='itemCodeQR' ?
                         <>
                             <input 
-                                {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].binLocMaxChar})}
+                                maxLength={maxChars[itemLabelType].binLocMaxChar}
                                 className='stor-input'
                                 style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                     fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'
@@ -468,7 +455,7 @@ const Labels = memo(function Labels(props){
                                 }}
                             />
                             <input 
-                                {...(itemLabelType=='large' ? {} : {maxLength: maxChars[itemLabelType].descriptionMaxChar})}
+                                maxLength={maxChars[itemLabelType].descriptionMaxChar}
                                 className='stor-input'
                                 style={{width: '99%', borderLeft: 0, borderTop: 0, borderRight: 0, fontSize: 'medium',
                                     fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif'

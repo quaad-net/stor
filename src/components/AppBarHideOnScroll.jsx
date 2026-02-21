@@ -50,7 +50,7 @@ HideOnScroll.propTypes = {
 };
 
 const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
-  const [queryType, setQueryType] = useState('binLoc');
+  const [queryType, setQueryType] = useState('partCode');
 
     const AppBarTools = memo(function AppBarTools(){
         const [query, setQuery] = useState('');
@@ -234,6 +234,8 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                         props.setPagListItems([]);
                     }
                     props.setIdx(0);
+                    props.removeActiveSelection();
+                    props.highlightActiveSelection(0);
                     // props.getUsageData(props.unfilteredPartListItems[0].code, props.unfilteredPartListItems[0].warehouseCode);
                   };
                   props.setfilterOn(!props.filterOn);
