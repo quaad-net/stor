@@ -28,7 +28,7 @@ export default function SyntaxHelper(props){
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Code&nbsp;Code Code...
                         <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>22-12345 51-12345 70-12345</span>
                     </div>
-                    <div>▫ Enter a space separted list of part codes.</div>
+                    <div>▫ Enter a space separated list of part codes.</div>
 
                     <h3>{'{D}'} Description</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Exact Match
