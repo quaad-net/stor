@@ -26,6 +26,7 @@ import CircularIndeterminate from './Progress';
 import './Inventory.css'
 
 export default function Inventory() {
+
     const [partListItems, setPartListItems] = useState([]);
     const [unfilteredPartListItems, setUnfilteredPartListItems] = useState([])
     const [idx, setIdx] = useState(0) // Used to maintain view of query record in various components.
@@ -117,6 +118,9 @@ export default function Inventory() {
     }
 
     function inventoryQuery({query, queryType, noDialog, noFilter}){
+
+        // All records (filtered or unfiltered) retured from query can be accessed through partListItems[] or pagListItems[].
+        
         try{
             if(!filterOn){
                 const locQR = /locQR/;
@@ -1901,7 +1905,9 @@ max: ${partListItems[idx]?.max}
             <div style={{width: props?.mobileView ? '100%' : 400, margin: 'auto'}}>
                 <div
                     style={{...(props?.mobileView ? 
-                        {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '10px'} : {float: 'right', width: '45px'})}}
+                        {margin: 'auto', width: 'fit-content', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '50px'} 
+                        : {float: 'right', width: '45px'})
+                    }}
                 > 
                     <TogglePrevNext/>
                 </div>  

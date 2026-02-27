@@ -141,10 +141,12 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
         function ModalMobileMenu(){ 
           return(
             <>
-              <div style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin'}}>
+              <div
+                style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin',
+                }}
+              >
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                   <SyntaxHelper mobileMenu/>
-                  {/* <div style={{textAlign: 'center'}}>-----</div> */}
                 </div>
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 40, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 <IconButton

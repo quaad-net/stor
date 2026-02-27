@@ -133,31 +133,40 @@ const Labels = memo(function Labels(props){
 
         async function printLocLabels(){
             try{
+
                 const req =  await fetch(`${apiUrl}/print/locLabels`, {
-                    method: "GET",
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({parts: props?.pagListItems.length > 0 ? props.pagListItems : props.queryRes})
                 })
-                const res = await req.text();
-                const parser = new DOMParser()
-                const plainLabels = parser.parseFromString(res, 'text/html');
-                const labelData  = plainLabels.querySelectorAll('.label-labeldata');
+                if(req.status !== 200){
+                    const error = await req.json();
+                    throw new Error(error.message);
+                }
+                else{
+                    const res = await req.text();
+                    const parser = new DOMParser()
+                    const plainLabels = parser.parseFromString(res, 'text/html');
+                    const labelData  = plainLabels.querySelectorAll('.label-labeldata');
 
-                // Add QRCode to Each Label
-                labelData.forEach((label)=>{ 
-                    const qrData = label.querySelector('#label-qr-data');
-                    ReactDOM.render(<QRCode value={qrData.textContent} size={75} />, label.querySelector('.qr'));
-                });
+                    // Add QRCode to Each Label
+                    labelData.forEach((label)=>{ 
+                        const qrData = label.querySelector('#label-qr-data');
+                        ReactDOM.render(<QRCode value={qrData.textContent} size={75} />, label.querySelector('.qr'));
+                    });
 
-                // Open new window for labels doc.
-                const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
-                const newWindow = window.open('', '_blank');
-                newWindow.document.open(); 
-                newWindow.document.write(plainLabelsTxt); 
-                // newWindow.print(); 
-                newWindow.document.close(); 
+                    // Open new window for labels doc.
+                    const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
+                    const newWindow = window.open('', '_blank');
+                    newWindow.document.open(); 
+                    newWindow.document.write(plainLabelsTxt); 
+                    // newWindow.print(); 
+                    newWindow.document.close(); 
+                }
             }
             catch(err){
-                console.log(err);
-                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
+                if(err.message == 'No root locations found.'){alert(err.message)}
+                else{alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")};
             }
         }
 
