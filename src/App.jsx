@@ -12,10 +12,12 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  for (let [key, val] of imgMap){
-    const img = new Image();
-    img.src  = val;
-  }
+  useEffect(()=>{
+    for (let [key, val] of imgMap){
+      const img = new Image();
+      img.src  = val;
+    }
+  }, [])
 
   useEffect(()=>{
     if(location.pathname == '/'){ // If false, route is not valid and will render <ErrorPage/>
