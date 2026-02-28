@@ -28,6 +28,8 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+
 export default function PrintJobs(props) {
     const [open, setOpen] = useState(false);
     const [tasksListItems, setTasksListItems] = useState([]);
@@ -306,8 +308,7 @@ export default function PrintJobs(props) {
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
                         <IconButton disableRipple size='small' onClick={()=>{
-                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                            const newWindow = window.open('', '_blank', features);
+                            const newWindow = window.open('', '_blank', 'popup=true');
                             props.printPrintJobs([{
                                 code: props?.task.code,
                                 description: props?.task.description,
@@ -376,8 +377,7 @@ export default function PrintJobs(props) {
                                     disableRipple
                                     sx={{marginLeft: '10px', marginRight: '0'}}
                                     onClick={()=>{
-                                        const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                                        const newWindow = window.open('', '_blank', features);
+                                        const newWindow = window.open('', '_blank', 'popup=true');
                                         props.printPrintJobs(tasksListItems).then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 

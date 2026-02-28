@@ -78,6 +78,8 @@ const maxChars = {
 
 }
 
+const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+
 const Labels = memo(function Labels(props){
     const [modalOpen, setModalOpen] = useState(false);
     const [formModalOpen, setFormModalOpen] = useState(false);
@@ -254,8 +256,7 @@ const Labels = memo(function Labels(props){
                                     <div> 
                                         <IconButton disableRipple onClick={()=>{
                                             setModalOpen(false);
-                                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                                            const newWindow = window.open('', '_blank', features);
+                                            const newWindow = window.open('', '_blank', 'popup=true');
                                             printLabels(undefined, true).then((labels)=>{
                                                 newWindow.document.open(); 
                                                 newWindow.document.write(labels || 'Error'); 
@@ -275,8 +276,7 @@ const Labels = memo(function Labels(props){
                                 <div>
                                     <IconButton disableRipple onClick={()=>{
                                         setModalOpen(false);
-                                        const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                                        const newWindow = window.open('', '_blank', features);
+                                        const newWindow = window.open('', '_blank', 'popup=true');
                                         printLabels().then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 
@@ -363,8 +363,7 @@ const Labels = memo(function Labels(props){
                             <br/>
                             <div>
                                 <IconButton disableRipple onClick={()=>{
-                                    const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                                    const newWindow = window.open('', '_blank', features);
+                                    const newWindow = window.open('', '_blank', 'popup=true');
                                     printLocLabels().then((labels)=>{
                                         newWindow.document.open(); 
                                         newWindow.document.write(labels || 'Error'); 
@@ -510,8 +509,7 @@ const Labels = memo(function Labels(props){
                                 min: formMin,
                                 max: formMax
                             }
-                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
-                            const newWindow = window.open('', '_blank', features);
+                            const newWindow = window.open('', '_blank', 'popup=true');
                             printLabels(labelDetails).then((label)=>{
                                 newWindow.document.open(); 
                                 newWindow.document.write(label || 'Error'); 
