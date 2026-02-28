@@ -306,6 +306,7 @@ export default function PrintJobs(props) {
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
                         <IconButton disableRipple size='small' onClick={()=>{
+                            const newWindow = window.open('', '_blank');
                             props.printPrintJobs([{
                                 code: props?.task.code,
                                 description: props?.task.description,
@@ -313,6 +314,11 @@ export default function PrintJobs(props) {
                                 min: props?.task.min,
                                 max: props?.task.max
                             }])
+                            .then((label)=>{
+                                newWindow.document.open(); 
+                                newWindow.document.write(label || 'Error'); 
+                                newWindow.document.close();
+                            })
                         }}><span style={{fontSize: '12px'}}><img src={imgMap.get('pulsar-print.svg')} width='20px'/></span></IconButton>
                     </Collapse>
                 </ListItemButton>
@@ -369,7 +375,12 @@ export default function PrintJobs(props) {
                                     disableRipple
                                     sx={{marginLeft: '10px', marginRight: '0'}}
                                     onClick={()=>{
-                                        props.printPrintJobs(tasksListItems)
+                                        const newWindow = window.open('', '_blank');
+                                        props.printPrintJobs(tasksListItems).then((labels)=>{
+                                            newWindow.document.open(); 
+                                            newWindow.document.write(labels || 'Error'); 
+                                            newWindow.document.close();
+                                        })
                                     }}
                                 >   
                                     {tasksListItems.length > 1 ?
@@ -409,36 +420,6 @@ export default function PrintJobs(props) {
                         </Toolbar>
                     </AppBar>
                     <List>
-                        {tasksListItems.length > 1 ?
-                        <>  
-                            {/* To position options below app bar */}
-                            {/* <br/><br/>
-                            <ListItemButton
-                            >
-                                <IconButton 
-                                    size='small'
-                                    disableRipple
-                                    sx={{marginLeft: '10px', marginRight: '0'}}
-                                    onClick={()=>{
-                                        props.printPrintJobs(tasksListItems)
-                                    }}
-                                >
-                                    <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
-                                    <span style={{color: 'gray', fontSize: '12px'}}></span>
-                                </IconButton> |
-                                <IconButton 
-                                    disableRipple
-                                    onClick={()=>{
-                                    setDeleteAllModalOpen(true);
-                                    }}>
-                                        <span style={{fontSize: '15px'}}>Remove All?</span>
-                                </IconButton>
-                            </ListItemButton>
-                            <Divider/> */}
-                        </>
-                        : <></>
-                        }
-                        {/* {tasksListItems.length < 2 ? <><br/><br/></> : <></>} */}
                         <br/><br/>
                         {tasksListItems?.map((task, index)=>{
                             return (

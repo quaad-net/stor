@@ -116,14 +116,7 @@ const Labels = memo(function Labels(props){
                     const qrData = label.querySelector('#label-qr-data'); // Resolves to this if partCode is undefined.
                     ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
                 });
-
-                // Open new window for labels doc.
-                const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
-                const newWindow = window.open('', '_blank');
-                newWindow.document.open(); 
-                newWindow.document.write(plainLabelsTxt); 
-                // newWindow.print(); 
-                newWindow.document.close(); 
+                return plainLabels.querySelector('html').innerHTML
             }
             catch(err){
                 console.log(err);
@@ -154,14 +147,7 @@ const Labels = memo(function Labels(props){
                         const qrData = label.querySelector('#label-qr-data');
                         ReactDOM.render(<QRCode value={qrData.textContent} size={75} />, label.querySelector('.qr'));
                     });
-
-                    // Open new window for labels doc.
-                    const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
-                    const newWindow = window.open('', '_blank');
-                    newWindow.document.open(); 
-                    newWindow.document.write(plainLabelsTxt); 
-                    // newWindow.print(); 
-                    newWindow.document.close(); 
+                    return plainLabels.querySelector('html').innerHTML
                 }
             }
             catch(err){
@@ -216,14 +202,8 @@ const Labels = memo(function Labels(props){
                     const qrData = label.querySelector('#label-qr-data');
                     ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
                 });
-
-                // Open new window for labels doc.
-                const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
-                const newWindow = window.open('', '_blank');
-                newWindow.document.open(); 
-                newWindow.document.write(plainLabelsTxt); 
-                // newWindow.print(); 
-                newWindow.document.close(); 
+                
+                return plainLabels.querySelector('html').innerHTML
             }
             catch(err){
                 console.log(err);
@@ -274,7 +254,12 @@ const Labels = memo(function Labels(props){
                                     <div> 
                                         <IconButton disableRipple onClick={()=>{
                                             setModalOpen(false);
-                                            printLabels(undefined, true);
+                                            const newWindow = window.open('', '_blank');
+                                            printLabels(undefined, true).then((labels)=>{
+                                                newWindow.document.open(); 
+                                                newWindow.document.write(labels || 'Error'); 
+                                                newWindow.document.close(); 
+                                            })
                                             setReadyToPrint(false);
                                         }}><span style={{fontSize: '15px'}}>
                                                 ¤ Results
@@ -289,7 +274,12 @@ const Labels = memo(function Labels(props){
                                 <div>
                                     <IconButton disableRipple onClick={()=>{
                                         setModalOpen(false);
-                                        printLabels();
+                                        const newWindow = window.open('', '_blank');
+                                        printLabels().then((labels)=>{
+                                            newWindow.document.open(); 
+                                            newWindow.document.write(labels || 'Error'); 
+                                            newWindow.document.close(); 
+                                        })
                                         setReadyToPrint(false);
                                     }}><span style={{fontSize: '15px'}}>
                                             {props?.pagListItems.length > 0 ? '¤ Page' : '¤ Results'}
@@ -371,7 +361,12 @@ const Labels = memo(function Labels(props){
                             <br/>
                             <div>
                                 <IconButton disableRipple onClick={()=>{
-                                    printLocLabels()
+                                    const newWindow = window.open('', '_blank');
+                                    printLocLabels().then((labels)=>{
+                                        newWindow.document.open(); 
+                                        newWindow.document.write(labels || 'Error'); 
+                                        newWindow.document.close(); 
+                                    })
                                 }}>
                                     <span style={{fontSize: '15px'}}>
                                         ¤ Loc Labels
@@ -420,14 +415,7 @@ const Labels = memo(function Labels(props){
                         const qrData = label.querySelector('#label-qr-data'); 
                         ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
                     });
-
-                    // Open new window for labels doc
-                    const plainLabelsTxt = plainLabels.querySelector('html').innerHTML;
-                    const newWindow = window.open('', '_blank');
-                    newWindow.document.open(); 
-                    newWindow.document.write(plainLabelsTxt); 
-                    // newWindow.print(); 
-                    newWindow.document.close(); 
+                    return plainLabels.querySelector('html').innerHTML
                 }
                 catch(err){
                     console.log(err);
@@ -519,7 +507,12 @@ const Labels = memo(function Labels(props){
                                 min: formMin,
                                 max: formMax
                             }
-                            printLabels(labelDetails);
+                            const newWindow = window.open('', '_blank');
+                            printLabels(labelDetails).then((label)=>{
+                                newWindow.document.open(); 
+                                newWindow.document.write(label || 'Error'); 
+                                newWindow.document.close();                           
+                            })
                             setReadyToPrint(false);
                         }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Create</span>
                         </IconButton>
