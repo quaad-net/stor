@@ -307,9 +307,9 @@ export default function PrintJobs(props) {
                         <div><strong>description:</strong><span style={{color: 'gray'}}> {props?.task.description}</span></div>
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
-                        <IconButton disableRipple size='small' onClick={()=>{
-                            const newWindow = window.open('', '_blank', 'popup=true');
-                            props.printPrintJobs([{
+                        <IconButton disableRipple size='small' onClick={async()=>{
+                            const newWindow = window.open('', '_blank', features);
+                            await props.printPrintJobs([{
                                 code: props?.task.code,
                                 description: props?.task.description,
                                 binLoc: props?.task.binLoc,
@@ -376,9 +376,9 @@ export default function PrintJobs(props) {
                                     size='small'
                                     disableRipple
                                     sx={{marginLeft: '10px', marginRight: '0'}}
-                                    onClick={()=>{
-                                        const newWindow = window.open('', '_blank', 'popup=true');
-                                        props.printPrintJobs(tasksListItems).then((labels)=>{
+                                    onClick={async()=>{
+                                        const newWindow = window.open('', '_blank', features);
+                                        await props.printPrintJobs(tasksListItems).then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 
                                             newWindow.document.close();

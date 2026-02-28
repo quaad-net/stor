@@ -254,10 +254,10 @@ const Labels = memo(function Labels(props){
                                 {props?.pagListItems.length > 0 ?
                                 <>
                                     <div> 
-                                        <IconButton disableRipple onClick={()=>{
+                                        <IconButton disableRipple onClick={async()=>{
                                             setModalOpen(false);
-                                            const newWindow = window.open('', '_blank', 'popup=true');
-                                            printLabels(undefined, true).then((labels)=>{
+                                            const newWindow = window.open('', '_blank', features);
+                                            await printLabels(undefined, true).then((labels)=>{
                                                 newWindow.document.open(); 
                                                 newWindow.document.write(labels || 'Error'); 
                                                 newWindow.document.close(); 
@@ -274,10 +274,10 @@ const Labels = memo(function Labels(props){
                                     <></>
                                 }
                                 <div>
-                                    <IconButton disableRipple onClick={()=>{
+                                    <IconButton disableRipple onClick={async()=>{
                                         setModalOpen(false);
-                                        const newWindow = window.open('', '_blank', 'popup=true');
-                                        printLabels().then((labels)=>{
+                                        const newWindow = window.open('', '_blank', features);
+                                        await printLabels().then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 
                                             newWindow.document.close(); 
@@ -362,9 +362,9 @@ const Labels = memo(function Labels(props){
                             </div>
                             <br/>
                             <div>
-                                <IconButton disableRipple onClick={()=>{
-                                    const newWindow = window.open('', '_blank', 'popup=true');
-                                    printLocLabels().then((labels)=>{
+                                <IconButton disableRipple onClick={async()=>{
+                                    const newWindow = window.open('', '_blank', features);
+                                    await printLocLabels().then((labels)=>{
                                         newWindow.document.open(); 
                                         newWindow.document.write(labels || 'Error'); 
                                         newWindow.document.close(); 
@@ -500,7 +500,7 @@ const Labels = memo(function Labels(props){
                         <></>
                     }
                     <div style={{width: 'fit-content', margin: 'auto', marginTop: '10px', marginBottom: '10px'}}>
-                        <IconButton disableRipple onClick={()=>{
+                        <IconButton disableRipple onClick={async()=>{
                             setFormModalOpen(false);
                             const labelDetails = {
                                 code: formPartCode,
@@ -509,8 +509,8 @@ const Labels = memo(function Labels(props){
                                 min: formMin,
                                 max: formMax
                             }
-                            const newWindow = window.open('', '_blank', 'popup=true');
-                            printLabels(labelDetails).then((label)=>{
+                            const newWindow = window.open('', '_blank', features);
+                            await printLabels(labelDetails).then((label)=>{
                                 newWindow.document.open(); 
                                 newWindow.document.write(label || 'Error'); 
                                 newWindow.document.close();                           
