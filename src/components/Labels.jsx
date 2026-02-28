@@ -254,7 +254,8 @@ const Labels = memo(function Labels(props){
                                     <div> 
                                         <IconButton disableRipple onClick={()=>{
                                             setModalOpen(false);
-                                            const newWindow = window.open('', '_blank');
+                                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                                            const newWindow = window.open('', '_blank', features);
                                             printLabels(undefined, true).then((labels)=>{
                                                 newWindow.document.open(); 
                                                 newWindow.document.write(labels || 'Error'); 
@@ -274,7 +275,8 @@ const Labels = memo(function Labels(props){
                                 <div>
                                     <IconButton disableRipple onClick={()=>{
                                         setModalOpen(false);
-                                        const newWindow = window.open('', '_blank');
+                                        const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                                        const newWindow = window.open('', '_blank', features);
                                         printLabels().then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 
@@ -361,7 +363,8 @@ const Labels = memo(function Labels(props){
                             <br/>
                             <div>
                                 <IconButton disableRipple onClick={()=>{
-                                    const newWindow = window.open('', '_blank');
+                                    const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                                    const newWindow = window.open('', '_blank', features);
                                     printLocLabels().then((labels)=>{
                                         newWindow.document.open(); 
                                         newWindow.document.write(labels || 'Error'); 
@@ -507,7 +510,8 @@ const Labels = memo(function Labels(props){
                                 min: formMin,
                                 max: formMax
                             }
-                            const newWindow = window.open('', '_blank');
+                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                            const newWindow = window.open('', '_blank', features);
                             printLabels(labelDetails).then((label)=>{
                                 newWindow.document.open(); 
                                 newWindow.document.write(label || 'Error'); 

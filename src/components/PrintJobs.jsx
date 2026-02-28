@@ -306,7 +306,8 @@ export default function PrintJobs(props) {
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
                         <IconButton disableRipple size='small' onClick={()=>{
-                            const newWindow = window.open('', '_blank');
+                            const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                            const newWindow = window.open('', '_blank', features);
                             props.printPrintJobs([{
                                 code: props?.task.code,
                                 description: props?.task.description,
@@ -375,7 +376,8 @@ export default function PrintJobs(props) {
                                     disableRipple
                                     sx={{marginLeft: '10px', marginRight: '0'}}
                                     onClick={()=>{
-                                        const newWindow = window.open('', '_blank');
+                                        const features = "resizable=true,scrollbars=true,toolbar=true,menubar=true,status=true"
+                                        const newWindow = window.open('', '_blank', features);
                                         props.printPrintJobs(tasksListItems).then((labels)=>{
                                             newWindow.document.open(); 
                                             newWindow.document.write(labels || 'Error'); 
