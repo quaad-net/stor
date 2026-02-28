@@ -363,7 +363,7 @@ const Labels = memo(function Labels(props){
                             <br/>
                             <div>
                                 <IconButton disableRipple onClick={async()=>{
-                                    const newWindow = window.open('/', '_blank', features);
+                                    const newWindow = window.open('', '_self', 'popup=true');
                                     await printLocLabels().then((labels)=>{
                                         newWindow.document.open(); 
                                         newWindow.document.write(labels || 'Error'); 
