@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import './SelectAutoWidth.css'
 
 export default function SelectAutoWidth(props) {
   const [selection, setSelection] = useState(props.defaultSelection);
@@ -17,8 +18,8 @@ export default function SelectAutoWidth(props) {
     });
 
     const handleChange = (event) => {
-    setSelection(event.target.value);
-    props.onSelectChange(event.target.value);
+        setSelection(event.target.value);
+        props.onSelectChange(event.target.value);
     };
 
   return (
@@ -45,10 +46,17 @@ export default function SelectAutoWidth(props) {
                 return(
                     <MenuItem 
                         key={index} 
-                        value={item.value} 
-                        // sx={{}} 
+                        value={item.value}
+                        sx={{
+                            padding: 1,
+                            borderLeft: '1px solid rgba(68, 68, 68, 1)',
+                            borderRight: '1px solid rgba(68, 68, 68, 1)'
+                            // backgroundColor: '',
+                            // '&.Mui-selected':{backgroundColor: ''},
+                            // "&.Mui-selected:hover": {backgroundColor:''}
+                        }} 
                     >
-                        <span 
+                        <span
                             style={{color: 'whitesmoke'}}>{item.name}
                         </span>
                     </MenuItem>
