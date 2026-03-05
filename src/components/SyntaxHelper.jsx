@@ -16,9 +16,8 @@ export default function SyntaxHelper(props){
                     <div style={{color: 'gold'}}>[Qry]&nbsp;LocationStart&nbsp;<span style={{color:'white', fontWeight: 'bold'}}>:</span>&nbsp;LocationEnd
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>110-a-b:110-c</span>
                     </div>
-                    <div>▫ Add location start and location end separated by a colon. 
-                        <br/>To match only one location, enter the exact location without a colon.
-                    </div>
+                    <div>▫ Add location start and location end separated by a colon. </div>
+                    <div>▫ To match only one location, enter the exact location without a colon.</div>
                     <div>▫ Do not include any spaces.</div>
                     <div>▫ Add &quot;&active&quot; to only include active items
                         <br/>=&gt;&nbsp;<span style={{color: 'gray'}}>110-a-b:110-c&active</span>
@@ -28,7 +27,7 @@ export default function SyntaxHelper(props){
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Code&nbsp;Code Code...
                         <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>22-12345 51-12345 70-12345</span>
                     </div>
-                    <div>▫ Enter a space separated list of part codes.</div>
+                    <div>▫ Enter a single-space separated list of part codes.</div>
 
                     <h3>{'{D}'} Description</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Exact Match
@@ -41,6 +40,9 @@ export default function SyntaxHelper(props){
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>5032</span>
                     </div>
                     <div>▫ Returns all records for the specified warehouse code.</div>
+                    <div>▫ For an entire warehouse, use the last two digits.
+                        <br/>=&gt;&nbsp;<span style={{color: 'gray'}}>32</span>
+                    </div>
 
                     <h3>{'{S}'} Semantic</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Any&nbsp;
