@@ -23,7 +23,6 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import {unparse} from 'papaparse';
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
 import useStoredOrds from '../../app/useStoredOrds';
-import imgMap from '../../app/imgMap';
 
 const download = (data, filename) => {
     const blob = new Blob([data], { type: 'text/csv' });
@@ -219,10 +218,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder(orderToDelete.id);
                         setModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -240,10 +239,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder();
                         setDeleteAllModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -329,7 +328,7 @@ const SessionReorder = memo(function SessionReorder(props) {
                             setOrders();
                         }}
                     >
-                        <img src={imgMap.get('pulsar-cart.svg')} width='25px' />
+                        <img src='/pulsar-cart.svg' width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -375,7 +374,7 @@ const SessionReorder = memo(function SessionReorder(props) {
                             sx={{ m: 1, width: '150px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src={imgMap.get('tool-box.svg')} width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src='/tool-box.svg' width='20px'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByPartCode(e.target.value)}}}

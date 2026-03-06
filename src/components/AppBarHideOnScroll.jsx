@@ -22,7 +22,6 @@ import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SyntaxHelper from './SyntaxHelper';
 import SessionReorder from './SessionReorder';
-import imgMap from '../../app/imgMap';
 import CircularIndeterminate from './Progress';
 import PL2Query from './PL2Query';
 import QuickCount from './QuickCount';
@@ -155,7 +154,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                   aria-label="sort" 
                   color="inherit" 
                   onClick={props.sort}>
-                    <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                    <img src='/pulsar-sort.svg' width='25px'/>
                   <span style={{fontSize: '15px'}}>Sort</span>
                 </IconButton><br/>
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
@@ -263,7 +262,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                       aria-label="sort" 
                       color="inherit" 
                       onClick={props.sort}>
-                          <img src={imgMap.get('pulsar-sort.svg')} width='25px'/>
+                          <img src='/pulsar-sort.svg' width='25px'/>
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Sort</div>
                   </div>

@@ -4,7 +4,6 @@ import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 import CircularIndeterminate from './Progress';
-import imgMap from '../../app/imgMap';
 import './BasicMessageModal.css'
 
 // For Box
@@ -53,7 +52,7 @@ export default function BasicMessageModal(props) {
                     <br/>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         handleClose();
-                    }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                     </IconButton>
                 </div>               
                 }

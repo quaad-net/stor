@@ -6,7 +6,6 @@ import { grey } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import imgMap from '../../app/imgMap';
 import './Drawer.css';
 
 const drawerBleeding = 56;
@@ -129,7 +128,7 @@ function SwipeableEdgeDrawer(props) {
             {...!props.updateInventory ? {
               style: {
                 backgroundColor: 'rgba(255, 255, 255, 0.044)',
-                background: `url(${imgMap.get('open-hex-2.svg')}) no-repeat`,
+                background: `url('/open-hex-2.svg') no-repeat`,
                 backgroundPosition: '75px 75px',
                 backgroundSize: '300px',
                 backgroundAttachment: 'scroll',

@@ -7,7 +7,6 @@ import {memo, useEffect, useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 import PrintJobs from "./PrintJobs";
 const apiUrl = import.meta.env.VITE_API_URL;
-import imgMap from '../../app/imgMap';
 import './Labels.css'
 
 const itemLabelTypes = {
@@ -516,13 +515,13 @@ const Labels = memo(function Labels(props){
                                 newWindow.document.close();                           
                             })
                             setReadyToPrint(false);
-                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Create</span>
+                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Create</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{
                             setFormModalOpen(false);
                             setReadyToPrint(false);
                             }}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel</span>
+                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel</span>
                         </IconButton>
                     </div>
                 </form>
@@ -540,7 +539,7 @@ const Labels = memo(function Labels(props){
                     setModalOpen(true);
                     setReadyToPrint(false);
                 }}>
-                    <img src={imgMap.get('pulsar-labels.svg')} width='25px'/>
+                    <img src='/pulsar-labels.svg' width='25px'/>
                 {props?.btnDescription}
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen}  modalContent={<PrintType/>} noDefaultBtns={true}/>

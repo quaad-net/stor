@@ -22,7 +22,6 @@ import { styled } from '@mui/material/styles';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import useUserData from '../../app/useUserData';
 import CircularIndeterminate from './Progress';
-import imgMap from '../../app/imgMap';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -231,10 +230,10 @@ const Tasks =  memo(function Tasks(props) {
                                 setLoading(false);
                                 setModalOpen(false);
                             })
-                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
                         </IconButton>
                     </>
                     :
@@ -302,7 +301,7 @@ const Tasks =  memo(function Tasks(props) {
                             .catch(()=>{setLoading(false)})
                         }}
                     >
-                        <img src={imgMap.get('checklist.svg')} width='25px' />
+                        <img src='/checklist.svg' width='25px' />
                         {props?.btnDescription || <></>}
                     </IconButton>
                     <Dialog
@@ -344,7 +343,7 @@ const Tasks =  memo(function Tasks(props) {
                                 sx={{ m: 1, width: '150px', marginTop: '15px'}}
                                 slotProps={{
                                     input: {
-                                    startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
+                                    startAdornment: <InputAdornment position="start"><img src='/user-small.svg' width='20px'/></InputAdornment>,
                                     },
                                 }}
                                 onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}

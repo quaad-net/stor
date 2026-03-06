@@ -8,7 +8,6 @@ import useUserData from "../../app/useUserData";
 import useAuth from "../../app/useAuth";
 import BasicMessageModal from './BasicMessageModal';
 import FullScreenScanner from "./FullScreenScanner";
-import imgMap from "../../app/imgMap";
 
 export default function Lgn(){
 
@@ -184,7 +183,7 @@ export default function Lgn(){
                 <br/><br/>
                 <form style={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
                     <fieldset className="login-fieldset" style={{width: 'fit-content', margin: 'auto'}}>
-                        <legend><img src={imgMap.get('user-small.svg')} width='25px'/></legend>
+                        <legend><img src='/user-small.svg' width='25px'/></legend>
                         <div className="header">
                             <div className="user-pass">
                                 <input className="stor-input" id={lgnType == 'Login' ? 'user' : 'email'} type={lgnType == 'Login' ? 'text' : 'email'} placeholder={lgnType == 'Login' ? 'User' : 'Email'} required />
@@ -224,7 +223,7 @@ export default function Lgn(){
                                     else{currentuser()}
                                     clearInvalids();
                                 }
-                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                            }}><img src='/square-outlined-small.svg' width='10px' />&nbsp;
                             Submit
                         </button>
                         <button 
@@ -235,7 +234,7 @@ export default function Lgn(){
                             document.querySelector('#login-clear-btn').blur();
                             document.querySelector('form').reset();
                             clearInvalids();
-                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                            }}><img src='/square-outlined-small.svg' width='10px' />&nbsp;
                             Clear
                         </button>
                         {lgnType != 'Register' ?
@@ -247,7 +246,7 @@ export default function Lgn(){
                                 document.querySelector('#user').value = 'johndoe@quaad.net';
                                 document.querySelector('#password').value = 'quaadnet';
                                 document.querySelector('#login-submit-btn').click();
-                            }}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;
+                            }}><img src='/square-outlined-small.svg' width='10px' />&nbsp;
                             Visitor
                         </button>
                         :
@@ -275,7 +274,7 @@ export default function Lgn(){
                                     document.querySelector('form').reset();
                                     setLgnType('Register');
                                 }}>
-                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
+                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? '/pulsar-register.svg' : '/pulsar-login.svg'} width='25px'/>
                                 Register
                             </button>
                             <button 
@@ -287,7 +286,7 @@ export default function Lgn(){
                                     document.querySelector('form').reset();
                                     setLgnType('Login');
                                 }}>
-                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? imgMap.get('pulsar-register.svg') : imgMap.get('pulsar-login.svg')} width='25px'/>
+                                <img  style={{display: 'block', margin: 'auto'}} src={lgnType == 'Login' ? '/pulsar-register.svg' : '/pulsar-login.svg'} width='25px'/>
                                 Log-in
                             </button>
                         </div>

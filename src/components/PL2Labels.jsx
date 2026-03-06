@@ -15,7 +15,6 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import CircularIndeterminate from './Progress';
 import BasicMessageModal from './BasicMessageModal';
 import SelectAutoWidth from './SelectAutoWidth';
-import imgMap from '../../app/imgMap';
 const aiUrl = import.meta.env.VITE_AI_URL;
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -172,7 +171,7 @@ const PL2Labels = memo(function PL2Labels(props) {
           color="inherit" 
           onClick={handleClickOpen}>
             <img 
-              src= {imgMap.get('pulsar-purchase-order.svg')} 
+              src='/pulsar-purchase-order.svg' 
               width={'25px'}
             />
           {props?.btnDescription || <></>}

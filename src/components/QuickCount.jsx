@@ -11,7 +11,6 @@ import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import { Fragment, forwardRef, memo, useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import imgMap from '../../app/imgMap';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -241,7 +240,7 @@ const QuickCount = memo(function QuickCount(props) {
     function CountExposedEL(){
         return(
           <Button color="inherit">
-            <img src={imgMap.get('1-2-3.svg')} width='30px'/>
+            <img src='/1-2-3.svg' width='30px'/>
           </Button>
           
         )
@@ -327,12 +326,12 @@ const QuickCount = memo(function QuickCount(props) {
                             submitForm();
                         }}
                       >
-                        <img src={imgMap.get('circled-check.svg')} width='30px'/>
+                        <img src='/circled-check.svg' width='30px'/>
                       </FormButton>
                       <FormButton 
                           type='reset' 
                           >
-                              <img src={imgMap.get('pulsar-clear.svg')} width='30px'/>
+                              <img src='/pulsar-clear.svg' width='30px'/>
                       </FormButton>
                   </>
                   :
@@ -386,7 +385,7 @@ const QuickCount = memo(function QuickCount(props) {
           color="inherit" 
           onClick={handleClickOpen}>
             <img 
-              src= {imgMap.get('pulsar-layers.svg')} 
+              src='/pulsar-layers.svg' 
               width={props?.iconWidth  || '25px'}
             />
           {props?.btnDescription || <></>}

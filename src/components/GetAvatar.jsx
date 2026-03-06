@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import Avatar from '@mui/material/Avatar'; 
-import imgMap from '../../app/imgMap';
 
 const GetAvatar = memo(function GetAvatar(props){
 
@@ -19,8 +18,8 @@ const GetAvatar = memo(function GetAvatar(props){
     return(
         <Avatar sx={{background: bg ? 'gray': storGold, marginRight: '15px'}}>
             <img 
-                // src={imgMap.get(props.active ? 'open-hex.png': 'closed-hex.png')}  
-                src={imgMap.get('closed-hex.png')}
+                // src={props.active ? '/open-hex.png': '/closed-hex.png'}  
+                src='/closed-hex.png'
                 className='list-item-avatar' 
                 width={40}
             />

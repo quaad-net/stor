@@ -22,7 +22,6 @@ import useUserData from '../../app/useUserData';
 import CircularIndeterminate from './Progress';
 import InputAdornment from '@mui/material/InputAdornment';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
-import imgMap from '../../app/imgMap';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -220,10 +219,10 @@ export default function PrintJobs(props) {
                                 setLoading(false);
                                 setModalOpen(false);
                             })
-                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
                         </IconButton>
                     </>
                     :
@@ -262,10 +261,10 @@ export default function PrintJobs(props) {
                                 setDeleteAllModalOpen(false);
                             })
                             ;
-                        }}><span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Ok</span>
+                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                            <span style={{fontSize: '15px'}}><img src={imgMap.get('square-outlined-small.svg')} width='10px' />&nbsp;Cancel </span>
+                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
                         </IconButton>
                     </>
                     :
@@ -321,7 +320,7 @@ export default function PrintJobs(props) {
                                 newWindow.document.write(label || 'Error'); 
                                 newWindow.document.close();
                             })
-                        }}><span style={{fontSize: '12px'}}><img src={imgMap.get('pulsar-print.svg')} width='20px'/></span></IconButton>
+                        }}><span style={{fontSize: '12px'}}><img src='/pulsar-print.svg' width='20px'/></span></IconButton>
                     </Collapse>
                 </ListItemButton>
                 <Divider />
@@ -387,7 +386,7 @@ export default function PrintJobs(props) {
                                 >   
                                     {tasksListItems.length > 1 ?
                                     <>
-                                        <img src={imgMap.get('pulsar-print.svg')} width='20px' style={{marginRight: '5px'}}/>
+                                        <img src='/pulsar-print.svg' width='20px' style={{marginRight: '5px'}}/>
                                         <span style={{color: 'gray', fontSize: '12px'}}></span>&nbsp;&nbsp;|
                                     </>
                                     :
@@ -414,7 +413,7 @@ export default function PrintJobs(props) {
                                     sx={{ m: 1, width: '150px', marginTop: '15px'}}
                                     slotProps={{
                                         input: {
-                                        startAdornment: <InputAdornment position="start"><img src={imgMap.get('user-small.svg')} width='20px'/></InputAdornment>,
+                                        startAdornment: <InputAdornment position="start"><img src='/user-small.svg' width='20px'/></InputAdornment>,
                                         },
                                     }}
                                     onKeyDown={(e)=>{if (e.key === 'Enter'){filterByUser(e.target.value)}}}

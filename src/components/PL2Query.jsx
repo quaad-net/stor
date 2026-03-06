@@ -14,7 +14,6 @@ import Slide from '@mui/material/Slide';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CircularIndeterminate from './Progress';
 import BasicMessageModal from './BasicMessageModal';
-import imgMap from '../../app/imgMap';
 const aiUrl = import.meta.env.VITE_AI_URL;
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -165,7 +164,7 @@ const PL2Query = memo(function PL2Query(props) {
           color="inherit" 
           onClick={handleClickOpen}>
             <img 
-              src= {imgMap.get('pulsar-purchase-order.svg')} 
+              src='/pulsar-purchase-order.svg' 
               width={'25px'}
             />
           {props?.btnDescription || <></>}

@@ -19,7 +19,6 @@ import StorToolTip from './StorToolTip';
 import Styled from '@emotion/styled';
 import OnClickToolTip from './OnClickToolTip';
 import useStoredOrds from '../../app/useStoredOrds';
-import imgMap from '../../app/imgMap';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import CircularIndeterminate from './Progress';
@@ -65,7 +64,7 @@ export default function Inventory() {
 
     useEffect(()=>{
         const hexStyle = document.querySelector('#app-hex-background').style;
-        hexStyle.background = `url(${imgMap.get('open-hex-2-dark-gray.svg')}) no-repeat right`;
+        hexStyle.background = `url('/open-hex-2-dark-gray.svg') no-repeat right`;
         hexStyle.backgroundSize = '500px';
         hexStyle.backgroundAttachment = 'fixed';
         hexStyle.width = '100%';
@@ -652,11 +651,11 @@ export default function Inventory() {
     }
 
     function ListItemCompletedCountCheck(){
-        return <img width='15px' src={imgMap.get('circled-check-red.svg')} rel='preload' fetchPriority='high'/>
+        return <img width='15px' src='/circled-check-red.svg' />
     }
 
     function ListItemCompletedCommentCheck(){
-        return <img width='15px' src={imgMap.get('comment-blue-2.svg')} rel='preload' fetchPriority='high'/>
+        return <img width='15px' src='/comment-blue-2.svg' />
     }
 
     const renderParts = partListItems.map((part, index)=>{
@@ -787,7 +786,7 @@ export default function Inventory() {
                     :
                     aiImg
                     } */}
-                    <img src={imgMap.get('machine-learning.svg')} width={210} height={118} rel='preload' fetchPriority='high'/>
+                    <img src='/machine-learning.svg' width={210} height={118} />
                     <Box sx={{ pt: 0.5 }}>
                         {aiDescr == '' ?
                         <> 
@@ -860,7 +859,7 @@ max: ${partListItems[idx]?.max}
                         <span className='inventory-switch-view'>
                             <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
                                 <div style={{color: 'gray'}}>
-                                    <img src={imgMap.get('database-update.svg')} width='15px' rel='preload' fetchPriority='high'/>
+                                    <img src='/database-update.svg' width='15px' />
                                     Update
                                 </div>
                             </button>
@@ -876,7 +875,7 @@ max: ${partListItems[idx]?.max}
                                 <OnClickToolTip
                                     toolTipEl={
                                         <div style={{color: 'gray'}}>
-                                            <img className='inventory-copy-details' src={imgMap.get('copy.svg')} width='15px' rel='preload' fetchPriority='high'/>
+                                            <img className='inventory-copy-details' src='/copy.svg' width='15px' />
                                             Copy
                                         </div>
                                     }
@@ -893,7 +892,7 @@ max: ${partListItems[idx]?.max}
                                 style={{all: 'unset'}}
                             >
                                 <div style={{color: 'gray'}}>
-                                    <img src={imgMap.get('ai-generated-text.svg')} width='15px' rel='preload' fetchPriority='high'/>
+                                    <img src='/ai-generated-text.svg' width='15px' />
                                     More
                                 </div>
                             </button>
@@ -995,7 +994,7 @@ max: ${partListItems[idx]?.max}
                 }}>
                     <StorToolTip 
                         toolTipEl={
-                            <img src={imgMap.get('left-circled-arrow.svg')} width='35px' rel='preload' fetchPriority='high'/>
+                            <img src='/left-circled-arrow.svg' width='35px' />
                         }
                         toolTipTitle='Previous'
                     />
@@ -1008,7 +1007,7 @@ max: ${partListItems[idx]?.max}
                 > 
                     <StorToolTip 
                         toolTipEl={
-                            <img src={imgMap.get('pulsar-circled-info.svg')} width='35px' rel='preload' fetchPriority='high'/>
+                            <img src='/pulsar-circled-info.svg' width='35px' />
                         }
                         toolTipTitle='Info'
                     />
@@ -1018,7 +1017,7 @@ max: ${partListItems[idx]?.max}
                 }}>
                     <StorToolTip 
                         toolTipEl={
-                            <img src={imgMap.get('right-circled-arrow.svg')} width='35px' rel='preload' fetchPriority='high'/>
+                            <img src='/right-circled-arrow.svg' width='35px' />
                         }
                         toolTipTitle='Next'
                     />
@@ -1201,7 +1200,7 @@ max: ${partListItems[idx]?.max}
                     <li
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Pick
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Pick
                     </li>
                     )
                 }
@@ -1321,12 +1320,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                     </FormButton>
                                 </>
                                 :
@@ -1349,7 +1348,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Count
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Count
                     </li>
                     )
                 }
@@ -1414,12 +1413,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                     </FormButton>
                                 </>
                                 :
@@ -1442,7 +1441,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Reord
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Reord
                     </li>
                     )
                 }
@@ -1558,12 +1557,12 @@ max: ${partListItems[idx]?.max}
                                             submitForm();
                                         }}
                                     >
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                     </FormButton>
                                 </>
                                 :
@@ -1586,7 +1585,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Loc
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Loc
                     </li>
                     )
                 }
@@ -1667,12 +1666,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                     </FormButton>
                                 </>
                                 :
@@ -1695,7 +1694,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Label
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Label
                     </li>
                     )
                 }
@@ -1745,12 +1744,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                         </FormButton>
                                         <FormButton 
                                             type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                         </FormButton>
                                     </>
                                     :
@@ -1773,7 +1772,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src={imgMap.get('square-outlined-small.svg')} width='10px' rel='preload' fetchPriority='high'/>&nbsp;Other
+                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Other
                     </li>
                     )
                 }
@@ -1841,12 +1840,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src={imgMap.get('circled-check.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                                <img src='/circled-check.svg' width='30px' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src={imgMap.get('pulsar-clear.svg')} width='30px' rel='preload' fetchPriority='high'/>
+                                            <img src='/pulsar-clear.svg' width='30px' />
                                     </FormButton>
                                 </>
                                 :
@@ -1893,11 +1892,11 @@ max: ${partListItems[idx]?.max}
         }
 
         function CompletedCountCheck(){
-            return <img width='20px' src={imgMap.get('circled-check-red.svg')} rel='preload' fetchPriority='high'/>
+            return <img width='20px' src='/circled-check-red.svg' />
         }
 
         function CompletedCommentCheck(){
-            return <img width='20px' src={imgMap.get('comment-blue-2.svg')} rel='preload' fetchPriority='high'/> 
+            return <img width='20px' src='/comment-blue-2.svg' /> 
         }
     
         if(partListItems.length > 0){

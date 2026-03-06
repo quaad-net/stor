@@ -14,8 +14,11 @@ const App = () => {
 
   useEffect(()=>{
     for (let [key, val] of imgMap){
-      const img = new Image();
-      img.src  = val;
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = val;
+      document.querySelector('head').appendChild(link);
     }
   }, [])
 

@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
-import imgMap from '../../app/imgMap';
 
 const style = {
   position: 'absolute',
@@ -43,7 +42,7 @@ const UserInfoModal = memo(function UserInfoModal(props) {
         aria-label="user" 
         color="inherit"     
       >
-        <img src={imgMap.get('user-small.svg')} width={props.iconSize}/>
+        <img src='/user-small.svg' width={props.iconSize}/>
         {props?.btnDescription || <></>}
       </IconButton>
       <Modal sx={{backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'}}
