@@ -248,14 +248,16 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 <Box sx={{ flexGrow: 1}} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   {props?.pagIdxMax > 1 ?
-                  <div style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
                     <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage}/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Page</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text' >Page</span>
+                    </div>
                   </div>
                   :
                   <></>
                   }
-                  <div style={{borderRight: '3px solid black', ...(props?.pagIdxMax == 1 ? {borderLeft: '3px solid black'}: {})}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black', ...(props?.pagIdxMax == 1 ? {borderLeft: '3px solid black'}: {})}}>
                     <IconButton 
                       disableRipple
                       size="large" 
@@ -264,40 +266,52 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                       onClick={props.sort}>
                           <img src='/pulsar-sort.svg' width='25px'/>
                     </IconButton>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Sort</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>Sort</span>
+                    </div>
                   </div>
-                  <div style={{borderRight: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <Tasks/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Tasks</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>Tasks</span>
+                    </div>
                   </div>
-                  <div style={{borderRight: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <Labels queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Label</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>Label</span>
+                    </div>
                   </div>
-                  <div style={{borderRight: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <PL2Query user={props.user} token={props.token} inventoryQuery={props.inventoryQuery}/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>PL</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>PL</span>
+                    </div>
                   </div>
-                  <div style={{borderRight: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <QuickCount/>
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Count</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>Count</span>
+                    </div>
                   </div>
                   {props.sessionOrds.length > 0 ?
-                  <div style={{borderRight: '3px solid black'}}>
+                  <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <SessionReorder 
                       sessionOrds={props.sessionOrds} 
                       setSessionOrds={props.setSessionOrds}
                     />
-                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>Orders</div>
+                    <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
+                      <span className='appbar-menu-item-text'>Orders</span>
+                    </div>
                   </div>
                   :
                   <></>
                   }
-                  <div>
+                  <div id='appbar-menu-item-user'>
                     <ShowInstitution/>
                     <div style={{fontSize: '10px', textAlign: 'center'}}
                     >
-                      User
+                      <span className='appbar-menu-item-text'>User</span>
                     </div>
                   </div>
                 </Box>

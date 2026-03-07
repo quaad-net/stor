@@ -1,0 +1,18 @@
+.appbar-menu-item:hover{
+    background-color: #0000007e;
+    .appbar-menu-item-text{
+        color: gold
+    }
+}
+
+#appbar-menu-item-user{
+    border-left: 1px solid transparent;
+}
+
+#appbar-menu-item-user:hover{
+    border-left-color: rgba(68, 68, 68, 1);
+    .appbar-menu-item-text{
+        color: gold
+    }
+}
+
