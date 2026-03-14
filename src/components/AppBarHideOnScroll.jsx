@@ -185,7 +185,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 <SessionReorder 
                   sessionOrds={props.sessionOrds} 
                   setSessionOrds={props.setSessionOrds}
-                  btnDescription={<span style={{fontSize: '15px'}}>Orders</span>}
+                  btnDescription={<span style={{fontSize: '15px'}}>Ord</span>}
                 />
                 <div style={{backgroundColor: 'rgb(44, 44, 44)', width: 20, height: 2, borderRadius: 5, margin: 'auto'}}>&nbsp;</div>
                 </>
@@ -249,7 +249,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   {props?.pagIdxMax > 1 ?
                   <div className='appbar-menu-item' style={{borderRight: '3px solid black', borderLeft: '3px solid black'}}>
-                    <Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage}/>
+                    <span className='test'><Pag pagIdxMax={props?.pagIdxMax} displayPage={props?.displayPage} currentPage={props?.currentPage}/></span>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
                       <span className='appbar-menu-item-text' >Page</span>
                     </div>
@@ -267,31 +267,31 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                           <img src='/pulsar-sort.svg' width='25px'/>
                     </IconButton>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>Sort</span>
+                      <span className='appbar-menu-item-text'><strong>Sort</strong></span>
                     </div>
                   </div>
                   <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <Tasks/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>Tasks</span>
+                      <span className='appbar-menu-item-text'><strong>Tasks</strong></span>
                     </div>
                   </div>
                   <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <Labels queryRes={props?.partListItems} pagListItems={props?.pagListItems}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>Label</span>
+                      <span className='appbar-menu-item-text'><strong>Label</strong></span>
                     </div>
                   </div>
                   <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <PL2Query user={props.user} token={props.token} inventoryQuery={props.inventoryQuery}/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>PL</span>
+                      <span className='appbar-menu-item-text'><strong>PL</strong></span>
                     </div>
                   </div>
                   <div className='appbar-menu-item' style={{borderRight: '3px solid black'}}>
                     <QuickCount/>
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>Count</span>
+                      <span className='appbar-menu-item-text'><strong>Count</strong></span>
                     </div>
                   </div>
                   {props.sessionOrds.length > 0 ?
@@ -301,7 +301,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                       setSessionOrds={props.setSessionOrds}
                     />
                     <div style={{fontSize: '10px', textAlign: 'center', borderRadius: 2, border: '3px solid black'}}>
-                      <span className='appbar-menu-item-text'>Orders</span>
+                      <span className='appbar-menu-item-text'><strong>Ord</strong></span>
                     </div>
                   </div>
                   :
@@ -311,7 +311,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                     <ShowInstitution/>
                     <div style={{fontSize: '10px', textAlign: 'center'}}
                     >
-                      <span className='appbar-menu-item-text'>User</span>
+                      <span className='appbar-menu-item-text'><strong>User</strong></span>
                     </div>
                   </div>
                 </Box>

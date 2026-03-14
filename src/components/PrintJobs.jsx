@@ -307,19 +307,33 @@ export default function PrintJobs(props) {
                         <div><strong>comment:</strong> <span style={{color: 'gray'}}>{props?.task.comment}</span></div>
                         <br/>
                         <IconButton disableRipple size='small' onClick={async()=>{
-                            const newWindow = window.open('', '_blank', features);
-                            await props.printPrintJobs([{
-                                code: props?.task.code,
-                                description: props?.task.description,
-                                binLoc: props?.task.binLoc,
-                                min: props?.task.min,
-                                max: props?.task.max
-                            }])
-                            .then((label)=>{
-                                newWindow.document.open(); 
-                                newWindow.document.write(label || 'Error'); 
-                                newWindow.document.close();
-                            })
+                            if(props.nativePrint !== true){
+                                const newWindow = window.open('', '_blank', features);
+                                await props.printPrintJobs([{
+                                    code: props?.task.code,
+                                    description: props?.task.description,
+                                    binLoc: props?.task.binLoc,
+                                    min: props?.task.min,
+                                    max: props?.task.max
+                                }])
+                                .then((label)=>{
+                                    newWindow.document.open(); 
+                                    newWindow.document.write(label || 'Error'); 
+                                    newWindow.document.close();
+                                })
+                            }
+                            else{
+                                await props.printPrintJobs([{
+                                    code: props?.task.code,
+                                    description: props?.task.description,
+                                    binLoc: props?.task.binLoc,
+                                    min: props?.task.min,
+                                    max: props?.task.max
+                                }])
+                                .then((node)=>{
+                                    props.handleNativePrint({nodes: node})
+                                })
+                            }
                         }}><span style={{fontSize: '12px'}}><img src='/pulsar-print.svg' width='20px'/></span></IconButton>
                     </Collapse>
                 </ListItemButton>
@@ -341,7 +355,7 @@ export default function PrintJobs(props) {
                             .then(()=>{setLoading(false)})
                             .catch(()=>{setLoading(false)})
                         }}>
-                        <span style={{fontSize: '15px'}}>
+                        <span className="modal-options" style={{fontSize: '15px'}}>
                             ¤ Jobs
                         </span>
                     </IconButton>
@@ -376,12 +390,19 @@ export default function PrintJobs(props) {
                                     disableRipple
                                     sx={{marginLeft: '10px', marginRight: '0'}}
                                     onClick={async()=>{
-                                        const newWindow = window.open('', '_blank', features);
-                                        await props.printPrintJobs(tasksListItems).then((labels)=>{
-                                            newWindow.document.open(); 
-                                            newWindow.document.write(labels || 'Error'); 
-                                            newWindow.document.close();
-                                        })
+                                        if(props.nativePrint !== true){
+                                            const newWindow = window.open('', '_blank', features);
+                                            await props.printPrintJobs(tasksListItems).then((labels)=>{
+                                                newWindow.document.open(); 
+                                                newWindow.document.write(labels || 'Error'); 
+                                                newWindow.document.close();
+                                            })
+                                        }
+                                        else{
+                                            await props.printPrintJobs(tasksListItems).then((nodes)=>{
+                                                props.handleNativePrint({nodes: nodes})
+                                            })
+                                        }
                                     }}
                                 >   
                                     {tasksListItems.length > 1 ?
@@ -424,7 +445,14 @@ export default function PrintJobs(props) {
                         <br/><br/>
                         {tasksListItems?.map((task, index)=>{
                             return (
-                                <TaskItem task={task} key={index} index={index} printPrintJobs={props.printPrintJobs}/>
+                                <TaskItem 
+                                    task={task} 
+                                    key={index} 
+                                    index={index} 
+                                    printPrintJobs={props.printPrintJobs}
+                                    nativePrint={props.nativePrint}
+                                    handleNativePrint={props.handleNativePrint}
+                                />
                             )
                         })}
                     </List>

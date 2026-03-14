@@ -7,12 +7,10 @@
 
 #appbar-menu-item-user{
     border-left: 1px solid transparent;
-}
-
-#appbar-menu-item-user:hover{
-    border-left-color: rgba(68, 68, 68, 1);
-    .appbar-menu-item-text{
-        color: gold
+        &:hover{
+        border-left-color: rgba(68, 68, 68, 1);
+        .appbar-menu-item-text{
+            color: gold
+        }
     }
 }
-

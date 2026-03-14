@@ -6,35 +6,56 @@ import QRCode from "react-qr-code";
 import {memo, useEffect, useState } from "react";
 import PrintNewLabelModal from './PrintNewLabelModal';
 import PrintJobs from "./PrintJobs";
+import { toPng } from "html-to-image";
+import { useCallback, useRef } from "react";
+import JSZip from 'jszip';
+// import { saveAs } from 'file-saver';
 const apiUrl = import.meta.env.VITE_API_URL;
-import './Labels.css'
+import './Labels.css';
 
+// Note: width and height properties are in pixels and are used for creating image files of labels.
 const itemLabelTypes = {
+
     reg: {
         fontSize: '11pt', 
         qrSize: 50,
-        dataSource: 'all'
+        nativeQrSize: 50,
+        dataSource: 'all',
+        width: 384,
+        height: 96
     },
     reg16pt: {
         fontSize: '16pt', 
         qrSize: 75,
-        dataSource: 'all'
+        nativeQrSize: 50,
+        dataSource: 'all',
+        width: 384,
+        height: 96
     },
     large: {
         fontSize: '30pt',
         qrSize: 100,
-        dataSource: 'all' //Template will exclude min/max for large labels.
+        nativeQrSize: 75,
+        dataSource: 'all', //Template will exclude min/max for large labels.
+        width: 384,
+        height: 192
     },
     // Single data label.
     itemCodeQR:{
         fontSize: 'mono', 
         qrSize: 75,
-        dataSource: 'code'
+        nativeQrSize: 75,
+        dataSource: 'code',
+        width: 384,
+        height: 96
     },
     oneByThree: {
         fontSize: '11pt-1x3', 
-        qrSize: 37, //50
-        dataSource: 'all'
+        qrSize: 37,
+        nativeQrSize: 37,
+        dataSource: 'all',
+        width: 288,
+        height: 96
     },
 }
 
@@ -50,11 +71,11 @@ const maxChars = {
         codeMaxChar : 10,
         descriptionMaxChar: 65,
         binLocMaxChar: 12,
-        minMaxChar: 6,
-        maxMaxChar: 6,
+        minMaxChar: 3,
+        maxMaxChar: 3,
     },
     large: {
-        codeMaxChar : 12,
+        codeMaxChar : 10,
         descriptionMaxChar: 40,
         binLocMaxChar: 12,
         minMaxChar: 6,
@@ -85,11 +106,16 @@ const Labels = memo(function Labels(props){
     const { token } = useToken();
     const [itemLabelType, setItemLabelType] = useState('reg');
     const [readyToPrint, setReadyToPrint] = useState(false);
-
-    useEffect(()=>{return setReadyToPrint(false)}, [])
+    const [nativePrint, setNativePrint] = useState(false);
+    const [printParts, setPrintParts] = useState(false);
+    const imgRef = useRef(<td></td>);
+    
+    useEffect(()=>{
+        return ()=>{setReadyToPrint(false); setPrintParts(false)}
+    }, [modalOpen])
 
     function PrintType(){
-        const [printParts, setPrintParts] = useState(false);
+
         async function printLabels(labelDetails, includePagResults){
             try{
                 let recs; 
@@ -99,8 +125,8 @@ const Labels = memo(function Labels(props){
                 }
                 const req =  await fetch(`${apiUrl}/print/labels`, {
                     method: "POST",
-                    // labelDetials: array of optional label objects. recs: array of query results.
-                    body: JSON.stringify([labelDetails? [labelDetails] : recs, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource]),
+                    // labelDetails: array of optional label objects. recs: array of query results.
+                    body: JSON.stringify([labelDetails? [labelDetails] : recs, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource, nativePrint]),
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
@@ -115,15 +141,91 @@ const Labels = memo(function Labels(props){
                 labelData.forEach((label)=>{ 
                     const partCode = label.querySelector('#label-part-code');
                     const qrData = label.querySelector('#label-qr-data'); // Resolves to this if partCode is undefined.
-                    ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
+                    ReactDOM.render(
+                        <QRCode 
+                            value={partCode?.textContent || qrData.textContent} 
+                            size={nativePrint ? itemLabelTypes[itemLabelType].nativeQrSize : itemLabelTypes[itemLabelType].qrSize} 
+                        />, 
+                        label.querySelector('.qr'));
                 });
-                return plainLabels.querySelector('html').innerHTML
+                if(!nativePrint){
+                    return plainLabels.querySelector('html').innerHTML
+                }
+                else{
+                    return labelData
+                }
             }
             catch(err){
                 console.log(err);
-                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
+                if(!nativePrint){
+                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")
+                }
+                else{alert("Could not complete request!")}
             }
         }
+
+        const handleNativePrint = useCallback(async({nodes}) =>{
+            
+            if (imgRef.current === null) {
+                return
+            }
+            try{
+                if(!nodes || nodes.length == 0){throw new Error()}
+                const zip = new JSZip();
+                nodes.forEach(async(node, idx)=>{
+                    const appendedNode = document.querySelector('#img-ref').appendChild(node);
+                    await toPng(appendedNode, 
+                        { 
+                            cacheBust: true, 
+                            width: itemLabelTypes[itemLabelType].width, 
+                            height: itemLabelTypes[itemLabelType].height, 
+                            quality: 1, 
+                            backgroundColor: 'white'
+                        }
+                    )
+                    .then((dataUrl)=>{
+                        if(nodes.length == 1){
+                            const link = document.createElement('a');
+                            link.download = 'Stor-lbl.png';
+                            link.href = dataUrl;
+                            link.click();
+                            document.querySelector('#img-ref').removeChild(node); 
+                        }
+                        else{return dataUrl}
+                    })
+                    .then(async(res)=>{
+                        if(nodes.length == 1){return}
+                        const b64 = res.split(',')[1]
+                        zip.file(`label-${idx}.png`, b64, {base64: true});
+                        if(idx == nodes.length -1){
+                            const content = await zip.generateAsync({type: 'blob'});
+
+                            // The following can be substituted
+                            // with alt download method below reader.addEventListener().
+                            const link = document.createElement('a');
+                            link.download = 'Stor-labels.zip';
+                            const reader = new FileReader();
+                            reader.readAsDataURL(content);
+                            reader.addEventListener('loadend', async()=>{
+                                link.href = reader.result;
+                                link.click();
+                                const imgRefEl = document.querySelector('#img-ref');
+                                while(imgRefEl.firstChild){
+                                    imgRefEl.removeChild(imgRefEl.firstChild);
+                                };
+                            })
+
+                            // Alternative download method.
+                            // saveAs(content, 'Stor-labels.zip')
+                        }
+                    })
+
+                })
+            }
+            catch(err){
+                console.log(err)
+            }
+        }, [imgRef])
 
         async function printLocLabels(){
             try{
@@ -131,7 +233,7 @@ const Labels = memo(function Labels(props){
                 const req =  await fetch(`${apiUrl}/print/locLabels`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({parts: props?.pagListItems.length > 0 ? props.pagListItems : props.queryRes})
+                    body: JSON.stringify({parts: props?.pagListItems.length > 0 ? props.pagListItems : props.queryRes, ...(nativePrint ? {native: true} : {}) })
                 })
                 if(req.status !== 200){
                     const error = await req.json();
@@ -142,20 +244,29 @@ const Labels = memo(function Labels(props){
                     const parser = new DOMParser()
                     const plainLabels = parser.parseFromString(res, 'text/html');
                     const labelData  = plainLabels.querySelectorAll('.label-labeldata');
-
+                    
                     // Add QRCode to Each Label
                     labelData.forEach((label)=>{ 
                         const qrData = label.querySelector('#label-qr-data');
                         ReactDOM.render(<QRCode value={qrData.textContent} size={75} />, label.querySelector('.qr'));
                     });
-                    return plainLabels.querySelector('html').innerHTML
+                    if(!nativePrint){
+                        return plainLabels.querySelector('html').innerHTML
+                    }
+                    else{
+                        return labelData
+                    }
                 }
             }
             catch(err){
                 if(err.message == 'No root locations found.'){alert(err.message)}
-                else{alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")};
+                else if(!nativePrint){
+                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")
+                }
+                else{alert("Could not complete request!")}
             }
         }
+
 
         async function printPrintJobs(parts){
             try{
@@ -186,7 +297,7 @@ const Labels = memo(function Labels(props){
 
                 const req =  await fetch(`${apiUrl}/print/labels`, {
                     method: "POST",
-                    body: JSON.stringify([modParts, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource]),
+                    body: JSON.stringify([modParts, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource, nativePrint]),
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
@@ -201,14 +312,26 @@ const Labels = memo(function Labels(props){
                 labelData.forEach((label)=>{ 
                     const partCode = label.querySelector('#label-part-code');
                     const qrData = label.querySelector('#label-qr-data');
-                    ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
+                    ReactDOM.render(
+                        <QRCode 
+                            value={partCode?.textContent || qrData.textContent} 
+                            size={nativePrint ? itemLabelTypes[itemLabelType].nativeQrSize : itemLabelTypes[itemLabelType].qrSize} 
+                        />, label.querySelector('.qr'));
                 });
                 
-                return plainLabels.querySelector('html').innerHTML
+                if(!nativePrint){
+                    return plainLabels.querySelector('html').innerHTML
+                }
+                else{
+                    return labelData
+                }
             }
             catch(err){
                 console.log(err);
-                alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
+                if(!nativePrint){
+                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")
+                }
+                else{alert("Could not complete request!")}
             }
         }
 
@@ -255,14 +378,21 @@ const Labels = memo(function Labels(props){
                                     <div> 
                                         <IconButton disableRipple onClick={async()=>{
                                             setModalOpen(false);
-                                            const newWindow = window.open('', '_blank', features);
-                                            await printLabels(undefined, true).then((labels)=>{
-                                                newWindow.document.open(); 
-                                                newWindow.document.write(labels || 'Error'); 
-                                                newWindow.document.close(); 
-                                            })
+                                            if(!nativePrint){
+                                                const newWindow = window.open('', '_blank', features);
+                                                await printLabels(undefined, true).then((labels)=>{
+                                                    newWindow.document.open(); 
+                                                    newWindow.document.write(labels || 'Error'); 
+                                                    newWindow.document.close(); 
+                                                })
+                                            }
+                                            else{
+                                                await printLabels(undefined, true).then((nodes)=>{
+                                                    handleNativePrint({nodes: nodes})
+                                                })
+                                            }
                                             setReadyToPrint(false);
-                                        }}><span style={{fontSize: '15px'}}>
+                                        }}><span className="modal-options" style={{fontSize: '15px'}}>
                                                 ¤ Results
                                             </span>
                                         </IconButton>
@@ -275,14 +405,21 @@ const Labels = memo(function Labels(props){
                                 <div>
                                     <IconButton disableRipple onClick={async()=>{
                                         setModalOpen(false);
-                                        const newWindow = window.open('', '_blank', features);
-                                        await printLabels().then((labels)=>{
-                                            newWindow.document.open(); 
-                                            newWindow.document.write(labels || 'Error'); 
-                                            newWindow.document.close(); 
-                                        })
+                                        if(!nativePrint){
+                                            const newWindow = window.open('', '_blank', features);
+                                            await printLabels().then((labels)=>{
+                                                newWindow.document.open(); 
+                                                newWindow.document.write(labels || 'Error'); 
+                                                newWindow.document.close(); 
+                                            })
+                                        }
+                                        else{
+                                            await printLabels().then((nodes)=>{
+                                                handleNativePrint({nodes: nodes})
+                                            })
+                                        }
                                         setReadyToPrint(false);
-                                    }}><span style={{fontSize: '15px'}}>
+                                    }}><span className="modal-options" style={{fontSize: '15px'}}>
                                             {props?.pagListItems.length > 0 ? '¤ Page' : '¤ Results'}
                                         </span>
                                     </IconButton>
@@ -294,52 +431,77 @@ const Labels = memo(function Labels(props){
                                         setFormModalOpen(true);
                                         setReadyToPrint(false);
                                         }}>
-                                        <span style={{fontSize: '15px'}}>
+                                        <span className="modal-options" style={{fontSize: '15px'}}>
                                             ¤ New
                                         </span>
                                     </IconButton>
                                 </div>
                                 <br/>
                                 <div>
-                                    <PrintJobs printPrintJobs={printPrintJobs}/>
+                                    <PrintJobs printPrintJobs={printPrintJobs} nativePrint={nativePrint} handleNativePrint={handleNativePrint}/>
                                 </div>
                                 <br/>
                             </>
                             :
                             <>
-                                <IconButton disableRipple onClick={()=>{
-                                    setItemLabelType('reg'); setReadyToPrint(true);
-                                    }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|11pt</span>
-                                    </span>
-                                </IconButton><br/><br/>
+                                {!nativePrint ?
+                                <>
+                                    <IconButton disableRipple onClick={()=>{
+                                        setItemLabelType('reg'); setReadyToPrint(true);
+                                        }}>
+                                        <span className="modal-options" style={{fontSize: '15px'}}>
+                                            1x4<span style={{color:'whitesmoke'}}>|11pt</span>
+                                        </span>
+                                    </IconButton><br/><br/>
+                                </>
+                                :
+                                <></>
+                                }
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('reg16pt'); setReadyToPrint(true);
                                     }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|16pt</span>
+                                    <span className="modal-options" style={{fontSize: '15px'}}>
+                                        1x4<span style={{color:'whitesmoke'}}>|16pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('large'); setReadyToPrint(true);
                                     }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ 2x4<span style={{color:'whitesmoke'}}>|30pt</span>
+                                    <span className="modal-options" style={{fontSize: '15px'}}>
+                                        2x4<span style={{color:'whitesmoke'}}>|30pt</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('itemCodeQR'); setReadyToPrint(true);
                                     }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ 1x4<span style={{color:'whitesmoke'}}>|code</span>
+                                    <span className="modal-options" style={{fontSize: '15px'}}>
+                                        1x4<span style={{color:'whitesmoke'}}>|code</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{ 
                                     setItemLabelType('oneByThree'); setReadyToPrint(true);
                                     }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ 1x3<span style={{color:'whitesmoke'}}>|11pt</span>
+                                    <span className="modal-options" style={{fontSize: '15px'}}>
+                                        1x3<span style={{color:'whitesmoke'}}>|11pt</span>
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={async()=>{
+                                    if(nativePrint){
+                                        await printLocLabels().then((nodes)=>{
+                                            handleNativePrint({nodes: nodes})
+                                        })
+                                    }
+                                    else{
+                                        const newWindow = window.open('', '_blank', features);
+                                        await printLocLabels().then((labels)=>{
+                                            newWindow.document.open(); 
+                                            newWindow.document.write(labels || 'Error'); 
+                                            newWindow.document.close(); 
+                                        })
+                                    }
+                                }}>
+                                    <span className="modal-options" style={{fontSize: '15px'}}>
+                                        1x4<span style={{color:'whitesmoke'}}>|locs</span>
                                     </span>
                                 </IconButton><br/><br/>
                             </>
@@ -348,33 +510,28 @@ const Labels = memo(function Labels(props){
                     </>
                     :
                     <>
-                        <span style={{textAlign: 'center', color: 'gray'}}><i>*Laptop/desktop <br/>compatible.</i></span><br/><br/>
                         <div style={{width: 'fit-content', margin: 'auto'}}>
                             <div>
+                                <div style={{fontSize: '15px', fontWeight: 'bold'}}>
+                                    Labels
+                                </div><br/>
                                 <IconButton disableRipple onClick={()=>{
-                                    setPrintParts(true)
+                                    setNativePrint(true);
+                                    setPrintParts(true); 
                                 }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ Part Labels
+                                    <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
+                                        ¤ Native
+                                    </span>
+                                </IconButton><br/><br/>
+                                <IconButton disableRipple onClick={()=>{
+                                    setNativePrint(false);
+                                    setPrintParts(true);
+                                }}>
+                                    <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
+                                        ¤ Web
                                     </span>
                                 </IconButton>
                             </div>
-                            <br/>
-                            <div>
-                                <IconButton disableRipple onClick={async()=>{
-                                    const newWindow = window.open('', '_blank', features);
-                                    await printLocLabels().then((labels)=>{
-                                        newWindow.document.open(); 
-                                        newWindow.document.write(labels || 'Error'); 
-                                        newWindow.document.close(); 
-                                    })
-                                }}>
-                                    <span style={{fontSize: '15px'}}>
-                                        ¤ Loc Labels
-                                    </span>
-                                </IconButton>
-                            </div>
-                            <br/>
                         </div>
                     </>
                 }
@@ -399,7 +556,7 @@ const Labels = memo(function Labels(props){
                     const req =  await fetch(`${apiUrl}/print/labels`, {
                         method: "POST",
                         // labelDetials: array of optional label objects. recs: query results.
-                        body: JSON.stringify([labelDetails? [labelDetails] : recs, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource]),
+                        body: JSON.stringify([labelDetails? [labelDetails] : recs, itemLabelTypes[itemLabelType].fontSize, itemLabelTypes[itemLabelType].dataSource, nativePrint]),
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`
@@ -414,15 +571,91 @@ const Labels = memo(function Labels(props){
                     labelData.forEach((label)=>{ 
                         const partCode = label.querySelector('#label-part-code');
                         const qrData = label.querySelector('#label-qr-data'); 
-                        ReactDOM.render(<QRCode value={partCode?.textContent || qrData.textContent} size={itemLabelTypes[itemLabelType].qrSize} />, label.querySelector('.qr'));
+                        ReactDOM.render(
+                        <QRCode 
+                            value={partCode?.textContent || qrData.textContent} 
+                            size={nativePrint ? itemLabelTypes[itemLabelType].nativeQrSize : itemLabelTypes[itemLabelType].qrSize} 
+                        />, label.querySelector('.qr'));
                     });
-                    return plainLabels.querySelector('html').innerHTML
+                    
+                    if(!nativePrint){
+                        return plainLabels.querySelector('html').innerHTML
+                    }
+                    else{
+                        return labelData
+                    }
                 }
                 catch(err){
                     console.log(err);
-                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.");
+                if(!nativePrint){
+                    alert("Could not complete request! Check your settings to make sure pop-ups are allowed for this site.")
+                }
+                else{alert("Could not complete request!")}
                 }
             }
+
+            const handleNativePrint = useCallback(async({nodes}) =>{
+                
+                if (imgRef.current === null) {
+                    return
+                }
+                try{
+                    if(!nodes || nodes.length == 0){throw new Error()}
+                    const zip = new JSZip();
+                    nodes.forEach(async(node, idx)=>{
+                        const appendedNode = document.querySelector('#img-ref').appendChild(node);;
+                        await toPng(appendedNode, 
+                            { 
+                                cacheBust: true, 
+                                width: itemLabelTypes[itemLabelType].width, 
+                                height: itemLabelTypes[itemLabelType].height, 
+                                quality: 1, 
+                                backgroundColor: 'white'
+                            }
+                        )
+                        .then((dataUrl)=>{
+                            if(nodes.length == 1){
+                                const link = document.createElement('a');
+                                link.download = 'Stor-lbl.png';
+                                link.href = dataUrl;
+                                link.click();
+                                document.querySelector('#img-ref').removeChild(node); 
+                            }
+                            else{return dataUrl}
+                        })
+                        .then(async(res)=>{
+                            if(nodes.length == 1){return}
+                            const b64 = res.split(',')[1]
+                            zip.file(`label-${idx}.png`, b64, {base64: true});
+                            if(idx == nodes.length -1){
+                                const content = await zip.generateAsync({type: 'blob'});
+
+                                // The following can be substituted as needed
+                                // with alt download method just below reader.addEventListener().
+                                const link = document.createElement('a');
+                                link.download = 'Stor-labels.zip';
+                                const reader = new FileReader();
+                                reader.readAsDataURL(content);
+                                reader.addEventListener('loadend', async()=>{
+                                    link.href = reader.result;
+                                    link.click();
+                                    const imgRefEl = document.querySelector('#img-ref');
+                                    while(imgRefEl.firstChild){
+                                        imgRefEl.removeChild(imgRefEl.firstChild);
+                                    };
+                                })
+
+                                // Alternative download method.
+                                // saveAs(content, 'Stor-labels.zip')
+                            }
+                        })
+
+                    })
+                }
+                catch(err){
+                    console.log(err)
+                }
+            }, [imgRef])
 
             return(
                 <form className="stor-new-label-form">
@@ -508,12 +741,19 @@ const Labels = memo(function Labels(props){
                                 min: formMin,
                                 max: formMax
                             }
-                            const newWindow = window.open('', '_blank', features);
-                            await printLabels(labelDetails).then((label)=>{
-                                newWindow.document.open(); 
-                                newWindow.document.write(label || 'Error'); 
-                                newWindow.document.close();                           
-                            })
+                            if(!nativePrint){
+                                const newWindow = window.open('', '_blank', features);
+                                await printLabels(labelDetails).then((label)=>{
+                                    newWindow.document.open(); 
+                                    newWindow.document.write(label || 'Error'); 
+                                    newWindow.document.close();                           
+                                })
+                            }
+                            else{
+                                await printLabels(labelDetails).then((node)=>{
+                                    handleNativePrint({nodes: node})
+                                })
+                            }
                             setReadyToPrint(false);
                         }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Create</span>
                         </IconButton>
@@ -544,6 +784,7 @@ const Labels = memo(function Labels(props){
             </IconButton>
             <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen}  modalContent={<PrintType/>} noDefaultBtns={true}/>
             <PrintNewLabelModal modalOpen={formModalOpen} setModalOpen={setFormModalOpen} modalContent={<Form/>}/>
+            <div id='img-ref' ref={imgRef} style={{display:'none'}}></div>
         </>
     )
 })

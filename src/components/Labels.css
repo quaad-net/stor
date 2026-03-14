@@ -1,3 +1,213 @@
 .stor-new-label-form .stor-input:focus{
  border-color: white;
 }
+
+.label-labeldata{
+    line-height: normal;
+    table-layout: fixed;
+}
+
+#mdl{
+
+    padding-left: 10px; 
+    color:black;
+    font-size: 25pt; 
+    font-weight:bold; 
+    font-style:normal;
+    text-decoration:none;
+    font-family:"Aptos Narrow", sans-serif;
+    height: 72pt;
+    min-height: 72pt;
+    max-height: 72pt;
+    width: 288pt;
+    min-width: 288pt;
+    max-width: 288pt;
+    display: flex;
+    flex-direction: row;
+
+    .label-qr-container{
+        margin-top: 4px;
+    }
+
+    .label-details{
+        text-align: left;
+        margin-left: 20px;
+    }
+
+    #label-qr-data{
+        display: none;
+    }
+
+    #label-qr-description{
+        padding-left: 5px;
+        padding-right: 5px;
+        width: 100%;
+        max-height: 53pt; /* 3/4 of overall label height */
+        line-break: anywhere;
+        overflow: hidden;
+    }
+}
+
+#one-by-three{
+    padding-left:1px; 
+    color:black;
+    font-size: 11pt;
+    font-weight:400;
+    font-style:normal;
+    text-decoration:none;
+    font-family:"Aptos Narrow", sans-serif;
+    height: 72pt;
+    min-height: 72pt;
+    max-height: 72pt;
+    width: 216pt;
+    max-width: 216pt;
+    display: flex;
+    flex-direction: row;
+    padding: 3px;
+
+    .label-qr-container{
+        margin-top: 4px;
+    }
+
+    #label-part-code{
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+    .label-part-details{
+        text-align: left;
+        margin-left: 5px
+    }
+
+    #label-description{
+        width: 90%;
+        max-height: 54pt;
+        margin-left: 20px;
+        padding-right: 5px;
+        overflow: hidden;
+    }
+
+    #label-bin-location, #label-min-max{
+        display: inline;
+        margin-left: 20px;
+    }
+
+    #label-bin-loction{
+        margin-left: 20px;
+    }
+
+    #label-min-max{
+        text-align: right;
+    }
+}
+
+#sixteen-pt{
+    line-height: 1.1;
+    padding-left: 1px; 
+    color:black;
+    font-size: 16pt; 
+    font-weight:bold; 
+    font-style:normal;
+    text-decoration:none;
+    font-family:"Aptos Narrow", sans-serif;
+    height: 72pt;
+    min-height: 72pt;
+    max-height: 72pt;
+    width: 288pt;
+    min-width: 288pt;
+    max-width: 288pt;
+    display: flex;
+    flex-direction: row;
+
+    .label-qr-container{
+        margin-top: 4px;
+
+    }
+    
+    .qr{
+        padding-left: 10px;
+    }
+    
+    .label-details{
+        text-align: left;
+        margin-left: 10px;
+        position: relative;
+    }
+
+    #label-qr-data{
+        display: none;
+    }
+
+    #label-qr-description{
+        margin-left: 30px;
+        width: 90%;
+        max-height: 53pt; /* 3/4 of overall label height */
+        overflow: hidden;
+    }
+
+    .code-qr-description{
+        font-weight: bolder;
+    }
+
+    .label-warehouse-details{
+        font-weight: lighter; 
+        font-size: 14pt; 
+        text-align: right; 
+        float: right;
+        margin-right: 10%; 
+        bottom: -5;
+    }
+
+    .label-min-max{
+        font-size: 14pt;
+        font-weight: bold;
+        margin-right: 50px;
+    }
+}
+
+#thirty-pt{
+    color:black;
+    font-size: 30pt;
+    font-weight:bold;
+    font-style:normal;
+    text-decoration:none;
+    font-family:"Aptos Narrow", sans-serif;
+    height: 144pt;
+    min-height: 144pt;
+    max-height: 144pt;
+    width: 288pt;
+    min-width: 288pt;
+    max-width: 288pt;
+    display: flex;
+    flex-direction: row;
+    padding: 3px;
+    margin-bottom: 10px;
+    line-height: 0.9;
+
+    .label-qr-container{
+        margin-top: 5px;
+        margin-left: 5px
+    }
+    
+    .label-part-details{
+        text-align: left;
+        margin-left: 55px
+    }
+
+    #label-part-code{
+        font-weight: bolder;
+    }
+
+    #label-description{
+        width: 100%;
+        max-height: 83.6pt; /* 3/5 of overall label height (84.6pt) - 1*/ 
+        padding-right: 5px;
+        word-break: break-all;
+        overflow: hidden;
+    }
+
+    #label-bin-location{
+        font-weight: normal;
+    }
+
+}

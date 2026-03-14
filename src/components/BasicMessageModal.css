@@ -17,3 +17,8 @@
     background: rgb(43, 43, 43)
   }
 }
+
+.modal-options{
+  font-weight: bold;
+  padding: 3px;
+}

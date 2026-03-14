@@ -210,9 +210,8 @@ const SessionReorder = memo(function SessionReorder(props) {
     function ModalContent(){
         return(
             <>
-                <span>
-                    Item will be removed...this cannot be undone.
-                    Continue?
+                <span style={{lineHeight: 2.5}}>
+                    Item will be removed. Changes will be committed on close <PlaylistAddCheckRoundedIcon/>.
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
@@ -231,9 +230,8 @@ const SessionReorder = memo(function SessionReorder(props) {
     function DeleteAllModalContent(){
         return(
             <>
-                <span>
-                    All items displayed will be removed...this cannot be undone.
-                    Continue?
+                <span style={{lineHeight: 2.5}}>
+                    All items displayed will be removed. Changes will be committed on close <PlaylistAddCheckRoundedIcon/>.
                 </span>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
@@ -346,11 +344,12 @@ const SessionReorder = memo(function SessionReorder(props) {
                             color="inherit"
                             onClick={handleClose}
                             aria-label="close"
+                            sx={{marginRight: .5}}
                         >
                             <PlaylistAddCheckRoundedIcon />
                         </IconButton>
                         {ordersListItems.length > 0 ?
-                        <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(true)}}>
+                        <IconButton disableRipple sx={{marginRight: .5}} onClick={()=>{setDeleteAllModalOpen(true)}}>
                             <DeleteSweepOutlinedIcon  fontSize='20px'/>
                         </IconButton>
                         :
@@ -361,7 +360,18 @@ const SessionReorder = memo(function SessionReorder(props) {
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                         </Typography>
-                        <span style={{color:'gray'}}>&#40;{ordersListItems?.length}&#41;</span>
+                        <span 
+                            style={{color:'gray'}}>
+                                {ordersListItems.length > 99 ?
+                                <>
+                                    &#40;99+&#41;
+                                </>
+                                :
+                                <>
+                                    &#40;{ordersListItems?.length}&#41;
+                                </>
+                                }
+                        </span>
                         {orderFilter != '' ? 
                         <IconButton disableRipple onClick={unfilter}>
                             <FilterListOffIcon fontSize='20px'/>
@@ -371,10 +381,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                             label="Filter by Part"
                             id="outlined-start-adornment"
                             size='small'
-                            sx={{ m: 1, width: '150px', marginTop: '15px'}}
+                            sx={{ m: 1, width: '135px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='/tool-box.svg' width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src='/pulsar-toolbox.svg' width='20px'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByPartCode(e.target.value)}}}
