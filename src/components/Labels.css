@@ -200,7 +200,7 @@
 
     #label-description{
         width: 100%;
-        max-height: 83.6pt; /* 3/5 of overall label height (84.6pt) - 1*/ 
+        max-height: 81.6pt; /* 3/5 of overall label height (84.6pt) - 3*/ 
         padding-right: 5px;
         word-break: break-all;
         overflow: hidden;
