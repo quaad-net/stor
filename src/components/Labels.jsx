@@ -10,6 +10,7 @@ import { toPng } from "html-to-image";
 import { useCallback, useRef } from "react";
 import JSZip from 'jszip';
 // import { saveAs } from 'file-saver';
+import useLabels from "../../app/useLabels";
 const apiUrl = import.meta.env.VITE_API_URL;
 import './Labels.css';
 
@@ -109,6 +110,7 @@ const Labels = memo(function Labels(props){
     const [nativePrint, setNativePrint] = useState(false);
     const [printParts, setPrintParts] = useState(false);
     const imgRef = useRef(<td></td>);
+    const { setLabels } = useLabels();
     
     useEffect(()=>{
         return ()=>{setReadyToPrint(false); setPrintParts(false)}
@@ -503,12 +505,15 @@ const Labels = memo(function Labels(props){
 
                                         // IOS
                                         const link = document.createElement('a');
-                                        // await printLocLabels().then((labels)=>{
-                                         
-                                        // })
+                                        await printLocLabels().then((labels)=>{
+                                            setLabels(labels.toString())
+                                        })
                                         link.href = './labels';
                                         link.click();
-                                        alert('IOS Users: Swipe left to exit label page.')
+                                        const ua = navigator.userAgent || window.opera;
+                                        if(/iPad|iPhone/i.test(ua)){
+                                            alert('IPhone/Pad users swipe left to exit label screen.');
+                                        }
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
