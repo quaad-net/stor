@@ -492,12 +492,19 @@ const Labels = memo(function Labels(props){
                                         })
                                     }
                                     else{
-                                        const newWindow = window.open('', '_blank', features);
-                                        await printLocLabels().then((labels)=>{
-                                            newWindow.document.open(); 
-                                            newWindow.document.write(labels || 'Error'); 
-                                            newWindow.document.close(); 
-                                        })
+                                        // const newWindow = window.open('', '_blank', features);
+                                        // await printLocLabels().then((labels)=>{
+                                        //     newWindow.document.open(); 
+                                        //     newWindow.document.write(labels || 'Error'); 
+                                        //     newWindow.document.close(); 
+                                        // })
+
+                                        const link = document.createElement('a');
+                                        // await printLocLabels().then((labels)=>{
+                                         
+                                        // })
+                                        link.href = './labels';
+                                        link.click();
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>

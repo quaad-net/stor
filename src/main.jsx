@@ -10,6 +10,7 @@ import Lgn from "./components/Lgn";
 import ErrorPage from "./components/ErrorPage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Inventory from "./components/Inventory";
+import LabelPage from "./components/LabelPage";
 
 import "./index.css";
 import '@fontsource/roboto/300.css';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/inventory",
         element: <Inventory />,
+      },
+      {
+        path: "/labels",
+        element: <LabelPage />,
       },
       {
         path: "/*",
