@@ -16,7 +16,7 @@ export default function LabelPage(){
                 document.querySelector('#append-table').appendChild(table);
                 setLabels('');
                 const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-                if(isStandalone){alert('Swipe left to exit label window after print.')}
+                if(isStandalone){alert('Swipe left or use back arrow to exit label window after print.')}
                 window.print();
             }
             else{
