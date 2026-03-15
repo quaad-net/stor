@@ -381,12 +381,19 @@ const Labels = memo(function Labels(props){
                                         <IconButton disableRipple onClick={async()=>{
                                             setModalOpen(false);
                                             if(!nativePrint){
-                                                const newWindow = window.open('', '_blank', features);
+                                                // Alt New Label Page
+                                                // const newWindow = window.open('', '_blank', features);
+                                                // await printLabels(undefined, true).then((labels)=>{
+                                                //     newWindow.document.open(); 
+                                                //     newWindow.document.write(labels || 'Error'); 
+                                                //     newWindow.document.close(); 
+                                                // })
+                                                const link = document.createElement('a');
                                                 await printLabels(undefined, true).then((labels)=>{
-                                                    newWindow.document.open(); 
-                                                    newWindow.document.write(labels || 'Error'); 
-                                                    newWindow.document.close(); 
+                                                    setLabels(labels.toString() || 'Error')
                                                 })
+                                                link.href = './labels';
+                                                link.click();
                                             }
                                             else{
                                                 await printLabels(undefined, true).then((nodes)=>{
@@ -408,12 +415,19 @@ const Labels = memo(function Labels(props){
                                     <IconButton disableRipple onClick={async()=>{
                                         setModalOpen(false);
                                         if(!nativePrint){
-                                            const newWindow = window.open('', '_blank', features);
+                                            // Alt New Label Page
+                                            // const newWindow = window.open('', '_blank', features);
+                                            // await printLabels().then((labels)=>{
+                                            //     newWindow.document.open(); 
+                                            //     newWindow.document.write(labels || 'Error'); 
+                                            //     newWindow.document.close(); 
+                                            // })
+                                            const link = document.createElement('a');
                                             await printLabels().then((labels)=>{
-                                                newWindow.document.open(); 
-                                                newWindow.document.write(labels || 'Error'); 
-                                                newWindow.document.close(); 
+                                                setLabels(labels.toString() || 'Error')
                                             })
+                                            link.href = './labels';
+                                            link.click();
                                         }
                                         else{
                                             await printLabels().then((nodes)=>{
@@ -446,7 +460,8 @@ const Labels = memo(function Labels(props){
                             </>
                             :
                             <>
-                                {!nativePrint ?
+                                {/* Not in use. */}
+                                {/* {!nativePrint ?
                                 <>
                                     <IconButton disableRipple onClick={()=>{
                                         setItemLabelType('reg'); setReadyToPrint(true);
@@ -458,7 +473,7 @@ const Labels = memo(function Labels(props){
                                 </>
                                 :
                                 <></>
-                                }
+                                } */}
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('reg16pt'); setReadyToPrint(true);
                                     }}>
@@ -494,22 +509,20 @@ const Labels = memo(function Labels(props){
                                         })
                                     }
                                     else{
-
-                                        //if not IOS
+                                        // Alt New Label Page
                                         // const newWindow = window.open('', '_blank', features);
                                         // await printLocLabels().then((labels)=>{
                                         //     newWindow.document.open(); 
                                         //     newWindow.document.write(labels || 'Error'); 
                                         //     newWindow.document.close(); 
                                         // })
-
+                                        
                                         const link = document.createElement('a');
                                         await printLocLabels().then((labels)=>{
-                                            setLabels(labels.toString())
+                                            setLabels(labels.toString() || 'Error')
                                         })
                                         link.href = './labels';
                                         link.click();
-                                        alert('IPhone/Pad users swipe left to exit label screen.');
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
@@ -754,12 +767,19 @@ const Labels = memo(function Labels(props){
                                 max: formMax
                             }
                             if(!nativePrint){
-                                const newWindow = window.open('', '_blank', features);
+                                // Alt New Label Page
+                                // const newWindow = window.open('', '_blank', features);
+                                // await printLabels(labelDetails).then((label)=>{
+                                //     newWindow.document.open(); 
+                                //     newWindow.document.write(label || 'Error'); 
+                                //     newWindow.document.close();                           
+                                // })
+                                const link = document.createElement('a');
                                 await printLabels(labelDetails).then((label)=>{
-                                    newWindow.document.open(); 
-                                    newWindow.document.write(label || 'Error'); 
-                                    newWindow.document.close();                           
+                                    setLabels(label.toString() || 'Error')
                                 })
+                                link.href = './labels';
+                                link.click();
                             }
                             else{
                                 await printLabels(labelDetails).then((node)=>{

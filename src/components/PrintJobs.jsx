@@ -22,6 +22,7 @@ import useUserData from '../../app/useUserData';
 import CircularIndeterminate from './Progress';
 import InputAdornment from '@mui/material/InputAdornment';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import useLabels from '../../app/useLabels';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -43,6 +44,7 @@ export default function PrintJobs(props) {
     const { token } = useToken();
     const { userData } = useUserData();
     const user = JSON.parse(userData);
+    const { labels, setLabels } = useLabels();
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleClickOpen = () => {
@@ -308,19 +310,32 @@ export default function PrintJobs(props) {
                         <br/>
                         <IconButton disableRipple size='small' onClick={async()=>{
                             if(props.nativePrint !== true){
-                                const newWindow = window.open('', '_blank', features);
+                                // Alt New Label Page
+                                // const newWindow = window.open('', '_blank', features);
+                                // await props.printPrintJobs([{
+                                    // code: props?.task.code,
+                                    // description: props?.task.description,
+                                    // binLoc: props?.task.binLoc,
+                                    // min: props?.task.min,
+                                    // max: props?.task.max
+                                // }])
+                                // .then((label)=>{
+                                //     newWindow.document.open(); 
+                                //     newWindow.document.write(label || 'Error'); 
+                                //     newWindow.document.close();
+                                // })
+                                const link = document.createElement('a');
                                 await props.printPrintJobs([{
                                     code: props?.task.code,
                                     description: props?.task.description,
                                     binLoc: props?.task.binLoc,
                                     min: props?.task.min,
                                     max: props?.task.max
-                                }])
-                                .then((label)=>{
-                                    newWindow.document.open(); 
-                                    newWindow.document.write(label || 'Error'); 
-                                    newWindow.document.close();
+                                }]).then((label)=>{
+                                    setLabels(label.toString() || 'Error')
                                 })
+                                link.href = './labels';
+                                link.click();
                             }
                             else{
                                 await props.printPrintJobs([{
@@ -391,12 +406,19 @@ export default function PrintJobs(props) {
                                     sx={{marginLeft: '10px', marginRight: '0'}}
                                     onClick={async()=>{
                                         if(props.nativePrint !== true){
-                                            const newWindow = window.open('', '_blank', features);
+                                            // Alt New Label Page
+                                            // const newWindow = window.open('', '_blank', features);
+                                            // await props.printPrintJobs(tasksListItems).then((labels)=>{
+                                            //     newWindow.document.open(); 
+                                            //     newWindow.document.write(labels || 'Error'); 
+                                            //     newWindow.document.close();
+                                            // })
+                                            const link = document.createElement('a');
                                             await props.printPrintJobs(tasksListItems).then((labels)=>{
-                                                newWindow.document.open(); 
-                                                newWindow.document.write(labels || 'Error'); 
-                                                newWindow.document.close();
+                                                setLabels(labels.toString() || 'Error')
                                             })
+                                            link.href = './labels';
+                                            link.click();
                                         }
                                         else{
                                             await props.printPrintJobs(tasksListItems).then((nodes)=>{
