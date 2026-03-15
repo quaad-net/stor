@@ -492,6 +492,8 @@ const Labels = memo(function Labels(props){
                                         })
                                     }
                                     else{
+
+                                        //if not IOS
                                         // const newWindow = window.open('', '_blank', features);
                                         // await printLocLabels().then((labels)=>{
                                         //     newWindow.document.open(); 
@@ -499,12 +501,14 @@ const Labels = memo(function Labels(props){
                                         //     newWindow.document.close(); 
                                         // })
 
+                                        // IOS
                                         const link = document.createElement('a');
                                         // await printLocLabels().then((labels)=>{
                                          
                                         // })
                                         link.href = './labels';
                                         link.click();
+                                        alert('IOS Users: Swipe left to exit label page.')
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
