@@ -13,6 +13,7 @@ export default function LabelPage(){
             document.querySelector('head').appendChild(styles);
             document.querySelector('#append-table').appendChild(table);
             setLabels('');
+            window.print();
         }
     },[])
     return <div style={{backgroundColor: 'white'}} id='append-table'></div>

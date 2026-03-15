@@ -510,7 +510,6 @@ const Labels = memo(function Labels(props){
                                         link.href = './labels';
                                         link.click();
                                         alert('IPhone/Pad users swipe left to exit label screen.');
-                                        window.print();
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
