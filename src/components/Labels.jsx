@@ -503,17 +503,14 @@ const Labels = memo(function Labels(props){
                                         //     newWindow.document.close(); 
                                         // })
 
-                                        // IOS
                                         const link = document.createElement('a');
                                         await printLocLabels().then((labels)=>{
                                             setLabels(labels.toString())
                                         })
                                         link.href = './labels';
                                         link.click();
-                                        const ua = navigator.userAgent || window.opera;
-                                        if(/iPad|iPhone/i.test(ua)){
-                                            alert('IPhone/Pad users swipe left to exit label screen.');
-                                        }
+                                        alert('IPhone/Pad users swipe left to exit label screen.');
+                                        window.print();
                                     }
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
