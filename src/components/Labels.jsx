@@ -403,6 +403,17 @@ const Labels = memo(function Labels(props){
                                             setReadyToPrint(false);
                                         }}><span className="modal-options" style={{fontSize: '15px'}}>
                                                 ¤ Results
+                                                {nativePrint ?
+                                                    <> 
+                                                        <br/>
+                                                        <span 
+                                                            style={{color: 'gray', fontWeight: 'normal'}}>
+                                                                {props?.pagListItems.length} files 
+                                                        </span>
+                                                    </>
+                                                    :
+                                                    <></>
+                                                }
                                             </span>
                                         </IconButton>
                                     </div>
@@ -437,6 +448,17 @@ const Labels = memo(function Labels(props){
                                         setReadyToPrint(false);
                                     }}><span className="modal-options" style={{fontSize: '15px'}}>
                                             {props?.pagListItems.length > 0 ? '¤ Page' : '¤ Results'}
+                                                {nativePrint ?
+                                                    <>
+                                                        <br/>
+                                                        <span 
+                                                            style={{color: 'gray', fontWeight: 'normal', marginRight: 0}}>
+                                                                &nbsp;&nbsp;{props?.queryRes.length} {props?.queryRes.length == 1 ? 'file' : 'files'} 
+                                                        </span>
+                                                    </>
+                                                    :
+                                                    <></>
+                                                }
                                         </span>
                                     </IconButton>
                                 </div>
@@ -635,7 +657,8 @@ const Labels = memo(function Labels(props){
                                 width: itemLabelTypes[itemLabelType].width, 
                                 height: itemLabelTypes[itemLabelType].height, 
                                 quality: 1, 
-                                backgroundColor: 'white'
+                                backgroundColor: 'white',
+                                pixelRatio: 1
                             }
                         )
                         .then((dataUrl)=>{
@@ -814,7 +837,7 @@ const Labels = memo(function Labels(props){
                     <img src='/pulsar-labels.svg' width='25px'/>
                 {props?.btnDescription}
             </IconButton>
-            <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen}  modalContent={<PrintType/>} noDefaultBtns={true}/>
+            <BasicMessageModal modalOpen={modalOpen} setModalOpen={setModalOpen}  modalContent={<PrintType/>} noDefaultBtns={true} />
             <PrintNewLabelModal modalOpen={formModalOpen} setModalOpen={setFormModalOpen} modalContent={<Form/>}/>
             <div id='img-ref' ref={imgRef} style={{display:'none'}}></div>
         </>

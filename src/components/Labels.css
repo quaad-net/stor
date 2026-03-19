@@ -146,11 +146,7 @@
     }
 
     .code-qr-description{
-        font-weight: 900;
-    }
-
-    .item-qr-description{
-        font-weight: 600;
+        font-weight: bolder;
     }
 
     .label-warehouse-details{
@@ -164,71 +160,6 @@
 
     #label-min-max{
         font-size: 14pt;
-        font-weight: normal;
-        margin-right: 50px;
-    }
-}
-
-#sixteen-pt{
-    line-height: 1.1;
-    padding-left: 1px; 
-    color:black;
-    font-size: 16pt; 
-    font-weight:bold; 
-    font-style:normal;
-    text-decoration:none;
-    font-family:"Aptos Narrow", sans-serif;
-    height: 72pt;
-    min-height: 72pt;
-    max-height: 72pt;
-    width: 288pt;
-    min-width: 288pt;
-    max-width: 288pt;
-    display: flex;
-    flex-direction: row;
-
-    .label-qr-container{
-        margin-top: 4px;
-
-    }
-    
-    .qr{
-        padding-left: 10px;
-    }
-    
-    .label-details{
-        text-align: left;
-        margin-left: 10px;
-        position: relative;
-    }
-
-    #label-qr-data{
-        display: none;
-    }
-
-    #label-qr-description{
-        margin-left: 30px;
-        width: 90%;
-        max-height: 53pt; /* 3/4 of overall label height */
-        overflow: hidden;
-    }
-
-    .code-qr-description{
-        font-weight: bolder;
-    }
-
-    .label-warehouse-details{
-        font-weight: lighter; 
-        font-size: 14pt; 
-        text-align: right; 
-        float: right;
-        margin-right: 10%; 
-        bottom: -5;
-    }
-
-    .label-min-max{
-        font-size: 14pt;
-        font-weight: bold;
         margin-right: 50px;
     }
 }
