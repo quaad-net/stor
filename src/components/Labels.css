@@ -149,6 +149,10 @@
         font-weight: bolder;
     }
 
+    .item-qr-description{
+        font-weight: 600;
+    }
+
     .label-warehouse-details{
         font-weight: lighter; 
         font-size: 14pt; 

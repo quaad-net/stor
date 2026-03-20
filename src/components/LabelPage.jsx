@@ -6,9 +6,9 @@ export default function LabelPage(){
     const { setLabels, labels } = useLabels();
     
     useEffect(()=>{
-        const parser = new DOMParser();
         if(labels != ''){
             if(labels != 'Error'){
+                const parser = new DOMParser();
                 const doc = parser.parseFromString(labels, 'text/html');
                 const table = doc.querySelector('table');
                 const styles = doc.querySelector('style');
@@ -25,5 +25,6 @@ export default function LabelPage(){
             }
         }
     })
+
     return <div style={{backgroundColor: 'white'}} id='append-table'></div>
 }

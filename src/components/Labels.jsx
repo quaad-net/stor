@@ -182,7 +182,8 @@ const Labels = memo(function Labels(props){
                             width: itemLabelTypes[itemLabelType].width, 
                             height: itemLabelTypes[itemLabelType].height, 
                             quality: 1, 
-                            backgroundColor: 'white'
+                            backgroundColor: 'white',
+                            pixelRatio: 1
                         }
                     )
                     .then((dataUrl)=>{
@@ -407,7 +408,7 @@ const Labels = memo(function Labels(props){
                                                     <> 
                                                         <br/>
                                                         <span 
-                                                            style={{color: 'gray', fontWeight: 'normal'}}>
+                                                            style={{color: 'gray', fontWeight: 'normal', borderBottom: '1px dotted white', borderRadius: 3}}>
                                                                 {props?.pagListItems.length} files 
                                                         </span>
                                                     </>
@@ -452,7 +453,7 @@ const Labels = memo(function Labels(props){
                                                     <>
                                                         <br/>
                                                         <span 
-                                                            style={{color: 'gray', fontWeight: 'normal', marginRight: 0}}>
+                                                            style={{color: 'gray', fontWeight: 'normal', marginRight: 0, borderBottom: '1px dotted white', borderRadius: 3}}>
                                                                 &nbsp;&nbsp;{props?.queryRes.length} {props?.queryRes.length == 1 ? 'file' : 'files'} 
                                                         </span>
                                                     </>
