@@ -212,7 +212,7 @@ const SessionReorder = memo(function SessionReorder(props) {
             <>
                 <span style={{lineHeight: 2.5}}>
                     Item will be removed. Changes will be committed on close <PlaylistAddCheckRoundedIcon/>.
-                </span>
+                </span><br/><br/>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder(orderToDelete.id);
@@ -232,7 +232,7 @@ const SessionReorder = memo(function SessionReorder(props) {
             <>
                 <span style={{lineHeight: 2.5}}>
                     All items displayed will be removed. Changes will be committed on close <PlaylistAddCheckRoundedIcon/>.
-                </span>
+                </span><br/><br/>
                 <div style={{width: 'fit-content', margin: 'auto'}}>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder();

@@ -407,10 +407,10 @@ const Labels = memo(function Labels(props){
                                                 {nativePrint ?
                                                     <> 
                                                         <br/>
-                                                        <span 
-                                                            style={{color: 'gray', fontWeight: 'normal', borderBottom: '1px dotted white', borderRadius: 3}}>
+                                                        <div 
+                                                            style={{color: 'gray', fontWeight: 'normal', borderBottom: '1px dotted white', borderRadius: 3, width: 'fit-content', marginLeft: 0}}>
                                                                 {props?.pagListItems.length} files 
-                                                        </span>
+                                                        </div>
                                                     </>
                                                     :
                                                     <></>
@@ -452,10 +452,10 @@ const Labels = memo(function Labels(props){
                                                 {nativePrint ?
                                                     <>
                                                         <br/>
-                                                        <span 
-                                                            style={{color: 'gray', fontWeight: 'normal', marginRight: 0, borderBottom: '1px dotted white', borderRadius: 3}}>
-                                                                &nbsp;&nbsp;{props?.queryRes.length} {props?.queryRes.length == 1 ? 'file' : 'files'} 
-                                                        </span>
+                                                        <div 
+                                                            style={{color: 'gray', fontWeight: 'normal', borderBottom: '1px dotted white', borderRadius: 3, width: 'fit-content', marginLeft: 0}}>
+                                                            {props?.queryRes.length} {props?.queryRes.length == 1 ? 'file' : 'files'} 
+                                                        </div>
                                                     </>
                                                     :
                                                     <></>

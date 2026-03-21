@@ -26,5 +26,9 @@ export default function LabelPage(){
         }
     })
 
-    return <div style={{backgroundColor: 'white'}} id='append-table'></div>
+    useEffect(()=>{
+        document.querySelector('html').style.backgroundColor = 'white'
+    },[])
+
+    return <div style={{backgroundColor: 'white', width: '100%'}} id='append-table'></div>
 }
