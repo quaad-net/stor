@@ -501,14 +501,14 @@ const Labels = memo(function Labels(props){
                                     setItemLabelType('reg16pt'); setReadyToPrint(true);
                                     }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
-                                        1x4<span style={{color:'whitesmoke'}}>|16pt</span>
+                                        1x4<span style={{color:'whitesmoke'}}>|data</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setItemLabelType('large'); setReadyToPrint(true);
                                     }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
-                                        2x4<span style={{color:'whitesmoke'}}>|30pt</span>
+                                        2x4<span style={{color:'whitesmoke'}}>|data</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
@@ -522,7 +522,7 @@ const Labels = memo(function Labels(props){
                                     setItemLabelType('oneByThree'); setReadyToPrint(true);
                                     }}>
                                     <span className="modal-options" style={{fontSize: '15px'}}>
-                                        1x3<span style={{color:'whitesmoke'}}>|11pt</span>
+                                        1x3<span style={{color:'whitesmoke'}}>|data</span>
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={async()=>{
