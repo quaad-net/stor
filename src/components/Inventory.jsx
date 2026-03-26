@@ -24,7 +24,7 @@ import Box from '@mui/material/Box';
 import CircularIndeterminate from './Progress';
 import './Inventory.css'
 
-export default function Inventory() {
+const Inventory = memo(function Inventory() {
 
     const [partListItems, setPartListItems] = useState([]);
     const [unfilteredPartListItems, setUnfilteredPartListItems] = useState([])
@@ -2010,4 +2010,6 @@ max: ${partListItems[idx]?.max}
         )
     }
     else return <></>
-}
+})
+
+export default Inventory
