@@ -183,7 +183,6 @@ const Labels = memo(function Labels(props){
                             height: itemLabelTypes[itemLabelType].height, 
                             quality: 1, 
                             backgroundColor: 'white',
-                            pixelRatio: 1
                         }
                     )
                     .then((dataUrl)=>{
@@ -659,7 +658,6 @@ const Labels = memo(function Labels(props){
                                 height: itemLabelTypes[itemLabelType].height, 
                                 quality: 1, 
                                 backgroundColor: 'white',
-                                pixelRatio: 1
                             }
                         )
                         .then((dataUrl)=>{
