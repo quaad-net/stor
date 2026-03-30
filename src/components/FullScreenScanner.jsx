@@ -31,7 +31,23 @@ const FullScreenScanner = memo(function FullScreenScanner(props) {
 
   const handleClose = () => {
     setOpen(false);
+    stopStream();
   };
+
+  function stopStream(){
+    try{
+      const video = document.querySelector('video');
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => {
+        track.stop();
+      });
+      video.srcObject = null;
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   const darkTheme = createTheme({
     palette: {

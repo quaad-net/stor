@@ -80,7 +80,23 @@ const QuickCount = memo(function QuickCount(props) {
     setBinLoc("");
     setCompletedCount(false);
     setOpen(false);
+    stopStream();
   };
+
+  function stopStream(){
+    try{
+      const video = document.querySelector('video');
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => {
+        track.stop();
+      });
+      video.srcObject = null;
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   async function getCounts(){
     fetch(`${apiUrl}/${user.email == 'johndoe@quaad.net' ? 
