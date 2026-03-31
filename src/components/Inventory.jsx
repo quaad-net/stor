@@ -75,7 +75,7 @@ const Inventory = memo(function Inventory() {
     }, [])
 
     useEffect(()=>{
-        inventoryQuery({query: '100:101', queryType: 'binLoc', noDialog: true});
+        inventoryQuery({query: 'locQR/32/100', queryType: 'locQR', noDialog: true});
     },[])
     
     useEffect(()=>{
