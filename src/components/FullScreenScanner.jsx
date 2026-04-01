@@ -143,7 +143,7 @@ const FullScreenScanner = memo(function FullScreenScanner(props) {
           <Divider />
         </List>
         <div className='fullscreen-scanner'>
-        <NewScan displayCam={true}/>
+        <NewScan displayCam={open}/>
         </div>
       </Dialog>
     </Fragment>

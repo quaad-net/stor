@@ -472,7 +472,7 @@ const QuickCount = memo(function QuickCount(props) {
             <br/><br/>
           </div>
           <div className='fullscreen-scanner'>
-          <NewScan displayCam={true}/>
+          <NewScan displayCam={open}/>
           </div>
         </Dialog>
       </Fragment>
