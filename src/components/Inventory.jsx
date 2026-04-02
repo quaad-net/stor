@@ -1186,7 +1186,7 @@ max: ${partListItems[idx]?.max}
             .catch((err)=>{
                 console.log(err);
                 setTimeout(() => {
-                    setBasicMessageModalContent('Email notifcation failed.');
+                    setBasicMessageModalContent(<><span style={{color: 'red'}}>Error.</span><br/>Notifcation failed.</>);
                     setBasicMessageModalOpen(true);        
                 }, 3000);
             })
