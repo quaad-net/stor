@@ -217,10 +217,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder(orderToDelete.id);
                         setModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -237,10 +237,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder();
                         setDeleteAllModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -384,7 +384,7 @@ const SessionReorder = memo(function SessionReorder(props) {
                             sx={{ m: 1, width: '135px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='/pulsar-toolbox.svg' width='20px'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src='/pulsar-toolbox.svg' width='20px' loading='lazy'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByPartCode(e.target.value)}}}

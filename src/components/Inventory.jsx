@@ -859,7 +859,7 @@ max: ${partListItems[idx]?.max}
                         <span className='inventory-switch-view'>
                             <button onClick={()=>{setUpdateInventory(true)}} style={{all: 'unset'}}>
                                 <div style={{color: 'gray'}}>
-                                    <img src='/database-update.svg' width='15px' />
+                                    <img src='/database-update.svg' width='15px' loading='lazy'/>
                                     Update
                                 </div>
                             </button>
@@ -875,7 +875,7 @@ max: ${partListItems[idx]?.max}
                                 <OnClickToolTip
                                     toolTipEl={
                                         <div style={{color: 'gray'}}>
-                                            <img className='inventory-copy-details' src='/copy.svg' width='15px' />
+                                            <img className='inventory-copy-details' src='/copy.svg' width='15px' loading='lazy' />
                                             Copy
                                         </div>
                                     }
@@ -892,7 +892,7 @@ max: ${partListItems[idx]?.max}
                                 style={{all: 'unset'}}
                             >
                                 <div style={{color: 'gray'}}>
-                                    <img src='/ai-generated-text.svg' width='15px' />
+                                    <img src='/ai-generated-text.svg' width='15px' loading='lazy' />
                                     More
                                 </div>
                             </button>
@@ -994,7 +994,7 @@ max: ${partListItems[idx]?.max}
                 }}>
                     <StorToolTip 
                         toolTipEl={
-                            <img src='/left-circled-arrow.svg' width='35px' />
+                            <img src='/left-circled-arrow.svg' width='35px' loading='lazy'/>
                         }
                         toolTipTitle='Previous'
                     />
@@ -1007,7 +1007,7 @@ max: ${partListItems[idx]?.max}
                 > 
                     <StorToolTip 
                         toolTipEl={
-                            <img src='/pulsar-circled-info.svg' width='35px' />
+                            <img src='/pulsar-circled-info.svg' width='35px' loading='lazy'/>
                         }
                         toolTipTitle='Info'
                     />
@@ -1017,7 +1017,7 @@ max: ${partListItems[idx]?.max}
                 }}>
                     <StorToolTip 
                         toolTipEl={
-                            <img src='/right-circled-arrow.svg' width='35px' />
+                            <img src='/right-circled-arrow.svg' width='35px' loading='lazy'/>
                         }
                         toolTipTitle='Next'
                     />
@@ -1200,7 +1200,7 @@ max: ${partListItems[idx]?.max}
                     <li
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Pick
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Pick
                     </li>
                     )
                 }
@@ -1320,12 +1320,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                 </>
                                 :
@@ -1348,7 +1348,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Count
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Count
                     </li>
                     )
                 }
@@ -1413,12 +1413,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                 </>
                                 :
@@ -1441,7 +1441,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Reord
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Reord
                     </li>
                     )
                 }
@@ -1557,12 +1557,12 @@ max: ${partListItems[idx]?.max}
                                             submitForm();
                                         }}
                                     >
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                 </>
                                 :
@@ -1585,7 +1585,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Loc
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Loc
                     </li>
                     )
                 }
@@ -1666,12 +1666,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                 </>
                                 :
@@ -1694,7 +1694,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Label
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Label
                     </li>
                     )
                 }
@@ -1744,12 +1744,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy'/>
                                         </FormButton>
                                         <FormButton 
                                             type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                         </FormButton>
                                     </>
                                     :
@@ -1772,7 +1772,7 @@ max: ${partListItems[idx]?.max}
                     <li 
                         className='inventory-update-type'
                         style={{textAlign: 'center', width: 'fit-content', listStyle: 'none', margin: '5px', paddingLeft:'5px', paddingRight:'5px'}}    
-                    ><img src='/square-outlined-small.svg' width='10px' />&nbsp;Other
+                    ><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Other
                     </li>
                     )
                 }
@@ -1840,12 +1840,12 @@ max: ${partListItems[idx]?.max}
                                                 setLoading(true);
                                                 submitForm();
                                             }}>
-                                                <img src='/circled-check.svg' width='30px' />
+                                                <img src='/circled-check.svg' width='30px' loading='lazy' />
                                     </FormButton>
                                     <FormButton 
                                         type='reset' 
                                         >
-                                            <img src='/pulsar-clear.svg' width='30px' />
+                                            <img src='/pulsar-clear.svg' width='30px' loading='lazy'/>
                                     </FormButton>
                                 </>
                                 :
