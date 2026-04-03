@@ -402,7 +402,7 @@ const Labels = memo(function Labels(props){
                                             }
                                             setReadyToPrint(false);
                                         }}><span className="modal-options" style={{fontSize: '15px'}}>
-                                                ¤ Results
+                                                ¤&nbsp;Results
                                                 {nativePrint ?
                                                     <> 
                                                         <br/>
@@ -447,7 +447,7 @@ const Labels = memo(function Labels(props){
                                         }
                                         setReadyToPrint(false);
                                     }}><span className="modal-options" style={{fontSize: '15px'}}>
-                                            {props?.pagListItems.length > 0 ? '¤ Page' : '¤ Results'}
+                                            {props?.pagListItems.length > 0 ? <>¤&nbsp;Page</> : <>¤&nbsp;Results</>}
                                                 {nativePrint ?
                                                     <>
                                                         <br/>
@@ -470,7 +470,7 @@ const Labels = memo(function Labels(props){
                                         setReadyToPrint(false);
                                         }}>
                                         <span className="modal-options" style={{fontSize: '15px'}}>
-                                            ¤ New
+                                            ¤&nbsp;New
                                         </span>
                                     </IconButton>
                                 </div>
@@ -567,7 +567,7 @@ const Labels = memo(function Labels(props){
                                     setPrintParts(true); 
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
-                                        ¤ Native
+                                        ¤&nbsp;Native
                                     </span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
@@ -575,7 +575,7 @@ const Labels = memo(function Labels(props){
                                     setPrintParts(true);
                                 }}>
                                     <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
-                                        ¤ Web
+                                        ¤&nbsp;Web
                                     </span>
                                 </IconButton>
                             </div>
