@@ -52,7 +52,7 @@ export default function BasicMessageModal(props) {
                     <br/>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         handleClose();
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Ok</span>
                     </IconButton>
                 </div>               
                 }

@@ -33,6 +33,8 @@ imgMap.set('pulsar-purchase-order.svg', '/pulsar-purchase-order.svg');
 imgMap.set('pulsar-qr.svg', '/pulsar-qr.svg'); 
 imgMap.set('pulsar-register.svg', '/pulsar-register.svg'); 
 imgMap.set('pulsar-sort.svg', '/pulsar-sort.svg'); 
+imgMap.set('pulsar-toolbox.svg', '/pulsar-toolbox.svg'); 
+imgMap.set('pulsar-tools.svg', '/pulsar-tools.svg'); 
 imgMap.set('right-circled-arrow.svg', '/right-circled-arrow.png');
 imgMap.set('skip.svg', '/skip.svg');
 imgMap.set('square-outlined-small.svg', '/square-outlined-small.png');

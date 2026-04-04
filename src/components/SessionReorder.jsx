@@ -217,10 +217,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder(orderToDelete.id);
                         setModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -237,10 +237,10 @@ const SessionReorder = memo(function SessionReorder(props) {
                     <IconButton autoFocus disableRipple onClick={()=>{
                         deleteOrder();
                         setDeleteAllModalOpen(false);
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Ok</span>
                     </IconButton>
                     <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' loading='lazy'/>&nbsp;Cancel </span>
+                        <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Cancel </span>
                     </IconButton>
                 </div>
             </>
@@ -349,13 +349,13 @@ const SessionReorder = memo(function SessionReorder(props) {
                             <PlaylistAddCheckRoundedIcon />
                         </IconButton>
                         {ordersListItems.length > 0 ?
-                        <IconButton disableRipple sx={{marginRight: .5}} onClick={()=>{setDeleteAllModalOpen(true)}}>
+                        <IconButton sx={{marginRight: .5}} onClick={()=>{setDeleteAllModalOpen(true)}}>
                             <DeleteSweepOutlinedIcon  fontSize='20px'/>
                         </IconButton>
                         :
                         <></>
                         }
-                        <IconButton disableRipple onClick={downloadOrds}>
+                        <IconButton onClick={downloadOrds}>
                             <SaveAltIcon fontSize='20px'/>
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
@@ -384,7 +384,7 @@ const SessionReorder = memo(function SessionReorder(props) {
                             sx={{ m: 1, width: '135px', marginTop: '15px'}}
                             slotProps={{
                                 input: {
-                                startAdornment: <InputAdornment position="start"><img src='/pulsar-toolbox.svg' width='20px' loading='lazy'/></InputAdornment>,
+                                startAdornment: <InputAdornment position="start"><img src='/pulsar-tools.svg' width='20px' decoding='sync'/></InputAdornment>,
                                 },
                             }}
                             onKeyDown={(e)=>{if (e.key === 'Enter'){filterByPartCode(e.target.value)}}}
