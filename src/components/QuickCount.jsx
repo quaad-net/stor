@@ -476,7 +476,12 @@ const QuickCount = memo(function QuickCount(props) {
           </div>
         </Dialog>
       </Fragment>
-      <BasicMessageModal setModalOpen={setBasicMessageModalOpen} modalOpen={basicMessageModalOpen} modalContent={basicMessageModalContent} />
+      <BasicMessageModal 
+        setModalOpen={setBasicMessageModalOpen} 
+        modalOpen={basicMessageModalOpen} 
+        modalContent={basicMessageModalContent} 
+        showMsgIcon
+      />
     </ThemeProvider>
   );
 })

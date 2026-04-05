@@ -45,6 +45,13 @@ export default function BasicMessageModal(props) {
                 <div className='basic-message-modal-content' style={{width: 'fit-content', margin: 'auto', paddingRight: '20px', height: 'fit-content', maxHeight: '300px',
                     scrollbarWidth:'thin', scrollbarColor: 'black',  overflow: props?.overflow || 'auto'
                 }}>
+                    {props?.showMsgIcon ?
+                    <div>
+                        <img src='/pulsar-message.svg' width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
+                    </div>
+                    : 
+                    <></>
+                    }   
                     {props?.modalContent}
                 </div>
                 {props?.noDefaultBtns ? <></> : 

@@ -362,7 +362,7 @@ const Tasks =  memo(function Tasks(props) {
                 </Fragment>
             </ThemeProvider>
             <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
-            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
+            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent} showMsgIcon/>
         </>
     );
 })

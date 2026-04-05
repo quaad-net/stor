@@ -36,7 +36,14 @@ export default function BasicDialogModal(props) {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                        {props.modalContent}
+                            {props?.showMsgIcon ?
+                            <div>
+                                <img src='/pulsar-message.svg' width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
+                            </div>
+                            : 
+                            <></>
+                            }  
+                            {props.modalContent}
                         </Box>
                     </Modal>
                 </ThemeProvider>

@@ -402,9 +402,9 @@ const SessionReorder = memo(function SessionReorder(props) {
                     </Dialog>
                 </Fragment>
             </ThemeProvider>
-            <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
-            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
-            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>
+            <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>} showMsgIcon/>
+            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent} showMsgIcon/>
+            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>} showMsgIcon/>
         </>
     );
 })

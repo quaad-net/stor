@@ -481,9 +481,9 @@ export default function PrintJobs(props) {
                     </Dialog>
                 </Fragment>
             </ThemeProvider>
-            <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>}/>
-            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>}/>
-            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent}/>
+            <BasicDialogModal modalOpen={modalOpen} setModalOpen={setModalOpen} modalContent={<ModalContent/>} showMsgIcon/>
+            <BasicDialogModal modalOpen={deleteAllModalOpen} setModalOpen={setDeleteAllModalOpen} modalContent={<DeleteAllModalContent/>} showMsgIcon/>
+            <BasicMessageModal modalOpen={basicMessageOpen} setModalOpen={setBasicMessageOpen} modalContent={basicMessageContent} showMsgIcon/>
         </>
     );
 }

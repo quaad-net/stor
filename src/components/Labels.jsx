@@ -559,24 +559,19 @@ const Labels = memo(function Labels(props){
                     <>
                         <div style={{width: 'fit-content', margin: 'auto'}}>
                             <div>
-                                <div style={{fontSize: '15px', fontWeight: 'bold'}}>
-                                    Labels
-                                </div><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setNativePrint(true);
                                     setPrintParts(true); 
                                 }}>
-                                    <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
-                                        ¤&nbsp;Native
-                                    </span>
+                                    <img src='/pulsar-image.svg' width={25} decoding="sync"/>
+                                    <span style={{fontSize: 20}}>img/png</span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setNativePrint(false);
                                     setPrintParts(true);
                                 }}>
-                                    <span className="modal-options" style={{fontSize: '15px', fontWeight: 'bold'}}>
-                                        ¤&nbsp;Web
-                                    </span>
+                                    <img src='/pulsar-globe.svg' width={25} decoding="sync"/>
+                                    <span style={{fontSize: 20}}>web/html</span>
                                 </IconButton>
                             </div>
                         </div>

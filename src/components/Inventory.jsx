@@ -192,7 +192,7 @@ const Inventory = memo(function Inventory() {
                         if(res.length == 0){
                             setBasicMessageModalContent(
                                 <span>
-                                    No match found for<br/>
+                                    <strong>No match</strong> found for<br/>
                                     <span 
                                         style={{color: 'gold', borderBottom: '1px dotted gray'}}>
                                             {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
@@ -217,7 +217,7 @@ const Inventory = memo(function Inventory() {
                             // getUsageData(res[0].code, res[0].warehouseCode);
                             setBasicMessageModalContent(
                                 <span>
-                                    Returned {res.length} record{res.length > 1 ? 's' : ''} for<br/>
+                                    Returned <strong>{res.length}</strong> record{res.length > 1 ? 's' : ''} for<br/>
                                     <span style={{color: 'gold', borderBottom: '1px dotted gray'}}>
                                         {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
                                     </span>
@@ -244,7 +244,7 @@ const Inventory = memo(function Inventory() {
                     else if(err.message == 'No match'){
                         setBasicMessageModalContent(
                             <span>
-                                No match found for<br/>
+                                <strong>No match</strong> found for<br/>
                                 <span 
                                     style={{color: 'gold', borderBottom: '1px dotted gray'}}>
                                         {queryType !='descrList' ? query.toString().trim(): query.toString().trim().replaceAll('---', ' ')}
@@ -2005,7 +2005,12 @@ max: ${partListItems[idx]?.max}
                     </h1>
                     <InventoryDetailContent/>
                 </div>
-                <BasicMessageModal setModalOpen={setBasicMessageModalOpen} modalOpen={basicMessageModalOpen} modalContent={basicMessageModalContent} />
+                <BasicMessageModal 
+                    setModalOpen={setBasicMessageModalOpen} 
+                    modalOpen={basicMessageModalOpen} 
+                    modalContent={basicMessageModalContent} 
+                    showMsgIcon 
+                />
             </>
         )
     }

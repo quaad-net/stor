@@ -265,7 +265,7 @@ const PL2Query = memo(function PL2Query(props) {
           }
         </Dialog>
       </Fragment>
-      <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={modalContent} />
+      <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={modalContent} showMsgIcon/>
     </ThemeProvider>
   );
 })
