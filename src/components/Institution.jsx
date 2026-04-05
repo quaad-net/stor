@@ -1,12 +1,15 @@
 import { memo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserInfoModal from "./UserInfoModal";
+import Ops from "./Ops";
+import Fiscal from "./Fiscal";
 import "./Institution.css"
 
 const ShowInstitution = memo(function ShowInstitution(props){ 
 
   const navigate = useNavigate();
   const [currentUserData, setCurrentUserData] = useOutletContext();
+  const userData = JSON.parse(currentUserData);
 
   function logout(){
     localStorage.clear();
@@ -17,7 +20,6 @@ const ShowInstitution = memo(function ShowInstitution(props){
 
   function UserHtml(){
     
-    const userData = JSON.parse(currentUserData) 
     return(
       <div style={{width: 'fit-content', margin: 'auto'}}>
         <img src='/user-small.svg' width='25px' style={{float: 'left'}}/>
@@ -29,12 +31,33 @@ const ShowInstitution = memo(function ShowInstitution(props){
     function OutPut(){
       return(
         <>
-          {currentUserData == '' ? <VistorHtml/> : <UserHtml/>}
+          <div>
+            {currentUserData == '' ? <VistorHtml/> : <UserHtml/>}
+          </div>
+          {userData.email == 'eukoh@quaad.net' ?
+            <>
+              <br/>
+              <fieldset style={{borderRadius: 1, border: '1px solid gray', borderLeft: 0, borderRight: 0, borderBottom: 0}}>
+                <legend style={{color: 'gray', textAlign:'center'}}>
+                  App{'</>'}
+                </legend><br/>
+                <Ops/>
+                <br/>
+                <Fiscal/>
+              </fieldset>
+            </>
+            :
+            <></>
+          }
         </>
       )
     }
 
-    return(<UserInfoModal {...(props?.btnDescription ? {btnDescription: props.btnDescription} : {})} modalContent={<OutPut/>} iconSize='25px'/>)
+  return(
+    <>
+      <UserInfoModal {...(props?.btnDescription ? {btnDescription: props.btnDescription} : {})} modalContent={<OutPut/>} iconSize='25px'/>
+    </>
+  )
     
 
   })
