@@ -13,8 +13,7 @@ const Ops = memo(function Ops(){
           document.querySelector('#ops-link').style.color = 'white';
           const link = document.createElement('a');
           link.href = 'https://ops.quaad.net';
-          link.crossorigin = '';
-          link.rel='_blank';
+          link.target = '_top'
           link.click();
           },[250])
         }}

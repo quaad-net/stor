@@ -13,8 +13,7 @@ const Fiscal = memo(function Fiscal(){
           document.querySelector('#fiscal-link').style.color = 'white';
           const link = document.createElement('a');
           link.href = 'https://fiscal.quaad.net';
-          link.crossorigin = '';
-          link.rel='_blank';
+          link.target = '_top'
           link.click();
           },[250])
         }}
