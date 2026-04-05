@@ -5,54 +5,55 @@ import { useState } from "react";
 
 export default function SyntaxHelper(props){
     const [modalOpen, setModalOpen] = useState(false);
+
     function ModalContent(){
         return(
             <>
-                <div>
+                <div id='syntax-helper-modal-content'>
                     <div><i>*All queries are case-insensitive.</i></div>
 
-                    <h3>{'{L}'} Location</h3>
+                    <h3>{'{L}'}&nbsp;Location</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;LocationStart&nbsp;<span style={{color:'white', fontWeight: 'bold'}}>:</span>&nbsp;LocationEnd
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>110-a-b:110-c</span>
                     </div>
-                    <div>▫ Add location start and location end separated by a colon. </div>
-                    <div>▫ To match only one location, enter the exact location without a colon.</div>
-                    <div>▫ Do not include any spaces.</div>
-                    <div>▫ Add &quot;&active&quot; to only include active items
+                    <div>▫&nbsp;Add location start and location end separated by a colon. </div>
+                    <div>▫&nbsp;To match only one location, enter the exact location without a colon.</div>
+                    <div>▫&nbsp;Do not include any spaces.</div>
+                    <div>▫&nbsp;Add &quot;&active&quot; to only include active items
                         <br/>=&gt;&nbsp;<span style={{color: 'gray'}}>110-a-b:110-c&active</span>
                     </div>
 
-                    <h3>{'{C}'} Code</h3>
-                    <div style={{color: 'gold'}}>[Qry]&nbsp;Code&nbsp;Code Code...
-                        <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>22-12345 51-12345 70-12345</span>
+                    <h3>{'{C}'}&nbsp;Code</h3>
+                    <div style={{color: 'gold'}}>[Qry]&nbsp;Code&nbsp;Code&nbsp;Code...
+                        <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>22-12345&nbsp;51-12345&nbsp;70-12345</span>
                     </div>
-                    <div>▫ Enter a single-space separated list of part codes.</div>
+                    <div>▫&nbsp;Enter a single-space separated list of part codes.</div>
 
-                    <h3>{'{D}'} Description</h3>
-                    <div style={{color: 'gold'}}>[Qry]&nbsp;Exact Match
-                        <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>zurn kit</span>
+                    <h3>{'{D}'}&nbsp;Description</h3>
+                    <div style={{color: 'gold'}}>[Qry]&nbsp;Exact&nbsp;Match
+                        <br/><span style={{color: 'white'}}>=&gt;</span>&nbsp;<span style={{color: 'gray'}}>zurn&nbsp;kit</span>
                     </div>
-                    <div>▫ Searches for exact match within the &ldquo;description&rdquo; field.</div>
+                    <div>▫&nbsp;Searches for exact match within the &ldquo;description&rdquo; field.</div>
 
-                    <h3>{'{W}'} Warehouse</h3>
+                    <h3>{'{W}'}&nbsp;Warehouse</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;code&nbsp;
                         <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>5032</span>
                     </div>
-                    <div>▫ Returns all records for the specified warehouse code.</div>
-                    <div>▫ For an entire warehouse, use the last two digits.
+                    <div>▫&nbsp;Returns all records for the specified warehouse code.</div>
+                    <div>▫&nbsp;For an entire warehouse, use the last two digits.
                         <br/>=&gt;&nbsp;<span style={{color: 'gray'}}>32</span>
                     </div>
 
-                    <h3>{'{S}'} Semantic</h3>
+                    <h3>{'{S}'}&nbsp;Semantic</h3>
                     <div style={{color: 'gold'}}>[Qry]&nbsp;Any&nbsp;
-                        <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>3/4" brass ball valve</span>
+                        <br/><span style={{color: 'white'}}>=&gt;&nbsp;</span><span style={{color: 'gray'}}>3/4"&nbsp;brass&nbsp;ball&nbsp;valve</span>
                     </div>
-                    <div>▫ Returns the closest matching records(≈50) based on their description.</div>
+                    <div>▫&nbsp;Returns the closest matching records(≈50) based on their description.</div>
 
-                    <h3>Using Filter</h3>
-                    <div>▫ Narrows results based on filter input and type selection.</div>
-                    <div>▫ Returns records that contain an exact match.</div>
-                    <div>▫ Allows aggregated filtering.</div>
+                    <h3>Using&nbsp;Filter</h3>
+                    <div>▫&nbsp;Narrows results based on filter input and type selection.</div>
+                    <div>▫&nbsp;Returns records that contain an exact match.</div>
+                    <div>▫&nbsp;Allows aggregated filtering.</div>
                 </div>
             </>
         )

@@ -550,7 +550,7 @@ const Labels = memo(function Labels(props){
                                     <span className="modal-options" style={{fontSize: '15px'}}>
                                         1x4<span style={{color:'whitesmoke'}}>|locs</span>
                                     </span>
-                                </IconButton><br/><br/>
+                                </IconButton><br/>
                             </>
                             }
                         </div>

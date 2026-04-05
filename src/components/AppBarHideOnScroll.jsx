@@ -138,9 +138,28 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
         }
 
         function ModalMobileMenu(){ 
+          const [scrollAvail, setScrollAvail] = useState(true);
+          
+          function isScrolledToBottom(el) {
+            if(Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) < 1){
+              setScrollAvail(false)
+            }else{setScrollAvail(true)}
+          }
+
+          useEffect(()=>{
+            const menuContent = document.querySelector('#modal-mobile-menu-content');
+            menuContent.addEventListener('scroll', ()=>{
+              isScrolledToBottom(menuContent)
+            })
+            return menuContent.removeEventListener('scroll', ()=>{
+              isScrolledToBottom(menuContent)
+            })
+          },[])
+
           return(
             <>
               <div
+                id='modal-mobile-menu-content'
                 style={{width: 'fit-content', height: '200px', margin: 'auto', overflowY: 'auto', scrollbarWidth: 'thin',
                 }}
               >
@@ -194,6 +213,15 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 }
                 <ShowInstitution btnDescription={<span style={{fontSize: '15px'}}>User</span>} mobileView={true}/>
               </div>
+              {scrollAvail ?
+                <div 
+                  style={{textAlign:'center', fontSize: 10, marginTop: 10}}
+                >
+                  ▼
+                </div>
+                :
+                <>&nbsp;</>
+              }
             </>
           )
        }
