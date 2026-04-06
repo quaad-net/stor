@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserInfoModal from "./UserInfoModal";
-import Ops from "./Ops";
-import Fiscal from "./Fiscal";
 import "./Institution.css"
 
 const ShowInstitution = memo(function ShowInstitution(props){ 
@@ -34,21 +32,6 @@ const ShowInstitution = memo(function ShowInstitution(props){
           <div>
             {currentUserData == '' ? <VistorHtml/> : <UserHtml/>}
           </div>
-          {userData.email == 'eukoh@quaad.net' ?
-            <>
-              <br/>
-              <fieldset style={{borderRadius: 1, border: '1px solid gray', borderLeft: 0, borderRight: 0, borderBottom: 0}}>
-                <legend style={{color: 'gray', textAlign:'center'}}>
-                  App{'</>'}
-                </legend><br/>
-                <Ops/>
-                <br/>
-                <Fiscal/>
-              </fieldset>
-            </>
-            :
-            <></>
-          }
         </>
       )
     }
