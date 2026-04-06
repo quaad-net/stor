@@ -6,7 +6,7 @@ import { memo, useState } from "react";
 const Pag =  memo(function Pag(props){
     const [modalOpen, setModalOpen] = useState(false);
 
-    if(props?.pagIdxMax > 1){
+    if(props?.pagIdxMax > 0){
         return(
             <>  
                 <IconButton
