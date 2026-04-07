@@ -203,7 +203,7 @@ const Inventory = memo(function Inventory() {
                         }else{
                             if(res.length > 30){  // Needs to be paginated.
                                 setUnfilteredPartListItems(res)
-                                setPagIdxMax(Math.ceil((res.length / 30).toFixed(1)));
+                                setPagIdxMax(Math.ceil((res.length / 30)));
                                 setPagListItems(res);
                                 paginate(res, 1); // Function will setPartListItems
                             }
@@ -385,7 +385,7 @@ const Inventory = memo(function Inventory() {
                                 }
                         }
                         if(filteredParts.length > 30){  // Needs to be paginated.
-                            setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                            setPagIdxMax(Math.ceil((filteredParts.length / 30)))
                             setPagListItems(filteredParts);
                             paginate(filteredParts, 1); // Function will setPartListItems
                         }
@@ -449,7 +449,7 @@ const Inventory = memo(function Inventory() {
                                 }
                         }
                         if(filteredParts.length > 30){  // Needs to be paginated.
-                            setPagIdxMax(Math.ceil((filteredParts.length / 30).toFixed(1)));
+                            setPagIdxMax(Math.ceil((filteredParts.length / 30)))
                             setPagListItems(filteredParts);
                             paginate(filteredParts, 1); // Function will setPartListItems
                         }

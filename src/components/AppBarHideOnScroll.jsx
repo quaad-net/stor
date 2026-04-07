@@ -253,7 +253,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                 <IconButton size='small' onClick={()=>{
                   if(props.filterOn){ //User is turning filter off on click.
                     if(props.unfilteredPartListItems.length > 30){  // Needs to be paginated.
-                      props.setPagIdxMax(Math.ceil((props.unfilteredPartListItems.length / 30).toFixed(1)));
+                      props.setPagIdxMax(Math.ceil((props.unfilteredPartListItems.length / 30)))
                       props.setPagListItems(props.unfilteredPartListItems);
                       props.paginate(props.unfilteredPartListItems, 1); // Function will setPartListItems
                     }

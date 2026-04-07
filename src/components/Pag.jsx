@@ -1,12 +1,17 @@
 import PaginationRounded from "./PaginationRounded";
 import IconButton from '@mui/material/IconButton';
 import BasicDialogModal from "./BasicDialogModal";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 const Pag =  memo(function Pag(props){
     const [modalOpen, setModalOpen] = useState(false);
+    useEffect(()=>{
+        console.log(props?.pagIdxMax);
+        console.log(props?.displayPage);
+        props?.currentPage
+    })
 
-    if(props?.pagIdxMax > 1){
+    if(props?.pagIdxMax > 1){ 
         return(
             <>  
                 <IconButton
