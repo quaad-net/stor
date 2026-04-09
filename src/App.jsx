@@ -6,20 +6,44 @@ import imgMap from "../app/imgMap";
 import "./App.css"
 
 const App = () => {
-
   const { userData } = useUserData();
   const [currentUserData, setCurrentUserData] = useState(userData);
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Preload Images
+  // useEffect(()=>{
+  //   for (let [key, val] of imgMap){
+  //     const link = document.createElement('link');
+  //     link.rel = 'preload';
+  //     link.as = 'image';
+  //     link.href = val;
+  //     document.querySelector('head').appendChild(link);
+  //   }
+  // }, [])
 
+  // Set images in local storage
   useEffect(()=>{
-    for (let [key, val] of imgMap){
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = val;
-      document.querySelector('head').appendChild(link);
-    }
+      const loadImages = async () => {
+        for (const [key, val] of imgMap) {
+          const cachedImage = localStorage.getItem(key);
+          if (!cachedImage) {
+              try {
+                  const response = await fetch(val);
+                  const blob = await response.blob();
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                      const base64data = reader.result;
+                      localStorage.setItem(key, base64data);
+                  };
+                  reader.readAsDataURL(blob);
+              } catch (error) {
+                  console.error('Error caching image:', error);
+              }
+          }
+        }
+      }
+      loadImages();
   }, [])
 
   useEffect(()=>{
