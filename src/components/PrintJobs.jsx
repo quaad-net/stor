@@ -221,10 +221,10 @@ export default function PrintJobs(props) {
                                 setLoading(false);
                                 setModalOpen(false);
                             })
-                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
+                        }}><span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') ||'/square-outlined-small.svg'} width='10px' />&nbsp;Ok</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{setModalOpen(false)}}>
-                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
+                            <span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') ||'/square-outlined-small.svg'} width='10px' />&nbsp;Cancel </span>
                         </IconButton>
                     </>
                     :
@@ -263,10 +263,10 @@ export default function PrintJobs(props) {
                                 setDeleteAllModalOpen(false);
                             })
                             ;
-                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Ok</span>
+                        }}><span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') ||'/square-outlined-small.svg'} width='10px' />&nbsp;Ok</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{setDeleteAllModalOpen(false)}}>
-                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel </span>
+                            <span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') ||'/square-outlined-small.svg'} width='10px' />&nbsp;Cancel </span>
                         </IconButton>
                     </>
                     :

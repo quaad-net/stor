@@ -342,12 +342,12 @@ const QuickCount = memo(function QuickCount(props) {
                             submitForm();
                         }}
                       >
-                        <img src='/circled-check.svg' width='30px'/>
+                        <img src={localStorage.getItem('/circled-check.svg') || '/circled-check.svg'}  width='30px'/>
                       </FormButton>
                       <FormButton 
                           type='reset' 
                           >
-                              <img src='/pulsar-clear.svg' width='30px'/>
+                              <img src={localStorage.getItem('/pulsar-clear.svg') || '/pulsar-clear.svg'} width='30px'/>
                       </FormButton>
                   </>
                   :

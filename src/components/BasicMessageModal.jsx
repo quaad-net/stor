@@ -47,7 +47,7 @@ export default function BasicMessageModal(props) {
                 }}>
                     {props?.showMsgIcon ?
                     <div>
-                        <img src='/pulsar-message.svg' width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
+                        <img src={localStorage.getItem('/pulsar-message.svg') || '/pulsar-message.svg'} width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
                     </div>
                     : 
                     <></>
@@ -59,7 +59,7 @@ export default function BasicMessageModal(props) {
                     <br/>
                     <IconButton autoFocus disableRipple onClick={()=>{
                         handleClose();
-                    }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' decoding='sync'/>&nbsp;Ok</span>
+                    }}><span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') || '/square-outlined-small.svg'} width='10px' decoding='sync'/>&nbsp;Ok</span>
                     </IconButton>
                 </div>               
                 }

@@ -38,7 +38,7 @@ export default function BasicDialogModal(props) {
                         <Box sx={style}>
                             {props?.showMsgIcon ?
                             <div>
-                                <img src='/pulsar-message.svg' width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
+                                <img src={localStorage.getItem('/pulsar-message.svg')  || '/pulsar-message.svg'} width={25} decoding='sync' style={{float: 'left'}}/><br/><br/>
                             </div>
                             : 
                             <></>

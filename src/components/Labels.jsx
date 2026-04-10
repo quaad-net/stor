@@ -563,14 +563,14 @@ const Labels = memo(function Labels(props){
                                     setNativePrint(true);
                                     setPrintParts(true); 
                                 }}>
-                                    <img src='/pulsar-image.svg' width={25} decoding="sync"/>
+                                    <img src={localStorage.getItem('/pulsar-image.svg') || '/pulsar-image.svg'} width={25} decoding="sync"/>
                                     <span style={{fontSize: 20}}>img/png</span>
                                 </IconButton><br/><br/>
                                 <IconButton disableRipple onClick={()=>{
                                     setNativePrint(false);
                                     setPrintParts(true);
                                 }}>
-                                    <img src='/pulsar-globe.svg' width={25} decoding="sync"/>
+                                    <img src={localStorage.getItem('/pulsar-globe.svg') || '/pulsar-globe.svg'} width={25} decoding="sync"/>
                                     <span style={{fontSize: 20}}>web/html</span>
                                 </IconButton>
                             </div>
@@ -804,13 +804,13 @@ const Labels = memo(function Labels(props){
                                 })
                             }
                             setReadyToPrint(false);
-                        }}><span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Create</span>
+                        }}><span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') || '/square-outlined-small.svg'} width='10px' />&nbsp;Create</span>
                         </IconButton>
                         <IconButton disableRipple onClick={()=>{
                             setFormModalOpen(false);
                             setReadyToPrint(false);
                             }}>
-                            <span style={{fontSize: '15px'}}><img src='/square-outlined-small.svg' width='10px' />&nbsp;Cancel</span>
+                            <span style={{fontSize: '15px'}}><img src={localStorage.getItem('/square-outlined-small.svg') || '/square-outlined-small.svg'} width='10px' />&nbsp;Cancel</span>
                         </IconButton>
                     </div>
                 </form>
