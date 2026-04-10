@@ -220,7 +220,7 @@ const AppBarHideOnScroll = memo(function AppBarHideOnScroll(props) {
                   ▼
                 </div>
                 :
-                <>&nbsp;</>
+                <div style={{fontSize: 10, marginTop: 10}}>&nbsp;</div>
               }
             </>
           )

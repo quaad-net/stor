@@ -78,8 +78,6 @@ export default function BasicMessageModal(props) {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={{...style, width: props?.width || 'fit-content', ...props?.bgcolor ? {bgcolor: props.bgcolor} : {},
-                            // bgcolor: props?.bgcolor || 'background.paper',
-                            // border: props.border || '1px solid gray'
                         }}>
                             <ModalContent/>
                         </Box>

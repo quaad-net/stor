@@ -1,15 +1,39 @@
 import BasicMessageModal from "./BasicMessageModal";
 import CircularIndeterminate from "./Progress";
 import IconButton from '@mui/material/IconButton';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SyntaxHelper(props){
     const [modalOpen, setModalOpen] = useState(false);
 
     function ModalContent(){
+        const [scrollAvail, setScrollAvail] = useState(true);
+
+        function isScrolledToBottom(el) {
+        if(Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) < 1){
+            setScrollAvail(false)
+        }else{setScrollAvail(true)}
+        }
+
+        useEffect(()=>{
+        const syntaxContent = document.querySelector('#syntax-helper-modal-content');
+        syntaxContent.addEventListener('scroll', ()=>{
+            isScrolledToBottom(syntaxContent)
+        })
+        return syntaxContent.removeEventListener('scroll', ()=>{
+            isScrolledToBottom(syntaxContent)
+        })
+        },[])
+
         return(
             <>
-                <div id='syntax-helper-modal-content'>
+                <div id='syntax-helper-modal-content'
+                     style={{
+                        width: 'fit-content', 
+                        maxHeight: '275px', 
+                        margin: 'auto', overflowY: 'auto', 
+                        scrollbarWidth: 'thin',
+                     }}>
                     <div><i>*All queries are case-insensitive.</i></div>
 
                     <h3>{'{L}'}&nbsp;Location</h3>
@@ -55,6 +79,15 @@ export default function SyntaxHelper(props){
                     <div>▫&nbsp;Returns records that contain an exact match.</div>
                     <div>▫&nbsp;Allows aggregated filtering.</div>
                 </div>
+                {scrollAvail ?
+                <div 
+                    style={{textAlign:'center', fontSize: 10, marginTop: 10}}
+                >
+                ▼
+                </div>
+                :
+                <div style={{fontSize: 10, marginTop: 10}}>&nbsp;</div>
+                }
             </>
         )
     }
@@ -79,7 +112,7 @@ export default function SyntaxHelper(props){
                 <span>?</span>
             </>
             }
-            <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={<ModalContent/>} />
+            <BasicMessageModal setModalOpen={setModalOpen} modalOpen={modalOpen} modalContent={<ModalContent/>} bgcolor='black' />
             </div>
         </>
     )
